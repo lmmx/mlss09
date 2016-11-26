@@ -1,0 +1,3847 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img src="./Littman_1-1_1.png"/><br/>
+<img src="./Littman_1-1_2.png"/><br/>
+Model-Based<br/>
+Reinforcement Learning<br/>
+(Day 1: Introduction)<br/>
+Michael L. Littman<br/>Rutgers University<br/>Department of Computer Science<br/>Rutgers Laboratory for Real-Life Reinforcement Learning<br/>
+Plan<br/>•&#160;Day 1: Introduction<br/>
+•&#160;Day 2: Current Trends<br/>
+–&#160;RL<br/>
+–&#160;Model-free RL &amp; KWIK<br/>
+–&#160;Q-learning<br/>
+–&#160;Model/value&#160;<br/>
+–&#160;Convergence<br/>
+approximation<br/>
+–&#160;Model-based RL<br/>
+–&#160;Bayesian RL<br/>
+–&#160;PAC-MDP<br/>
+–&#160;UCT<br/>
+–&#160;KWIK<br/>
+–&#160;Searchless planning<br/>
+<hr/>
+<a name=2></a><img src="./Littman_1-2_1.png"/><br/>
+<img src="./Littman_1-2_2.png"/><br/>
+<img src="./Littman_1-2_3.png"/><br/>
+<img src="./Littman_1-2_4.png"/><br/>
+Start With Game...<br/>•&#160;up<br/>•&#160;down<br/>•&#160;left<br/>•&#160;right<br/>•&#160;A<br/>•&#160;B<br/>
+Find The Ball: Elements of RL<br/>
+In reinforcement learning:<br/>•&#160;agent interacts with its environment<br/>•&#160;perceptions (state), actions, rewards [repeat]<br/>•&#160;task is to choose actions to maximize rewards<br/>•&#160;complete background knowledge unavailable<br/>Learn:<br/>•&#160;which way to turn<br/>•&#160;to minimize time<br/>•&#160;to see goal (ball)<br/>•&#160;from camera input<br/>•&#160;given experience.<br/>
+<hr/>
+<a name=3></a><img src="./Littman_1-3_1.png"/><br/>
+<img src="./Littman_1-3_2.png"/><br/>
+Problem To Solve<br/>Three core issues in the dream RL system.<br/>•&#160;generalize experience<br/>
+–&#160;use knowledge gained in similar situations<br/>–&#160;“learning”<br/>
+•&#160;sequential decisions<br/>
+–&#160;deal properly with delayed gratification<br/>–&#160;“planning”<br/>
+•&#160;exploration/exploitation<br/>
+–&#160;must strike a balance<br/>–&#160;unique to RL?<br/>
+Markov Decision Processes<br/>Model of sequential environments (Bellman 57)<br/>•&#160;<i>n</i>&#160;states,&#160;<i>k</i>&#160;actions, discount 0!!!1<br/>•&#160;step&#160;<i>t</i>, agent informed state is&#160;<i>st</i>, chooses&#160;<i>at<br/></i>•&#160;receives payoff&#160;<i>rt</i>; expected value is R(<i>st</i>,&#160;<i>at</i>)<br/>•&#160;probability that next state is&#160;<i>s</i>’ is T(<i>st</i>,&#160;<i>at</i>,&#160;<i>s</i>’)<br/>
+<i>st</i><br/>
+environment:<br/>
+agent<br/>
+<i>at</i><br/>
+T, R<br/>
+<i>rt</i><br/>
+Q(<i>s</i>,<i>a</i>) = R(<i>s</i>,<i>a</i>) +&#160;&#34;&#34;<i>s’</i>&#160;T(<i>s</i>,<i>a</i>,<i>s</i>’) max<i>a</i>’&#160;Q(<i>s</i>’,<i>a</i>’)<br/>
+•&#160;Optimal behavior is&#160;<i>at</i>&#160;= argmax&#160;<i>a</i>&#160;Q(<i>st</i>,<i>a</i>)<br/>•&#160;R, T unknown; some experimentation needed<br/>
+<hr/>
+<a name=4></a><img src="./Littman_1-4_1.png"/><br/>
+<img src="./Littman_1-4_2.png"/><br/>
+Find the Ball: MDP Version<br/>•&#160;Actions: rotate left/right<br/>
+•&#160;States: orientation<br/>
+•&#160;Reward:&#160;+1&#160;for facing&#160;<br/>
+ball,$<br/>
+$<br/>
+&#160;0&#160;otherwise<br/>
+Families of RL Approaches<br/>
+policy&#160;value-function<br/>
+search<br/>
+based<br/>
+model based<br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s&#160;a</i><br/>
+#<br/>
+⇐<br/>
+Q<br/>
+⇐<br/>
+T, R<br/>
+<i>a</i><br/>
+<i>v</i><br/>
+<i>s’&#160;r</i><br/>
+Search for&#160;<br/>action that&#160;<br/>
+Solve Bellman&#160;<br/>
+More direct use,&#160;<br/>
+More direct learning,&#160;<br/>
+less direct learning<br/>
+maximizes&#160;<br/>
+equations<br/>
+less direct use<br/>
+value<br/>
+<hr/>
+<a name=5></a><img src="./Littman_1-5_1.png"/><br/>
+<img src="./Littman_1-5_2.png"/><br/>
+Q-learning<br/>On experience &lt;<i>st</i>,<i>at</i>,<i>rt</i>,<i>st</i>+1&gt;:<br/>Q(<i>st</i>,<i>at</i>)&#160;#&#160;Q(<i>st</i>,<i>at</i>)&#160;<br/>&#160; &#160; &#160; &#160; &#160; &#160; &#160; +&#160;$<i>t</i>&#160;(<i>rt&#160;</i>+&#160;&#34;&#160;max<i>a</i>’&#160;Q(<i>st</i>+1,<i>a</i>’)%Q(<i>st</i>,<i>at</i>))<br/>If:<br/>•All &lt;<i>s,a</i>&gt; visited infinitely often.<br/>
+•&#34;<br/>
+2<br/>
+<i>t&#160;</i>$<i>t</i>&#160;=&#160;&amp;,&#160;&#34;<i>t&#160;</i>$<i>t&#160;</i>&#160;&lt;&#160;&amp;<br/>
+Then:&#160;Q(<i>s</i>,<i>a</i>)&#160;%&#160;Q(<i>s</i>,<i>a</i>) (Watkins &amp; Dayan &#160;92).<br/>
+Model-based MDP Learner<br/>On experience &lt;<i>st</i>,<i>at</i>,<i>rt</i>,<i>st</i>+1&gt;:<br/>•&#160;R(s<i>t</i>,<i>at</i>)&#160;#&#160;R(s<i>t</i>,<i>at</i>) +&#160;$<i>t</i>(<i>rt</i>%R(s<i>t</i>,<i>at</i>))<br/>•&#160;T(s<i>t</i>,<i>at</i>,<i>st</i>+1)&#160;#&#160;T(s<i>t</i>,<i>at</i>,<i>st</i>+1) +&#160;$<i>t</i>(1%T(s<i>t</i>,<i>at</i>,<i>st</i>+1))<br/>•&#160;T(s<i>t</i>,<i>at</i>,<i>s’</i>)&#160;#&#160;T(s<i>t</i>,<i>at</i>,<i>s’</i>) +&#160;$<i>t</i>(0%T(s<i>t</i>,<i>at</i>,<i>s’</i>))<br/>•&#160;Q(<i>s</i>,<i>a</i>) =&#160;R(<i>s</i>,<i>a</i>) +&#160;&#34;&#34;<i>s’</i>&#160;T(<i>s</i>,<i>a</i>,<i>s</i>’) max<i>a</i>’&#160;Q(<i>s</i>’,<i>a</i>’)<br/>If:<br/>•All &lt;<i>s,a</i>&gt; visited infinitely often.<br/>
+•&#34;<br/>
+2<br/>
+<i>t&#160;</i>$<i>t</i>&#160;=&#160;&amp;,&#160;&#34;<i>t&#160;</i>$<i>t&#160;</i>&#160;&lt;&#160;&amp;<br/>
+Then:&#160;Q(<i>s</i>,<i>a</i>)&#160;%&#160;Q(<i>s</i>,<i>a</i>) (Littman 96).<br/>
+<hr/>
+<a name=6></a><img src="./Littman_1-6_1.png"/><br/>
+<img src="./Littman_1-6_2.png"/><br/>
+PAC-MDP Reinforcement Learning<br/>
+PAC: Probably approximately correct (Valiant 84)<br/>Extended to RL (Fiechter 95, Kakade 03, etc.).<br/>•&#160;Given&#160;&amp;&gt;0,&#160;'&gt;0,&#160;<i>k</i>&#160;actions,&#160;<i>n</i>&#160;states,&#160;!.<br/>•&#160;We say a strategy makes a&#160;mistake&#160;each&#160;<br/>
+timestep&#160;<i>t</i>&#160;s.t. Q(<i>st</i>,<i>at</i>) &lt; max<i>a</i>&#160;Q(<i>st</i>,<i>a</i>)%&amp;.<br/>
+•&#160;Let&#160;<i>m</i>&#160;be a bound on the number of mistakes&#160;<br/>
+that holds with probability 1%'.<br/>
+•&#160;Want&#160;<i>m</i>&#160;poly in&#160;<i>k</i>,&#160;<i>n</i>, 1/&amp;, 1/', 1/(1%!).<br/>Must balance&#160;exploration&#160;and&#160;exploitation!<br/>
+Q-learning Not PAC-MDP<br/>•&#160;Family: initialization, exploration,&#160;$<i>t&#160;</i>decay<br/>•&#160;Combination lock<br/>
++0.1<br/>
++20.0<br/>
++0.0<br/>
+•&#160;Initialize low, random exploration (&amp;-greedy)<br/>
+–&#160;2<i>n</i>&#160;to find near-optimal reward. &#160;Keeps resetting.<br/>–&#160;Needs more external direction.<br/>
+<hr/>
+<a name=7></a><img src="./Littman_1-7_1.png"/><br/>
+<img src="./Littman_1-7_2.png"/><br/>
+Model-based Can Be PAC-MDP<br/>
++0.1<br/>
++20.0<br/>
+?<br/>
++0.0<br/>
+•&#160;Behavior differs depending on assumption<br/>
+truth:<br/>
+truth:<br/>
+?&#160;= low<br/>
+?&#160;= high<br/>
+assume:<br/>
+ignore&#160;?,&#160;<br/>
+ignore&#160;?<br/>
+No PAC-MDP&#160;<br/>
+?&#160;= low<br/>
+optimal<br/>
+suboptimal!<br/>
+guarantee<br/>
+assume:<br/>
+visit&#160;?,&#160;<br/>
+visit&#160;?,&#160;<br/>
+PAC-MDP if not too&#160;<br/>
+?&#160;= high<br/>
+explore<br/>
+optimal<br/>
+much exploration<br/>
+Optimism Under Uncertainty<br/>•&#160;Idea of exploration bonus well known.<br/>•&#160;Shown to provide PAC-MDP guarantee&#160;<br/>
+(Kearns &amp; Singh 02, Brafman &amp; Tennenholtz 02).<br/>
+•&#160;Key ideas:<br/>
+–&#160;Simulation lemma: Optimal for approximate&#160;<br/>
+model is near-optimal.<br/>
+–&#160;Explore or exploit lemma: If can’t reach unknown&#160;<br/>
+states quickly, can achieve near-optimal reward.<br/>
+•&#160;Extend to factored dynamics (Kearns &amp; Koller 99)&#160;<br/>
+and metric spaces (Kakade et al. 03).<br/>
+<hr/>
+<a name=8></a><img src="./Littman_1-8_1.png"/><br/>
+<img src="./Littman_1-8_2.png"/><br/>
+Model-free PAC-MDP<br/>•&#160;Although not directly relevant, this problem was&#160;<br/>
+solved (Strehl, Li, Wiewiora, Langford, Littman 06).<br/>
+•&#160;Modifies Q-learning to build rough model from&#160;<br/>
+recent experience.<br/>
+•&#160;Total mistakes in learning&#160;'&#160;<i>nk</i>/((1%!)8&amp;4).<br/>•&#160;Compare to model-based methods: mistakes in&#160;<br/>
+learning&#160;'&#160;<i>n</i>2<i>k</i>/((1%!)6&amp;3). &#160;(Better in states,&#160;<br/>worse in horizon.)<br/>
+•&#160;Lower bound, also (Li 09).<br/>
+Generalization in PAC-MDP<br/>•&#160;Can we draw on classical ML theory?<br/>•&#160;Model learning is a supervised problem.<br/>
+–&#160;Given examples of&#160;<i>s</i>,<i>a</i>&#160;pairs, predict&#160;<i>s</i>’.<br/>
+•&#160;Not just for table lookup anymore!<br/>•&#160;Extend results to functions that generalize by&#160;<br/>
+defining the right learning problem...<br/>
+<hr/>
+<a name=9></a><img src="./Littman_1-9_1.png"/><br/>
+<img src="./Littman_1-9_2.png"/><br/>
+3 Models for Learning Models<br/>•&#160;PAC: Inputs drawn from a fixed&#160;<br/>
+iid inputs<br/>
+distribution. &#160;Observe labels f<br/>
+Not PA&#160;or&#160;<i>m</i>&#160;<br/>
+C-MDP. &#160;iid assm&#160;labels up fr<br/>
+ption&#160;<br/>
+ont<br/>
+inputs. &#160;For future inputs dr<br/>
+im&#160;awn&#160;<br/>
+plies that lear<br/>
+no mist<br/>
+ner cannot&#160;<br/>
+akes<br/>
+from the distribution, few mist<br/>
+improv&#160;akes.<br/>
+e (change) behavior!<br/>
+•&#160;Mistake bound: Inputs presented&#160;<br/>
+online. &#160;For each, predict output. &#160;<br/>
+Not PAC-MDP. &#160;Mistakes&#160;adversarial input<br/>
+labels when wrong<br/>
+If mistake, observe label. &#160;N<br/>
+mean t&#160;o&#160;<br/>
+hat a high reward can&#160;<br/>
+more than&#160;<i>m</i>&#160;mistakes.be assumed low—subop<br/>
+cor<br/>
+timal.rect<br/>
+incorrect<br/>
+•&#160;KWIK: Inputs presented online. &#160;<br/>
+request<br/>
+For each, can predict output or&#160;<br/>say “I don’t know” and observe&#160;<br/>
+adversarial input<br/>
+Can be PAC-MDP...<br/>
+labels on request<br/>
+label. &#160;No mistakes, but can say “I&#160;<br/>
+no mistakes<br/>
+don’t know”&#160;<i>m</i>&#160;times.<br/>
+KWIK Learning<br/>•&#160;“Knows What It Knows”<br/>
+–&#160;Like PAC, no mistakes.<br/>–&#160;Like mistake bound, no distribution assumption.<br/>
+•&#160;Harder problem<br/>
+–&#160;PAC&#160;!&#160;mistake bound&#160;!&#160;KWIK<br/>
+•&#160;Very well suited to model learning:<br/>
+–&#160;experience distribution changes during learning<br/>
+•&#160;distribution varies with behavior, which should change!<br/>
+–&#160;exploration driven by known/unknown distinction<br/>
+•&#160;don’t want to be wrong and stop exploring too soon<br/>
+<hr/>
+<a name=10></a><img src="./Littman_1-10_1.png"/><br/>
+<img src="./Littman_1-10_2.png"/><br/>
+<img src="./Littman_1-10_3.png"/><br/>
+KWIK Learn a Coin Probability<br/>•&#160;Given&#160;<i>m</i>&#160;trials,&#160;<i>x</i>&#160;successes,&#160;p&#160;=&#160;<i>x</i>/<i>m<br/></i>•&#160;Hoeffding bound:<br/>
+–&#160;Probability of an empirical estimate of a random&#160;<br/>
+variable in the range [<i>a</i>,<i>b</i>] based on&#160;<i>m</i>&#160;samples&#160;<br/>being more than&#160;&amp;&#160;away from the true value is&#160;<br/>bounded by&#160;<br/>
+•&#160;So, can KWIK learn a transition probability:<br/>
+–&#160;say “I don’t know” until&#160;<i>m</i>&#160;is big enough so that&#160;<br/>
+p&#160;is&#160;&amp;-accurate&#160;with probability 1%'.<br/>
+Some Things to KWIK Learn<br/>•&#160;coin probability<br/>•&#160;an output vector, each component is KWIK&#160;<br/>
+learnable<br/>
+–&#160;multinomial probability (dice learning)<br/>
+•&#160;a mapping from input partition to outputs&#160;<br/>
+where partition is known and mapping&#160;<br/>within each partition is KWIK learnable<br/>
+–&#160;That’s a standard transition function (<i>s</i>,<i>a</i>&#160;to vector&#160;<br/>
+of coins) (Li, Littman, Walsh 08).<br/>
+•&#160;Also, union of two KWIK learnable classes.<br/>
+<hr/>
+<a name=11></a><img src="./Littman_1-11_1.png"/><br/>
+<img src="./Littman_1-11_2.png"/><br/>
+<img src="./Littman_1-11_3.png"/><br/>
+<img src="./Littman_1-11_4.png"/><br/>
+RMAX&#160;and KWIK Learning<br/>•&#160;RMAX&#160;(Brafman &amp; Tennenholtz 02)<br/>
+–&#160;KWIK learn model (<i>T</i>(s,<i>a</i>,() unknown&#160;<i>m</i>&#160;times).<br/>–&#160;For unknown parts, assume max possible reward&#160;<br/>
+(Q(<i>s</i>,<i>a</i>) = rmax/(1%!)).<br/>
+–&#160;Solve for&#160;Q&#160;and use resulting policy until&#160;<br/>
+something new becomes known.<br/>
+•&#160;Total mistakes in learning&#160;'&#160;<i>n</i>2<i>k</i>/((1%!)3&amp;3)&#160;<br/>
+(Strehl, Li, Wiewiora, Langford, Littman 06; Li 09).<br/>
+RMAX&#160;Speeds Learning<br/><i>Task</i>: Exit room using bird’s-eye state representation.<br/>
+!-greedy<br/>
+Rmax<br/>
+<i>Details</i>: Discretized 15x15 grid x 18 orientation (4050 states);&#160;<br/>6 actions: forward, backward, turn L ,turn R, slide L, slide R.<br/>(Nouri)<br/>
+<hr/>
+<a name=12></a><img src="./Littman_1-12_1.png"/><br/>
+<img src="./Littman_1-12_2.png"/><br/>
+<img src="./Littman_1-12_3.png"/><br/>
+Generalizing Transitions<br/>•&#160;In MDPs, states are viewed as independent.<br/>
+–&#160;Transition knowledge doesn’t transfer.<br/>
+•&#160;Real-life action outcomes generalize.<br/>
+–&#160;Learn in one state, apply to others.<br/>
+•&#160;Needed:<br/>
+–&#160;MDP variants that capture transition regularities.<br/>
+•&#160;Continuous MDPs<br/>
+forwards<br/>
+•&#160;RAM-MDPs<br/>
+ball x,y<br/>
+•&#160;Factored-state MDPs<br/>
+robot x,y<br/>
+•&#160;Object oriented MDPs<br/>
+robot&#160;(<br/>
+change&#160;<br/>
+Continuous Transition Model<br/>
+(Nouri)<br/>
+<hr/>
+<a name=13></a><img src="./Littman_1-13_1.png"/><br/>
+<img src="./Littman_1-13_2.png"/><br/>
+<img src="./Littman_1-13_3.png"/><br/>
+<img src="./Littman_1-13_4.png"/><br/>
+<img src="./Littman_1-13_5.png"/><br/>
+Relocatable Action Models<br/>Decompose MDP transitions into state-<br/>independent outcomes (Sherstov, Stone 05).<br/>
+RAM Example<br/>•&#160;): the geometry<br/>•&#160;<i>t</i>: actions effects<br/>•&#160;*: the local walls<br/><i>Example</i>: .8 in intended&#160;<br/>direction, .1 at right angles,&#160;<br/>unless wall blocks motion.<br/>Action “go N” in a state&#160;<br/>with a walls to the N&amp;E will&#160;<br/>go W wp .1, not move wp .<br/>9 (.8 N + .1 E).<br/>(Leffler, Edmunds, Littman 07)<br/>
+<hr/>
+<a name=14></a><img src="./Littman_1-14_1.png"/><br/>
+<img src="./Littman_1-14_2.png"/><br/>
+<img src="./Littman_1-14_3.png"/><br/>
+<img src="./Littman_1-14_4.png"/><br/>
+<img src="./Littman_1-14_5.png"/><br/>
+Speeds Up Learning<br/>•&#160;Cumulative reward is larger for RAM-RMAX&#160;<br/>
+than RMAX&#160;or Q-learning.<br/>
+•&#160;KWIK bound depends on classes, not states.<br/>•&#160;(It also has more background knowledge.)<br/>
+Robotic Example<br/>
+•&#160;States:&#160;<br/>
+position and&#160;<br/>orientation<br/>
+•&#160;Goal: Reach&#160;<br/>
+box as quickly&#160;<br/>as possible<br/>
+•&#160;Types: sand,&#160;<br/>
+wood<br/>
+•&#160;Actions: L, R, F<br/>
+<hr/>
+<a name=15></a><img src="./Littman_1-15_1.png"/><br/>
+<img src="./Littman_1-15_2.png"/><br/>
+<img src="./Littman_1-15_3.png"/><br/>
+RAM Learning #2<br/>
+(Leffler, Mansley, Edmunds)<br/>
+Factored-state MDPs<br/>•&#160;Generalizing MDP states via DBN factoring of&#160;<br/>
+transition function (Boutilier et al. 99).<br/>
+•&#160;2<i>n</i>&#160;states,&#160;<i>k</i>&#160;actions<br/>•&#160;Blends planning-type state representations&#160;<br/>
+with Bayes net probability distributions<br/>
+•&#160;<i>R</i>,&#160;<i>T</i>&#160;unknown; some experimentation needed<br/>•&#160;KWIK learnable: Just a different partition of&#160;<br/>
+the input space.<br/>
+<hr/>
+<a name=16></a><img src="./Littman_1-16_1.png"/><br/>
+<img src="./Littman_1-16_2.jpg"/><br/>
+<img src="./Littman_1-16_3.png"/><br/>
+Factored-state MDP<br/>State is a cross product.<br/>•&#160;Example: Taxi&#160;(Dietterich 98).<br/>Primitive actions:&#160;<br/>•&#160;N,S,E,W, pickup, dropoff.<br/>Passenger is at R, Y, G, B.<br/>Destination is R, Y, G, B.<br/>Reward for successful delivery.<br/>Approx. 500 states, but related.<br/>•&#160;state = (taxi loc, pass. loc, dest)<br/>
+Compact Model<br/>•&#160;Abstraction: Use a factored (DBN) model.<br/>
+taxi loc<br/>
+independence relations&#160;&#160;pass. &#160;loc<br/>
+for “pickup”<br/>
+(further, can use context-specific&#160;<br/>
+dest<br/>
+independence,&#160;Boutilier et al. 95)&#160;<br/>
+•&#160;Model generalizes because transitions for&#160;<br/>
+multiple states share structure/parameters.<br/>
+•&#160;If graph known, KWIK learnable:&#160;<br/>
+composition of output vector and input&#160;<br/>partition.<br/>
+<hr/>
+<a name=17></a><img src="./Littman_1-17_1.png"/><br/>
+<img src="./Littman_1-17_2.jpg"/><br/>
+<img src="./Littman_1-17_3.png"/><br/>
+World of Objects<br/>•&#160;Objects in taxi:<br/>
+–&#160;taxi (location)<br/>–&#160;passenger (location/in taxi)<br/>–&#160;walls (location)<br/>–&#160;destination (location)<br/>
+•&#160;Not&#160;<i>states</i>&#160;or state&#160;<i>features</i>, instead try&#160;<br/>
+<i>objects</i>&#160;and object&#160;<i>attributes</i>.<br/>
+•&#160;Model: What happens when objects interact?<br/>•&#160;More “human like” exploration.<br/>
+Comparing Taxi Results<br/>•&#160;North, not touchN(taxi,wall)&#160;%&#160;taxi.y++<br/>•&#160;Drop, pass.in, touch(taxi, dest)&#160;%&#160;¬pass.in<br/>•&#160;KWIK bound: poly in types, exp in condition<br/>•&#160;Taxi: How long until optimal behavior?<br/>
+Exploration style<br/>
+Algorithm<br/>
+# of steps<br/>
+&amp;&#160;greedy<br/>
+Q-learning<br/>
+47157<br/>
+count on states<br/>
+Flat Rmax<br/>
+4151<br/>
+count on features<br/>
+Factored Rmax<br/>
+1839<br/>
+count on interaction<br/>
+Objects<br/>
+143<br/>
+whatever people do<br/>
+People<br/>
+50<br/>
+<hr/>
+<a name=18></a><img src="./Littman_1-18_1.png"/><br/>
+<img src="./Littman_1-18_2.png"/><br/>
+<img src="./Littman_1-18_3.png"/><br/>
+Pitfall!<br/>
+<i>A childhood dream fulfilled...&#160;</i>(Diuk, Cohen)<br/>
+Model-Based<br/>
+Reinforcement Learning<br/>
+(Day 2: Other Stuff)<br/>
+Michael L. Littman<br/>Rutgers University<br/>Department of Computer Science<br/>Rutgers Laboratory for Real-Life Reinforcement Learning<br/>
+<hr/>
+<a name=19></a><img src="./Littman_1-19_1.png"/><br/>
+<img src="./Littman_1-19_2.png"/><br/>
+Plan<br/>•&#160;Day 1: Introduction<br/>
+•&#160;Day 2: Current Trends<br/>
+–&#160;RL<br/>
+–&#160;Bayesian RL<br/>
+–&#160;Q-learning<br/>
+–&#160;Model/value&#160;<br/>
+–&#160;Convergence<br/>
+approximation<br/>
+–&#160;Model-based RL<br/>
+–&#160;UCT<br/>
+–&#160;PAC-MDP<br/>
+–&#160;Searchless planning<br/>
+–&#160;KWIK<br/>
+Structure Learning in DBNs<br/>•&#160;Unknown structure fundamentally different.<br/>•&#160;How can you keep statistics if you don’t&#160;<br/>
+know what they depend on?<br/>
+•&#160;Can be solved using a technique for a&#160;<br/>
+simpler “hidden bit” problem:&#160;<br/>
+–&#160;<i>n</i>-bit input, one bit (unknown) controls output<br/>–&#160;one output distribution if bit is on, another if off<br/>–&#160;Find DBN structure by same idea: one parent set&#160;<br/>
+controls output...<br/>
+<hr/>
+<a name=20></a><img src="./Littman_1-20_1.png"/><br/>
+<img src="./Littman_1-20_2.png"/><br/>
+<img src="./Littman_1-20_3.png"/><br/>
+<img src="./Littman_1-20_4.png"/><br/>
+<img src="./Littman_1-20_5.png"/><br/>
+Hidden-Bit Problem<br/>Assume the simpler deterministic setting.<br/>Output is copy or flip of one input.<br/>•&#160;0110&#160;%&#160; &#160; &#160; &#160;1101&#160;<br/>
+0<br/>
+%&#160; &#160; &#160;0000&#160;<br/>
+1<br/>
+%&#160;1<br/>
+•&#160;1101&#160;%&#160; &#160; &#160; &#160;0011&#160;<br/>
+1<br/>
+%&#160; &#160; &#160;1111&#160;<br/>
+0<br/>
+%&#160;&#160;<br/>
+0<br/>
+•&#160;1000&#160;%&#160; &#160; &#160; &#160;1110&#160;<br/>
+1<br/>
+%&#160; &#160; &#160;1100&#160;<br/>
+0<br/>
+%&#160;&#160;<br/>
+1&#160;&#160;<br/>
+Is it 0, 1, or “I don’t know”?<br/>If noisy, can’t predict with each bit position&#160;<br/>separately, don’t know which to trust. &#160;Can&#160;<br/>learn about all 2<i>n</i>&#160;bit patterns separately, but&#160;<br/>that’s too much.<br/>
+Hidden-bit Problem via KWIK<br/>•&#160;Can observe predictions to figure out which&#160;<br/>
+of&#160;<i>k</i>&#160;“adaptive meteorologists” to trust &#160;<br/>(Strehl, Diuk, Littman 07; Diuk et al. 09).<br/>
+•&#160;Solvable with bound of&#160;<br/>•&#160;By considering all&#160;<i>k</i>-size parent sets, get a&#160;<br/>
+structure-learning algorithm with a KWIK&#160;<br/>bound of&#160;<br/>
+<hr/>
+<a name=21></a><img src="./Littman_1-21_1.png"/><br/>
+<img src="./Littman_1-21_2.png"/><br/>
+<img src="./Littman_1-21_3.png"/><br/>
+<img src="./Littman_1-21_4.png"/><br/>
+<img src="./Littman_1-21_5.png"/><br/>
+Artificial Stock Example<br/>Discovers the&#160;<br/>structure and&#160;<br/>exploits it much&#160;<br/>faster than RMAX&#160;<br/>can learn the MDP.<br/>
+Factored-RMAX<br/>
+Factored-RMAX:&#160;<br/>Knows DBNs<br/>
+SLF-RMAX<br/>
+SLF-RMAX: Knows&#160;<br/>size of parent sets<br/>
+RMAX<br/>
+RMAX: It’s an MDP<br/>
+Improved Bounds<br/>•&#160;SLF-RMAX&#160;runs in&#160;<br/>
+roughly&#160;<i>k</i>2&#160;log&#160;<i>k</i><br/>
+•&#160;MET-RMAX&#160;faster,&#160;<br/>
+like&#160;<i>k</i>&#160;log&#160;<i>k</i><br/>
+•&#160;Bounds weak, but&#160;<br/>
+suggest a better&#160;<br/>algorithm!<br/>
+•&#160;Also selected visual&#160;<br/>
+pattern for terrain&#160;<br/>learning.<br/>
+<hr/>
+<a name=22></a><img src="./Littman_1-22_1.png"/><br/>
+<img src="./Littman_1-22_2.png"/><br/>
+Many Learnable Problems<br/>Many hypothesis classes KWIK learnable:<br/>•&#160;coin flip probability<br/>•&#160;Dynamic Bayes net probabilities given graph<br/>•&#160;<i>k</i>&#160;Dynamic Bayes net<br/>•&#160;<i>k</i>&#160;Meteorologist problem<br/>•&#160;<i>k</i>-CNF&#160;<br/>•&#160;<i>k</i>-depth decision tree<br/>•&#160;unions of KWIK-learnable classes<br/>•&#160;<i>k</i>&#160;feature linear function<br/>
+Grid World Demo (expt2)<br/>•&#160;Unknown: What’s a wall?<br/>•&#160;(Purpose: What doesn’t KWIK do?)<br/>
+<hr/>
+<a name=23></a><img src="./Littman_1-23_1.png"/><br/>
+<img src="./Littman_1-23_2.png"/><br/>
+<img src="./Littman_1-23_3.png"/><br/>
+People Learn to Learn<br/>•&#160;expt1: Always + (no mistakes)<br/>•&#160;expt2: Always one shape (one mistake).<br/>•&#160;expt3: Always some feature (two mistakes).<br/>
+•&#160;Last maze is always +, but people perform&#160;<br/>
+differently depending on their experience.<br/>
+•&#160;Transfer learning in RL (Taylor &amp; Stone 07, e.g.).<br/>•&#160;KWIK can learn any of these classes, but if&#160;<br/>
+all are possible, devolves to worst case.<br/>
+Playing the Odds<br/>•&#160;Standard PAC-MDP algorithms can’t say:&#160;<br/>
+–&#160;I know you told me all states independent,<br/>–&#160;but every wall I’ve seen has been painful.<br/>–&#160;Can I just walk around now, please?<br/>
+•&#160;Rmax vs. RAM-Rmax<br/>
+–&#160;Rmax: states independent<br/>–&#160;RAM-Rmax: Types known<br/>
+•&#160;What if states “cluster”?<br/>
+–&#160;new state likely to be familiar<br/>
+<hr/>
+<a name=24></a><img src="./Littman_1-24_1.png"/><br/>
+<img src="./Littman_1-24_2.png"/><br/>
+Bayesian Perspective<br/>•&#160;Start with a prior over models.<br/>•&#160;Maintain a posterior across tasks.<br/>•&#160;Now, we can talk about more/less likely&#160;<br/>
+models instead of just&#160;<i>possible</i>&#160;models.<br/>
+•&#160;How can we use the Bayesian view in&#160;<br/>
+exploration?<br/>
+Bayes Optimal Exploration<br/>•&#160;With a Bayesian representation of models,&#160;<br/>
+we can plan in the space of posteriors.<br/>
+–&#160;Can use posterior to evaluate the likelihood of&#160;<br/>
+any possible outcome of an action.<br/>
+–&#160;Can model how that outcome will change the&#160;<br/>
+posterior.<br/>
+–&#160;Can choose actions that truly maximize expected&#160;<br/>
+reward: No artificial distinction between&#160;<br/>exploring and exploiting or learning and acting.<br/>
+•&#160;Hideously intractable except in some special&#160;<br/>
+cases (bandits, short horizons).<br/>
+<hr/>
+<a name=25></a><img src="./Littman_1-25_1.png"/><br/>
+<img src="./Littman_1-25_2.png"/><br/>
+Concrete Example<br/>•&#160;MDP has one state, 3 actions (bandit)<br/>
+–&#160;X: {.7 .1 .8},&#160;Y: {.8 .6 .7},&#160;&#34;&#160;= 0.8<br/>–&#160;Prior:&#160;&lt;.50,.50&gt;&#160;(1/2&#160;X, 1/2&#160;Y)<br/>
+&lt;.50,.50&gt;<br/>
+(+.750)<br/>
+L<br/>
+M<br/>
+R<br/>
++1<br/>
++0<br/>
++1<br/>
++0<br/>
++1<br/>
++0<br/>
+&lt;.47,.53&gt;&#160;&lt;.60,.40&gt;&#160;&lt;.14,.86&gt;&#160;&lt;.69,.31&gt;&#160;&lt;.53,.47&gt;&#160;&lt;.40,.60&gt;<br/>
+(+.753)<br/>
+(+.760)<br/>
+(+.786)<br/>
+(+.769)<br/>
+(+.753)<br/>
+(+.760)<br/>
+Concrete Example<br/>•&#160;MDP has one state, 3 actions (bandit)<br/>
+–&#160;X: {.7 .1 .8},&#160;Y: {.8 .6 .7},&#160;&#34;&#160;= 0.8<br/>–&#160;Prior:&#160;&lt;.50,.50&gt;&#160;(1/2&#160;X, 1/2&#160;Y)<br/>
+&lt;.50,.50&gt;<br/>
+(+.750)<br/>
+L<br/>
+M<br/>
+R<br/>
+(+.755)<br/>
+(+.775)<br/>
+(+.755)<br/>
++1<br/>
++0<br/>
++1<br/>
++0<br/>
++1<br/>
++0<br/>
+&lt;.47,.53&gt;&#160;&lt;.60,.40&gt;&#160;&lt;.14,.86&gt;&#160;&lt;.69,.31&gt;&#160;&lt;.53,.47&gt;&#160;&lt;.40,.60&gt;<br/>
+(+.753)<br/>
+(+.760)<br/>
+(+.786)<br/>
+(+.769)<br/>
+(+.753)<br/>
+(+.760)<br/>
+<hr/>
+<a name=26></a><img src="./Littman_1-26_1.png"/><br/>
+<img src="./Littman_1-26_2.png"/><br/>
+<img src="./Littman_1-26_3.png"/><br/>
+<img src="./Littman_1-26_4.png"/><br/>
+Representing Posteriors<br/>•&#160;T:&#160;<i>s</i>,<i>a</i>%multinomial over states<br/>•&#160;If independent for each&#160;<i>s</i>,<i>a</i>:&#160;<br/>
+Dirichlet!<br/>
+•&#160;Keep counts for each&#160;<br/>
+observed outcome.<br/>
+•&#160;Can recover uncertainty &#160; &#160; &#160; &#160;&#160;<br/>
+in overall estimate.<br/>
+•&#160;Unlike example, &#160; &#160; &#160;&#160;<br/>
+distribution over an &#160; &#160; &#160; &#160;<br/>infinite set.<br/>
+Bayes Optimal Plans<br/>•&#160;Many attempts (Duff &amp; Barto 97; Dearden et al. 99)<br/>•&#160;State of the art, BEETLE (Poupart et al. 06)<br/>
+–&#160;Latest ideas from solving continuous POMDPs<br/>–&#160;$&#160;functions are multivariate polynomials + PBVI<br/>–&#160;Can exploit “parameter tying” prior<br/>–&#160;Near optimal plan &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;<br/>
+in “combination lock”.<br/>
+–&#160;Less optimal in bigger &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;<br/>
+problem.<br/>
+<hr/>
+<a name=27></a><img src="./Littman_1-27_1.png"/><br/>
+<img src="./Littman_1-27_2.png"/><br/>
+Near Bayes Optimal Behavior<br/>•&#160;Recall PAC-MDP, whp makes few mistakes.<br/>•&#160;Near Bayesian: mistakes are actions taken&#160;<br/>
+with values far from Bayes optimal.&#160;<br/>
+•&#160;Bayesian Exploration Bonus (Kolter &amp; Ng 09)&#160;<br/>
+keeps mean of posterior and adds 1/<i>n</i>&#160;<br/>bonus to actions taken&#160;<i>n</i>&#160;times.<br/>
+–&#160;BEB is computationally simple.<br/>–&#160;BEB is Near Bayesian.<br/>–&#160;BEB is not PAC-MDP, though...<br/>
+Bayes Optimal not PAC-MDP<br/>•&#160;Examples where Bayes optimal does not find&#160;<br/>
+near optimal actions (Kolter &amp; Ng 09; Li 09)<br/>
+•&#160;Not clear which is “right”. &#160;<br/>•&#160;Who gets near optimal reward?<br/>
+–&#160;PAC-MDP: Future self<br/>–&#160;Near Bayesian: Current self<br/>
+•&#160;Human behavior somewhere in between?<br/>
+–&#160;Hyperbolic discounting<br/>
+<hr/>
+<a name=28></a><img src="./Littman_1-28_1.png"/><br/>
+<img src="./Littman_1-28_2.png"/><br/>
+<img src="./Littman_1-28_3.png"/><br/>
+<img src="./Littman_1-28_4.png"/><br/>
+PAC-MDP with Bayesian Priors<br/>•&#160;With a prior that all similar colored squares&#160;<br/>
+are the same, we can bound the chance&#160;<br/>generalization will lead to sub-optimality.<br/>
+•&#160;Idea: Don’t worry about it if it’s small!<br/>
+X: {.7 .1 .8},&#160;Y: {.8 .6 .7}<br/>
+&amp;=0.0001,&#160;'=0.05<br/>
+&lt;.99,.01&gt;<br/>
+?<br/>
+R is near optimal whp<br/>
+BOSS: Algorithmic Approach<br/>•&#160;Optimism under uncertainty, not Bayes optimal<br/>
+–&#160;Sample models from the posterior.<br/>–&#160;Stitch together into a meta-MDP.<br/>–&#160;Solve to find optimal behavior:&#160;best&#160;of&#160;sampled&#160;set<br/>–&#160;Act accordingly until something new learned.<br/>
+•&#160;If set big, near optimality whp (Asmuth et al. 09)<br/>•&#160;Several ideas appear to be viable here<br/>
+<hr/>
+<a name=29></a><img src="./Littman_1-29_1.png"/><br/>
+<img src="./Littman_1-29_2.png"/><br/>
+<img src="./Littman_1-29_3.png"/><br/>
+BOSS in Maze<br/>•&#160;To learn in maze:<br/>
+–&#160;Chinese Restaurant Process prior<br/>–&#160;Finds (empirical) clusters<br/>–&#160;Outperforms Rmax, 1-cluster RAM-Rmax<br/>
+–&#160;Fewer than states<br/>–&#160;Fewer than types<br/>–&#160;Some types grouped<br/>–&#160;Rare states nonsense<br/>
+Computation Matters<br/>•&#160;Learning/exploration can be made efficient<br/>
+–&#160;model-based RL&#160;<br/>–&#160;PAC-MDP for studying efficient learning<br/>–&#160;KWIK for acquiring transition model<br/>
+•&#160;Planning “just” a computational problem. &#160;<br/>
+–&#160;But, with powerful generalization, can quickly&#160;<br/>
+learn accurate yet intractible models!<br/>
+–&#160;Something needs to be done or the models are&#160;<br/>
+useless. &#160;(Not as focused on guarantees today.)<br/>
+<hr/>
+<a name=30></a><img src="./Littman_1-30_1.png"/><br/>
+<img src="./Littman_1-30_2.png"/><br/>
+“Nesting” RL Approaches<br/>
+policy search<br/>
+value function<br/>
+model-based<br/>
+<i>s</i><br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s&#160;a</i><br/>
+#<br/>
+#&#160;⇐&#160;Q<br/>
+#&#160;⇐&#160;Q<br/>
+⇐&#160;T, R<br/>
+<i>a</i><br/>
+<i>a</i><br/>
+<i>v</i><br/>
+<i>a</i><br/>
+<i>v</i><br/>
+<i>s’&#160;r</i><br/>
+policy search inside model-based<br/>
+value function inside model-based<br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s&#160;a</i><br/>
+#<br/>
+⇐&#160;T, R<br/>
+#&#160;⇐&#160;Q<br/>
+⇐&#160;T, R<br/>
+<i>a</i><br/>
+<i>s’&#160;r</i><br/>
+<i>a</i><br/>
+<i>v</i><br/>
+<i>s’&#160;r</i><br/>
+Example: Autonomous Flight<br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+•&#160;Outer approach: Model-based RL.<br/>
+–&#160;Experts parameterize model space<br/>
+#<br/>
+⇐&#160;T, R<br/>
+–&#160;Parameters learned quickly from expert&#160;<br/>
+demonstration (no exploration needed)<br/>
+<i>a</i><br/>
+<i>s’&#160;r</i><br/>
+•&#160;Resulting model very high dimensional (S,A)<br/>•&#160;Inner approach: Policy-search RL.<br/>
+–&#160;Experts parameterize space of policies<br/>–&#160;Offline search finds excellent policy on model<br/>–&#160;Methodology robust to error in model<br/>
+•&#160;Learns amazing stunts (Ng et al. 03).<br/>
+<hr/>
+<a name=31></a><img src="./Littman_1-31_1.png"/><br/>
+<img src="./Littman_1-31_2.png"/><br/>
+<img src="./Littman_1-31_3.png"/><br/>
+<img src="./Littman_1-31_4.png"/><br/>
+Tricks and Treats<br/>
+Linear Models<br/>•&#160;Linear value function approaches: LSTD/LSPI&#160;<br/>
+(Boyan 99; Lagoudakis &amp; Parr 03)<br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s&#160;a</i><br/>
+#&#160;⇐&#160;Q<br/>
+⇐&#160;T, R<br/>
+<i>a</i><br/>
+<i>v</i><br/>
+<i>s’&#160;r</i><br/>
+•&#160;Give the same result!&#160;<br/>
+(Parr et al. 08)<br/>
+<hr/>
+<a name=32></a><img src="./Littman_1-32_1.png"/><br/>
+<img src="./Littman_1-32_2.png"/><br/>
+<img src="./Littman_1-32_3.png"/><br/>
+<img src="./Littman_1-32_4.png"/><br/>
+<img src="./Littman_1-32_5.png"/><br/>
+<img src="./Littman_1-32_6.png"/><br/>
+<img src="./Littman_1-32_7.png"/><br/>
+<img src="./Littman_1-32_8.png"/><br/>
+<img src="./Littman_1-32_9.png"/><br/>
+<img src="./Littman_1-32_10.png"/><br/>
+<img src="./Littman_1-32_11.png"/><br/>
+<img src="./Littman_1-32_12.png"/><br/>
+<img src="./Littman_1-32_13.png"/><br/>
+<img src="./Littman_1-32_14.png"/><br/>
+<img src="./Littman_1-32_15.png"/><br/>
+<img src="./Littman_1-32_16.png"/><br/>
+<img src="./Littman_1-32_17.png"/><br/>
+<img src="./Littman_1-32_18.png"/><br/>
+<img src="./Littman_1-32_19.png"/><br/>
+<img src="./Littman_1-32_20.png"/><br/>
+<img src="./Littman_1-32_21.png"/><br/>
+<img src="./Littman_1-32_22.png"/><br/>
+<img src="./Littman_1-32_23.png"/><br/>
+<img src="./Littman_1-32_24.png"/><br/>
+<img src="./Littman_1-32_25.png"/><br/>
+<img src="./Littman_1-32_26.png"/><br/>
+<img src="./Littman_1-32_27.png"/><br/>
+<img src="./Littman_1-32_28.png"/><br/>
+<img src="./Littman_1-32_29.png"/><br/>
+<img src="./Littman_1-32_30.png"/><br/>
+<img src="./Littman_1-32_31.png"/><br/>
+<img src="./Littman_1-32_32.png"/><br/>
+<img src="./Littman_1-32_33.png"/><br/>
+<img src="./Littman_1-32_34.png"/><br/>
+<img src="./Littman_1-32_35.png"/><br/>
+<img src="./Littman_1-32_36.png"/><br/>
+<img src="./Littman_1-32_37.png"/><br/>
+<img src="./Littman_1-32_38.png"/><br/>
+<img src="./Littman_1-32_39.png"/><br/>
+<img src="./Littman_1-32_40.png"/><br/>
+<img src="./Littman_1-32_41.png"/><br/>
+<img src="./Littman_1-32_42.png"/><br/>
+<img src="./Littman_1-32_43.png"/><br/>
+<img src="./Littman_1-32_44.png"/><br/>
+<img src="./Littman_1-32_45.png"/><br/>
+<img src="./Littman_1-32_46.png"/><br/>
+<img src="./Littman_1-32_47.png"/><br/>
+<img src="./Littman_1-32_48.png"/><br/>
+<img src="./Littman_1-32_49.png"/><br/>
+<img src="./Littman_1-32_50.png"/><br/>
+<img src="./Littman_1-32_51.png"/><br/>
+<img src="./Littman_1-32_52.png"/><br/>
+<img src="./Littman_1-32_53.png"/><br/>
+<img src="./Littman_1-32_54.png"/><br/>
+<img src="./Littman_1-32_55.png"/><br/>
+<img src="./Littman_1-32_56.png"/><br/>
+<img src="./Littman_1-32_57.png"/><br/>
+<img src="./Littman_1-32_58.png"/><br/>
+<img src="./Littman_1-32_59.png"/><br/>
+<img src="./Littman_1-32_60.png"/><br/>
+<img src="./Littman_1-32_61.png"/><br/>
+<img src="./Littman_1-32_62.png"/><br/>
+<img src="./Littman_1-32_63.png"/><br/>
+<img src="./Littman_1-32_64.png"/><br/>
+<img src="./Littman_1-32_65.png"/><br/>
+<img src="./Littman_1-32_66.png"/><br/>
+<img src="./Littman_1-32_67.png"/><br/>
+<img src="./Littman_1-32_68.png"/><br/>
+<img src="./Littman_1-32_69.png"/><br/>
+<img src="./Littman_1-32_70.png"/><br/>
+<img src="./Littman_1-32_71.png"/><br/>
+<img src="./Littman_1-32_72.png"/><br/>
+<img src="./Littman_1-32_73.png"/><br/>
+<img src="./Littman_1-32_74.png"/><br/>
+<img src="./Littman_1-32_75.png"/><br/>
+<img src="./Littman_1-32_76.png"/><br/>
+<img src="./Littman_1-32_77.png"/><br/>
+<img src="./Littman_1-32_78.png"/><br/>
+<img src="./Littman_1-32_79.png"/><br/>
+<img src="./Littman_1-32_80.png"/><br/>
+<img src="./Littman_1-32_81.png"/><br/>
+<img src="./Littman_1-32_82.png"/><br/>
+<img src="./Littman_1-32_83.png"/><br/>
+<img src="./Littman_1-32_84.png"/><br/>
+<img src="./Littman_1-32_85.png"/><br/>
+<img src="./Littman_1-32_86.png"/><br/>
+<img src="./Littman_1-32_87.png"/><br/>
+<img src="./Littman_1-32_88.png"/><br/>
+<img src="./Littman_1-32_89.png"/><br/>
+<img src="./Littman_1-32_90.png"/><br/>
+<img src="./Littman_1-32_91.png"/><br/>
+<img src="./Littman_1-32_92.png"/><br/>
+<img src="./Littman_1-32_93.png"/><br/>
+<img src="./Littman_1-32_94.png"/><br/>
+<img src="./Littman_1-32_95.png"/><br/>
+<img src="./Littman_1-32_96.png"/><br/>
+<img src="./Littman_1-32_97.png"/><br/>
+<img src="./Littman_1-32_98.png"/><br/>
+<img src="./Littman_1-32_99.png"/><br/>
+<img src="./Littman_1-32_100.png"/><br/>
+<img src="./Littman_1-32_101.png"/><br/>
+<img src="./Littman_1-32_102.png"/><br/>
+<img src="./Littman_1-32_103.png"/><br/>
+<img src="./Littman_1-32_104.png"/><br/>
+<img src="./Littman_1-32_105.png"/><br/>
+<img src="./Littman_1-32_106.png"/><br/>
+<img src="./Littman_1-32_107.png"/><br/>
+<img src="./Littman_1-32_108.png"/><br/>
+<img src="./Littman_1-32_109.png"/><br/>
+<img src="./Littman_1-32_110.png"/><br/>
+<img src="./Littman_1-32_111.png"/><br/>
+<img src="./Littman_1-32_112.png"/><br/>
+<img src="./Littman_1-32_113.png"/><br/>
+<img src="./Littman_1-32_114.png"/><br/>
+<img src="./Littman_1-32_115.png"/><br/>
+<img src="./Littman_1-32_116.png"/><br/>
+<img src="./Littman_1-32_117.png"/><br/>
+<img src="./Littman_1-32_118.png"/><br/>
+<img src="./Littman_1-32_119.png"/><br/>
+<img src="./Littman_1-32_120.png"/><br/>
+<img src="./Littman_1-32_121.png"/><br/>
+<img src="./Littman_1-32_122.png"/><br/>
+<img src="./Littman_1-32_123.png"/><br/>
+<img src="./Littman_1-32_124.png"/><br/>
+<img src="./Littman_1-32_125.png"/><br/>
+<img src="./Littman_1-32_126.png"/><br/>
+<img src="./Littman_1-32_127.png"/><br/>
+<img src="./Littman_1-32_128.png"/><br/>
+<img src="./Littman_1-32_129.png"/><br/>
+<img src="./Littman_1-32_130.png"/><br/>
+<img src="./Littman_1-32_131.png"/><br/>
+<img src="./Littman_1-32_132.png"/><br/>
+<img src="./Littman_1-32_133.png"/><br/>
+<img src="./Littman_1-32_134.png"/><br/>
+<img src="./Littman_1-32_135.png"/><br/>
+<img src="./Littman_1-32_136.png"/><br/>
+<img src="./Littman_1-32_137.png"/><br/>
+<img src="./Littman_1-32_138.png"/><br/>
+<img src="./Littman_1-32_139.png"/><br/>
+<img src="./Littman_1-32_140.png"/><br/>
+<img src="./Littman_1-32_141.png"/><br/>
+<img src="./Littman_1-32_142.png"/><br/>
+<img src="./Littman_1-32_143.png"/><br/>
+<img src="./Littman_1-32_144.png"/><br/>
+<img src="./Littman_1-32_145.png"/><br/>
+<img src="./Littman_1-32_146.png"/><br/>
+<img src="./Littman_1-32_147.png"/><br/>
+<img src="./Littman_1-32_148.png"/><br/>
+<img src="./Littman_1-32_149.png"/><br/>
+<img src="./Littman_1-32_150.png"/><br/>
+<img src="./Littman_1-32_151.png"/><br/>
+<img src="./Littman_1-32_152.png"/><br/>
+<img src="./Littman_1-32_153.png"/><br/>
+<img src="./Littman_1-32_154.png"/><br/>
+<img src="./Littman_1-32_155.png"/><br/>
+<img src="./Littman_1-32_156.png"/><br/>
+<img src="./Littman_1-32_157.png"/><br/>
+<img src="./Littman_1-32_158.png"/><br/>
+<img src="./Littman_1-32_159.png"/><br/>
+<img src="./Littman_1-32_160.png"/><br/>
+<img src="./Littman_1-32_161.png"/><br/>
+<img src="./Littman_1-32_162.png"/><br/>
+<img src="./Littman_1-32_163.png"/><br/>
+<img src="./Littman_1-32_164.png"/><br/>
+<img src="./Littman_1-32_165.png"/><br/>
+<img src="./Littman_1-32_166.png"/><br/>
+<img src="./Littman_1-32_167.png"/><br/>
+<img src="./Littman_1-32_168.png"/><br/>
+<img src="./Littman_1-32_169.png"/><br/>
+<img src="./Littman_1-32_170.png"/><br/>
+<img src="./Littman_1-32_171.png"/><br/>
+<img src="./Littman_1-32_172.png"/><br/>
+<img src="./Littman_1-32_173.png"/><br/>
+<img src="./Littman_1-32_174.png"/><br/>
+<img src="./Littman_1-32_175.png"/><br/>
+<img src="./Littman_1-32_176.png"/><br/>
+<img src="./Littman_1-32_177.png"/><br/>
+<img src="./Littman_1-32_178.png"/><br/>
+<img src="./Littman_1-32_179.png"/><br/>
+<img src="./Littman_1-32_180.png"/><br/>
+<img src="./Littman_1-32_181.png"/><br/>
+<img src="./Littman_1-32_182.png"/><br/>
+<img src="./Littman_1-32_183.png"/><br/>
+<img src="./Littman_1-32_184.png"/><br/>
+<img src="./Littman_1-32_185.png"/><br/>
+<img src="./Littman_1-32_186.png"/><br/>
+<img src="./Littman_1-32_187.png"/><br/>
+<img src="./Littman_1-32_188.png"/><br/>
+<img src="./Littman_1-32_189.png"/><br/>
+<img src="./Littman_1-32_190.png"/><br/>
+<img src="./Littman_1-32_191.png"/><br/>
+<img src="./Littman_1-32_192.png"/><br/>
+<img src="./Littman_1-32_193.png"/><br/>
+<img src="./Littman_1-32_194.png"/><br/>
+<img src="./Littman_1-32_195.png"/><br/>
+<img src="./Littman_1-32_196.png"/><br/>
+<img src="./Littman_1-32_197.png"/><br/>
+<img src="./Littman_1-32_198.png"/><br/>
+<img src="./Littman_1-32_199.png"/><br/>
+<img src="./Littman_1-32_200.png"/><br/>
+<img src="./Littman_1-32_201.png"/><br/>
+<img src="./Littman_1-32_202.png"/><br/>
+<img src="./Littman_1-32_203.png"/><br/>
+<img src="./Littman_1-32_204.png"/><br/>
+<img src="./Littman_1-32_205.png"/><br/>
+<img src="./Littman_1-32_206.png"/><br/>
+<img src="./Littman_1-32_207.png"/><br/>
+<img src="./Littman_1-32_208.png"/><br/>
+<img src="./Littman_1-32_209.png"/><br/>
+<img src="./Littman_1-32_210.png"/><br/>
+<img src="./Littman_1-32_211.png"/><br/>
+<img src="./Littman_1-32_212.png"/><br/>
+<img src="./Littman_1-32_213.png"/><br/>
+<img src="./Littman_1-32_214.png"/><br/>
+<img src="./Littman_1-32_215.png"/><br/>
+<img src="./Littman_1-32_216.png"/><br/>
+<img src="./Littman_1-32_217.png"/><br/>
+<img src="./Littman_1-32_218.png"/><br/>
+<img src="./Littman_1-32_219.png"/><br/>
+<img src="./Littman_1-32_220.png"/><br/>
+<img src="./Littman_1-32_221.png"/><br/>
+<img src="./Littman_1-32_222.png"/><br/>
+<img src="./Littman_1-32_223.png"/><br/>
+<img src="./Littman_1-32_224.png"/><br/>
+<img src="./Littman_1-32_225.png"/><br/>
+<img src="./Littman_1-32_226.png"/><br/>
+<img src="./Littman_1-32_227.png"/><br/>
+<img src="./Littman_1-32_228.png"/><br/>
+<img src="./Littman_1-32_229.png"/><br/>
+<img src="./Littman_1-32_230.png"/><br/>
+<img src="./Littman_1-32_231.png"/><br/>
+<img src="./Littman_1-32_232.png"/><br/>
+<img src="./Littman_1-32_233.png"/><br/>
+<img src="./Littman_1-32_234.png"/><br/>
+<img src="./Littman_1-32_235.png"/><br/>
+<img src="./Littman_1-32_236.png"/><br/>
+<img src="./Littman_1-32_237.png"/><br/>
+<img src="./Littman_1-32_238.png"/><br/>
+<img src="./Littman_1-32_239.png"/><br/>
+<img src="./Littman_1-32_240.png"/><br/>
+<img src="./Littman_1-32_241.png"/><br/>
+<img src="./Littman_1-32_242.png"/><br/>
+<img src="./Littman_1-32_243.png"/><br/>
+<img src="./Littman_1-32_244.png"/><br/>
+<img src="./Littman_1-32_245.png"/><br/>
+<img src="./Littman_1-32_246.png"/><br/>
+<img src="./Littman_1-32_247.png"/><br/>
+<img src="./Littman_1-32_248.png"/><br/>
+<img src="./Littman_1-32_249.png"/><br/>
+<img src="./Littman_1-32_250.png"/><br/>
+<img src="./Littman_1-32_251.png"/><br/>
+<img src="./Littman_1-32_252.png"/><br/>
+<img src="./Littman_1-32_253.png"/><br/>
+<img src="./Littman_1-32_254.png"/><br/>
+<img src="./Littman_1-32_255.png"/><br/>
+<img src="./Littman_1-32_256.png"/><br/>
+<img src="./Littman_1-32_257.png"/><br/>
+<img src="./Littman_1-32_258.png"/><br/>
+<img src="./Littman_1-32_259.png"/><br/>
+<img src="./Littman_1-32_260.png"/><br/>
+<img src="./Littman_1-32_261.png"/><br/>
+<img src="./Littman_1-32_262.png"/><br/>
+<img src="./Littman_1-32_263.png"/><br/>
+<img src="./Littman_1-32_264.png"/><br/>
+<img src="./Littman_1-32_265.png"/><br/>
+<img src="./Littman_1-32_266.png"/><br/>
+<img src="./Littman_1-32_267.png"/><br/>
+<img src="./Littman_1-32_268.png"/><br/>
+<img src="./Littman_1-32_269.png"/><br/>
+<img src="./Littman_1-32_270.png"/><br/>
+<img src="./Littman_1-32_271.png"/><br/>
+<img src="./Littman_1-32_272.png"/><br/>
+<img src="./Littman_1-32_273.png"/><br/>
+<img src="./Littman_1-32_274.png"/><br/>
+<img src="./Littman_1-32_275.png"/><br/>
+<img src="./Littman_1-32_276.png"/><br/>
+<img src="./Littman_1-32_277.png"/><br/>
+<img src="./Littman_1-32_278.png"/><br/>
+<img src="./Littman_1-32_279.png"/><br/>
+<img src="./Littman_1-32_280.png"/><br/>
+<img src="./Littman_1-32_281.png"/><br/>
+<img src="./Littman_1-32_282.png"/><br/>
+<img src="./Littman_1-32_283.png"/><br/>
+<img src="./Littman_1-32_284.png"/><br/>
+<img src="./Littman_1-32_285.png"/><br/>
+<img src="./Littman_1-32_286.png"/><br/>
+<img src="./Littman_1-32_287.png"/><br/>
+<img src="./Littman_1-32_288.png"/><br/>
+<img src="./Littman_1-32_289.png"/><br/>
+<img src="./Littman_1-32_290.png"/><br/>
+<img src="./Littman_1-32_291.png"/><br/>
+<img src="./Littman_1-32_292.png"/><br/>
+<img src="./Littman_1-32_293.png"/><br/>
+<img src="./Littman_1-32_294.png"/><br/>
+<img src="./Littman_1-32_295.png"/><br/>
+<img src="./Littman_1-32_296.png"/><br/>
+<img src="./Littman_1-32_297.png"/><br/>
+<img src="./Littman_1-32_298.png"/><br/>
+<img src="./Littman_1-32_299.png"/><br/>
+<img src="./Littman_1-32_300.png"/><br/>
+<img src="./Littman_1-32_301.png"/><br/>
+<img src="./Littman_1-32_302.png"/><br/>
+<img src="./Littman_1-32_303.png"/><br/>
+<img src="./Littman_1-32_304.png"/><br/>
+<img src="./Littman_1-32_305.png"/><br/>
+<img src="./Littman_1-32_306.png"/><br/>
+<img src="./Littman_1-32_307.png"/><br/>
+<img src="./Littman_1-32_308.png"/><br/>
+<img src="./Littman_1-32_309.png"/><br/>
+<img src="./Littman_1-32_310.png"/><br/>
+<img src="./Littman_1-32_311.png"/><br/>
+<img src="./Littman_1-32_312.png"/><br/>
+<img src="./Littman_1-32_313.png"/><br/>
+<img src="./Littman_1-32_314.png"/><br/>
+<img src="./Littman_1-32_315.png"/><br/>
+<img src="./Littman_1-32_316.png"/><br/>
+<img src="./Littman_1-32_317.png"/><br/>
+<img src="./Littman_1-32_318.png"/><br/>
+<img src="./Littman_1-32_319.png"/><br/>
+<img src="./Littman_1-32_320.png"/><br/>
+<img src="./Littman_1-32_321.png"/><br/>
+<img src="./Littman_1-32_322.png"/><br/>
+<img src="./Littman_1-32_323.png"/><br/>
+<img src="./Littman_1-32_324.png"/><br/>
+<img src="./Littman_1-32_325.png"/><br/>
+<img src="./Littman_1-32_326.png"/><br/>
+<img src="./Littman_1-32_327.png"/><br/>
+<img src="./Littman_1-32_328.png"/><br/>
+<img src="./Littman_1-32_329.png"/><br/>
+<img src="./Littman_1-32_330.png"/><br/>
+<img src="./Littman_1-32_331.png"/><br/>
+<img src="./Littman_1-32_332.png"/><br/>
+<img src="./Littman_1-32_333.png"/><br/>
+<img src="./Littman_1-32_334.png"/><br/>
+<img src="./Littman_1-32_335.png"/><br/>
+<img src="./Littman_1-32_336.png"/><br/>
+<img src="./Littman_1-32_337.png"/><br/>
+<img src="./Littman_1-32_338.png"/><br/>
+<img src="./Littman_1-32_339.png"/><br/>
+<img src="./Littman_1-32_340.png"/><br/>
+<img src="./Littman_1-32_341.png"/><br/>
+<img src="./Littman_1-32_342.png"/><br/>
+<img src="./Littman_1-32_343.png"/><br/>
+<img src="./Littman_1-32_344.png"/><br/>
+<img src="./Littman_1-32_345.png"/><br/>
+<img src="./Littman_1-32_346.png"/><br/>
+<img src="./Littman_1-32_347.png"/><br/>
+<img src="./Littman_1-32_348.png"/><br/>
+<img src="./Littman_1-32_349.png"/><br/>
+<img src="./Littman_1-32_350.png"/><br/>
+<img src="./Littman_1-32_351.png"/><br/>
+<img src="./Littman_1-32_352.png"/><br/>
+<img src="./Littman_1-32_353.png"/><br/>
+<img src="./Littman_1-32_354.png"/><br/>
+<img src="./Littman_1-32_355.png"/><br/>
+<img src="./Littman_1-32_356.png"/><br/>
+<img src="./Littman_1-32_357.png"/><br/>
+<img src="./Littman_1-32_358.png"/><br/>
+<img src="./Littman_1-32_359.png"/><br/>
+<img src="./Littman_1-32_360.png"/><br/>
+<img src="./Littman_1-32_361.png"/><br/>
+<img src="./Littman_1-32_362.png"/><br/>
+<img src="./Littman_1-32_363.png"/><br/>
+<img src="./Littman_1-32_364.png"/><br/>
+<img src="./Littman_1-32_365.png"/><br/>
+<img src="./Littman_1-32_366.png"/><br/>
+<img src="./Littman_1-32_367.png"/><br/>
+<img src="./Littman_1-32_368.png"/><br/>
+<img src="./Littman_1-32_369.png"/><br/>
+<img src="./Littman_1-32_370.png"/><br/>
+<img src="./Littman_1-32_371.png"/><br/>
+<img src="./Littman_1-32_372.png"/><br/>
+<img src="./Littman_1-32_373.png"/><br/>
+<img src="./Littman_1-32_374.png"/><br/>
+<img src="./Littman_1-32_375.png"/><br/>
+<img src="./Littman_1-32_376.png"/><br/>
+<img src="./Littman_1-32_377.png"/><br/>
+<img src="./Littman_1-32_378.png"/><br/>
+<img src="./Littman_1-32_379.png"/><br/>
+<img src="./Littman_1-32_380.png"/><br/>
+<img src="./Littman_1-32_381.png"/><br/>
+<img src="./Littman_1-32_382.png"/><br/>
+<img src="./Littman_1-32_383.png"/><br/>
+<img src="./Littman_1-32_384.png"/><br/>
+<img src="./Littman_1-32_385.png"/><br/>
+<img src="./Littman_1-32_386.png"/><br/>
+<img src="./Littman_1-32_387.png"/><br/>
+<img src="./Littman_1-32_388.png"/><br/>
+<img src="./Littman_1-32_389.png"/><br/>
+<img src="./Littman_1-32_390.png"/><br/>
+<img src="./Littman_1-32_391.png"/><br/>
+<img src="./Littman_1-32_392.png"/><br/>
+<img src="./Littman_1-32_393.png"/><br/>
+<img src="./Littman_1-32_394.png"/><br/>
+<img src="./Littman_1-32_395.png"/><br/>
+<img src="./Littman_1-32_396.png"/><br/>
+<img src="./Littman_1-32_397.png"/><br/>
+<img src="./Littman_1-32_398.png"/><br/>
+<img src="./Littman_1-32_399.png"/><br/>
+<img src="./Littman_1-32_400.png"/><br/>
+<img src="./Littman_1-32_401.png"/><br/>
+<img src="./Littman_1-32_402.png"/><br/>
+<img src="./Littman_1-32_403.png"/><br/>
+<img src="./Littman_1-32_404.png"/><br/>
+<img src="./Littman_1-32_405.png"/><br/>
+<img src="./Littman_1-32_406.png"/><br/>
+<img src="./Littman_1-32_407.png"/><br/>
+<img src="./Littman_1-32_408.png"/><br/>
+<img src="./Littman_1-32_409.png"/><br/>
+<img src="./Littman_1-32_410.png"/><br/>
+<img src="./Littman_1-32_411.png"/><br/>
+<img src="./Littman_1-32_412.png"/><br/>
+<img src="./Littman_1-32_413.png"/><br/>
+<img src="./Littman_1-32_414.png"/><br/>
+<img src="./Littman_1-32_415.png"/><br/>
+<img src="./Littman_1-32_416.png"/><br/>
+<img src="./Littman_1-32_417.png"/><br/>
+<img src="./Littman_1-32_418.png"/><br/>
+<img src="./Littman_1-32_419.png"/><br/>
+<img src="./Littman_1-32_420.png"/><br/>
+<img src="./Littman_1-32_421.png"/><br/>
+<img src="./Littman_1-32_422.png"/><br/>
+<img src="./Littman_1-32_423.png"/><br/>
+<img src="./Littman_1-32_424.png"/><br/>
+<img src="./Littman_1-32_425.png"/><br/>
+<img src="./Littman_1-32_426.png"/><br/>
+<img src="./Littman_1-32_427.png"/><br/>
+<img src="./Littman_1-32_428.png"/><br/>
+<img src="./Littman_1-32_429.png"/><br/>
+<img src="./Littman_1-32_430.png"/><br/>
+<img src="./Littman_1-32_431.png"/><br/>
+<img src="./Littman_1-32_432.png"/><br/>
+<img src="./Littman_1-32_433.png"/><br/>
+<img src="./Littman_1-32_434.png"/><br/>
+<img src="./Littman_1-32_435.png"/><br/>
+<img src="./Littman_1-32_436.png"/><br/>
+<img src="./Littman_1-32_437.png"/><br/>
+<img src="./Littman_1-32_438.png"/><br/>
+<img src="./Littman_1-32_439.png"/><br/>
+<img src="./Littman_1-32_440.png"/><br/>
+<img src="./Littman_1-32_441.png"/><br/>
+<img src="./Littman_1-32_442.png"/><br/>
+<img src="./Littman_1-32_443.png"/><br/>
+<img src="./Littman_1-32_444.png"/><br/>
+<img src="./Littman_1-32_445.png"/><br/>
+<img src="./Littman_1-32_446.png"/><br/>
+<img src="./Littman_1-32_447.png"/><br/>
+<img src="./Littman_1-32_448.png"/><br/>
+<img src="./Littman_1-32_449.png"/><br/>
+<img src="./Littman_1-32_450.png"/><br/>
+<img src="./Littman_1-32_451.png"/><br/>
+<img src="./Littman_1-32_452.png"/><br/>
+<img src="./Littman_1-32_453.png"/><br/>
+<img src="./Littman_1-32_454.png"/><br/>
+<img src="./Littman_1-32_455.png"/><br/>
+<img src="./Littman_1-32_456.png"/><br/>
+<img src="./Littman_1-32_457.png"/><br/>
+<img src="./Littman_1-32_458.png"/><br/>
+<img src="./Littman_1-32_459.png"/><br/>
+<img src="./Littman_1-32_460.png"/><br/>
+<img src="./Littman_1-32_461.png"/><br/>
+<img src="./Littman_1-32_462.png"/><br/>
+<img src="./Littman_1-32_463.png"/><br/>
+<img src="./Littman_1-32_464.png"/><br/>
+<img src="./Littman_1-32_465.png"/><br/>
+<img src="./Littman_1-32_466.png"/><br/>
+<img src="./Littman_1-32_467.png"/><br/>
+<img src="./Littman_1-32_468.png"/><br/>
+<img src="./Littman_1-32_469.png"/><br/>
+<img src="./Littman_1-32_470.png"/><br/>
+<img src="./Littman_1-32_471.png"/><br/>
+<img src="./Littman_1-32_472.png"/><br/>
+<img src="./Littman_1-32_473.png"/><br/>
+<img src="./Littman_1-32_474.png"/><br/>
+<img src="./Littman_1-32_475.png"/><br/>
+<img src="./Littman_1-32_476.png"/><br/>
+<img src="./Littman_1-32_477.png"/><br/>
+<img src="./Littman_1-32_478.png"/><br/>
+<img src="./Littman_1-32_479.png"/><br/>
+<img src="./Littman_1-32_480.png"/><br/>
+<img src="./Littman_1-32_481.png"/><br/>
+<img src="./Littman_1-32_482.png"/><br/>
+<img src="./Littman_1-32_483.png"/><br/>
+<img src="./Littman_1-32_484.png"/><br/>
+<img src="./Littman_1-32_485.png"/><br/>
+<img src="./Littman_1-32_486.png"/><br/>
+<img src="./Littman_1-32_487.png"/><br/>
+<img src="./Littman_1-32_488.png"/><br/>
+<img src="./Littman_1-32_489.png"/><br/>
+<img src="./Littman_1-32_490.png"/><br/>
+<img src="./Littman_1-32_491.png"/><br/>
+<img src="./Littman_1-32_492.png"/><br/>
+<img src="./Littman_1-32_493.png"/><br/>
+<img src="./Littman_1-32_494.png"/><br/>
+<img src="./Littman_1-32_495.png"/><br/>
+<img src="./Littman_1-32_496.png"/><br/>
+<img src="./Littman_1-32_497.png"/><br/>
+<img src="./Littman_1-32_498.png"/><br/>
+<img src="./Littman_1-32_499.png"/><br/>
+<img src="./Littman_1-32_500.png"/><br/>
+<img src="./Littman_1-32_501.png"/><br/>
+<img src="./Littman_1-32_502.png"/><br/>
+<img src="./Littman_1-32_503.png"/><br/>
+<img src="./Littman_1-32_504.png"/><br/>
+<img src="./Littman_1-32_505.png"/><br/>
+<img src="./Littman_1-32_506.png"/><br/>
+<img src="./Littman_1-32_507.png"/><br/>
+<img src="./Littman_1-32_508.png"/><br/>
+<img src="./Littman_1-32_509.png"/><br/>
+<img src="./Littman_1-32_510.png"/><br/>
+<img src="./Littman_1-32_511.png"/><br/>
+<img src="./Littman_1-32_512.png"/><br/>
+<img src="./Littman_1-32_513.png"/><br/>
+<img src="./Littman_1-32_514.png"/><br/>
+<img src="./Littman_1-32_515.png"/><br/>
+<img src="./Littman_1-32_516.png"/><br/>
+<img src="./Littman_1-32_517.png"/><br/>
+<img src="./Littman_1-32_518.png"/><br/>
+<img src="./Littman_1-32_519.png"/><br/>
+<img src="./Littman_1-32_520.png"/><br/>
+<img src="./Littman_1-32_521.png"/><br/>
+<img src="./Littman_1-32_522.png"/><br/>
+<img src="./Littman_1-32_523.png"/><br/>
+<img src="./Littman_1-32_524.png"/><br/>
+<img src="./Littman_1-32_525.png"/><br/>
+<img src="./Littman_1-32_526.png"/><br/>
+<img src="./Littman_1-32_527.png"/><br/>
+<img src="./Littman_1-32_528.png"/><br/>
+<img src="./Littman_1-32_529.png"/><br/>
+<img src="./Littman_1-32_530.png"/><br/>
+<img src="./Littman_1-32_531.png"/><br/>
+<img src="./Littman_1-32_532.png"/><br/>
+<img src="./Littman_1-32_533.png"/><br/>
+<img src="./Littman_1-32_534.png"/><br/>
+<img src="./Littman_1-32_535.png"/><br/>
+<img src="./Littman_1-32_536.png"/><br/>
+<img src="./Littman_1-32_537.png"/><br/>
+<img src="./Littman_1-32_538.png"/><br/>
+<img src="./Littman_1-32_539.png"/><br/>
+<img src="./Littman_1-32_540.png"/><br/>
+<img src="./Littman_1-32_541.png"/><br/>
+<img src="./Littman_1-32_542.png"/><br/>
+<img src="./Littman_1-32_543.png"/><br/>
+<img src="./Littman_1-32_544.png"/><br/>
+<img src="./Littman_1-32_545.png"/><br/>
+<img src="./Littman_1-32_546.png"/><br/>
+<img src="./Littman_1-32_547.png"/><br/>
+<img src="./Littman_1-32_548.png"/><br/>
+<img src="./Littman_1-32_549.png"/><br/>
+<img src="./Littman_1-32_550.png"/><br/>
+<img src="./Littman_1-32_551.png"/><br/>
+<img src="./Littman_1-32_552.png"/><br/>
+<img src="./Littman_1-32_553.png"/><br/>
+<img src="./Littman_1-32_554.png"/><br/>
+<img src="./Littman_1-32_555.png"/><br/>
+<img src="./Littman_1-32_556.png"/><br/>
+<img src="./Littman_1-32_557.png"/><br/>
+<img src="./Littman_1-32_558.png"/><br/>
+<img src="./Littman_1-32_559.png"/><br/>
+<img src="./Littman_1-32_560.png"/><br/>
+<img src="./Littman_1-32_561.png"/><br/>
+<img src="./Littman_1-32_562.png"/><br/>
+<img src="./Littman_1-32_563.png"/><br/>
+<img src="./Littman_1-32_564.png"/><br/>
+<img src="./Littman_1-32_565.png"/><br/>
+<img src="./Littman_1-32_566.png"/><br/>
+<img src="./Littman_1-32_567.png"/><br/>
+<img src="./Littman_1-32_568.png"/><br/>
+<img src="./Littman_1-32_569.png"/><br/>
+<img src="./Littman_1-32_570.png"/><br/>
+<img src="./Littman_1-32_571.png"/><br/>
+<img src="./Littman_1-32_572.png"/><br/>
+<img src="./Littman_1-32_573.png"/><br/>
+<img src="./Littman_1-32_574.png"/><br/>
+<img src="./Littman_1-32_575.png"/><br/>
+<img src="./Littman_1-32_576.png"/><br/>
+<img src="./Littman_1-32_577.png"/><br/>
+<img src="./Littman_1-32_578.png"/><br/>
+<img src="./Littman_1-32_579.png"/><br/>
+<img src="./Littman_1-32_580.png"/><br/>
+<img src="./Littman_1-32_581.png"/><br/>
+<img src="./Littman_1-32_582.png"/><br/>
+<img src="./Littman_1-32_583.png"/><br/>
+<img src="./Littman_1-32_584.png"/><br/>
+<img src="./Littman_1-32_585.png"/><br/>
+<img src="./Littman_1-32_586.png"/><br/>
+<img src="./Littman_1-32_587.png"/><br/>
+<img src="./Littman_1-32_588.png"/><br/>
+<img src="./Littman_1-32_589.png"/><br/>
+<img src="./Littman_1-32_590.png"/><br/>
+<img src="./Littman_1-32_591.png"/><br/>
+<img src="./Littman_1-32_592.png"/><br/>
+<img src="./Littman_1-32_593.png"/><br/>
+<img src="./Littman_1-32_594.png"/><br/>
+<img src="./Littman_1-32_595.png"/><br/>
+<img src="./Littman_1-32_596.png"/><br/>
+<img src="./Littman_1-32_597.png"/><br/>
+<img src="./Littman_1-32_598.png"/><br/>
+<img src="./Littman_1-32_599.png"/><br/>
+<img src="./Littman_1-32_600.png"/><br/>
+<img src="./Littman_1-32_601.png"/><br/>
+<img src="./Littman_1-32_602.png"/><br/>
+<img src="./Littman_1-32_603.png"/><br/>
+<img src="./Littman_1-32_604.png"/><br/>
+<img src="./Littman_1-32_605.png"/><br/>
+<img src="./Littman_1-32_606.png"/><br/>
+<img src="./Littman_1-32_607.png"/><br/>
+<img src="./Littman_1-32_608.png"/><br/>
+<img src="./Littman_1-32_609.png"/><br/>
+<img src="./Littman_1-32_610.png"/><br/>
+<img src="./Littman_1-32_611.png"/><br/>
+<img src="./Littman_1-32_612.png"/><br/>
+<img src="./Littman_1-32_613.png"/><br/>
+<img src="./Littman_1-32_614.png"/><br/>
+<img src="./Littman_1-32_615.png"/><br/>
+<img src="./Littman_1-32_616.png"/><br/>
+<img src="./Littman_1-32_617.png"/><br/>
+<img src="./Littman_1-32_618.png"/><br/>
+<img src="./Littman_1-32_619.png"/><br/>
+<img src="./Littman_1-32_620.png"/><br/>
+<img src="./Littman_1-32_621.png"/><br/>
+<img src="./Littman_1-32_622.png"/><br/>
+<img src="./Littman_1-32_623.png"/><br/>
+<img src="./Littman_1-32_624.png"/><br/>
+<img src="./Littman_1-32_625.png"/><br/>
+<img src="./Littman_1-32_626.png"/><br/>
+<img src="./Littman_1-32_627.png"/><br/>
+<img src="./Littman_1-32_628.png"/><br/>
+<img src="./Littman_1-32_629.png"/><br/>
+<img src="./Littman_1-32_630.png"/><br/>
+<img src="./Littman_1-32_631.png"/><br/>
+<img src="./Littman_1-32_632.png"/><br/>
+<img src="./Littman_1-32_633.png"/><br/>
+<img src="./Littman_1-32_634.png"/><br/>
+<img src="./Littman_1-32_635.png"/><br/>
+<img src="./Littman_1-32_636.png"/><br/>
+<img src="./Littman_1-32_637.png"/><br/>
+<img src="./Littman_1-32_638.png"/><br/>
+<img src="./Littman_1-32_639.png"/><br/>
+<img src="./Littman_1-32_640.png"/><br/>
+<img src="./Littman_1-32_641.png"/><br/>
+<img src="./Littman_1-32_642.png"/><br/>
+<img src="./Littman_1-32_643.png"/><br/>
+<img src="./Littman_1-32_644.png"/><br/>
+<img src="./Littman_1-32_645.png"/><br/>
+<img src="./Littman_1-32_646.png"/><br/>
+<img src="./Littman_1-32_647.png"/><br/>
+<img src="./Littman_1-32_648.png"/><br/>
+<img src="./Littman_1-32_649.png"/><br/>
+<img src="./Littman_1-32_650.png"/><br/>
+<img src="./Littman_1-32_651.png"/><br/>
+<img src="./Littman_1-32_652.png"/><br/>
+<img src="./Littman_1-32_653.png"/><br/>
+<img src="./Littman_1-32_654.png"/><br/>
+<img src="./Littman_1-32_655.png"/><br/>
+<img src="./Littman_1-32_656.png"/><br/>
+<img src="./Littman_1-32_657.png"/><br/>
+<img src="./Littman_1-32_658.png"/><br/>
+<img src="./Littman_1-32_659.png"/><br/>
+<img src="./Littman_1-32_660.png"/><br/>
+<img src="./Littman_1-32_661.png"/><br/>
+<img src="./Littman_1-32_662.png"/><br/>
+<img src="./Littman_1-32_663.png"/><br/>
+<img src="./Littman_1-32_664.png"/><br/>
+<img src="./Littman_1-32_665.png"/><br/>
+<img src="./Littman_1-32_666.png"/><br/>
+<img src="./Littman_1-32_667.png"/><br/>
+<img src="./Littman_1-32_668.png"/><br/>
+<img src="./Littman_1-32_669.png"/><br/>
+<img src="./Littman_1-32_670.png"/><br/>
+<img src="./Littman_1-32_671.png"/><br/>
+<img src="./Littman_1-32_672.png"/><br/>
+<img src="./Littman_1-32_673.png"/><br/>
+<img src="./Littman_1-32_674.png"/><br/>
+<img src="./Littman_1-32_675.png"/><br/>
+<img src="./Littman_1-32_676.png"/><br/>
+<img src="./Littman_1-32_677.png"/><br/>
+<img src="./Littman_1-32_678.png"/><br/>
+<img src="./Littman_1-32_679.png"/><br/>
+<img src="./Littman_1-32_680.png"/><br/>
+<img src="./Littman_1-32_681.png"/><br/>
+<img src="./Littman_1-32_682.png"/><br/>
+<img src="./Littman_1-32_683.png"/><br/>
+<img src="./Littman_1-32_684.png"/><br/>
+<img src="./Littman_1-32_685.png"/><br/>
+<img src="./Littman_1-32_686.png"/><br/>
+<img src="./Littman_1-32_687.png"/><br/>
+<img src="./Littman_1-32_688.png"/><br/>
+<img src="./Littman_1-32_689.png"/><br/>
+<img src="./Littman_1-32_690.png"/><br/>
+<img src="./Littman_1-32_691.png"/><br/>
+<img src="./Littman_1-32_692.png"/><br/>
+<img src="./Littman_1-32_693.png"/><br/>
+<img src="./Littman_1-32_694.png"/><br/>
+<img src="./Littman_1-32_695.png"/><br/>
+<img src="./Littman_1-32_696.png"/><br/>
+<img src="./Littman_1-32_697.png"/><br/>
+<img src="./Littman_1-32_698.png"/><br/>
+<img src="./Littman_1-32_699.png"/><br/>
+<img src="./Littman_1-32_700.png"/><br/>
+<img src="./Littman_1-32_701.png"/><br/>
+<img src="./Littman_1-32_702.png"/><br/>
+<img src="./Littman_1-32_703.png"/><br/>
+<img src="./Littman_1-32_704.png"/><br/>
+<img src="./Littman_1-32_705.png"/><br/>
+<img src="./Littman_1-32_706.png"/><br/>
+<img src="./Littman_1-32_707.png"/><br/>
+<img src="./Littman_1-32_708.png"/><br/>
+<img src="./Littman_1-32_709.png"/><br/>
+<img src="./Littman_1-32_710.png"/><br/>
+<img src="./Littman_1-32_711.png"/><br/>
+<img src="./Littman_1-32_712.png"/><br/>
+<img src="./Littman_1-32_713.png"/><br/>
+<img src="./Littman_1-32_714.png"/><br/>
+<img src="./Littman_1-32_715.png"/><br/>
+<img src="./Littman_1-32_716.png"/><br/>
+<img src="./Littman_1-32_717.png"/><br/>
+<img src="./Littman_1-32_718.png"/><br/>
+<img src="./Littman_1-32_719.png"/><br/>
+<img src="./Littman_1-32_720.png"/><br/>
+<img src="./Littman_1-32_721.png"/><br/>
+<img src="./Littman_1-32_722.png"/><br/>
+<img src="./Littman_1-32_723.png"/><br/>
+<img src="./Littman_1-32_724.png"/><br/>
+<img src="./Littman_1-32_725.png"/><br/>
+<img src="./Littman_1-32_726.png"/><br/>
+<img src="./Littman_1-32_727.png"/><br/>
+<img src="./Littman_1-32_728.png"/><br/>
+<img src="./Littman_1-32_729.png"/><br/>
+<img src="./Littman_1-32_730.png"/><br/>
+<img src="./Littman_1-32_731.png"/><br/>
+<img src="./Littman_1-32_732.png"/><br/>
+<img src="./Littman_1-32_733.png"/><br/>
+<img src="./Littman_1-32_734.png"/><br/>
+<img src="./Littman_1-32_735.png"/><br/>
+<img src="./Littman_1-32_736.png"/><br/>
+<img src="./Littman_1-32_737.png"/><br/>
+<img src="./Littman_1-32_738.png"/><br/>
+<img src="./Littman_1-32_739.png"/><br/>
+<img src="./Littman_1-32_740.png"/><br/>
+<img src="./Littman_1-32_741.png"/><br/>
+<img src="./Littman_1-32_742.png"/><br/>
+<img src="./Littman_1-32_743.png"/><br/>
+<img src="./Littman_1-32_744.png"/><br/>
+<img src="./Littman_1-32_745.png"/><br/>
+<img src="./Littman_1-32_746.png"/><br/>
+<img src="./Littman_1-32_747.png"/><br/>
+<img src="./Littman_1-32_748.png"/><br/>
+<img src="./Littman_1-32_749.png"/><br/>
+<img src="./Littman_1-32_750.png"/><br/>
+<img src="./Littman_1-32_751.png"/><br/>
+<img src="./Littman_1-32_752.png"/><br/>
+<img src="./Littman_1-32_753.png"/><br/>
+<img src="./Littman_1-32_754.png"/><br/>
+<img src="./Littman_1-32_755.png"/><br/>
+<img src="./Littman_1-32_756.png"/><br/>
+<img src="./Littman_1-32_757.png"/><br/>
+<img src="./Littman_1-32_758.png"/><br/>
+<img src="./Littman_1-32_759.png"/><br/>
+<img src="./Littman_1-32_760.png"/><br/>
+<img src="./Littman_1-32_761.png"/><br/>
+<img src="./Littman_1-32_762.png"/><br/>
+<img src="./Littman_1-32_763.png"/><br/>
+<img src="./Littman_1-32_764.png"/><br/>
+<img src="./Littman_1-32_765.png"/><br/>
+<img src="./Littman_1-32_766.png"/><br/>
+<img src="./Littman_1-32_767.png"/><br/>
+<img src="./Littman_1-32_768.png"/><br/>
+<img src="./Littman_1-32_769.png"/><br/>
+<img src="./Littman_1-32_770.png"/><br/>
+<img src="./Littman_1-32_771.png"/><br/>
+<img src="./Littman_1-32_772.png"/><br/>
+<img src="./Littman_1-32_773.png"/><br/>
+<img src="./Littman_1-32_774.png"/><br/>
+<img src="./Littman_1-32_775.png"/><br/>
+<img src="./Littman_1-32_776.png"/><br/>
+<img src="./Littman_1-32_777.png"/><br/>
+<img src="./Littman_1-32_778.png"/><br/>
+<img src="./Littman_1-32_779.png"/><br/>
+<img src="./Littman_1-32_780.png"/><br/>
+<img src="./Littman_1-32_781.png"/><br/>
+<img src="./Littman_1-32_782.png"/><br/>
+<img src="./Littman_1-32_783.png"/><br/>
+<img src="./Littman_1-32_784.png"/><br/>
+<img src="./Littman_1-32_785.png"/><br/>
+<img src="./Littman_1-32_786.png"/><br/>
+<img src="./Littman_1-32_787.png"/><br/>
+<img src="./Littman_1-32_788.png"/><br/>
+<img src="./Littman_1-32_789.png"/><br/>
+<img src="./Littman_1-32_790.png"/><br/>
+<img src="./Littman_1-32_791.png"/><br/>
+<img src="./Littman_1-32_792.png"/><br/>
+<img src="./Littman_1-32_793.png"/><br/>
+<img src="./Littman_1-32_794.png"/><br/>
+<img src="./Littman_1-32_795.png"/><br/>
+<img src="./Littman_1-32_796.png"/><br/>
+<img src="./Littman_1-32_797.png"/><br/>
+<img src="./Littman_1-32_798.png"/><br/>
+<img src="./Littman_1-32_799.png"/><br/>
+<img src="./Littman_1-32_800.png"/><br/>
+<img src="./Littman_1-32_801.png"/><br/>
+<img src="./Littman_1-32_802.png"/><br/>
+<img src="./Littman_1-32_803.png"/><br/>
+<img src="./Littman_1-32_804.png"/><br/>
+<img src="./Littman_1-32_805.png"/><br/>
+<img src="./Littman_1-32_806.png"/><br/>
+<img src="./Littman_1-32_807.png"/><br/>
+<img src="./Littman_1-32_808.png"/><br/>
+<img src="./Littman_1-32_809.png"/><br/>
+<img src="./Littman_1-32_810.png"/><br/>
+<img src="./Littman_1-32_811.png"/><br/>
+<img src="./Littman_1-32_812.png"/><br/>
+<img src="./Littman_1-32_813.png"/><br/>
+<img src="./Littman_1-32_814.png"/><br/>
+<img src="./Littman_1-32_815.png"/><br/>
+<img src="./Littman_1-32_816.png"/><br/>
+<img src="./Littman_1-32_817.png"/><br/>
+<img src="./Littman_1-32_818.png"/><br/>
+<img src="./Littman_1-32_819.png"/><br/>
+<img src="./Littman_1-32_820.png"/><br/>
+<img src="./Littman_1-32_821.png"/><br/>
+<img src="./Littman_1-32_822.png"/><br/>
+<img src="./Littman_1-32_823.png"/><br/>
+<img src="./Littman_1-32_824.png"/><br/>
+<img src="./Littman_1-32_825.png"/><br/>
+<img src="./Littman_1-32_826.png"/><br/>
+<img src="./Littman_1-32_827.png"/><br/>
+<img src="./Littman_1-32_828.png"/><br/>
+<img src="./Littman_1-32_829.png"/><br/>
+<img src="./Littman_1-32_830.png"/><br/>
+<img class="yflip" src="./Littman_1-32_831.png"/><br/>
+<img src="./Littman_1-32_832.png"/><br/>
+<img src="./Littman_1-32_833.png"/><br/>
+<img src="./Littman_1-32_834.png"/><br/>
+<img src="./Littman_1-32_835.png"/><br/>
+<img src="./Littman_1-32_836.png"/><br/>
+<img src="./Littman_1-32_837.png"/><br/>
+<img src="./Littman_1-32_838.png"/><br/>
+<img src="./Littman_1-32_839.png"/><br/>
+<img src="./Littman_1-32_840.png"/><br/>
+<img src="./Littman_1-32_841.png"/><br/>
+<img src="./Littman_1-32_842.png"/><br/>
+<img src="./Littman_1-32_843.png"/><br/>
+<img src="./Littman_1-32_844.png"/><br/>
+<img src="./Littman_1-32_845.png"/><br/>
+<img src="./Littman_1-32_846.png"/><br/>
+<img src="./Littman_1-32_847.png"/><br/>
+<img src="./Littman_1-32_848.png"/><br/>
+<img src="./Littman_1-32_849.png"/><br/>
+<img src="./Littman_1-32_850.png"/><br/>
+<img src="./Littman_1-32_851.png"/><br/>
+<img src="./Littman_1-32_852.png"/><br/>
+<img src="./Littman_1-32_853.png"/><br/>
+<img src="./Littman_1-32_854.png"/><br/>
+<img src="./Littman_1-32_855.png"/><br/>
+<img src="./Littman_1-32_856.png"/><br/>
+<img src="./Littman_1-32_857.png"/><br/>
+<img src="./Littman_1-32_858.png"/><br/>
+<img src="./Littman_1-32_859.png"/><br/>
+<img src="./Littman_1-32_860.png"/><br/>
+<img src="./Littman_1-32_861.png"/><br/>
+<img src="./Littman_1-32_862.png"/><br/>
+<img src="./Littman_1-32_863.png"/><br/>
+<img src="./Littman_1-32_864.png"/><br/>
+<img src="./Littman_1-32_865.png"/><br/>
+<img src="./Littman_1-32_866.png"/><br/>
+<img src="./Littman_1-32_867.png"/><br/>
+<img src="./Littman_1-32_868.png"/><br/>
+<img src="./Littman_1-32_869.png"/><br/>
+<img src="./Littman_1-32_870.png"/><br/>
+<img src="./Littman_1-32_871.png"/><br/>
+<img src="./Littman_1-32_872.png"/><br/>
+<img src="./Littman_1-32_873.png"/><br/>
+<img src="./Littman_1-32_874.png"/><br/>
+<img src="./Littman_1-32_875.png"/><br/>
+<img src="./Littman_1-32_876.png"/><br/>
+<img src="./Littman_1-32_877.png"/><br/>
+<img src="./Littman_1-32_878.png"/><br/>
+<img src="./Littman_1-32_879.png"/><br/>
+<img src="./Littman_1-32_880.png"/><br/>
+<img src="./Littman_1-32_881.png"/><br/>
+<img src="./Littman_1-32_882.png"/><br/>
+<img src="./Littman_1-32_883.png"/><br/>
+<img src="./Littman_1-32_884.png"/><br/>
+<img src="./Littman_1-32_885.png"/><br/>
+<img src="./Littman_1-32_886.png"/><br/>
+<img src="./Littman_1-32_887.png"/><br/>
+<img src="./Littman_1-32_888.png"/><br/>
+<img src="./Littman_1-32_889.png"/><br/>
+<img src="./Littman_1-32_890.png"/><br/>
+<img src="./Littman_1-32_891.png"/><br/>
+<img src="./Littman_1-32_892.png"/><br/>
+<img src="./Littman_1-32_893.png"/><br/>
+<img src="./Littman_1-32_894.png"/><br/>
+<img src="./Littman_1-32_895.png"/><br/>
+<img src="./Littman_1-32_896.png"/><br/>
+<img src="./Littman_1-32_897.png"/><br/>
+<img src="./Littman_1-32_898.png"/><br/>
+<img src="./Littman_1-32_899.png"/><br/>
+<img src="./Littman_1-32_900.png"/><br/>
+<img src="./Littman_1-32_901.png"/><br/>
+<img src="./Littman_1-32_902.png"/><br/>
+<img src="./Littman_1-32_903.png"/><br/>
+<img src="./Littman_1-32_904.png"/><br/>
+<img src="./Littman_1-32_905.png"/><br/>
+<img src="./Littman_1-32_906.png"/><br/>
+<img src="./Littman_1-32_907.png"/><br/>
+<img src="./Littman_1-32_908.png"/><br/>
+<img src="./Littman_1-32_909.png"/><br/>
+<img src="./Littman_1-32_910.png"/><br/>
+<img src="./Littman_1-32_911.png"/><br/>
+<img src="./Littman_1-32_912.png"/><br/>
+<img src="./Littman_1-32_913.png"/><br/>
+<img src="./Littman_1-32_914.png"/><br/>
+<img src="./Littman_1-32_915.png"/><br/>
+<img src="./Littman_1-32_916.png"/><br/>
+<img src="./Littman_1-32_917.png"/><br/>
+<img src="./Littman_1-32_918.png"/><br/>
+<img src="./Littman_1-32_919.png"/><br/>
+<img src="./Littman_1-32_920.png"/><br/>
+<img src="./Littman_1-32_921.png"/><br/>
+<img src="./Littman_1-32_922.png"/><br/>
+<img src="./Littman_1-32_923.png"/><br/>
+<img src="./Littman_1-32_924.png"/><br/>
+<img src="./Littman_1-32_925.png"/><br/>
+<img src="./Littman_1-32_926.png"/><br/>
+<img src="./Littman_1-32_927.png"/><br/>
+<img src="./Littman_1-32_928.png"/><br/>
+<img src="./Littman_1-32_929.png"/><br/>
+<img src="./Littman_1-32_930.png"/><br/>
+<img src="./Littman_1-32_931.png"/><br/>
+<img src="./Littman_1-32_932.png"/><br/>
+<img src="./Littman_1-32_933.png"/><br/>
+<img src="./Littman_1-32_934.png"/><br/>
+<img src="./Littman_1-32_935.png"/><br/>
+<img src="./Littman_1-32_936.png"/><br/>
+<img src="./Littman_1-32_937.png"/><br/>
+<img src="./Littman_1-32_938.png"/><br/>
+<img src="./Littman_1-32_939.png"/><br/>
+<img src="./Littman_1-32_940.png"/><br/>
+<img src="./Littman_1-32_941.png"/><br/>
+<img src="./Littman_1-32_942.png"/><br/>
+<img src="./Littman_1-32_943.png"/><br/>
+<img src="./Littman_1-32_944.png"/><br/>
+<img src="./Littman_1-32_945.png"/><br/>
+<img src="./Littman_1-32_946.png"/><br/>
+<img src="./Littman_1-32_947.png"/><br/>
+<img src="./Littman_1-32_948.png"/><br/>
+<img src="./Littman_1-32_949.png"/><br/>
+<img src="./Littman_1-32_950.png"/><br/>
+<img src="./Littman_1-32_951.png"/><br/>
+<img src="./Littman_1-32_952.png"/><br/>
+<img src="./Littman_1-32_953.png"/><br/>
+<img src="./Littman_1-32_954.png"/><br/>
+<img src="./Littman_1-32_955.png"/><br/>
+<img src="./Littman_1-32_956.png"/><br/>
+<img src="./Littman_1-32_957.png"/><br/>
+<img src="./Littman_1-32_958.png"/><br/>
+<img src="./Littman_1-32_959.png"/><br/>
+<img src="./Littman_1-32_960.png"/><br/>
+<img src="./Littman_1-32_961.png"/><br/>
+<img src="./Littman_1-32_962.png"/><br/>
+<img src="./Littman_1-32_963.png"/><br/>
+<img src="./Littman_1-32_964.png"/><br/>
+<img src="./Littman_1-32_965.png"/><br/>
+<img src="./Littman_1-32_966.png"/><br/>
+<img src="./Littman_1-32_967.png"/><br/>
+<img src="./Littman_1-32_968.png"/><br/>
+<img src="./Littman_1-32_969.png"/><br/>
+<img src="./Littman_1-32_970.png"/><br/>
+<img src="./Littman_1-32_971.png"/><br/>
+<img src="./Littman_1-32_972.png"/><br/>
+<img src="./Littman_1-32_973.png"/><br/>
+<img src="./Littman_1-32_974.png"/><br/>
+<img src="./Littman_1-32_975.png"/><br/>
+<img src="./Littman_1-32_976.png"/><br/>
+<img src="./Littman_1-32_977.png"/><br/>
+<img src="./Littman_1-32_978.png"/><br/>
+<img src="./Littman_1-32_979.png"/><br/>
+<img src="./Littman_1-32_980.png"/><br/>
+<img src="./Littman_1-32_981.png"/><br/>
+<img src="./Littman_1-32_982.png"/><br/>
+<img src="./Littman_1-32_983.png"/><br/>
+<img src="./Littman_1-32_984.png"/><br/>
+<img src="./Littman_1-32_985.png"/><br/>
+<img src="./Littman_1-32_986.png"/><br/>
+<img src="./Littman_1-32_987.png"/><br/>
+<img src="./Littman_1-32_988.png"/><br/>
+<img src="./Littman_1-32_989.png"/><br/>
+<img src="./Littman_1-32_990.png"/><br/>
+<img src="./Littman_1-32_991.png"/><br/>
+<img src="./Littman_1-32_992.png"/><br/>
+<img src="./Littman_1-32_993.png"/><br/>
+<img src="./Littman_1-32_994.png"/><br/>
+<img src="./Littman_1-32_995.png"/><br/>
+<img src="./Littman_1-32_996.png"/><br/>
+<img src="./Littman_1-32_997.png"/><br/>
+<img src="./Littman_1-32_998.png"/><br/>
+<img src="./Littman_1-32_999.png"/><br/>
+<img src="./Littman_1-32_1000.png"/><br/>
+<img src="./Littman_1-32_1001.png"/><br/>
+<img src="./Littman_1-32_1002.png"/><br/>
+<img src="./Littman_1-32_1003.png"/><br/>
+<img src="./Littman_1-32_1004.png"/><br/>
+<img src="./Littman_1-32_1005.png"/><br/>
+<img src="./Littman_1-32_1006.png"/><br/>
+<img src="./Littman_1-32_1007.png"/><br/>
+<img src="./Littman_1-32_1008.png"/><br/>
+<img src="./Littman_1-32_1009.png"/><br/>
+<img src="./Littman_1-32_1010.png"/><br/>
+<img src="./Littman_1-32_1011.png"/><br/>
+<img src="./Littman_1-32_1012.png"/><br/>
+<img src="./Littman_1-32_1013.png"/><br/>
+<img src="./Littman_1-32_1014.png"/><br/>
+<img src="./Littman_1-32_1015.png"/><br/>
+<img src="./Littman_1-32_1016.png"/><br/>
+<img src="./Littman_1-32_1017.png"/><br/>
+<img src="./Littman_1-32_1018.png"/><br/>
+<img src="./Littman_1-32_1019.png"/><br/>
+<img src="./Littman_1-32_1020.png"/><br/>
+<img src="./Littman_1-32_1021.png"/><br/>
+<img src="./Littman_1-32_1022.png"/><br/>
+<img src="./Littman_1-32_1023.png"/><br/>
+<img src="./Littman_1-32_1024.png"/><br/>
+<img src="./Littman_1-32_1025.png"/><br/>
+<img src="./Littman_1-32_1026.png"/><br/>
+<img src="./Littman_1-32_1027.png"/><br/>
+<img src="./Littman_1-32_1028.png"/><br/>
+<img src="./Littman_1-32_1029.png"/><br/>
+<img src="./Littman_1-32_1030.png"/><br/>
+<img src="./Littman_1-32_1031.png"/><br/>
+<img src="./Littman_1-32_1032.png"/><br/>
+<img src="./Littman_1-32_1033.png"/><br/>
+<img src="./Littman_1-32_1034.png"/><br/>
+<img src="./Littman_1-32_1035.png"/><br/>
+<img src="./Littman_1-32_1036.png"/><br/>
+<img src="./Littman_1-32_1037.png"/><br/>
+<img src="./Littman_1-32_1038.png"/><br/>
+<img src="./Littman_1-32_1039.png"/><br/>
+<img src="./Littman_1-32_1040.png"/><br/>
+<img src="./Littman_1-32_1041.png"/><br/>
+<img src="./Littman_1-32_1042.png"/><br/>
+<img src="./Littman_1-32_1043.png"/><br/>
+<img src="./Littman_1-32_1044.png"/><br/>
+<img src="./Littman_1-32_1045.png"/><br/>
+<img src="./Littman_1-32_1046.png"/><br/>
+<img src="./Littman_1-32_1047.png"/><br/>
+<img src="./Littman_1-32_1048.png"/><br/>
+<img src="./Littman_1-32_1049.png"/><br/>
+<img src="./Littman_1-32_1050.png"/><br/>
+<img src="./Littman_1-32_1051.png"/><br/>
+<img src="./Littman_1-32_1052.png"/><br/>
+<img src="./Littman_1-32_1053.png"/><br/>
+<img src="./Littman_1-32_1054.png"/><br/>
+<img src="./Littman_1-32_1055.png"/><br/>
+<img src="./Littman_1-32_1056.png"/><br/>
+<img src="./Littman_1-32_1057.png"/><br/>
+<img src="./Littman_1-32_1058.png"/><br/>
+<img src="./Littman_1-32_1059.png"/><br/>
+<img src="./Littman_1-32_1060.png"/><br/>
+<img src="./Littman_1-32_1061.png"/><br/>
+<img src="./Littman_1-32_1062.png"/><br/>
+<img src="./Littman_1-32_1063.png"/><br/>
+<img src="./Littman_1-32_1064.png"/><br/>
+<img src="./Littman_1-32_1065.png"/><br/>
+<img src="./Littman_1-32_1066.png"/><br/>
+<img src="./Littman_1-32_1067.png"/><br/>
+<img src="./Littman_1-32_1068.png"/><br/>
+<img src="./Littman_1-32_1069.png"/><br/>
+<img src="./Littman_1-32_1070.png"/><br/>
+<img src="./Littman_1-32_1071.png"/><br/>
+<img src="./Littman_1-32_1072.png"/><br/>
+<img src="./Littman_1-32_1073.png"/><br/>
+<img src="./Littman_1-32_1074.png"/><br/>
+<img src="./Littman_1-32_1075.png"/><br/>
+<img src="./Littman_1-32_1076.png"/><br/>
+<img src="./Littman_1-32_1077.png"/><br/>
+<img src="./Littman_1-32_1078.png"/><br/>
+<img src="./Littman_1-32_1079.png"/><br/>
+<img src="./Littman_1-32_1080.png"/><br/>
+<img src="./Littman_1-32_1081.png"/><br/>
+<img src="./Littman_1-32_1082.png"/><br/>
+<img src="./Littman_1-32_1083.png"/><br/>
+<img src="./Littman_1-32_1084.png"/><br/>
+<img src="./Littman_1-32_1085.png"/><br/>
+<img src="./Littman_1-32_1086.png"/><br/>
+<img src="./Littman_1-32_1087.png"/><br/>
+<img src="./Littman_1-32_1088.png"/><br/>
+<img src="./Littman_1-32_1089.png"/><br/>
+<img src="./Littman_1-32_1090.png"/><br/>
+<img src="./Littman_1-32_1091.png"/><br/>
+<img src="./Littman_1-32_1092.png"/><br/>
+<img src="./Littman_1-32_1093.png"/><br/>
+<img src="./Littman_1-32_1094.png"/><br/>
+<img src="./Littman_1-32_1095.png"/><br/>
+<img src="./Littman_1-32_1096.png"/><br/>
+<img src="./Littman_1-32_1097.png"/><br/>
+<img src="./Littman_1-32_1098.png"/><br/>
+<img src="./Littman_1-32_1099.png"/><br/>
+<img src="./Littman_1-32_1100.png"/><br/>
+<img src="./Littman_1-32_1101.png"/><br/>
+<img src="./Littman_1-32_1102.png"/><br/>
+<img src="./Littman_1-32_1103.png"/><br/>
+<img src="./Littman_1-32_1104.png"/><br/>
+<img src="./Littman_1-32_1105.png"/><br/>
+<img src="./Littman_1-32_1106.png"/><br/>
+<img src="./Littman_1-32_1107.png"/><br/>
+<img src="./Littman_1-32_1108.png"/><br/>
+<img src="./Littman_1-32_1109.png"/><br/>
+<img src="./Littman_1-32_1110.png"/><br/>
+<img src="./Littman_1-32_1111.png"/><br/>
+<img src="./Littman_1-32_1112.png"/><br/>
+<img src="./Littman_1-32_1113.png"/><br/>
+<img src="./Littman_1-32_1114.png"/><br/>
+<img src="./Littman_1-32_1115.png"/><br/>
+<img src="./Littman_1-32_1116.png"/><br/>
+<img src="./Littman_1-32_1117.png"/><br/>
+<img src="./Littman_1-32_1118.png"/><br/>
+<img src="./Littman_1-32_1119.png"/><br/>
+<img src="./Littman_1-32_1120.png"/><br/>
+<img src="./Littman_1-32_1121.png"/><br/>
+<img src="./Littman_1-32_1122.png"/><br/>
+<img src="./Littman_1-32_1123.png"/><br/>
+<img src="./Littman_1-32_1124.png"/><br/>
+<img src="./Littman_1-32_1125.png"/><br/>
+<img src="./Littman_1-32_1126.png"/><br/>
+<img src="./Littman_1-32_1127.png"/><br/>
+<img src="./Littman_1-32_1128.png"/><br/>
+<img src="./Littman_1-32_1129.png"/><br/>
+<img src="./Littman_1-32_1130.png"/><br/>
+<img src="./Littman_1-32_1131.png"/><br/>
+<img src="./Littman_1-32_1132.png"/><br/>
+<img src="./Littman_1-32_1133.png"/><br/>
+<img src="./Littman_1-32_1134.png"/><br/>
+<img src="./Littman_1-32_1135.png"/><br/>
+<img src="./Littman_1-32_1136.png"/><br/>
+<img src="./Littman_1-32_1137.png"/><br/>
+<img src="./Littman_1-32_1138.png"/><br/>
+<img src="./Littman_1-32_1139.png"/><br/>
+<img src="./Littman_1-32_1140.png"/><br/>
+<img src="./Littman_1-32_1141.png"/><br/>
+<img src="./Littman_1-32_1142.png"/><br/>
+<img src="./Littman_1-32_1143.png"/><br/>
+<img src="./Littman_1-32_1144.png"/><br/>
+<img src="./Littman_1-32_1145.png"/><br/>
+<img src="./Littman_1-32_1146.png"/><br/>
+<img src="./Littman_1-32_1147.png"/><br/>
+<img src="./Littman_1-32_1148.png"/><br/>
+<img src="./Littman_1-32_1149.png"/><br/>
+<img src="./Littman_1-32_1150.png"/><br/>
+<img src="./Littman_1-32_1151.png"/><br/>
+<img src="./Littman_1-32_1152.png"/><br/>
+<img src="./Littman_1-32_1153.png"/><br/>
+<img src="./Littman_1-32_1154.png"/><br/>
+<img src="./Littman_1-32_1155.png"/><br/>
+<img src="./Littman_1-32_1156.png"/><br/>
+<img src="./Littman_1-32_1157.png"/><br/>
+<img src="./Littman_1-32_1158.png"/><br/>
+<img src="./Littman_1-32_1159.png"/><br/>
+<img src="./Littman_1-32_1160.png"/><br/>
+<img src="./Littman_1-32_1161.png"/><br/>
+<img src="./Littman_1-32_1162.png"/><br/>
+<img src="./Littman_1-32_1163.png"/><br/>
+<img src="./Littman_1-32_1164.png"/><br/>
+<img src="./Littman_1-32_1165.png"/><br/>
+<img src="./Littman_1-32_1166.png"/><br/>
+<img src="./Littman_1-32_1167.png"/><br/>
+<img src="./Littman_1-32_1168.png"/><br/>
+<img src="./Littman_1-32_1169.png"/><br/>
+<img src="./Littman_1-32_1170.png"/><br/>
+<img src="./Littman_1-32_1171.png"/><br/>
+<img src="./Littman_1-32_1172.png"/><br/>
+<img src="./Littman_1-32_1173.png"/><br/>
+<img src="./Littman_1-32_1174.png"/><br/>
+<img src="./Littman_1-32_1175.png"/><br/>
+<img src="./Littman_1-32_1176.png"/><br/>
+<img src="./Littman_1-32_1177.png"/><br/>
+<img src="./Littman_1-32_1178.png"/><br/>
+<img src="./Littman_1-32_1179.png"/><br/>
+<img src="./Littman_1-32_1180.png"/><br/>
+<img src="./Littman_1-32_1181.png"/><br/>
+<img src="./Littman_1-32_1182.png"/><br/>
+<img src="./Littman_1-32_1183.png"/><br/>
+<img src="./Littman_1-32_1184.png"/><br/>
+<img src="./Littman_1-32_1185.png"/><br/>
+<img src="./Littman_1-32_1186.png"/><br/>
+<img src="./Littman_1-32_1187.png"/><br/>
+<img src="./Littman_1-32_1188.png"/><br/>
+<img src="./Littman_1-32_1189.png"/><br/>
+<img src="./Littman_1-32_1190.png"/><br/>
+<img src="./Littman_1-32_1191.png"/><br/>
+<img src="./Littman_1-32_1192.png"/><br/>
+<img src="./Littman_1-32_1193.png"/><br/>
+<img src="./Littman_1-32_1194.png"/><br/>
+<img src="./Littman_1-32_1195.png"/><br/>
+<img src="./Littman_1-32_1196.png"/><br/>
+<img src="./Littman_1-32_1197.png"/><br/>
+<img src="./Littman_1-32_1198.png"/><br/>
+<img src="./Littman_1-32_1199.png"/><br/>
+<img src="./Littman_1-32_1200.png"/><br/>
+<img src="./Littman_1-32_1201.png"/><br/>
+<img src="./Littman_1-32_1202.png"/><br/>
+<img src="./Littman_1-32_1203.png"/><br/>
+<img src="./Littman_1-32_1204.png"/><br/>
+<img src="./Littman_1-32_1205.png"/><br/>
+<img src="./Littman_1-32_1206.png"/><br/>
+<img src="./Littman_1-32_1207.png"/><br/>
+<img src="./Littman_1-32_1208.png"/><br/>
+<img src="./Littman_1-32_1209.png"/><br/>
+<img src="./Littman_1-32_1210.png"/><br/>
+<img src="./Littman_1-32_1211.png"/><br/>
+<img src="./Littman_1-32_1212.png"/><br/>
+<img src="./Littman_1-32_1213.png"/><br/>
+<img src="./Littman_1-32_1214.png"/><br/>
+<img src="./Littman_1-32_1215.png"/><br/>
+<img src="./Littman_1-32_1216.png"/><br/>
+<img src="./Littman_1-32_1217.png"/><br/>
+<img src="./Littman_1-32_1218.png"/><br/>
+<img src="./Littman_1-32_1219.png"/><br/>
+<img src="./Littman_1-32_1220.png"/><br/>
+<img src="./Littman_1-32_1221.png"/><br/>
+<img src="./Littman_1-32_1222.png"/><br/>
+<img src="./Littman_1-32_1223.png"/><br/>
+<img src="./Littman_1-32_1224.png"/><br/>
+<img src="./Littman_1-32_1225.png"/><br/>
+<img src="./Littman_1-32_1226.png"/><br/>
+<img src="./Littman_1-32_1227.png"/><br/>
+<img src="./Littman_1-32_1228.png"/><br/>
+<img src="./Littman_1-32_1229.png"/><br/>
+<img src="./Littman_1-32_1230.png"/><br/>
+<img src="./Littman_1-32_1231.png"/><br/>
+<img src="./Littman_1-32_1232.png"/><br/>
+<img src="./Littman_1-32_1233.png"/><br/>
+<img src="./Littman_1-32_1234.png"/><br/>
+<img src="./Littman_1-32_1235.png"/><br/>
+<img src="./Littman_1-32_1236.png"/><br/>
+<img src="./Littman_1-32_1237.png"/><br/>
+<img src="./Littman_1-32_1238.png"/><br/>
+<img src="./Littman_1-32_1239.png"/><br/>
+<img src="./Littman_1-32_1240.png"/><br/>
+<img src="./Littman_1-32_1241.png"/><br/>
+<img src="./Littman_1-32_1242.png"/><br/>
+<img src="./Littman_1-32_1243.png"/><br/>
+<img src="./Littman_1-32_1244.png"/><br/>
+<img src="./Littman_1-32_1245.png"/><br/>
+<img src="./Littman_1-32_1246.png"/><br/>
+<img src="./Littman_1-32_1247.png"/><br/>
+<img src="./Littman_1-32_1248.png"/><br/>
+<img src="./Littman_1-32_1249.png"/><br/>
+<img src="./Littman_1-32_1250.png"/><br/>
+<img src="./Littman_1-32_1251.png"/><br/>
+<img src="./Littman_1-32_1252.png"/><br/>
+<img src="./Littman_1-32_1253.png"/><br/>
+<img src="./Littman_1-32_1254.png"/><br/>
+<img src="./Littman_1-32_1255.png"/><br/>
+<img src="./Littman_1-32_1256.png"/><br/>
+<img src="./Littman_1-32_1257.png"/><br/>
+<img src="./Littman_1-32_1258.png"/><br/>
+<img src="./Littman_1-32_1259.png"/><br/>
+<img src="./Littman_1-32_1260.png"/><br/>
+<img src="./Littman_1-32_1261.png"/><br/>
+<img src="./Littman_1-32_1262.png"/><br/>
+<img src="./Littman_1-32_1263.png"/><br/>
+<img src="./Littman_1-32_1264.png"/><br/>
+<img src="./Littman_1-32_1265.png"/><br/>
+<img src="./Littman_1-32_1266.png"/><br/>
+<img src="./Littman_1-32_1267.png"/><br/>
+<img src="./Littman_1-32_1268.png"/><br/>
+<img src="./Littman_1-32_1269.png"/><br/>
+<img src="./Littman_1-32_1270.png"/><br/>
+<img src="./Littman_1-32_1271.png"/><br/>
+<img src="./Littman_1-32_1272.png"/><br/>
+<img src="./Littman_1-32_1273.png"/><br/>
+<img src="./Littman_1-32_1274.png"/><br/>
+<img src="./Littman_1-32_1275.png"/><br/>
+<img src="./Littman_1-32_1276.png"/><br/>
+<img src="./Littman_1-32_1277.png"/><br/>
+<img src="./Littman_1-32_1278.png"/><br/>
+<img src="./Littman_1-32_1279.png"/><br/>
+<img src="./Littman_1-32_1280.png"/><br/>
+<img src="./Littman_1-32_1281.png"/><br/>
+<img src="./Littman_1-32_1282.png"/><br/>
+<img src="./Littman_1-32_1283.png"/><br/>
+<img src="./Littman_1-32_1284.png"/><br/>
+<img src="./Littman_1-32_1285.png"/><br/>
+<img src="./Littman_1-32_1286.png"/><br/>
+<img src="./Littman_1-32_1287.png"/><br/>
+<img src="./Littman_1-32_1288.png"/><br/>
+<img src="./Littman_1-32_1289.png"/><br/>
+<img src="./Littman_1-32_1290.png"/><br/>
+<img src="./Littman_1-32_1291.png"/><br/>
+<img src="./Littman_1-32_1292.png"/><br/>
+<img src="./Littman_1-32_1293.png"/><br/>
+<img src="./Littman_1-32_1294.png"/><br/>
+<img src="./Littman_1-32_1295.png"/><br/>
+<img src="./Littman_1-32_1296.png"/><br/>
+<img src="./Littman_1-32_1297.png"/><br/>
+<img src="./Littman_1-32_1298.png"/><br/>
+<img src="./Littman_1-32_1299.png"/><br/>
+<img src="./Littman_1-32_1300.png"/><br/>
+<img src="./Littman_1-32_1301.png"/><br/>
+<img src="./Littman_1-32_1302.png"/><br/>
+<img src="./Littman_1-32_1303.png"/><br/>
+<img src="./Littman_1-32_1304.png"/><br/>
+<img src="./Littman_1-32_1305.png"/><br/>
+<img src="./Littman_1-32_1306.png"/><br/>
+<img src="./Littman_1-32_1307.png"/><br/>
+<img src="./Littman_1-32_1308.png"/><br/>
+<img src="./Littman_1-32_1309.png"/><br/>
+<img src="./Littman_1-32_1310.png"/><br/>
+<img src="./Littman_1-32_1311.png"/><br/>
+<img src="./Littman_1-32_1312.png"/><br/>
+<img src="./Littman_1-32_1313.png"/><br/>
+<img src="./Littman_1-32_1314.png"/><br/>
+<img src="./Littman_1-32_1315.png"/><br/>
+<img src="./Littman_1-32_1316.png"/><br/>
+<img src="./Littman_1-32_1317.png"/><br/>
+<img src="./Littman_1-32_1318.png"/><br/>
+<img src="./Littman_1-32_1319.png"/><br/>
+<img src="./Littman_1-32_1320.png"/><br/>
+<img src="./Littman_1-32_1321.png"/><br/>
+<img src="./Littman_1-32_1322.png"/><br/>
+<img src="./Littman_1-32_1323.png"/><br/>
+<img src="./Littman_1-32_1324.png"/><br/>
+<img src="./Littman_1-32_1325.png"/><br/>
+<img src="./Littman_1-32_1326.png"/><br/>
+<img src="./Littman_1-32_1327.png"/><br/>
+<img src="./Littman_1-32_1328.png"/><br/>
+<img src="./Littman_1-32_1329.png"/><br/>
+<img src="./Littman_1-32_1330.png"/><br/>
+<img src="./Littman_1-32_1331.png"/><br/>
+<img src="./Littman_1-32_1332.png"/><br/>
+<img src="./Littman_1-32_1333.png"/><br/>
+<img src="./Littman_1-32_1334.png"/><br/>
+<img src="./Littman_1-32_1335.png"/><br/>
+<img src="./Littman_1-32_1336.png"/><br/>
+<img src="./Littman_1-32_1337.png"/><br/>
+<img src="./Littman_1-32_1338.png"/><br/>
+<img src="./Littman_1-32_1339.png"/><br/>
+<img src="./Littman_1-32_1340.png"/><br/>
+<img src="./Littman_1-32_1341.png"/><br/>
+<img src="./Littman_1-32_1342.png"/><br/>
+<img src="./Littman_1-32_1343.png"/><br/>
+<img src="./Littman_1-32_1344.png"/><br/>
+<img src="./Littman_1-32_1345.png"/><br/>
+<img src="./Littman_1-32_1346.png"/><br/>
+<img src="./Littman_1-32_1347.png"/><br/>
+<img src="./Littman_1-32_1348.png"/><br/>
+<img src="./Littman_1-32_1349.png"/><br/>
+<img src="./Littman_1-32_1350.png"/><br/>
+<img src="./Littman_1-32_1351.png"/><br/>
+<img src="./Littman_1-32_1352.png"/><br/>
+<img src="./Littman_1-32_1353.png"/><br/>
+<img src="./Littman_1-32_1354.png"/><br/>
+<img src="./Littman_1-32_1355.png"/><br/>
+<img src="./Littman_1-32_1356.png"/><br/>
+<img src="./Littman_1-32_1357.png"/><br/>
+<img src="./Littman_1-32_1358.png"/><br/>
+<img src="./Littman_1-32_1359.png"/><br/>
+<img src="./Littman_1-32_1360.png"/><br/>
+<img src="./Littman_1-32_1361.png"/><br/>
+<img src="./Littman_1-32_1362.png"/><br/>
+<img src="./Littman_1-32_1363.png"/><br/>
+<img src="./Littman_1-32_1364.png"/><br/>
+<img src="./Littman_1-32_1365.png"/><br/>
+<img src="./Littman_1-32_1366.png"/><br/>
+<img src="./Littman_1-32_1367.png"/><br/>
+<img src="./Littman_1-32_1368.png"/><br/>
+<img src="./Littman_1-32_1369.png"/><br/>
+<img src="./Littman_1-32_1370.png"/><br/>
+<img src="./Littman_1-32_1371.png"/><br/>
+<img src="./Littman_1-32_1372.png"/><br/>
+<img src="./Littman_1-32_1373.png"/><br/>
+<img src="./Littman_1-32_1374.png"/><br/>
+<img src="./Littman_1-32_1375.png"/><br/>
+<img src="./Littman_1-32_1376.png"/><br/>
+<img src="./Littman_1-32_1377.png"/><br/>
+<img src="./Littman_1-32_1378.png"/><br/>
+<img src="./Littman_1-32_1379.png"/><br/>
+<img src="./Littman_1-32_1380.png"/><br/>
+<img src="./Littman_1-32_1381.png"/><br/>
+<img src="./Littman_1-32_1382.png"/><br/>
+<img src="./Littman_1-32_1383.png"/><br/>
+<img src="./Littman_1-32_1384.png"/><br/>
+<img src="./Littman_1-32_1385.png"/><br/>
+<img src="./Littman_1-32_1386.png"/><br/>
+<img src="./Littman_1-32_1387.png"/><br/>
+<img src="./Littman_1-32_1388.png"/><br/>
+<img src="./Littman_1-32_1389.png"/><br/>
+<img src="./Littman_1-32_1390.png"/><br/>
+<img src="./Littman_1-32_1391.png"/><br/>
+<img src="./Littman_1-32_1392.png"/><br/>
+<img src="./Littman_1-32_1393.png"/><br/>
+<img src="./Littman_1-32_1394.png"/><br/>
+<img src="./Littman_1-32_1395.png"/><br/>
+<img src="./Littman_1-32_1396.png"/><br/>
+<img src="./Littman_1-32_1397.png"/><br/>
+<img src="./Littman_1-32_1398.png"/><br/>
+<img src="./Littman_1-32_1399.png"/><br/>
+<img src="./Littman_1-32_1400.png"/><br/>
+<img src="./Littman_1-32_1401.png"/><br/>
+<img src="./Littman_1-32_1402.png"/><br/>
+<img src="./Littman_1-32_1403.png"/><br/>
+<img src="./Littman_1-32_1404.png"/><br/>
+<img src="./Littman_1-32_1405.png"/><br/>
+<img src="./Littman_1-32_1406.png"/><br/>
+<img src="./Littman_1-32_1407.png"/><br/>
+<img src="./Littman_1-32_1408.png"/><br/>
+<img src="./Littman_1-32_1409.png"/><br/>
+<img src="./Littman_1-32_1410.png"/><br/>
+<img src="./Littman_1-32_1411.png"/><br/>
+<img src="./Littman_1-32_1412.png"/><br/>
+<img src="./Littman_1-32_1413.png"/><br/>
+<img src="./Littman_1-32_1414.png"/><br/>
+<img src="./Littman_1-32_1415.png"/><br/>
+<img src="./Littman_1-32_1416.png"/><br/>
+<img src="./Littman_1-32_1417.png"/><br/>
+<img src="./Littman_1-32_1418.png"/><br/>
+<img src="./Littman_1-32_1419.png"/><br/>
+<img src="./Littman_1-32_1420.png"/><br/>
+<img src="./Littman_1-32_1421.png"/><br/>
+<img src="./Littman_1-32_1422.png"/><br/>
+<img src="./Littman_1-32_1423.png"/><br/>
+<img src="./Littman_1-32_1424.png"/><br/>
+<img src="./Littman_1-32_1425.png"/><br/>
+<img src="./Littman_1-32_1426.png"/><br/>
+<img src="./Littman_1-32_1427.png"/><br/>
+<img src="./Littman_1-32_1428.png"/><br/>
+<img src="./Littman_1-32_1429.png"/><br/>
+<img src="./Littman_1-32_1430.png"/><br/>
+<img src="./Littman_1-32_1431.png"/><br/>
+<img src="./Littman_1-32_1432.png"/><br/>
+<img src="./Littman_1-32_1433.png"/><br/>
+<img src="./Littman_1-32_1434.png"/><br/>
+<img src="./Littman_1-32_1435.png"/><br/>
+<img src="./Littman_1-32_1436.png"/><br/>
+<img src="./Littman_1-32_1437.png"/><br/>
+<img src="./Littman_1-32_1438.png"/><br/>
+<img src="./Littman_1-32_1439.png"/><br/>
+<img src="./Littman_1-32_1440.png"/><br/>
+<img src="./Littman_1-32_1441.png"/><br/>
+<img src="./Littman_1-32_1442.png"/><br/>
+<img src="./Littman_1-32_1443.png"/><br/>
+<img src="./Littman_1-32_1444.png"/><br/>
+<img src="./Littman_1-32_1445.png"/><br/>
+<img src="./Littman_1-32_1446.png"/><br/>
+<img src="./Littman_1-32_1447.png"/><br/>
+<img src="./Littman_1-32_1448.png"/><br/>
+<img src="./Littman_1-32_1449.png"/><br/>
+<img src="./Littman_1-32_1450.png"/><br/>
+<img src="./Littman_1-32_1451.png"/><br/>
+<img src="./Littman_1-32_1452.png"/><br/>
+<img src="./Littman_1-32_1453.png"/><br/>
+<img src="./Littman_1-32_1454.png"/><br/>
+<img src="./Littman_1-32_1455.png"/><br/>
+<img src="./Littman_1-32_1456.png"/><br/>
+<img src="./Littman_1-32_1457.png"/><br/>
+<img src="./Littman_1-32_1458.png"/><br/>
+<img src="./Littman_1-32_1459.png"/><br/>
+<img src="./Littman_1-32_1460.png"/><br/>
+<img src="./Littman_1-32_1461.png"/><br/>
+<img src="./Littman_1-32_1462.png"/><br/>
+<img src="./Littman_1-32_1463.png"/><br/>
+<img src="./Littman_1-32_1464.png"/><br/>
+<img src="./Littman_1-32_1465.png"/><br/>
+<img src="./Littman_1-32_1466.png"/><br/>
+<img src="./Littman_1-32_1467.png"/><br/>
+<img src="./Littman_1-32_1468.png"/><br/>
+<img src="./Littman_1-32_1469.png"/><br/>
+<img src="./Littman_1-32_1470.png"/><br/>
+<img src="./Littman_1-32_1471.png"/><br/>
+<img src="./Littman_1-32_1472.png"/><br/>
+<img src="./Littman_1-32_1473.png"/><br/>
+<img src="./Littman_1-32_1474.png"/><br/>
+<img src="./Littman_1-32_1475.png"/><br/>
+<img src="./Littman_1-32_1476.png"/><br/>
+<img src="./Littman_1-32_1477.png"/><br/>
+<img src="./Littman_1-32_1478.png"/><br/>
+<img src="./Littman_1-32_1479.png"/><br/>
+<img src="./Littman_1-32_1480.png"/><br/>
+<img src="./Littman_1-32_1481.png"/><br/>
+<img src="./Littman_1-32_1482.png"/><br/>
+<img src="./Littman_1-32_1483.png"/><br/>
+<img src="./Littman_1-32_1484.png"/><br/>
+<img src="./Littman_1-32_1485.png"/><br/>
+<img src="./Littman_1-32_1486.png"/><br/>
+<img src="./Littman_1-32_1487.png"/><br/>
+<img src="./Littman_1-32_1488.png"/><br/>
+<img src="./Littman_1-32_1489.png"/><br/>
+<img src="./Littman_1-32_1490.png"/><br/>
+<img src="./Littman_1-32_1491.png"/><br/>
+<img src="./Littman_1-32_1492.png"/><br/>
+<img src="./Littman_1-32_1493.png"/><br/>
+<img src="./Littman_1-32_1494.png"/><br/>
+<img src="./Littman_1-32_1495.png"/><br/>
+<img src="./Littman_1-32_1496.png"/><br/>
+<img src="./Littman_1-32_1497.png"/><br/>
+<img src="./Littman_1-32_1498.png"/><br/>
+<img src="./Littman_1-32_1499.png"/><br/>
+<img src="./Littman_1-32_1500.png"/><br/>
+<img src="./Littman_1-32_1501.png"/><br/>
+<img src="./Littman_1-32_1502.png"/><br/>
+<img src="./Littman_1-32_1503.png"/><br/>
+<img src="./Littman_1-32_1504.png"/><br/>
+<img src="./Littman_1-32_1505.png"/><br/>
+<img src="./Littman_1-32_1506.png"/><br/>
+<img src="./Littman_1-32_1507.png"/><br/>
+<img src="./Littman_1-32_1508.png"/><br/>
+<img src="./Littman_1-32_1509.png"/><br/>
+<img src="./Littman_1-32_1510.png"/><br/>
+<img src="./Littman_1-32_1511.png"/><br/>
+<img src="./Littman_1-32_1512.png"/><br/>
+<img src="./Littman_1-32_1513.png"/><br/>
+<img src="./Littman_1-32_1514.png"/><br/>
+<img src="./Littman_1-32_1515.png"/><br/>
+<img src="./Littman_1-32_1516.png"/><br/>
+<img src="./Littman_1-32_1517.png"/><br/>
+<img src="./Littman_1-32_1518.png"/><br/>
+<img src="./Littman_1-32_1519.png"/><br/>
+<img src="./Littman_1-32_1520.png"/><br/>
+<img src="./Littman_1-32_1521.png"/><br/>
+<img src="./Littman_1-32_1522.png"/><br/>
+<img src="./Littman_1-32_1523.png"/><br/>
+<img src="./Littman_1-32_1524.png"/><br/>
+<img src="./Littman_1-32_1525.png"/><br/>
+<img src="./Littman_1-32_1526.png"/><br/>
+<img src="./Littman_1-32_1527.png"/><br/>
+<img src="./Littman_1-32_1528.png"/><br/>
+<img src="./Littman_1-32_1529.png"/><br/>
+<img src="./Littman_1-32_1530.png"/><br/>
+<img src="./Littman_1-32_1531.png"/><br/>
+<img src="./Littman_1-32_1532.png"/><br/>
+<img src="./Littman_1-32_1533.png"/><br/>
+<img src="./Littman_1-32_1534.png"/><br/>
+<img src="./Littman_1-32_1535.png"/><br/>
+<img src="./Littman_1-32_1536.png"/><br/>
+<img src="./Littman_1-32_1537.png"/><br/>
+<img src="./Littman_1-32_1538.png"/><br/>
+<img src="./Littman_1-32_1539.png"/><br/>
+<img src="./Littman_1-32_1540.png"/><br/>
+<img src="./Littman_1-32_1541.png"/><br/>
+<img src="./Littman_1-32_1542.png"/><br/>
+<img src="./Littman_1-32_1543.png"/><br/>
+<img src="./Littman_1-32_1544.png"/><br/>
+<img src="./Littman_1-32_1545.png"/><br/>
+<img src="./Littman_1-32_1546.png"/><br/>
+<img src="./Littman_1-32_1547.png"/><br/>
+<img src="./Littman_1-32_1548.png"/><br/>
+<img src="./Littman_1-32_1549.png"/><br/>
+<img src="./Littman_1-32_1550.png"/><br/>
+<img src="./Littman_1-32_1551.png"/><br/>
+<img src="./Littman_1-32_1552.png"/><br/>
+<img src="./Littman_1-32_1553.png"/><br/>
+<img src="./Littman_1-32_1554.png"/><br/>
+<img src="./Littman_1-32_1555.png"/><br/>
+<img src="./Littman_1-32_1556.png"/><br/>
+<img src="./Littman_1-32_1557.png"/><br/>
+<img src="./Littman_1-32_1558.png"/><br/>
+<img src="./Littman_1-32_1559.png"/><br/>
+<img src="./Littman_1-32_1560.png"/><br/>
+<img src="./Littman_1-32_1561.png"/><br/>
+<img src="./Littman_1-32_1562.png"/><br/>
+<img src="./Littman_1-32_1563.png"/><br/>
+<img src="./Littman_1-32_1564.png"/><br/>
+<img src="./Littman_1-32_1565.png"/><br/>
+<img src="./Littman_1-32_1566.png"/><br/>
+<img src="./Littman_1-32_1567.png"/><br/>
+<img src="./Littman_1-32_1568.png"/><br/>
+<img src="./Littman_1-32_1569.png"/><br/>
+<img src="./Littman_1-32_1570.png"/><br/>
+<img src="./Littman_1-32_1571.png"/><br/>
+<img src="./Littman_1-32_1572.png"/><br/>
+<img src="./Littman_1-32_1573.png"/><br/>
+<img src="./Littman_1-32_1574.png"/><br/>
+<img src="./Littman_1-32_1575.png"/><br/>
+<img src="./Littman_1-32_1576.png"/><br/>
+<img src="./Littman_1-32_1577.png"/><br/>
+<img src="./Littman_1-32_1578.png"/><br/>
+<img src="./Littman_1-32_1579.png"/><br/>
+<img src="./Littman_1-32_1580.png"/><br/>
+<img src="./Littman_1-32_1581.png"/><br/>
+<img src="./Littman_1-32_1582.png"/><br/>
+<img src="./Littman_1-32_1583.png"/><br/>
+<img src="./Littman_1-32_1584.png"/><br/>
+<img src="./Littman_1-32_1585.png"/><br/>
+<img src="./Littman_1-32_1586.png"/><br/>
+<img src="./Littman_1-32_1587.png"/><br/>
+<img src="./Littman_1-32_1588.png"/><br/>
+<img src="./Littman_1-32_1589.png"/><br/>
+<img src="./Littman_1-32_1590.png"/><br/>
+<img src="./Littman_1-32_1591.png"/><br/>
+<img src="./Littman_1-32_1592.png"/><br/>
+<img src="./Littman_1-32_1593.png"/><br/>
+<img src="./Littman_1-32_1594.png"/><br/>
+<img src="./Littman_1-32_1595.png"/><br/>
+<img src="./Littman_1-32_1596.png"/><br/>
+<img src="./Littman_1-32_1597.png"/><br/>
+<img src="./Littman_1-32_1598.png"/><br/>
+<img src="./Littman_1-32_1599.png"/><br/>
+<img src="./Littman_1-32_1600.png"/><br/>
+<img src="./Littman_1-32_1601.png"/><br/>
+<img src="./Littman_1-32_1602.png"/><br/>
+<img src="./Littman_1-32_1603.png"/><br/>
+<img src="./Littman_1-32_1604.png"/><br/>
+<img src="./Littman_1-32_1605.png"/><br/>
+<img src="./Littman_1-32_1606.png"/><br/>
+<img src="./Littman_1-32_1607.png"/><br/>
+<img src="./Littman_1-32_1608.png"/><br/>
+<img src="./Littman_1-32_1609.png"/><br/>
+<img src="./Littman_1-32_1610.png"/><br/>
+<img src="./Littman_1-32_1611.png"/><br/>
+<img src="./Littman_1-32_1612.png"/><br/>
+<img src="./Littman_1-32_1613.png"/><br/>
+<img src="./Littman_1-32_1614.png"/><br/>
+<img src="./Littman_1-32_1615.png"/><br/>
+<img src="./Littman_1-32_1616.png"/><br/>
+<img src="./Littman_1-32_1617.png"/><br/>
+<img src="./Littman_1-32_1618.png"/><br/>
+<img src="./Littman_1-32_1619.png"/><br/>
+<img src="./Littman_1-32_1620.png"/><br/>
+<img src="./Littman_1-32_1621.png"/><br/>
+<img src="./Littman_1-32_1622.png"/><br/>
+<img src="./Littman_1-32_1623.png"/><br/>
+<img src="./Littman_1-32_1624.png"/><br/>
+<img src="./Littman_1-32_1625.png"/><br/>
+<img src="./Littman_1-32_1626.png"/><br/>
+<img src="./Littman_1-32_1627.png"/><br/>
+<img src="./Littman_1-32_1628.png"/><br/>
+<img src="./Littman_1-32_1629.png"/><br/>
+<img src="./Littman_1-32_1630.png"/><br/>
+<img src="./Littman_1-32_1631.png"/><br/>
+<img src="./Littman_1-32_1632.png"/><br/>
+<img src="./Littman_1-32_1633.png"/><br/>
+<img src="./Littman_1-32_1634.png"/><br/>
+<img src="./Littman_1-32_1635.png"/><br/>
+<img src="./Littman_1-32_1636.png"/><br/>
+<img src="./Littman_1-32_1637.png"/><br/>
+<img src="./Littman_1-32_1638.png"/><br/>
+<img src="./Littman_1-32_1639.png"/><br/>
+<img src="./Littman_1-32_1640.png"/><br/>
+<img src="./Littman_1-32_1641.png"/><br/>
+<img src="./Littman_1-32_1642.png"/><br/>
+<img src="./Littman_1-32_1643.png"/><br/>
+<img src="./Littman_1-32_1644.png"/><br/>
+<img src="./Littman_1-32_1645.png"/><br/>
+<img src="./Littman_1-32_1646.png"/><br/>
+<img src="./Littman_1-32_1647.png"/><br/>
+<img src="./Littman_1-32_1648.png"/><br/>
+<img src="./Littman_1-32_1649.png"/><br/>
+<img src="./Littman_1-32_1650.png"/><br/>
+<img src="./Littman_1-32_1651.png"/><br/>
+<img src="./Littman_1-32_1652.png"/><br/>
+<img src="./Littman_1-32_1653.png"/><br/>
+<img src="./Littman_1-32_1654.png"/><br/>
+<img src="./Littman_1-32_1655.png"/><br/>
+<img src="./Littman_1-32_1656.png"/><br/>
+<img src="./Littman_1-32_1657.png"/><br/>
+<img src="./Littman_1-32_1658.png"/><br/>
+<img src="./Littman_1-32_1659.png"/><br/>
+<img src="./Littman_1-32_1660.png"/><br/>
+<img src="./Littman_1-32_1661.png"/><br/>
+<img src="./Littman_1-32_1662.png"/><br/>
+<img src="./Littman_1-32_1663.png"/><br/>
+<img src="./Littman_1-32_1664.png"/><br/>
+<img src="./Littman_1-32_1665.png"/><br/>
+<img src="./Littman_1-32_1666.png"/><br/>
+<img src="./Littman_1-32_1667.png"/><br/>
+<img src="./Littman_1-32_1668.png"/><br/>
+<img src="./Littman_1-32_1669.png"/><br/>
+<img src="./Littman_1-32_1670.png"/><br/>
+<img src="./Littman_1-32_1671.png"/><br/>
+<img src="./Littman_1-32_1672.png"/><br/>
+<img src="./Littman_1-32_1673.png"/><br/>
+<img src="./Littman_1-32_1674.png"/><br/>
+<img src="./Littman_1-32_1675.png"/><br/>
+<img src="./Littman_1-32_1676.png"/><br/>
+<img src="./Littman_1-32_1677.png"/><br/>
+<img src="./Littman_1-32_1678.png"/><br/>
+<img src="./Littman_1-32_1679.png"/><br/>
+<img src="./Littman_1-32_1680.png"/><br/>
+<img src="./Littman_1-32_1681.png"/><br/>
+<img src="./Littman_1-32_1682.png"/><br/>
+<img src="./Littman_1-32_1683.png"/><br/>
+<img src="./Littman_1-32_1684.png"/><br/>
+<img src="./Littman_1-32_1685.png"/><br/>
+<img src="./Littman_1-32_1686.png"/><br/>
+<img src="./Littman_1-32_1687.png"/><br/>
+<img src="./Littman_1-32_1688.png"/><br/>
+<img src="./Littman_1-32_1689.png"/><br/>
+<img src="./Littman_1-32_1690.png"/><br/>
+<img src="./Littman_1-32_1691.png"/><br/>
+<img src="./Littman_1-32_1692.png"/><br/>
+<img src="./Littman_1-32_1693.png"/><br/>
+<img src="./Littman_1-32_1694.png"/><br/>
+<img src="./Littman_1-32_1695.png"/><br/>
+<img src="./Littman_1-32_1696.png"/><br/>
+<img src="./Littman_1-32_1697.png"/><br/>
+<img src="./Littman_1-32_1698.png"/><br/>
+<img src="./Littman_1-32_1699.png"/><br/>
+<img src="./Littman_1-32_1700.png"/><br/>
+<img src="./Littman_1-32_1701.png"/><br/>
+<img src="./Littman_1-32_1702.png"/><br/>
+<img src="./Littman_1-32_1703.png"/><br/>
+<img src="./Littman_1-32_1704.png"/><br/>
+<img src="./Littman_1-32_1705.png"/><br/>
+<img src="./Littman_1-32_1706.png"/><br/>
+<img src="./Littman_1-32_1707.png"/><br/>
+<img src="./Littman_1-32_1708.png"/><br/>
+<img src="./Littman_1-32_1709.png"/><br/>
+<img src="./Littman_1-32_1710.png"/><br/>
+<img src="./Littman_1-32_1711.png"/><br/>
+<img src="./Littman_1-32_1712.png"/><br/>
+<img src="./Littman_1-32_1713.png"/><br/>
+<img src="./Littman_1-32_1714.png"/><br/>
+<img src="./Littman_1-32_1715.png"/><br/>
+<img src="./Littman_1-32_1716.png"/><br/>
+<img src="./Littman_1-32_1717.png"/><br/>
+<img src="./Littman_1-32_1718.png"/><br/>
+<img src="./Littman_1-32_1719.png"/><br/>
+<img src="./Littman_1-32_1720.png"/><br/>
+<img src="./Littman_1-32_1721.png"/><br/>
+<img src="./Littman_1-32_1722.png"/><br/>
+<img src="./Littman_1-32_1723.png"/><br/>
+<img src="./Littman_1-32_1724.png"/><br/>
+<img src="./Littman_1-32_1725.png"/><br/>
+<img src="./Littman_1-32_1726.png"/><br/>
+<img src="./Littman_1-32_1727.png"/><br/>
+<img src="./Littman_1-32_1728.png"/><br/>
+<img src="./Littman_1-32_1729.png"/><br/>
+<img src="./Littman_1-32_1730.png"/><br/>
+<img src="./Littman_1-32_1731.png"/><br/>
+<img src="./Littman_1-32_1732.png"/><br/>
+<img src="./Littman_1-32_1733.png"/><br/>
+<img src="./Littman_1-32_1734.png"/><br/>
+<img src="./Littman_1-32_1735.png"/><br/>
+<img src="./Littman_1-32_1736.png"/><br/>
+<img src="./Littman_1-32_1737.png"/><br/>
+<img src="./Littman_1-32_1738.png"/><br/>
+<img src="./Littman_1-32_1739.png"/><br/>
+<img src="./Littman_1-32_1740.png"/><br/>
+<img src="./Littman_1-32_1741.png"/><br/>
+<img src="./Littman_1-32_1742.png"/><br/>
+<img src="./Littman_1-32_1743.png"/><br/>
+<img src="./Littman_1-32_1744.png"/><br/>
+<img src="./Littman_1-32_1745.png"/><br/>
+<img src="./Littman_1-32_1746.png"/><br/>
+<img src="./Littman_1-32_1747.png"/><br/>
+<img src="./Littman_1-32_1748.png"/><br/>
+<img src="./Littman_1-32_1749.png"/><br/>
+<img src="./Littman_1-32_1750.png"/><br/>
+<img src="./Littman_1-32_1751.png"/><br/>
+<img src="./Littman_1-32_1752.png"/><br/>
+<img src="./Littman_1-32_1753.png"/><br/>
+<img src="./Littman_1-32_1754.png"/><br/>
+<img src="./Littman_1-32_1755.png"/><br/>
+<img src="./Littman_1-32_1756.png"/><br/>
+<img src="./Littman_1-32_1757.png"/><br/>
+<img src="./Littman_1-32_1758.png"/><br/>
+<img src="./Littman_1-32_1759.png"/><br/>
+<img src="./Littman_1-32_1760.png"/><br/>
+<img src="./Littman_1-32_1761.png"/><br/>
+<img src="./Littman_1-32_1762.png"/><br/>
+<img src="./Littman_1-32_1763.png"/><br/>
+<img src="./Littman_1-32_1764.png"/><br/>
+<img src="./Littman_1-32_1765.png"/><br/>
+<img src="./Littman_1-32_1766.png"/><br/>
+<img src="./Littman_1-32_1767.png"/><br/>
+<img src="./Littman_1-32_1768.png"/><br/>
+<img src="./Littman_1-32_1769.png"/><br/>
+<img src="./Littman_1-32_1770.png"/><br/>
+<img src="./Littman_1-32_1771.png"/><br/>
+<img src="./Littman_1-32_1772.png"/><br/>
+<img src="./Littman_1-32_1773.png"/><br/>
+<img src="./Littman_1-32_1774.png"/><br/>
+<img src="./Littman_1-32_1775.png"/><br/>
+<img src="./Littman_1-32_1776.png"/><br/>
+<img src="./Littman_1-32_1777.png"/><br/>
+<img src="./Littman_1-32_1778.png"/><br/>
+<img src="./Littman_1-32_1779.png"/><br/>
+<img src="./Littman_1-32_1780.png"/><br/>
+<img src="./Littman_1-32_1781.png"/><br/>
+<img src="./Littman_1-32_1782.png"/><br/>
+<img src="./Littman_1-32_1783.png"/><br/>
+<img src="./Littman_1-32_1784.png"/><br/>
+<img src="./Littman_1-32_1785.png"/><br/>
+<img src="./Littman_1-32_1786.png"/><br/>
+<img src="./Littman_1-32_1787.png"/><br/>
+<img src="./Littman_1-32_1788.png"/><br/>
+<img src="./Littman_1-32_1789.png"/><br/>
+<img src="./Littman_1-32_1790.png"/><br/>
+<img src="./Littman_1-32_1791.png"/><br/>
+<img src="./Littman_1-32_1792.png"/><br/>
+<img src="./Littman_1-32_1793.png"/><br/>
+<img src="./Littman_1-32_1794.png"/><br/>
+<img src="./Littman_1-32_1795.png"/><br/>
+<img src="./Littman_1-32_1796.png"/><br/>
+<img src="./Littman_1-32_1797.png"/><br/>
+<img src="./Littman_1-32_1798.png"/><br/>
+<img src="./Littman_1-32_1799.png"/><br/>
+<img src="./Littman_1-32_1800.png"/><br/>
+<img src="./Littman_1-32_1801.png"/><br/>
+<img src="./Littman_1-32_1802.png"/><br/>
+<img src="./Littman_1-32_1803.png"/><br/>
+<img src="./Littman_1-32_1804.png"/><br/>
+<img src="./Littman_1-32_1805.png"/><br/>
+<img src="./Littman_1-32_1806.png"/><br/>
+<img src="./Littman_1-32_1807.png"/><br/>
+<img src="./Littman_1-32_1808.png"/><br/>
+<img src="./Littman_1-32_1809.png"/><br/>
+<img src="./Littman_1-32_1810.png"/><br/>
+<img src="./Littman_1-32_1811.png"/><br/>
+<img src="./Littman_1-32_1812.png"/><br/>
+<img src="./Littman_1-32_1813.png"/><br/>
+<img src="./Littman_1-32_1814.png"/><br/>
+<img src="./Littman_1-32_1815.png"/><br/>
+<img src="./Littman_1-32_1816.png"/><br/>
+<img src="./Littman_1-32_1817.png"/><br/>
+<img src="./Littman_1-32_1818.png"/><br/>
+<img src="./Littman_1-32_1819.png"/><br/>
+<img src="./Littman_1-32_1820.png"/><br/>
+<img src="./Littman_1-32_1821.png"/><br/>
+<img src="./Littman_1-32_1822.png"/><br/>
+<img src="./Littman_1-32_1823.png"/><br/>
+<img src="./Littman_1-32_1824.png"/><br/>
+<img src="./Littman_1-32_1825.png"/><br/>
+<img src="./Littman_1-32_1826.png"/><br/>
+<img src="./Littman_1-32_1827.png"/><br/>
+<img src="./Littman_1-32_1828.png"/><br/>
+<img src="./Littman_1-32_1829.png"/><br/>
+<img src="./Littman_1-32_1830.png"/><br/>
+<img src="./Littman_1-32_1831.png"/><br/>
+<img src="./Littman_1-32_1832.png"/><br/>
+<img src="./Littman_1-32_1833.png"/><br/>
+<img src="./Littman_1-32_1834.png"/><br/>
+<img src="./Littman_1-32_1835.png"/><br/>
+<img src="./Littman_1-32_1836.png"/><br/>
+<img src="./Littman_1-32_1837.png"/><br/>
+<img src="./Littman_1-32_1838.png"/><br/>
+<img src="./Littman_1-32_1839.png"/><br/>
+<img src="./Littman_1-32_1840.png"/><br/>
+<img src="./Littman_1-32_1841.png"/><br/>
+<img src="./Littman_1-32_1842.png"/><br/>
+<img src="./Littman_1-32_1843.png"/><br/>
+<img src="./Littman_1-32_1844.png"/><br/>
+<img src="./Littman_1-32_1845.png"/><br/>
+<img src="./Littman_1-32_1846.png"/><br/>
+<img src="./Littman_1-32_1847.png"/><br/>
+<img src="./Littman_1-32_1848.png"/><br/>
+<img src="./Littman_1-32_1849.png"/><br/>
+<img src="./Littman_1-32_1850.png"/><br/>
+<img src="./Littman_1-32_1851.png"/><br/>
+<img src="./Littman_1-32_1852.png"/><br/>
+<img src="./Littman_1-32_1853.png"/><br/>
+<img src="./Littman_1-32_1854.png"/><br/>
+<img src="./Littman_1-32_1855.png"/><br/>
+<img src="./Littman_1-32_1856.png"/><br/>
+<img src="./Littman_1-32_1857.png"/><br/>
+<img src="./Littman_1-32_1858.png"/><br/>
+<img src="./Littman_1-32_1859.png"/><br/>
+<img src="./Littman_1-32_1860.png"/><br/>
+<img src="./Littman_1-32_1861.png"/><br/>
+<img src="./Littman_1-32_1862.png"/><br/>
+<img src="./Littman_1-32_1863.png"/><br/>
+<img src="./Littman_1-32_1864.png"/><br/>
+<img src="./Littman_1-32_1865.png"/><br/>
+<img src="./Littman_1-32_1866.png"/><br/>
+<img src="./Littman_1-32_1867.png"/><br/>
+<img src="./Littman_1-32_1868.png"/><br/>
+<img src="./Littman_1-32_1869.png"/><br/>
+<img src="./Littman_1-32_1870.png"/><br/>
+<img src="./Littman_1-32_1871.png"/><br/>
+<img src="./Littman_1-32_1872.png"/><br/>
+<img src="./Littman_1-32_1873.png"/><br/>
+<img src="./Littman_1-32_1874.png"/><br/>
+<img src="./Littman_1-32_1875.png"/><br/>
+<img src="./Littman_1-32_1876.png"/><br/>
+<img src="./Littman_1-32_1877.png"/><br/>
+<img src="./Littman_1-32_1878.png"/><br/>
+<img src="./Littman_1-32_1879.png"/><br/>
+<img src="./Littman_1-32_1880.png"/><br/>
+<img src="./Littman_1-32_1881.png"/><br/>
+<img src="./Littman_1-32_1882.png"/><br/>
+<img src="./Littman_1-32_1883.png"/><br/>
+<img src="./Littman_1-32_1884.png"/><br/>
+<img src="./Littman_1-32_1885.png"/><br/>
+<img src="./Littman_1-32_1886.png"/><br/>
+<img src="./Littman_1-32_1887.png"/><br/>
+<img src="./Littman_1-32_1888.png"/><br/>
+<img src="./Littman_1-32_1889.png"/><br/>
+<img src="./Littman_1-32_1890.png"/><br/>
+<img src="./Littman_1-32_1891.png"/><br/>
+<img src="./Littman_1-32_1892.png"/><br/>
+<img src="./Littman_1-32_1893.png"/><br/>
+<img src="./Littman_1-32_1894.png"/><br/>
+<img src="./Littman_1-32_1895.png"/><br/>
+<img src="./Littman_1-32_1896.png"/><br/>
+<img src="./Littman_1-32_1897.png"/><br/>
+<img src="./Littman_1-32_1898.png"/><br/>
+<img src="./Littman_1-32_1899.png"/><br/>
+<img src="./Littman_1-32_1900.png"/><br/>
+<img src="./Littman_1-32_1901.png"/><br/>
+<img src="./Littman_1-32_1902.png"/><br/>
+<img src="./Littman_1-32_1903.png"/><br/>
+<img src="./Littman_1-32_1904.png"/><br/>
+<img src="./Littman_1-32_1905.png"/><br/>
+<img src="./Littman_1-32_1906.png"/><br/>
+<img src="./Littman_1-32_1907.png"/><br/>
+<img src="./Littman_1-32_1908.png"/><br/>
+<img src="./Littman_1-32_1909.png"/><br/>
+<img src="./Littman_1-32_1910.png"/><br/>
+<img src="./Littman_1-32_1911.png"/><br/>
+<img src="./Littman_1-32_1912.png"/><br/>
+<img src="./Littman_1-32_1913.png"/><br/>
+<img src="./Littman_1-32_1914.png"/><br/>
+<img src="./Littman_1-32_1915.png"/><br/>
+<img src="./Littman_1-32_1916.png"/><br/>
+<img src="./Littman_1-32_1917.png"/><br/>
+<img src="./Littman_1-32_1918.png"/><br/>
+<img src="./Littman_1-32_1919.png"/><br/>
+<img src="./Littman_1-32_1920.png"/><br/>
+<img src="./Littman_1-32_1921.png"/><br/>
+<img src="./Littman_1-32_1922.png"/><br/>
+<img src="./Littman_1-32_1923.png"/><br/>
+<img src="./Littman_1-32_1924.png"/><br/>
+<img src="./Littman_1-32_1925.png"/><br/>
+<img src="./Littman_1-32_1926.png"/><br/>
+<img src="./Littman_1-32_1927.png"/><br/>
+<img src="./Littman_1-32_1928.png"/><br/>
+<img src="./Littman_1-32_1929.png"/><br/>
+<img src="./Littman_1-32_1930.png"/><br/>
+<img src="./Littman_1-32_1931.png"/><br/>
+<img src="./Littman_1-32_1932.png"/><br/>
+<img src="./Littman_1-32_1933.png"/><br/>
+<img src="./Littman_1-32_1934.png"/><br/>
+<img src="./Littman_1-32_1935.png"/><br/>
+<img src="./Littman_1-32_1936.png"/><br/>
+<img src="./Littman_1-32_1937.png"/><br/>
+<img src="./Littman_1-32_1938.png"/><br/>
+<img src="./Littman_1-32_1939.png"/><br/>
+<img src="./Littman_1-32_1940.png"/><br/>
+<img src="./Littman_1-32_1941.png"/><br/>
+<img src="./Littman_1-32_1942.png"/><br/>
+<img src="./Littman_1-32_1943.png"/><br/>
+<img src="./Littman_1-32_1944.png"/><br/>
+<img src="./Littman_1-32_1945.png"/><br/>
+<img src="./Littman_1-32_1946.png"/><br/>
+<img src="./Littman_1-32_1947.png"/><br/>
+<img src="./Littman_1-32_1948.png"/><br/>
+<img src="./Littman_1-32_1949.png"/><br/>
+<img src="./Littman_1-32_1950.png"/><br/>
+<img src="./Littman_1-32_1951.png"/><br/>
+<img src="./Littman_1-32_1952.png"/><br/>
+<img src="./Littman_1-32_1953.png"/><br/>
+<img src="./Littman_1-32_1954.png"/><br/>
+<img src="./Littman_1-32_1955.png"/><br/>
+<img src="./Littman_1-32_1956.png"/><br/>
+<img src="./Littman_1-32_1957.png"/><br/>
+<img src="./Littman_1-32_1958.png"/><br/>
+<img src="./Littman_1-32_1959.png"/><br/>
+<img src="./Littman_1-32_1960.png"/><br/>
+<img src="./Littman_1-32_1961.png"/><br/>
+<img src="./Littman_1-32_1962.png"/><br/>
+<img src="./Littman_1-32_1963.png"/><br/>
+<img src="./Littman_1-32_1964.png"/><br/>
+<img src="./Littman_1-32_1965.png"/><br/>
+<img src="./Littman_1-32_1966.png"/><br/>
+<img src="./Littman_1-32_1967.png"/><br/>
+<img src="./Littman_1-32_1968.png"/><br/>
+<img src="./Littman_1-32_1969.png"/><br/>
+<img src="./Littman_1-32_1970.png"/><br/>
+<img src="./Littman_1-32_1971.png"/><br/>
+<img src="./Littman_1-32_1972.png"/><br/>
+<img src="./Littman_1-32_1973.png"/><br/>
+<img src="./Littman_1-32_1974.png"/><br/>
+<img src="./Littman_1-32_1975.png"/><br/>
+<img src="./Littman_1-32_1976.png"/><br/>
+<img src="./Littman_1-32_1977.png"/><br/>
+<img src="./Littman_1-32_1978.png"/><br/>
+<img src="./Littman_1-32_1979.png"/><br/>
+<img src="./Littman_1-32_1980.png"/><br/>
+<img src="./Littman_1-32_1981.png"/><br/>
+<img src="./Littman_1-32_1982.png"/><br/>
+<img src="./Littman_1-32_1983.png"/><br/>
+<img src="./Littman_1-32_1984.png"/><br/>
+<img src="./Littman_1-32_1985.png"/><br/>
+<img src="./Littman_1-32_1986.png"/><br/>
+<img src="./Littman_1-32_1987.png"/><br/>
+<img src="./Littman_1-32_1988.png"/><br/>
+<img src="./Littman_1-32_1989.png"/><br/>
+<img src="./Littman_1-32_1990.png"/><br/>
+<img src="./Littman_1-32_1991.png"/><br/>
+<img src="./Littman_1-32_1992.png"/><br/>
+<img src="./Littman_1-32_1993.png"/><br/>
+<img src="./Littman_1-32_1994.png"/><br/>
+<img src="./Littman_1-32_1995.png"/><br/>
+<img src="./Littman_1-32_1996.png"/><br/>
+<img src="./Littman_1-32_1997.png"/><br/>
+<img src="./Littman_1-32_1998.png"/><br/>
+<img src="./Littman_1-32_1999.png"/><br/>
+<img src="./Littman_1-32_2000.png"/><br/>
+<img src="./Littman_1-32_2001.png"/><br/>
+<img src="./Littman_1-32_2002.png"/><br/>
+<img src="./Littman_1-32_2003.png"/><br/>
+<img src="./Littman_1-32_2004.png"/><br/>
+<img src="./Littman_1-32_2005.png"/><br/>
+<img src="./Littman_1-32_2006.png"/><br/>
+<img src="./Littman_1-32_2007.png"/><br/>
+<img src="./Littman_1-32_2008.png"/><br/>
+<img src="./Littman_1-32_2009.png"/><br/>
+<img src="./Littman_1-32_2010.png"/><br/>
+<img src="./Littman_1-32_2011.png"/><br/>
+<img src="./Littman_1-32_2012.png"/><br/>
+<img src="./Littman_1-32_2013.png"/><br/>
+<img src="./Littman_1-32_2014.png"/><br/>
+<img src="./Littman_1-32_2015.png"/><br/>
+<img src="./Littman_1-32_2016.png"/><br/>
+<img src="./Littman_1-32_2017.png"/><br/>
+<img src="./Littman_1-32_2018.png"/><br/>
+<img src="./Littman_1-32_2019.png"/><br/>
+<img src="./Littman_1-32_2020.png"/><br/>
+<img src="./Littman_1-32_2021.png"/><br/>
+<img src="./Littman_1-32_2022.png"/><br/>
+<img src="./Littman_1-32_2023.png"/><br/>
+<img src="./Littman_1-32_2024.png"/><br/>
+<img src="./Littman_1-32_2025.png"/><br/>
+<img src="./Littman_1-32_2026.png"/><br/>
+<img src="./Littman_1-32_2027.png"/><br/>
+<img src="./Littman_1-32_2028.png"/><br/>
+<img src="./Littman_1-32_2029.png"/><br/>
+<img src="./Littman_1-32_2030.png"/><br/>
+<img src="./Littman_1-32_2031.png"/><br/>
+<img src="./Littman_1-32_2032.png"/><br/>
+<img src="./Littman_1-32_2033.png"/><br/>
+<img src="./Littman_1-32_2034.png"/><br/>
+<img src="./Littman_1-32_2035.png"/><br/>
+<img src="./Littman_1-32_2036.png"/><br/>
+<img src="./Littman_1-32_2037.png"/><br/>
+<img src="./Littman_1-32_2038.png"/><br/>
+<img src="./Littman_1-32_2039.png"/><br/>
+<img src="./Littman_1-32_2040.png"/><br/>
+<img src="./Littman_1-32_2041.png"/><br/>
+<img src="./Littman_1-32_2042.png"/><br/>
+<img src="./Littman_1-32_2043.png"/><br/>
+<img src="./Littman_1-32_2044.png"/><br/>
+<img src="./Littman_1-32_2045.png"/><br/>
+<img src="./Littman_1-32_2046.png"/><br/>
+<img src="./Littman_1-32_2047.png"/><br/>
+<img src="./Littman_1-32_2048.png"/><br/>
+<img src="./Littman_1-32_2049.png"/><br/>
+<img src="./Littman_1-32_2050.png"/><br/>
+<img src="./Littman_1-32_2051.png"/><br/>
+<img src="./Littman_1-32_2052.png"/><br/>
+<img src="./Littman_1-32_2053.png"/><br/>
+<img src="./Littman_1-32_2054.png"/><br/>
+<img src="./Littman_1-32_2055.png"/><br/>
+<img src="./Littman_1-32_2056.png"/><br/>
+<img src="./Littman_1-32_2057.png"/><br/>
+<img src="./Littman_1-32_2058.png"/><br/>
+<img src="./Littman_1-32_2059.png"/><br/>
+<img src="./Littman_1-32_2060.png"/><br/>
+<img src="./Littman_1-32_2061.png"/><br/>
+<img src="./Littman_1-32_2062.png"/><br/>
+<img src="./Littman_1-32_2063.png"/><br/>
+<img src="./Littman_1-32_2064.png"/><br/>
+<img src="./Littman_1-32_2065.png"/><br/>
+<img src="./Littman_1-32_2066.png"/><br/>
+<img src="./Littman_1-32_2067.png"/><br/>
+<img src="./Littman_1-32_2068.png"/><br/>
+<img src="./Littman_1-32_2069.png"/><br/>
+<img src="./Littman_1-32_2070.png"/><br/>
+<img src="./Littman_1-32_2071.png"/><br/>
+<img src="./Littman_1-32_2072.png"/><br/>
+<img src="./Littman_1-32_2073.png"/><br/>
+<img src="./Littman_1-32_2074.png"/><br/>
+<img src="./Littman_1-32_2075.png"/><br/>
+<img src="./Littman_1-32_2076.png"/><br/>
+<img src="./Littman_1-32_2077.png"/><br/>
+<img src="./Littman_1-32_2078.png"/><br/>
+<img src="./Littman_1-32_2079.png"/><br/>
+<img src="./Littman_1-32_2080.png"/><br/>
+<img src="./Littman_1-32_2081.png"/><br/>
+<img src="./Littman_1-32_2082.png"/><br/>
+<img src="./Littman_1-32_2083.png"/><br/>
+<img src="./Littman_1-32_2084.png"/><br/>
+<img src="./Littman_1-32_2085.png"/><br/>
+<img src="./Littman_1-32_2086.png"/><br/>
+<img src="./Littman_1-32_2087.png"/><br/>
+<img src="./Littman_1-32_2088.png"/><br/>
+<img src="./Littman_1-32_2089.png"/><br/>
+<img src="./Littman_1-32_2090.png"/><br/>
+<img src="./Littman_1-32_2091.png"/><br/>
+<img src="./Littman_1-32_2092.png"/><br/>
+<img src="./Littman_1-32_2093.png"/><br/>
+<img src="./Littman_1-32_2094.png"/><br/>
+<img src="./Littman_1-32_2095.png"/><br/>
+<img src="./Littman_1-32_2096.png"/><br/>
+<img src="./Littman_1-32_2097.png"/><br/>
+<img src="./Littman_1-32_2098.png"/><br/>
+<img src="./Littman_1-32_2099.png"/><br/>
+<img src="./Littman_1-32_2100.png"/><br/>
+<img src="./Littman_1-32_2101.png"/><br/>
+<img src="./Littman_1-32_2102.png"/><br/>
+<img src="./Littman_1-32_2103.png"/><br/>
+<img src="./Littman_1-32_2104.png"/><br/>
+<img src="./Littman_1-32_2105.png"/><br/>
+<img src="./Littman_1-32_2106.png"/><br/>
+<img src="./Littman_1-32_2107.png"/><br/>
+<img src="./Littman_1-32_2108.png"/><br/>
+<img src="./Littman_1-32_2109.png"/><br/>
+<img src="./Littman_1-32_2110.png"/><br/>
+<img src="./Littman_1-32_2111.png"/><br/>
+<img src="./Littman_1-32_2112.png"/><br/>
+<img src="./Littman_1-32_2113.png"/><br/>
+<img src="./Littman_1-32_2114.png"/><br/>
+<img src="./Littman_1-32_2115.png"/><br/>
+<img src="./Littman_1-32_2116.png"/><br/>
+<img src="./Littman_1-32_2117.png"/><br/>
+<img src="./Littman_1-32_2118.png"/><br/>
+<img src="./Littman_1-32_2119.png"/><br/>
+<img src="./Littman_1-32_2120.png"/><br/>
+<img src="./Littman_1-32_2121.png"/><br/>
+<img src="./Littman_1-32_2122.png"/><br/>
+<img src="./Littman_1-32_2123.png"/><br/>
+<img src="./Littman_1-32_2124.png"/><br/>
+<img src="./Littman_1-32_2125.png"/><br/>
+<img src="./Littman_1-32_2126.png"/><br/>
+<img src="./Littman_1-32_2127.png"/><br/>
+<img src="./Littman_1-32_2128.png"/><br/>
+<img src="./Littman_1-32_2129.png"/><br/>
+<img src="./Littman_1-32_2130.png"/><br/>
+<img src="./Littman_1-32_2131.png"/><br/>
+<img src="./Littman_1-32_2132.png"/><br/>
+<img src="./Littman_1-32_2133.png"/><br/>
+<img src="./Littman_1-32_2134.png"/><br/>
+<img src="./Littman_1-32_2135.png"/><br/>
+<img src="./Littman_1-32_2136.png"/><br/>
+<img src="./Littman_1-32_2137.png"/><br/>
+<img src="./Littman_1-32_2138.png"/><br/>
+<img src="./Littman_1-32_2139.png"/><br/>
+<img src="./Littman_1-32_2140.png"/><br/>
+<img src="./Littman_1-32_2141.png"/><br/>
+<img src="./Littman_1-32_2142.png"/><br/>
+<img src="./Littman_1-32_2143.png"/><br/>
+<img src="./Littman_1-32_2144.png"/><br/>
+<img src="./Littman_1-32_2145.png"/><br/>
+<img src="./Littman_1-32_2146.png"/><br/>
+<img src="./Littman_1-32_2147.png"/><br/>
+<img src="./Littman_1-32_2148.png"/><br/>
+<img src="./Littman_1-32_2149.png"/><br/>
+<img src="./Littman_1-32_2150.png"/><br/>
+<img src="./Littman_1-32_2151.png"/><br/>
+<img src="./Littman_1-32_2152.png"/><br/>
+<img src="./Littman_1-32_2153.png"/><br/>
+<img src="./Littman_1-32_2154.png"/><br/>
+<img src="./Littman_1-32_2155.png"/><br/>
+<img src="./Littman_1-32_2156.png"/><br/>
+<img src="./Littman_1-32_2157.png"/><br/>
+<img src="./Littman_1-32_2158.png"/><br/>
+<img src="./Littman_1-32_2159.png"/><br/>
+<img src="./Littman_1-32_2160.png"/><br/>
+<img src="./Littman_1-32_2161.png"/><br/>
+<img src="./Littman_1-32_2162.png"/><br/>
+<img src="./Littman_1-32_2163.png"/><br/>
+<img src="./Littman_1-32_2164.png"/><br/>
+<img src="./Littman_1-32_2165.png"/><br/>
+<img src="./Littman_1-32_2166.png"/><br/>
+<img src="./Littman_1-32_2167.png"/><br/>
+<img src="./Littman_1-32_2168.png"/><br/>
+<img src="./Littman_1-32_2169.png"/><br/>
+<img src="./Littman_1-32_2170.png"/><br/>
+<img src="./Littman_1-32_2171.png"/><br/>
+<img src="./Littman_1-32_2172.png"/><br/>
+<img src="./Littman_1-32_2173.png"/><br/>
+<img src="./Littman_1-32_2174.png"/><br/>
+<img src="./Littman_1-32_2175.png"/><br/>
+<img src="./Littman_1-32_2176.png"/><br/>
+<img src="./Littman_1-32_2177.png"/><br/>
+<img src="./Littman_1-32_2178.png"/><br/>
+<img src="./Littman_1-32_2179.png"/><br/>
+<img src="./Littman_1-32_2180.png"/><br/>
+<img src="./Littman_1-32_2181.png"/><br/>
+<img src="./Littman_1-32_2182.png"/><br/>
+<img src="./Littman_1-32_2183.png"/><br/>
+<img src="./Littman_1-32_2184.png"/><br/>
+<img src="./Littman_1-32_2185.png"/><br/>
+<img src="./Littman_1-32_2186.png"/><br/>
+<img src="./Littman_1-32_2187.png"/><br/>
+<img src="./Littman_1-32_2188.png"/><br/>
+<img src="./Littman_1-32_2189.png"/><br/>
+<img src="./Littman_1-32_2190.png"/><br/>
+<img src="./Littman_1-32_2191.png"/><br/>
+<img src="./Littman_1-32_2192.png"/><br/>
+<img src="./Littman_1-32_2193.png"/><br/>
+<img src="./Littman_1-32_2194.png"/><br/>
+<img src="./Littman_1-32_2195.png"/><br/>
+<img src="./Littman_1-32_2196.png"/><br/>
+<img src="./Littman_1-32_2197.png"/><br/>
+<img src="./Littman_1-32_2198.png"/><br/>
+<img src="./Littman_1-32_2199.png"/><br/>
+<img src="./Littman_1-32_2200.png"/><br/>
+<img src="./Littman_1-32_2201.png"/><br/>
+<img src="./Littman_1-32_2202.png"/><br/>
+<img src="./Littman_1-32_2203.png"/><br/>
+<img src="./Littman_1-32_2204.png"/><br/>
+<img src="./Littman_1-32_2205.png"/><br/>
+<img src="./Littman_1-32_2206.png"/><br/>
+<img src="./Littman_1-32_2207.png"/><br/>
+<img src="./Littman_1-32_2208.png"/><br/>
+<img src="./Littman_1-32_2209.png"/><br/>
+<img src="./Littman_1-32_2210.png"/><br/>
+<img src="./Littman_1-32_2211.png"/><br/>
+<img src="./Littman_1-32_2212.png"/><br/>
+<img src="./Littman_1-32_2213.png"/><br/>
+<img src="./Littman_1-32_2214.png"/><br/>
+<img src="./Littman_1-32_2215.png"/><br/>
+<img src="./Littman_1-32_2216.png"/><br/>
+<img src="./Littman_1-32_2217.png"/><br/>
+<img src="./Littman_1-32_2218.png"/><br/>
+<img src="./Littman_1-32_2219.png"/><br/>
+<img src="./Littman_1-32_2220.png"/><br/>
+<img src="./Littman_1-32_2221.png"/><br/>
+<img src="./Littman_1-32_2222.png"/><br/>
+<img src="./Littman_1-32_2223.png"/><br/>
+<img src="./Littman_1-32_2224.png"/><br/>
+<img src="./Littman_1-32_2225.png"/><br/>
+<img src="./Littman_1-32_2226.png"/><br/>
+<img src="./Littman_1-32_2227.png"/><br/>
+<img src="./Littman_1-32_2228.png"/><br/>
+<img src="./Littman_1-32_2229.png"/><br/>
+<img src="./Littman_1-32_2230.png"/><br/>
+<img src="./Littman_1-32_2231.png"/><br/>
+<img src="./Littman_1-32_2232.png"/><br/>
+<img src="./Littman_1-32_2233.png"/><br/>
+<img src="./Littman_1-32_2234.png"/><br/>
+<img src="./Littman_1-32_2235.png"/><br/>
+<img src="./Littman_1-32_2236.png"/><br/>
+<img src="./Littman_1-32_2237.png"/><br/>
+<img src="./Littman_1-32_2238.png"/><br/>
+<img src="./Littman_1-32_2239.png"/><br/>
+<img src="./Littman_1-32_2240.png"/><br/>
+<img src="./Littman_1-32_2241.png"/><br/>
+<img src="./Littman_1-32_2242.png"/><br/>
+<img src="./Littman_1-32_2243.png"/><br/>
+<img src="./Littman_1-32_2244.png"/><br/>
+<img src="./Littman_1-32_2245.png"/><br/>
+<img src="./Littman_1-32_2246.png"/><br/>
+<img src="./Littman_1-32_2247.png"/><br/>
+<img src="./Littman_1-32_2248.png"/><br/>
+<img src="./Littman_1-32_2249.png"/><br/>
+<img src="./Littman_1-32_2250.png"/><br/>
+<img src="./Littman_1-32_2251.png"/><br/>
+<img src="./Littman_1-32_2252.png"/><br/>
+<img src="./Littman_1-32_2253.png"/><br/>
+<img src="./Littman_1-32_2254.png"/><br/>
+<img src="./Littman_1-32_2255.png"/><br/>
+<img src="./Littman_1-32_2256.png"/><br/>
+<img src="./Littman_1-32_2257.png"/><br/>
+<img src="./Littman_1-32_2258.png"/><br/>
+<img src="./Littman_1-32_2259.png"/><br/>
+<img src="./Littman_1-32_2260.png"/><br/>
+<img src="./Littman_1-32_2261.png"/><br/>
+<img src="./Littman_1-32_2262.png"/><br/>
+<img src="./Littman_1-32_2263.png"/><br/>
+<img src="./Littman_1-32_2264.png"/><br/>
+<img src="./Littman_1-32_2265.png"/><br/>
+<img src="./Littman_1-32_2266.png"/><br/>
+<img src="./Littman_1-32_2267.png"/><br/>
+<img src="./Littman_1-32_2268.png"/><br/>
+<img src="./Littman_1-32_2269.png"/><br/>
+<img src="./Littman_1-32_2270.png"/><br/>
+<img src="./Littman_1-32_2271.png"/><br/>
+<img src="./Littman_1-32_2272.png"/><br/>
+<img src="./Littman_1-32_2273.png"/><br/>
+<img src="./Littman_1-32_2274.png"/><br/>
+<img src="./Littman_1-32_2275.png"/><br/>
+<img src="./Littman_1-32_2276.png"/><br/>
+<img src="./Littman_1-32_2277.png"/><br/>
+<img src="./Littman_1-32_2278.png"/><br/>
+<img src="./Littman_1-32_2279.png"/><br/>
+<img src="./Littman_1-32_2280.png"/><br/>
+<img src="./Littman_1-32_2281.png"/><br/>
+<img src="./Littman_1-32_2282.png"/><br/>
+<img src="./Littman_1-32_2283.png"/><br/>
+<img src="./Littman_1-32_2284.png"/><br/>
+<img src="./Littman_1-32_2285.png"/><br/>
+<img src="./Littman_1-32_2286.png"/><br/>
+<img src="./Littman_1-32_2287.png"/><br/>
+<img src="./Littman_1-32_2288.png"/><br/>
+<img src="./Littman_1-32_2289.png"/><br/>
+<img src="./Littman_1-32_2290.png"/><br/>
+<img src="./Littman_1-32_2291.png"/><br/>
+<img src="./Littman_1-32_2292.png"/><br/>
+<img src="./Littman_1-32_2293.png"/><br/>
+<img src="./Littman_1-32_2294.png"/><br/>
+<img src="./Littman_1-32_2295.png"/><br/>
+<img src="./Littman_1-32_2296.png"/><br/>
+<img src="./Littman_1-32_2297.png"/><br/>
+<img src="./Littman_1-32_2298.png"/><br/>
+<img src="./Littman_1-32_2299.png"/><br/>
+<img src="./Littman_1-32_2300.png"/><br/>
+<img src="./Littman_1-32_2301.png"/><br/>
+<img src="./Littman_1-32_2302.png"/><br/>
+<img src="./Littman_1-32_2303.png"/><br/>
+<img src="./Littman_1-32_2304.png"/><br/>
+<img src="./Littman_1-32_2305.png"/><br/>
+<img src="./Littman_1-32_2306.png"/><br/>
+<img src="./Littman_1-32_2307.png"/><br/>
+<img src="./Littman_1-32_2308.png"/><br/>
+<img src="./Littman_1-32_2309.png"/><br/>
+<img src="./Littman_1-32_2310.png"/><br/>
+<img src="./Littman_1-32_2311.png"/><br/>
+<img src="./Littman_1-32_2312.png"/><br/>
+<img src="./Littman_1-32_2313.png"/><br/>
+<img src="./Littman_1-32_2314.png"/><br/>
+<img src="./Littman_1-32_2315.png"/><br/>
+<img src="./Littman_1-32_2316.png"/><br/>
+<img src="./Littman_1-32_2317.png"/><br/>
+<img src="./Littman_1-32_2318.png"/><br/>
+<img src="./Littman_1-32_2319.png"/><br/>
+<img src="./Littman_1-32_2320.png"/><br/>
+<img src="./Littman_1-32_2321.png"/><br/>
+<img src="./Littman_1-32_2322.png"/><br/>
+<img src="./Littman_1-32_2323.png"/><br/>
+<img src="./Littman_1-32_2324.png"/><br/>
+<img src="./Littman_1-32_2325.png"/><br/>
+<img src="./Littman_1-32_2326.png"/><br/>
+<img src="./Littman_1-32_2327.png"/><br/>
+<img src="./Littman_1-32_2328.png"/><br/>
+<img src="./Littman_1-32_2329.png"/><br/>
+<img src="./Littman_1-32_2330.png"/><br/>
+<img src="./Littman_1-32_2331.png"/><br/>
+<img src="./Littman_1-32_2332.png"/><br/>
+<img src="./Littman_1-32_2333.png"/><br/>
+<img src="./Littman_1-32_2334.png"/><br/>
+<img src="./Littman_1-32_2335.png"/><br/>
+<img src="./Littman_1-32_2336.png"/><br/>
+<img src="./Littman_1-32_2337.png"/><br/>
+<img src="./Littman_1-32_2338.png"/><br/>
+<img src="./Littman_1-32_2339.png"/><br/>
+<img src="./Littman_1-32_2340.png"/><br/>
+<img src="./Littman_1-32_2341.png"/><br/>
+<img src="./Littman_1-32_2342.png"/><br/>
+<img src="./Littman_1-32_2343.png"/><br/>
+<img src="./Littman_1-32_2344.png"/><br/>
+<img src="./Littman_1-32_2345.png"/><br/>
+<img src="./Littman_1-32_2346.png"/><br/>
+<img src="./Littman_1-32_2347.png"/><br/>
+<img src="./Littman_1-32_2348.png"/><br/>
+<img src="./Littman_1-32_2349.png"/><br/>
+<img src="./Littman_1-32_2350.png"/><br/>
+<img src="./Littman_1-32_2351.png"/><br/>
+<img src="./Littman_1-32_2352.png"/><br/>
+<img src="./Littman_1-32_2353.png"/><br/>
+<img src="./Littman_1-32_2354.png"/><br/>
+<img src="./Littman_1-32_2355.png"/><br/>
+<img src="./Littman_1-32_2356.png"/><br/>
+<img src="./Littman_1-32_2357.png"/><br/>
+<img src="./Littman_1-32_2358.png"/><br/>
+<img src="./Littman_1-32_2359.png"/><br/>
+<img src="./Littman_1-32_2360.png"/><br/>
+<img src="./Littman_1-32_2361.png"/><br/>
+<img src="./Littman_1-32_2362.png"/><br/>
+<img src="./Littman_1-32_2363.png"/><br/>
+<img src="./Littman_1-32_2364.png"/><br/>
+<img src="./Littman_1-32_2365.png"/><br/>
+<img src="./Littman_1-32_2366.png"/><br/>
+<img src="./Littman_1-32_2367.png"/><br/>
+<img src="./Littman_1-32_2368.png"/><br/>
+<img src="./Littman_1-32_2369.png"/><br/>
+<img src="./Littman_1-32_2370.png"/><br/>
+<img src="./Littman_1-32_2371.png"/><br/>
+<img src="./Littman_1-32_2372.png"/><br/>
+<img src="./Littman_1-32_2373.png"/><br/>
+<img src="./Littman_1-32_2374.png"/><br/>
+<img src="./Littman_1-32_2375.png"/><br/>
+<img src="./Littman_1-32_2376.png"/><br/>
+<img src="./Littman_1-32_2377.png"/><br/>
+<img src="./Littman_1-32_2378.png"/><br/>
+<img src="./Littman_1-32_2379.png"/><br/>
+<img src="./Littman_1-32_2380.png"/><br/>
+<img src="./Littman_1-32_2381.png"/><br/>
+<img src="./Littman_1-32_2382.png"/><br/>
+<img src="./Littman_1-32_2383.png"/><br/>
+<img src="./Littman_1-32_2384.png"/><br/>
+<img src="./Littman_1-32_2385.png"/><br/>
+<img src="./Littman_1-32_2386.png"/><br/>
+<img src="./Littman_1-32_2387.png"/><br/>
+<img src="./Littman_1-32_2388.png"/><br/>
+<img src="./Littman_1-32_2389.png"/><br/>
+<img src="./Littman_1-32_2390.png"/><br/>
+<img src="./Littman_1-32_2391.png"/><br/>
+<img src="./Littman_1-32_2392.png"/><br/>
+<img src="./Littman_1-32_2393.png"/><br/>
+<img src="./Littman_1-32_2394.png"/><br/>
+<img src="./Littman_1-32_2395.png"/><br/>
+<img src="./Littman_1-32_2396.png"/><br/>
+<img src="./Littman_1-32_2397.png"/><br/>
+<img src="./Littman_1-32_2398.png"/><br/>
+<img src="./Littman_1-32_2399.png"/><br/>
+<img src="./Littman_1-32_2400.png"/><br/>
+<img src="./Littman_1-32_2401.png"/><br/>
+<img src="./Littman_1-32_2402.png"/><br/>
+<img src="./Littman_1-32_2403.png"/><br/>
+<img src="./Littman_1-32_2404.png"/><br/>
+<img src="./Littman_1-32_2405.png"/><br/>
+<img src="./Littman_1-32_2406.png"/><br/>
+<img src="./Littman_1-32_2407.png"/><br/>
+<img src="./Littman_1-32_2408.png"/><br/>
+<img src="./Littman_1-32_2409.png"/><br/>
+<img src="./Littman_1-32_2410.png"/><br/>
+<img src="./Littman_1-32_2411.png"/><br/>
+<img src="./Littman_1-32_2412.png"/><br/>
+<img src="./Littman_1-32_2413.png"/><br/>
+<img src="./Littman_1-32_2414.png"/><br/>
+<img src="./Littman_1-32_2415.png"/><br/>
+<img src="./Littman_1-32_2416.png"/><br/>
+<img src="./Littman_1-32_2417.png"/><br/>
+<img src="./Littman_1-32_2418.png"/><br/>
+<img src="./Littman_1-32_2419.png"/><br/>
+<img src="./Littman_1-32_2420.png"/><br/>
+<img src="./Littman_1-32_2421.png"/><br/>
+<img src="./Littman_1-32_2422.png"/><br/>
+<img src="./Littman_1-32_2423.png"/><br/>
+<img src="./Littman_1-32_2424.png"/><br/>
+<img src="./Littman_1-32_2425.png"/><br/>
+<img src="./Littman_1-32_2426.png"/><br/>
+<img src="./Littman_1-32_2427.png"/><br/>
+<img src="./Littman_1-32_2428.png"/><br/>
+<img src="./Littman_1-32_2429.png"/><br/>
+<img src="./Littman_1-32_2430.png"/><br/>
+<img src="./Littman_1-32_2431.png"/><br/>
+<img src="./Littman_1-32_2432.png"/><br/>
+<img src="./Littman_1-32_2433.png"/><br/>
+<img src="./Littman_1-32_2434.png"/><br/>
+<img src="./Littman_1-32_2435.png"/><br/>
+<img src="./Littman_1-32_2436.png"/><br/>
+<img src="./Littman_1-32_2437.png"/><br/>
+<img src="./Littman_1-32_2438.png"/><br/>
+<img src="./Littman_1-32_2439.png"/><br/>
+<img src="./Littman_1-32_2440.png"/><br/>
+<img src="./Littman_1-32_2441.png"/><br/>
+<img src="./Littman_1-32_2442.png"/><br/>
+<img src="./Littman_1-32_2443.png"/><br/>
+<img src="./Littman_1-32_2444.png"/><br/>
+<img src="./Littman_1-32_2445.png"/><br/>
+<img src="./Littman_1-32_2446.png"/><br/>
+<img src="./Littman_1-32_2447.png"/><br/>
+<img src="./Littman_1-32_2448.png"/><br/>
+<img src="./Littman_1-32_2449.png"/><br/>
+<img src="./Littman_1-32_2450.png"/><br/>
+<img src="./Littman_1-32_2451.png"/><br/>
+<img src="./Littman_1-32_2452.png"/><br/>
+<img src="./Littman_1-32_2453.png"/><br/>
+<img src="./Littman_1-32_2454.png"/><br/>
+<img src="./Littman_1-32_2455.png"/><br/>
+<img src="./Littman_1-32_2456.png"/><br/>
+<img src="./Littman_1-32_2457.png"/><br/>
+<img src="./Littman_1-32_2458.png"/><br/>
+<img src="./Littman_1-32_2459.png"/><br/>
+<img src="./Littman_1-32_2460.png"/><br/>
+<img src="./Littman_1-32_2461.png"/><br/>
+<img src="./Littman_1-32_2462.png"/><br/>
+<img src="./Littman_1-32_2463.png"/><br/>
+<img src="./Littman_1-32_2464.png"/><br/>
+<img src="./Littman_1-32_2465.png"/><br/>
+<img src="./Littman_1-32_2466.png"/><br/>
+<img src="./Littman_1-32_2467.png"/><br/>
+<img src="./Littman_1-32_2468.png"/><br/>
+<img src="./Littman_1-32_2469.png"/><br/>
+<img src="./Littman_1-32_2470.png"/><br/>
+<img src="./Littman_1-32_2471.png"/><br/>
+<img src="./Littman_1-32_2472.png"/><br/>
+<img src="./Littman_1-32_2473.png"/><br/>
+<img src="./Littman_1-32_2474.png"/><br/>
+<img src="./Littman_1-32_2475.png"/><br/>
+<img src="./Littman_1-32_2476.png"/><br/>
+<img src="./Littman_1-32_2477.png"/><br/>
+<img src="./Littman_1-32_2478.png"/><br/>
+<img src="./Littman_1-32_2479.png"/><br/>
+<img src="./Littman_1-32_2480.png"/><br/>
+<img src="./Littman_1-32_2481.png"/><br/>
+<img src="./Littman_1-32_2482.png"/><br/>
+<img src="./Littman_1-32_2483.png"/><br/>
+<img src="./Littman_1-32_2484.png"/><br/>
+<img src="./Littman_1-32_2485.png"/><br/>
+<img src="./Littman_1-32_2486.png"/><br/>
+<img src="./Littman_1-32_2487.png"/><br/>
+<img src="./Littman_1-32_2488.png"/><br/>
+<img src="./Littman_1-32_2489.png"/><br/>
+<img src="./Littman_1-32_2490.png"/><br/>
+<img src="./Littman_1-32_2491.png"/><br/>
+<img src="./Littman_1-32_2492.png"/><br/>
+<img src="./Littman_1-32_2493.png"/><br/>
+<img src="./Littman_1-32_2494.png"/><br/>
+<img src="./Littman_1-32_2495.png"/><br/>
+<img src="./Littman_1-32_2496.png"/><br/>
+<img src="./Littman_1-32_2497.png"/><br/>
+<img src="./Littman_1-32_2498.png"/><br/>
+<img src="./Littman_1-32_2499.png"/><br/>
+<img src="./Littman_1-32_2500.png"/><br/>
+<img src="./Littman_1-32_2501.png"/><br/>
+<img src="./Littman_1-32_2502.png"/><br/>
+<img src="./Littman_1-32_2503.png"/><br/>
+<img src="./Littman_1-32_2504.png"/><br/>
+<img src="./Littman_1-32_2505.png"/><br/>
+<img src="./Littman_1-32_2506.png"/><br/>
+<img src="./Littman_1-32_2507.png"/><br/>
+<img src="./Littman_1-32_2508.png"/><br/>
+<img src="./Littman_1-32_2509.png"/><br/>
+<img src="./Littman_1-32_2510.png"/><br/>
+<img src="./Littman_1-32_2511.png"/><br/>
+<img src="./Littman_1-32_2512.png"/><br/>
+<img src="./Littman_1-32_2513.png"/><br/>
+<img src="./Littman_1-32_2514.png"/><br/>
+<img src="./Littman_1-32_2515.png"/><br/>
+<img src="./Littman_1-32_2516.png"/><br/>
+<img src="./Littman_1-32_2517.png"/><br/>
+<img src="./Littman_1-32_2518.png"/><br/>
+<img src="./Littman_1-32_2519.png"/><br/>
+<img src="./Littman_1-32_2520.png"/><br/>
+<img src="./Littman_1-32_2521.png"/><br/>
+<img src="./Littman_1-32_2522.png"/><br/>
+<img src="./Littman_1-32_2523.png"/><br/>
+<img src="./Littman_1-32_2524.png"/><br/>
+<img src="./Littman_1-32_2525.png"/><br/>
+<img src="./Littman_1-32_2526.png"/><br/>
+<img src="./Littman_1-32_2527.png"/><br/>
+<img src="./Littman_1-32_2528.png"/><br/>
+<img src="./Littman_1-32_2529.png"/><br/>
+<img src="./Littman_1-32_2530.png"/><br/>
+<img src="./Littman_1-32_2531.png"/><br/>
+<img src="./Littman_1-32_2532.png"/><br/>
+<img src="./Littman_1-32_2533.png"/><br/>
+<img src="./Littman_1-32_2534.png"/><br/>
+<img src="./Littman_1-32_2535.png"/><br/>
+<img src="./Littman_1-32_2536.png"/><br/>
+<img src="./Littman_1-32_2537.png"/><br/>
+<img src="./Littman_1-32_2538.png"/><br/>
+<img src="./Littman_1-32_2539.png"/><br/>
+<img src="./Littman_1-32_2540.png"/><br/>
+<img src="./Littman_1-32_2541.png"/><br/>
+<img src="./Littman_1-32_2542.png"/><br/>
+<img src="./Littman_1-32_2543.png"/><br/>
+<img src="./Littman_1-32_2544.png"/><br/>
+<img src="./Littman_1-32_2545.png"/><br/>
+<img src="./Littman_1-32_2546.png"/><br/>
+<img src="./Littman_1-32_2547.png"/><br/>
+<img src="./Littman_1-32_2548.png"/><br/>
+<img src="./Littman_1-32_2549.png"/><br/>
+<img src="./Littman_1-32_2550.png"/><br/>
+<img src="./Littman_1-32_2551.png"/><br/>
+<img src="./Littman_1-32_2552.png"/><br/>
+<img src="./Littman_1-32_2553.png"/><br/>
+<img src="./Littman_1-32_2554.png"/><br/>
+<img src="./Littman_1-32_2555.png"/><br/>
+<img src="./Littman_1-32_2556.png"/><br/>
+<img src="./Littman_1-32_2557.png"/><br/>
+<img src="./Littman_1-32_2558.png"/><br/>
+<img src="./Littman_1-32_2559.png"/><br/>
+<img src="./Littman_1-32_2560.png"/><br/>
+<img src="./Littman_1-32_2561.png"/><br/>
+<img src="./Littman_1-32_2562.png"/><br/>
+<img src="./Littman_1-32_2563.png"/><br/>
+<img src="./Littman_1-32_2564.png"/><br/>
+<img src="./Littman_1-32_2565.png"/><br/>
+<img src="./Littman_1-32_2566.png"/><br/>
+<img src="./Littman_1-32_2567.png"/><br/>
+<img src="./Littman_1-32_2568.png"/><br/>
+<img src="./Littman_1-32_2569.png"/><br/>
+<img src="./Littman_1-32_2570.png"/><br/>
+<img src="./Littman_1-32_2571.png"/><br/>
+<img src="./Littman_1-32_2572.png"/><br/>
+<img src="./Littman_1-32_2573.png"/><br/>
+<img src="./Littman_1-32_2574.png"/><br/>
+<img src="./Littman_1-32_2575.png"/><br/>
+<img src="./Littman_1-32_2576.png"/><br/>
+<img src="./Littman_1-32_2577.png"/><br/>
+<img src="./Littman_1-32_2578.png"/><br/>
+<img src="./Littman_1-32_2579.png"/><br/>
+<img src="./Littman_1-32_2580.png"/><br/>
+<img src="./Littman_1-32_2581.png"/><br/>
+<img src="./Littman_1-32_2582.png"/><br/>
+<img src="./Littman_1-32_2583.png"/><br/>
+<img src="./Littman_1-32_2584.png"/><br/>
+<img src="./Littman_1-32_2585.png"/><br/>
+<img src="./Littman_1-32_2586.png"/><br/>
+<img src="./Littman_1-32_2587.png"/><br/>
+<img src="./Littman_1-32_2588.png"/><br/>
+<img src="./Littman_1-32_2589.png"/><br/>
+<img src="./Littman_1-32_2590.png"/><br/>
+<img src="./Littman_1-32_2591.png"/><br/>
+<img src="./Littman_1-32_2592.png"/><br/>
+<img src="./Littman_1-32_2593.png"/><br/>
+<img src="./Littman_1-32_2594.png"/><br/>
+<img src="./Littman_1-32_2595.png"/><br/>
+<img src="./Littman_1-32_2596.png"/><br/>
+<img src="./Littman_1-32_2597.png"/><br/>
+<img src="./Littman_1-32_2598.png"/><br/>
+<img src="./Littman_1-32_2599.png"/><br/>
+<img src="./Littman_1-32_2600.png"/><br/>
+<img src="./Littman_1-32_2601.png"/><br/>
+<img src="./Littman_1-32_2602.png"/><br/>
+<img src="./Littman_1-32_2603.png"/><br/>
+<img src="./Littman_1-32_2604.png"/><br/>
+<img src="./Littman_1-32_2605.png"/><br/>
+<img src="./Littman_1-32_2606.png"/><br/>
+<img src="./Littman_1-32_2607.png"/><br/>
+<img src="./Littman_1-32_2608.png"/><br/>
+<img src="./Littman_1-32_2609.png"/><br/>
+<img src="./Littman_1-32_2610.png"/><br/>
+<img src="./Littman_1-32_2611.png"/><br/>
+<img src="./Littman_1-32_2612.png"/><br/>
+<img src="./Littman_1-32_2613.png"/><br/>
+<img src="./Littman_1-32_2614.png"/><br/>
+<img src="./Littman_1-32_2615.png"/><br/>
+<img src="./Littman_1-32_2616.png"/><br/>
+<img src="./Littman_1-32_2617.png"/><br/>
+<img src="./Littman_1-32_2618.png"/><br/>
+<img src="./Littman_1-32_2619.png"/><br/>
+<img src="./Littman_1-32_2620.png"/><br/>
+<img src="./Littman_1-32_2621.png"/><br/>
+<img src="./Littman_1-32_2622.png"/><br/>
+<img src="./Littman_1-32_2623.png"/><br/>
+<img src="./Littman_1-32_2624.png"/><br/>
+<img src="./Littman_1-32_2625.png"/><br/>
+<img src="./Littman_1-32_2626.png"/><br/>
+<img src="./Littman_1-32_2627.png"/><br/>
+<img src="./Littman_1-32_2628.png"/><br/>
+<img src="./Littman_1-32_2629.png"/><br/>
+<img src="./Littman_1-32_2630.png"/><br/>
+<img src="./Littman_1-32_2631.png"/><br/>
+<img src="./Littman_1-32_2632.png"/><br/>
+<img src="./Littman_1-32_2633.png"/><br/>
+<img src="./Littman_1-32_2634.png"/><br/>
+<img src="./Littman_1-32_2635.png"/><br/>
+<img src="./Littman_1-32_2636.png"/><br/>
+<img src="./Littman_1-32_2637.png"/><br/>
+<img src="./Littman_1-32_2638.png"/><br/>
+<img src="./Littman_1-32_2639.png"/><br/>
+<img src="./Littman_1-32_2640.png"/><br/>
+<img src="./Littman_1-32_2641.png"/><br/>
+<img src="./Littman_1-32_2642.png"/><br/>
+<img src="./Littman_1-32_2643.png"/><br/>
+<img src="./Littman_1-32_2644.png"/><br/>
+<img src="./Littman_1-32_2645.png"/><br/>
+<img src="./Littman_1-32_2646.png"/><br/>
+<img src="./Littman_1-32_2647.png"/><br/>
+<img src="./Littman_1-32_2648.png"/><br/>
+<img src="./Littman_1-32_2649.png"/><br/>
+<img src="./Littman_1-32_2650.png"/><br/>
+<img src="./Littman_1-32_2651.png"/><br/>
+<img src="./Littman_1-32_2652.png"/><br/>
+<img src="./Littman_1-32_2653.png"/><br/>
+<img src="./Littman_1-32_2654.png"/><br/>
+<img src="./Littman_1-32_2655.png"/><br/>
+<img src="./Littman_1-32_2656.png"/><br/>
+<img src="./Littman_1-32_2657.png"/><br/>
+<img src="./Littman_1-32_2658.png"/><br/>
+<img src="./Littman_1-32_2659.png"/><br/>
+<img src="./Littman_1-32_2660.png"/><br/>
+<img src="./Littman_1-32_2661.png"/><br/>
+<img src="./Littman_1-32_2662.png"/><br/>
+<img src="./Littman_1-32_2663.png"/><br/>
+<img src="./Littman_1-32_2664.png"/><br/>
+<img src="./Littman_1-32_2665.png"/><br/>
+<img src="./Littman_1-32_2666.png"/><br/>
+<img src="./Littman_1-32_2667.png"/><br/>
+<img src="./Littman_1-32_2668.png"/><br/>
+<img src="./Littman_1-32_2669.png"/><br/>
+<img src="./Littman_1-32_2670.png"/><br/>
+<img src="./Littman_1-32_2671.png"/><br/>
+<img src="./Littman_1-32_2672.png"/><br/>
+<img src="./Littman_1-32_2673.png"/><br/>
+<img src="./Littman_1-32_2674.png"/><br/>
+<img src="./Littman_1-32_2675.png"/><br/>
+<img src="./Littman_1-32_2676.png"/><br/>
+<img src="./Littman_1-32_2677.png"/><br/>
+<img src="./Littman_1-32_2678.png"/><br/>
+<img src="./Littman_1-32_2679.png"/><br/>
+<img src="./Littman_1-32_2680.png"/><br/>
+<img src="./Littman_1-32_2681.png"/><br/>
+<img src="./Littman_1-32_2682.png"/><br/>
+<img src="./Littman_1-32_2683.png"/><br/>
+<img src="./Littman_1-32_2684.png"/><br/>
+<img src="./Littman_1-32_2685.png"/><br/>
+<img src="./Littman_1-32_2686.png"/><br/>
+<img src="./Littman_1-32_2687.png"/><br/>
+<img src="./Littman_1-32_2688.png"/><br/>
+<img src="./Littman_1-32_2689.png"/><br/>
+<img src="./Littman_1-32_2690.png"/><br/>
+<img src="./Littman_1-32_2691.png"/><br/>
+<img src="./Littman_1-32_2692.png"/><br/>
+<img src="./Littman_1-32_2693.png"/><br/>
+<img src="./Littman_1-32_2694.png"/><br/>
+<img src="./Littman_1-32_2695.png"/><br/>
+<img src="./Littman_1-32_2696.png"/><br/>
+<img src="./Littman_1-32_2697.png"/><br/>
+<img src="./Littman_1-32_2698.png"/><br/>
+<img src="./Littman_1-32_2699.png"/><br/>
+<img src="./Littman_1-32_2700.png"/><br/>
+<img src="./Littman_1-32_2701.png"/><br/>
+<img src="./Littman_1-32_2702.png"/><br/>
+<img src="./Littman_1-32_2703.png"/><br/>
+<img src="./Littman_1-32_2704.png"/><br/>
+<img src="./Littman_1-32_2705.png"/><br/>
+<img src="./Littman_1-32_2706.png"/><br/>
+<img src="./Littman_1-32_2707.png"/><br/>
+<img src="./Littman_1-32_2708.png"/><br/>
+<img src="./Littman_1-32_2709.png"/><br/>
+<img src="./Littman_1-32_2710.png"/><br/>
+<img src="./Littman_1-32_2711.png"/><br/>
+<img src="./Littman_1-32_2712.png"/><br/>
+<img src="./Littman_1-32_2713.png"/><br/>
+<img src="./Littman_1-32_2714.png"/><br/>
+<img src="./Littman_1-32_2715.png"/><br/>
+<img src="./Littman_1-32_2716.png"/><br/>
+<img src="./Littman_1-32_2717.png"/><br/>
+<img src="./Littman_1-32_2718.png"/><br/>
+<img src="./Littman_1-32_2719.png"/><br/>
+<img src="./Littman_1-32_2720.png"/><br/>
+<img src="./Littman_1-32_2721.png"/><br/>
+<img src="./Littman_1-32_2722.png"/><br/>
+<img src="./Littman_1-32_2723.png"/><br/>
+<img src="./Littman_1-32_2724.png"/><br/>
+<img src="./Littman_1-32_2725.png"/><br/>
+<img src="./Littman_1-32_2726.png"/><br/>
+<img src="./Littman_1-32_2727.png"/><br/>
+<img src="./Littman_1-32_2728.png"/><br/>
+<img src="./Littman_1-32_2729.png"/><br/>
+<img src="./Littman_1-32_2730.png"/><br/>
+<img src="./Littman_1-32_2731.png"/><br/>
+<img src="./Littman_1-32_2732.png"/><br/>
+<img src="./Littman_1-32_2733.png"/><br/>
+<img src="./Littman_1-32_2734.png"/><br/>
+<img src="./Littman_1-32_2735.png"/><br/>
+<img src="./Littman_1-32_2736.png"/><br/>
+<img src="./Littman_1-32_2737.png"/><br/>
+<img src="./Littman_1-32_2738.png"/><br/>
+<img src="./Littman_1-32_2739.png"/><br/>
+<img src="./Littman_1-32_2740.png"/><br/>
+<img src="./Littman_1-32_2741.png"/><br/>
+<img src="./Littman_1-32_2742.png"/><br/>
+<img src="./Littman_1-32_2743.png"/><br/>
+<img src="./Littman_1-32_2744.png"/><br/>
+<img src="./Littman_1-32_2745.png"/><br/>
+<img src="./Littman_1-32_2746.png"/><br/>
+<img src="./Littman_1-32_2747.png"/><br/>
+<img src="./Littman_1-32_2748.png"/><br/>
+<img src="./Littman_1-32_2749.png"/><br/>
+<img src="./Littman_1-32_2750.png"/><br/>
+<img src="./Littman_1-32_2751.png"/><br/>
+<img src="./Littman_1-32_2752.png"/><br/>
+<img src="./Littman_1-32_2753.png"/><br/>
+<img src="./Littman_1-32_2754.png"/><br/>
+<img src="./Littman_1-32_2755.png"/><br/>
+<img src="./Littman_1-32_2756.png"/><br/>
+<img src="./Littman_1-32_2757.png"/><br/>
+<img src="./Littman_1-32_2758.png"/><br/>
+<img src="./Littman_1-32_2759.png"/><br/>
+<img src="./Littman_1-32_2760.png"/><br/>
+<img src="./Littman_1-32_2761.png"/><br/>
+<img src="./Littman_1-32_2762.png"/><br/>
+<img src="./Littman_1-32_2763.png"/><br/>
+<img src="./Littman_1-32_2764.png"/><br/>
+<img src="./Littman_1-32_2765.png"/><br/>
+<img src="./Littman_1-32_2766.png"/><br/>
+<img src="./Littman_1-32_2767.png"/><br/>
+<img src="./Littman_1-32_2768.png"/><br/>
+<img src="./Littman_1-32_2769.png"/><br/>
+<img src="./Littman_1-32_2770.png"/><br/>
+<img src="./Littman_1-32_2771.png"/><br/>
+<img src="./Littman_1-32_2772.png"/><br/>
+<img src="./Littman_1-32_2773.png"/><br/>
+<img src="./Littman_1-32_2774.png"/><br/>
+<img src="./Littman_1-32_2775.png"/><br/>
+<img src="./Littman_1-32_2776.png"/><br/>
+<img src="./Littman_1-32_2777.png"/><br/>
+<img src="./Littman_1-32_2778.png"/><br/>
+<img src="./Littman_1-32_2779.png"/><br/>
+<img src="./Littman_1-32_2780.png"/><br/>
+<img src="./Littman_1-32_2781.png"/><br/>
+<img src="./Littman_1-32_2782.png"/><br/>
+<img src="./Littman_1-32_2783.png"/><br/>
+<img src="./Littman_1-32_2784.png"/><br/>
+<img src="./Littman_1-32_2785.png"/><br/>
+<img src="./Littman_1-32_2786.png"/><br/>
+<img src="./Littman_1-32_2787.png"/><br/>
+<img src="./Littman_1-32_2788.png"/><br/>
+<img src="./Littman_1-32_2789.png"/><br/>
+<img src="./Littman_1-32_2790.png"/><br/>
+<img src="./Littman_1-32_2791.png"/><br/>
+<img src="./Littman_1-32_2792.png"/><br/>
+<img src="./Littman_1-32_2793.png"/><br/>
+<img src="./Littman_1-32_2794.png"/><br/>
+<img src="./Littman_1-32_2795.png"/><br/>
+<img src="./Littman_1-32_2796.png"/><br/>
+<img src="./Littman_1-32_2797.png"/><br/>
+<img src="./Littman_1-32_2798.png"/><br/>
+<img src="./Littman_1-32_2799.png"/><br/>
+<img src="./Littman_1-32_2800.png"/><br/>
+<img src="./Littman_1-32_2801.png"/><br/>
+<img src="./Littman_1-32_2802.png"/><br/>
+<img src="./Littman_1-32_2803.png"/><br/>
+<img src="./Littman_1-32_2804.png"/><br/>
+<img src="./Littman_1-32_2805.png"/><br/>
+<img src="./Littman_1-32_2806.png"/><br/>
+<img src="./Littman_1-32_2807.png"/><br/>
+<img src="./Littman_1-32_2808.png"/><br/>
+<img src="./Littman_1-32_2809.png"/><br/>
+<img src="./Littman_1-32_2810.png"/><br/>
+<img src="./Littman_1-32_2811.png"/><br/>
+<img src="./Littman_1-32_2812.png"/><br/>
+<img src="./Littman_1-32_2813.png"/><br/>
+<img src="./Littman_1-32_2814.png"/><br/>
+<img src="./Littman_1-32_2815.png"/><br/>
+<img src="./Littman_1-32_2816.png"/><br/>
+<img src="./Littman_1-32_2817.png"/><br/>
+<img src="./Littman_1-32_2818.png"/><br/>
+<img src="./Littman_1-32_2819.png"/><br/>
+<img src="./Littman_1-32_2820.png"/><br/>
+<img src="./Littman_1-32_2821.png"/><br/>
+<img src="./Littman_1-32_2822.png"/><br/>
+<img src="./Littman_1-32_2823.png"/><br/>
+<img src="./Littman_1-32_2824.png"/><br/>
+<img src="./Littman_1-32_2825.png"/><br/>
+<img src="./Littman_1-32_2826.png"/><br/>
+<img src="./Littman_1-32_2827.png"/><br/>
+<img src="./Littman_1-32_2828.png"/><br/>
+<img src="./Littman_1-32_2829.png"/><br/>
+<img src="./Littman_1-32_2830.png"/><br/>
+<img src="./Littman_1-32_2831.png"/><br/>
+<img src="./Littman_1-32_2832.png"/><br/>
+<img src="./Littman_1-32_2833.png"/><br/>
+<img src="./Littman_1-32_2834.png"/><br/>
+<img src="./Littman_1-32_2835.png"/><br/>
+<img src="./Littman_1-32_2836.png"/><br/>
+<img src="./Littman_1-32_2837.png"/><br/>
+<img src="./Littman_1-32_2838.png"/><br/>
+<img src="./Littman_1-32_2839.png"/><br/>
+<img src="./Littman_1-32_2840.png"/><br/>
+<img src="./Littman_1-32_2841.png"/><br/>
+<img src="./Littman_1-32_2842.png"/><br/>
+<img src="./Littman_1-32_2843.png"/><br/>
+<img src="./Littman_1-32_2844.png"/><br/>
+<img src="./Littman_1-32_2845.png"/><br/>
+<img src="./Littman_1-32_2846.png"/><br/>
+<img src="./Littman_1-32_2847.png"/><br/>
+<img src="./Littman_1-32_2848.png"/><br/>
+<img src="./Littman_1-32_2849.png"/><br/>
+<img src="./Littman_1-32_2850.png"/><br/>
+<img src="./Littman_1-32_2851.png"/><br/>
+<img src="./Littman_1-32_2852.png"/><br/>
+<img src="./Littman_1-32_2853.png"/><br/>
+<img src="./Littman_1-32_2854.png"/><br/>
+<img src="./Littman_1-32_2855.png"/><br/>
+<img src="./Littman_1-32_2856.png"/><br/>
+<img src="./Littman_1-32_2857.png"/><br/>
+<img src="./Littman_1-32_2858.png"/><br/>
+<img src="./Littman_1-32_2859.png"/><br/>
+<img src="./Littman_1-32_2860.png"/><br/>
+<img src="./Littman_1-32_2861.png"/><br/>
+<img src="./Littman_1-32_2862.png"/><br/>
+<img src="./Littman_1-32_2863.png"/><br/>
+<img src="./Littman_1-32_2864.png"/><br/>
+<img src="./Littman_1-32_2865.png"/><br/>
+<img src="./Littman_1-32_2866.png"/><br/>
+<img src="./Littman_1-32_2867.png"/><br/>
+<img src="./Littman_1-32_2868.png"/><br/>
+<img src="./Littman_1-32_2869.png"/><br/>
+<img src="./Littman_1-32_2870.png"/><br/>
+<img src="./Littman_1-32_2871.png"/><br/>
+<img src="./Littman_1-32_2872.png"/><br/>
+<img src="./Littman_1-32_2873.png"/><br/>
+<img src="./Littman_1-32_2874.png"/><br/>
+<img src="./Littman_1-32_2875.png"/><br/>
+<img src="./Littman_1-32_2876.png"/><br/>
+<img src="./Littman_1-32_2877.png"/><br/>
+<img src="./Littman_1-32_2878.png"/><br/>
+<img src="./Littman_1-32_2879.png"/><br/>
+<img src="./Littman_1-32_2880.png"/><br/>
+<img src="./Littman_1-32_2881.png"/><br/>
+<img src="./Littman_1-32_2882.png"/><br/>
+<img src="./Littman_1-32_2883.png"/><br/>
+<img src="./Littman_1-32_2884.png"/><br/>
+<img src="./Littman_1-32_2885.png"/><br/>
+<img src="./Littman_1-32_2886.png"/><br/>
+<img src="./Littman_1-32_2887.png"/><br/>
+<img src="./Littman_1-32_2888.png"/><br/>
+<img src="./Littman_1-32_2889.png"/><br/>
+<img src="./Littman_1-32_2890.png"/><br/>
+<img src="./Littman_1-32_2891.png"/><br/>
+<img src="./Littman_1-32_2892.png"/><br/>
+<img src="./Littman_1-32_2893.png"/><br/>
+<img src="./Littman_1-32_2894.png"/><br/>
+<img src="./Littman_1-32_2895.png"/><br/>
+<img src="./Littman_1-32_2896.png"/><br/>
+<img src="./Littman_1-32_2897.png"/><br/>
+<img src="./Littman_1-32_2898.png"/><br/>
+<img src="./Littman_1-32_2899.png"/><br/>
+<img src="./Littman_1-32_2900.png"/><br/>
+<img src="./Littman_1-32_2901.png"/><br/>
+<img src="./Littman_1-32_2902.png"/><br/>
+<img src="./Littman_1-32_2903.png"/><br/>
+<img src="./Littman_1-32_2904.png"/><br/>
+<img src="./Littman_1-32_2905.png"/><br/>
+<img src="./Littman_1-32_2906.png"/><br/>
+<img src="./Littman_1-32_2907.png"/><br/>
+<img src="./Littman_1-32_2908.png"/><br/>
+<img src="./Littman_1-32_2909.png"/><br/>
+<img src="./Littman_1-32_2910.png"/><br/>
+<img src="./Littman_1-32_2911.png"/><br/>
+<img src="./Littman_1-32_2912.png"/><br/>
+<img src="./Littman_1-32_2913.png"/><br/>
+<img src="./Littman_1-32_2914.png"/><br/>
+<img src="./Littman_1-32_2915.png"/><br/>
+<img src="./Littman_1-32_2916.png"/><br/>
+<img src="./Littman_1-32_2917.png"/><br/>
+<img src="./Littman_1-32_2918.png"/><br/>
+<img src="./Littman_1-32_2919.png"/><br/>
+<img src="./Littman_1-32_2920.png"/><br/>
+<img src="./Littman_1-32_2921.png"/><br/>
+<img src="./Littman_1-32_2922.png"/><br/>
+<img src="./Littman_1-32_2923.png"/><br/>
+<img src="./Littman_1-32_2924.png"/><br/>
+<img src="./Littman_1-32_2925.png"/><br/>
+<img src="./Littman_1-32_2926.png"/><br/>
+<img src="./Littman_1-32_2927.png"/><br/>
+<img src="./Littman_1-32_2928.png"/><br/>
+<img src="./Littman_1-32_2929.png"/><br/>
+<img src="./Littman_1-32_2930.png"/><br/>
+<img src="./Littman_1-32_2931.png"/><br/>
+<img src="./Littman_1-32_2932.png"/><br/>
+<img src="./Littman_1-32_2933.png"/><br/>
+<img src="./Littman_1-32_2934.png"/><br/>
+<img src="./Littman_1-32_2935.png"/><br/>
+<img src="./Littman_1-32_2936.png"/><br/>
+<img src="./Littman_1-32_2937.png"/><br/>
+<img src="./Littman_1-32_2938.png"/><br/>
+<img src="./Littman_1-32_2939.png"/><br/>
+<img src="./Littman_1-32_2940.png"/><br/>
+<img src="./Littman_1-32_2941.png"/><br/>
+<img src="./Littman_1-32_2942.png"/><br/>
+<img src="./Littman_1-32_2943.png"/><br/>
+<img src="./Littman_1-32_2944.png"/><br/>
+<img src="./Littman_1-32_2945.png"/><br/>
+<img src="./Littman_1-32_2946.png"/><br/>
+<img src="./Littman_1-32_2947.png"/><br/>
+<img src="./Littman_1-32_2948.png"/><br/>
+<img src="./Littman_1-32_2949.png"/><br/>
+<img src="./Littman_1-32_2950.png"/><br/>
+<img src="./Littman_1-32_2951.png"/><br/>
+<img src="./Littman_1-32_2952.png"/><br/>
+<img src="./Littman_1-32_2953.png"/><br/>
+<img src="./Littman_1-32_2954.png"/><br/>
+<img src="./Littman_1-32_2955.png"/><br/>
+<img src="./Littman_1-32_2956.png"/><br/>
+<img src="./Littman_1-32_2957.png"/><br/>
+<img src="./Littman_1-32_2958.png"/><br/>
+<img src="./Littman_1-32_2959.png"/><br/>
+<img src="./Littman_1-32_2960.png"/><br/>
+<img src="./Littman_1-32_2961.png"/><br/>
+<img src="./Littman_1-32_2962.png"/><br/>
+<img src="./Littman_1-32_2963.png"/><br/>
+<img src="./Littman_1-32_2964.png"/><br/>
+<img src="./Littman_1-32_2965.png"/><br/>
+<img src="./Littman_1-32_2966.png"/><br/>
+<img src="./Littman_1-32_2967.png"/><br/>
+<img src="./Littman_1-32_2968.png"/><br/>
+<img src="./Littman_1-32_2969.png"/><br/>
+<img src="./Littman_1-32_2970.png"/><br/>
+<img src="./Littman_1-32_2971.png"/><br/>
+<img src="./Littman_1-32_2972.png"/><br/>
+<img src="./Littman_1-32_2973.png"/><br/>
+<img src="./Littman_1-32_2974.png"/><br/>
+<img src="./Littman_1-32_2975.png"/><br/>
+<img src="./Littman_1-32_2976.png"/><br/>
+<img src="./Littman_1-32_2977.png"/><br/>
+<img src="./Littman_1-32_2978.png"/><br/>
+<img src="./Littman_1-32_2979.png"/><br/>
+<img src="./Littman_1-32_2980.png"/><br/>
+<img src="./Littman_1-32_2981.png"/><br/>
+<img src="./Littman_1-32_2982.png"/><br/>
+<img src="./Littman_1-32_2983.png"/><br/>
+<img src="./Littman_1-32_2984.png"/><br/>
+<img src="./Littman_1-32_2985.png"/><br/>
+<img src="./Littman_1-32_2986.png"/><br/>
+<img src="./Littman_1-32_2987.png"/><br/>
+<img src="./Littman_1-32_2988.png"/><br/>
+<img src="./Littman_1-32_2989.png"/><br/>
+<img src="./Littman_1-32_2990.png"/><br/>
+<img src="./Littman_1-32_2991.png"/><br/>
+<img src="./Littman_1-32_2992.png"/><br/>
+<img src="./Littman_1-32_2993.png"/><br/>
+<img src="./Littman_1-32_2994.png"/><br/>
+<img src="./Littman_1-32_2995.png"/><br/>
+<img src="./Littman_1-32_2996.png"/><br/>
+<img src="./Littman_1-32_2997.png"/><br/>
+<img src="./Littman_1-32_2998.png"/><br/>
+<img src="./Littman_1-32_2999.png"/><br/>
+<img src="./Littman_1-32_3000.png"/><br/>
+<img src="./Littman_1-32_3001.png"/><br/>
+<img src="./Littman_1-32_3002.png"/><br/>
+<img src="./Littman_1-32_3003.png"/><br/>
+<img src="./Littman_1-32_3004.png"/><br/>
+<img src="./Littman_1-32_3005.png"/><br/>
+<img src="./Littman_1-32_3006.png"/><br/>
+<img src="./Littman_1-32_3007.png"/><br/>
+<img src="./Littman_1-32_3008.png"/><br/>
+<img src="./Littman_1-32_3009.png"/><br/>
+<img src="./Littman_1-32_3010.png"/><br/>
+<img src="./Littman_1-32_3011.png"/><br/>
+<img src="./Littman_1-32_3012.png"/><br/>
+<img src="./Littman_1-32_3013.png"/><br/>
+<img src="./Littman_1-32_3014.png"/><br/>
+<img src="./Littman_1-32_3015.png"/><br/>
+<img src="./Littman_1-32_3016.png"/><br/>
+<img src="./Littman_1-32_3017.png"/><br/>
+<img src="./Littman_1-32_3018.png"/><br/>
+<img src="./Littman_1-32_3019.png"/><br/>
+<img src="./Littman_1-32_3020.png"/><br/>
+<img src="./Littman_1-32_3021.png"/><br/>
+<img src="./Littman_1-32_3022.png"/><br/>
+<img src="./Littman_1-32_3023.png"/><br/>
+<img src="./Littman_1-32_3024.png"/><br/>
+<img src="./Littman_1-32_3025.png"/><br/>
+<img src="./Littman_1-32_3026.png"/><br/>
+<img src="./Littman_1-32_3027.png"/><br/>
+<img src="./Littman_1-32_3028.png"/><br/>
+<img src="./Littman_1-32_3029.png"/><br/>
+<img src="./Littman_1-32_3030.png"/><br/>
+<img src="./Littman_1-32_3031.png"/><br/>
+<img src="./Littman_1-32_3032.png"/><br/>
+<img src="./Littman_1-32_3033.png"/><br/>
+<img src="./Littman_1-32_3034.png"/><br/>
+<img src="./Littman_1-32_3035.png"/><br/>
+<img src="./Littman_1-32_3036.png"/><br/>
+<img src="./Littman_1-32_3037.png"/><br/>
+<img src="./Littman_1-32_3038.png"/><br/>
+<img src="./Littman_1-32_3039.png"/><br/>
+<img src="./Littman_1-32_3040.png"/><br/>
+<img src="./Littman_1-32_3041.png"/><br/>
+<img src="./Littman_1-32_3042.png"/><br/>
+<img src="./Littman_1-32_3043.png"/><br/>
+<img src="./Littman_1-32_3044.png"/><br/>
+<img src="./Littman_1-32_3045.png"/><br/>
+<img src="./Littman_1-32_3046.png"/><br/>
+<img src="./Littman_1-32_3047.png"/><br/>
+<img src="./Littman_1-32_3048.png"/><br/>
+<img src="./Littman_1-32_3049.png"/><br/>
+<img src="./Littman_1-32_3050.png"/><br/>
+<img src="./Littman_1-32_3051.png"/><br/>
+<img src="./Littman_1-32_3052.png"/><br/>
+<img src="./Littman_1-32_3053.png"/><br/>
+<img src="./Littman_1-32_3054.png"/><br/>
+<img src="./Littman_1-32_3055.png"/><br/>
+<img src="./Littman_1-32_3056.png"/><br/>
+<img src="./Littman_1-32_3057.png"/><br/>
+<img src="./Littman_1-32_3058.png"/><br/>
+<img src="./Littman_1-32_3059.png"/><br/>
+<img src="./Littman_1-32_3060.png"/><br/>
+<img src="./Littman_1-32_3061.png"/><br/>
+<img src="./Littman_1-32_3062.png"/><br/>
+<img src="./Littman_1-32_3063.png"/><br/>
+<img src="./Littman_1-32_3064.png"/><br/>
+<img src="./Littman_1-32_3065.png"/><br/>
+<img src="./Littman_1-32_3066.png"/><br/>
+<img src="./Littman_1-32_3067.png"/><br/>
+<img src="./Littman_1-32_3068.png"/><br/>
+<img src="./Littman_1-32_3069.png"/><br/>
+<img src="./Littman_1-32_3070.png"/><br/>
+<img src="./Littman_1-32_3071.png"/><br/>
+<img src="./Littman_1-32_3072.png"/><br/>
+<img src="./Littman_1-32_3073.png"/><br/>
+<img src="./Littman_1-32_3074.png"/><br/>
+<img src="./Littman_1-32_3075.png"/><br/>
+<img src="./Littman_1-32_3076.png"/><br/>
+<img src="./Littman_1-32_3077.png"/><br/>
+<img src="./Littman_1-32_3078.png"/><br/>
+<img src="./Littman_1-32_3079.png"/><br/>
+<img src="./Littman_1-32_3080.png"/><br/>
+<img src="./Littman_1-32_3081.png"/><br/>
+<img src="./Littman_1-32_3082.png"/><br/>
+<img src="./Littman_1-32_3083.png"/><br/>
+Fitted Value Iteration<br/>•&#160;Represent value function via anchor points&#160;<br/>
+and local smoothing (Gordon 95)<br/>
+•&#160;Some guarantees if points densely sampled&#160;<br/>
+(Chow &amp; Tsitsiklis 91)<br/>
+•&#160;Combined with KWIK learning of model&#160;<br/>
+(Brunskill et al. 08)<br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s&#160;a</i><br/>
+2.5<br/>
+2.5<br/>
+2<br/>
+2<br/>
+1.5<br/>
+1.5<br/>
+1<br/>
+1<br/>
+#&#160;⇐&#160;Q<br/>
+⇐&#160;T, R<br/>
+0.5<br/>
+0.5<br/>
+-1.5<br/>
+-1.5<br/>
+0<br/>
+-1<br/>
+0<br/>
+-1<br/>
+-0.5<br/>
+-0.5<br/>
+0<br/>
+0<br/>
+0.5<br/>
+0.5<br/>
+1<br/>
+1<br/>
+1.5<br/>
+1.5<br/>
+0.5<br/>
+0<br/>
+0.5<br/>
+-0.5<br/>
+0<br/>
+-0.5<br/>
+<i>a</i><br/>
+<i>v</i><br/>
+<i>s’&#160;r</i><br/>
+UCT: Upper Conf. in Trees<br/>•&#160;Narrow, deep game-tree search via bandits<br/>
+(Kocsis &amp; Szepsvári 06)<br/>
+•&#160;Huge success in Go (Gelly &amp; Wang 06)<br/>•&#160;Good fit w/ learned model.<br/>
+–&#160;Just needs to be able to simulate transitions<br/>–&#160;KWIK-like methods are also “query” based<br/>
+•&#160;Not aware of work &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;&#160;<br/>
+<i>s</i><br/>
+<i>s&#160;a</i><br/>
+<i>s&#160;a</i><br/>
+using it in RL setting.<br/>
+#&#160;⇐&#160;Q<br/>
+⇐&#160;T, R<br/>
+<i>a</i><br/>
+<i>v</i><br/>
+<i>s’&#160;r</i><br/>
+<hr/>
+<a name=33></a><img src="./Littman_1-33_1.png"/><br/>
+<img src="./Littman_1-33_2.png"/><br/>
+<img src="./Littman_1-33_3.png"/><br/>
+<img src="./Littman_1-33_4.png"/><br/>
+<img src="./Littman_1-33_5.png"/><br/>
+<img class="xyflip" src="./Littman_1-33_6.png"/><br/>
+Do Kids Explore?<br/>•&#160;Statistics of play sensitive to confounding&#160;<br/>•&#160;Show kid 2-lever toy&#160;(Schulz/Bonawitz 07). &#160;<br/>
+–&#160;Demonstrate both. &#160;Kid becomes interested in&#160;<br/>
+new toy.<br/>
+–&#160;Demonstrate them together. &#160;Kids stays interested&#160;<br/>
+in old toy.<br/>
+•&#160;Experiment design&#160;<br/>
+intractable. &#160;KWIK-like&#160;<br/>heuristic?<br/>
+Do People Explore? &#160;(xkcd)<br/>
+<hr/>
+<a name=34></a><img src="./Littman_1-34_1.png"/><br/>
+Wrap Up<br/>•&#160;Introduction<br/>
+•&#160;Current topics<br/>
+–&#160;Q-learning<br/>
+–&#160;Bayesian RL<br/>
+–&#160;MDPs<br/>
+–&#160;“Recursive” RL<br/>
+–&#160;Model-based RL<br/>
+–&#160;Function&#160;<br/>
+–&#160;PAC-MDP<br/>
+approximation<br/>
+–&#160;KWIK<br/>
+–&#160;Human exploration<br/>
+<hr/>
+</body>
+</html>

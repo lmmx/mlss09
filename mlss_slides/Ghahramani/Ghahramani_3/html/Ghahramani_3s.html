@@ -1,0 +1,692 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Machine&#160;Learning&#160;Summer&#160;School<br/>
+Lecture&#160;3:&#160;Learning&#160;parameters&#160;and&#160;structure<br/>
+Zoubin&#160;Ghahramani<br/>
+zoubin@eng.cam.ac.uk<br/>
+http://learning.eng.cam.ac.uk/zoubin/<br/>
+Department&#160;of&#160;Engineering<br/>
+University&#160;of&#160;Cambridge,&#160;UK<br/>
+Machine&#160;Learning&#160;Department<br/>
+Carnegie&#160;Mellon&#160;University,&#160;USA<br/>
+August&#160;2009<br/>
+<hr/>
+<a name=2></a><img src="./Ghahramani_3-2_1.png"/><br/>
+<img src="./Ghahramani_3-2_2.png"/><br/>
+<img src="./Ghahramani_3-2_3.png"/><br/>
+<img src="./Ghahramani_3-2_4.png"/><br/>
+Learning&#160;parameters<br/>
+<i>x1</i><br/>
+<i>x</i><br/>
+<i>θ</i><br/>
+<i>2</i><br/>
+<i>2</i><br/>
+<i>x2</i><br/>
+<i>0.2</i><br/>
+<i>0.3</i><br/>
+<i>0.5</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>3</i><br/>
+<i>1</i><br/>
+<i>x4</i><br/>
+<i>0.1</i><br/>
+<i>0.6</i><br/>
+<i>0.3</i><br/>
+p(x1)p(x2|x1)p(x3|x1)p(x4|x2)<br/>
+Assume&#160;each&#160;variable&#160;xi&#160;is&#160;discrete&#160;and&#160;can&#160;take&#160;on&#160;Ki&#160;values.<br/>
+The&#160;parameters&#160;of&#160;this&#160;model&#160;can&#160;be&#160;represented&#160;as&#160;4&#160;tables:&#160;θ1&#160;has&#160;K1&#160;entries,&#160;θ2&#160;has<br/>K1&#160;×&#160;K2&#160;entries,&#160;etc.<br/>
+These&#160;are&#160;called&#160;conditional&#160;probability&#160;tables&#160;(CPTs)&#160;with&#160;the&#160;following&#160;semantics:<br/>
+p(x1&#160;=&#160;k)&#160;=&#160;θ1,k<br/>
+p(x2&#160;=&#160;k0|x1&#160;=&#160;k)&#160;=&#160;θ2,k,k0<br/>
+If&#160;node&#160;i&#160;has&#160;M&#160;parents,&#160;θi&#160;can&#160;be&#160;represented&#160;either&#160;as&#160;an&#160;M&#160;+&#160;1&#160;dimensional&#160;table,&#160;or&#160;as<br/>
+<br/>
+<br/>
+a&#160;2-dimensional&#160;table&#160;with<br/>
+Q<br/>
+K<br/>
+×&#160;K<br/>
+j∈pa(i)<br/>
+j<br/>
+i&#160;entries&#160;by&#160;collapsing&#160;all&#160;the&#160;states&#160;of&#160;the<br/>
+parents&#160;of&#160;node&#160;i.&#160;Note&#160;that&#160;Pk0&#160;θi,k,k0&#160;=&#160;1.<br/>
+Assume&#160;a&#160;data&#160;set&#160;D&#160;=&#160;{x(n)}N<br/>
+.<br/>
+How&#160;do&#160;we&#160;learn&#160;θ&#160;from&#160;D?<br/>
+n=1<br/>
+<hr/>
+<a name=3></a><img src="./Ghahramani_3-3_1.png"/><br/>
+<img src="./Ghahramani_3-3_2.png"/><br/>
+<img src="./Ghahramani_3-3_3.png"/><br/>
+<img src="./Ghahramani_3-3_4.png"/><br/>
+<i>x1</i><br/>
+Learning&#160;parameters<br/>
+<i>x2</i><br/>
+<i>x3</i><br/>
+<i>x</i><br/>
+Assume&#160;a&#160;data&#160;set&#160;D&#160;=&#160;{x(n)}N<br/>
+.&#160;How&#160;do&#160;we&#160;learn&#160;θ&#160;from&#160;D?<br/>
+<i>4</i><br/>
+n=1<br/>
+p(x|θ)&#160;=&#160;p(x1|θ1)p(x2|x1,&#160;θ2)p(x3|x1,&#160;θ3)p(x4|x2,&#160;θ4)<br/>
+Likelihood:<br/>
+N<br/>
+Y<br/>
+p(D|θ)&#160;=<br/>
+p(x(n)|θ)<br/>
+n=1<br/>
+Log&#160;Likelihood:<br/>
+N<br/>
+X&#160;X<br/>
+(n)<br/>
+(n)<br/>
+log&#160;p(D|θ)&#160;=<br/>
+log&#160;p(x<br/>
+|x<br/>
+,&#160;θ<br/>
+i<br/>
+pa(i)<br/>
+i)<br/>
+n=1<br/>
+i<br/>
+This&#160;decomposes&#160;into&#160;sum&#160;of&#160;functions&#160;of&#160;θi.&#160;Each&#160;θi&#160;can&#160;be&#160;optimized&#160;separately:<br/>
+ˆ<br/>
+ni,k,k0<br/>
+θi,k,k0&#160;=&#160;P<br/>
+k00&#160;ni,k,k00<br/>
+where&#160;ni,k,k0&#160;is&#160;the&#160;number&#160;of&#160;times&#160;in&#160;D&#160;where&#160;xi&#160;=&#160;k0&#160;and&#160;xpa(i)&#160;=&#160;k,&#160;where&#160;k&#160;represents<br/>a&#160;joint&#160;configuration&#160;of&#160;all&#160;the&#160;parents&#160;of&#160;i&#160;(i.e.&#160;takes&#160;on&#160;one&#160;of&#160;Q<br/>
+K<br/>
+j∈pa(i)<br/>
+j&#160;values)<br/>
+<i>x</i><br/>
+<i>n</i><br/>
+<i>x</i><br/>
+<i>2</i><br/>
+<i>θ</i><br/>
+<i>2</i><br/>
+<i>2</i><br/>
+<i>2</i><br/>
+<i>2</i><br/>
+<i>3</i><br/>
+<i>0</i><br/>
+<i>0.4</i><br/>
+<i>0.6</i><br/>
+<i>0</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>1</i><br/>
+<i>1</i><br/>
+⇒<br/>
+ML&#160;solution:&#160;Simply&#160;calculate&#160;frequencies!<br/>
+<i>3</i><br/>
+<i>1</i><br/>
+<i>6</i><br/>
+<i>0.3</i><br/>
+<i>0.1</i><br/>
+<i>0.6</i><br/>
+<hr/>
+<a name=4></a><img src="./Ghahramani_3-4_1.png"/><br/>
+<img src="./Ghahramani_3-4_2.png"/><br/>
+Deriving&#160;the&#160;Maximum&#160;Likelihood&#160;Estimate<br/>
+<i>x</i><br/>
+Y<br/>
+δ(x,k)δ(y,`)<br/>
+p(y|x,&#160;θ)&#160;=<br/>
+θk,`<br/>
+k,`<br/>
+<i>θ</i><br/>
+<i>y</i><br/>
+Dataset&#160;D&#160;=&#160;{(x(n),&#160;y(n))&#160;:&#160;n&#160;=&#160;1&#160;.&#160;.&#160;.&#160;,&#160;N&#160;}<br/>
+Y<br/>
+L(θ)<br/>
+=<br/>
+log<br/>
+p(y(n)|x(n),&#160;θ)<br/>
+n<br/>
+Y&#160;Y<br/>
+δ(x(n),k)δ(y(n),`)<br/>
+=<br/>
+log<br/>
+θk,`<br/>
+n<br/>
+k,`<br/>
+X<br/>
+=<br/>
+δ(x(n),&#160;k)δ(y(n),&#160;`)&#160;log&#160;θk,`<br/>
+n,k,`<br/>
+&#160;<br/>
+!<br/>
+X<br/>
+X<br/>
+X<br/>
+=<br/>
+δ(x(n),&#160;k)δ(y(n),&#160;`)<br/>
+log&#160;θk,`&#160;=<br/>
+nk,`&#160;log&#160;θk,`<br/>
+k,`<br/>
+n<br/>
+k,`<br/>
+Maximize&#160;L(θ)&#160;w.r.t.&#160;θ&#160;subject&#160;to&#160;P&#160;θ<br/>
+`<br/>
+k,`&#160;=&#160;1&#160;for&#160;all&#160;k.<br/>
+<hr/>
+<a name=5></a>Maximum&#160;Likelihood&#160;Learning&#160;with&#160;Hidden&#160;Variables<br/>
+θ1<br/>
+X1<br/>
+θ2<br/>
+θ3<br/>
+X<br/>
+Assume<br/>
+a<br/>
+model<br/>
+parameterised<br/>
+by<br/>
+θ<br/>
+with<br/>
+2<br/>
+X3<br/>
+observable&#160;variables&#160;Y&#160;and&#160;hidden&#160;variables&#160;X<br/>
+θ4&#160;Y<br/>
+Goal:&#160;maximize&#160;parameter&#160;log&#160;likelihood&#160;given&#160;observed&#160;data.<br/>
+X<br/>
+L(θ)&#160;=&#160;log&#160;p(Y&#160;|θ)&#160;=&#160;log<br/>
+p(Y,&#160;X|θ)<br/>
+X<br/>
+<hr/>
+<a name=6></a>Maximum&#160;Likelihood&#160;Learning&#160;with&#160;Hidden&#160;Variables:<br/>
+The&#160;EM&#160;Algorithm<br/>
+θ1<br/>
+X1<br/>
+Goal:&#160;maximise&#160;parameter&#160;log&#160;likelihood&#160;given&#160;observables.<br/>
+θ2<br/>
+θ3<br/>
+X<br/>
+X2<br/>
+X3<br/>
+L(θ)&#160;=&#160;log&#160;p(Y&#160;|θ)&#160;=&#160;log<br/>
+p(Y,&#160;X|θ)<br/>
+X<br/>
+θ4&#160;Y<br/>
+The&#160;Expectation&#160;Maximization&#160;(EM)&#160;algorithm&#160;(intuition):<br/>
+Iterate&#160;between&#160;applying&#160;the&#160;following&#160;two&#160;steps:<br/>
+•&#160;The&#160;E&#160;step:&#160;fill-in&#160;the&#160;hidden/missing&#160;variables<br/>
+•&#160;The&#160;M&#160;step:&#160;apply&#160;complete&#160;data&#160;learning&#160;to&#160;filled-in&#160;data.<br/>
+<hr/>
+<a name=7></a>Maximum&#160;Likelihood&#160;Learning&#160;with&#160;Hidden&#160;Variables:<br/>
+The&#160;EM&#160;Algorithm<br/>
+Goal:&#160;maximise&#160;parameter&#160;log&#160;likelihood&#160;given&#160;observables.<br/>
+X<br/>
+L(θ)&#160;=&#160;log&#160;p(Y&#160;|θ)&#160;=&#160;log<br/>
+p(Y,&#160;X|θ)<br/>
+X<br/>
+The&#160;EM&#160;algorithm&#160;(derivation):<br/>
+X<br/>
+p(Y,&#160;X|θ)<br/>
+X<br/>
+p(Y,&#160;X|θ)<br/>
+L(θ)<br/>
+=<br/>
+log<br/>
+q(X)<br/>
+≥<br/>
+q(X)&#160;log<br/>
+=&#160;F&#160;(q(X),&#160;θ)<br/>
+q(X)<br/>
+q(X)<br/>
+X<br/>
+X<br/>
+•&#160;The&#160;E&#160;step:&#160;maximize&#160;F&#160;(q(X),&#160;θ[t])&#160;wrt&#160;q(X)&#160;holding&#160;θ[t]&#160;fixed:<br/>
+q(X)&#160;=&#160;p(X|Y,&#160;θ[t])<br/>
+•&#160;The&#160;M&#160;step:&#160;maximize&#160;F&#160;(q(X),&#160;θ)&#160;wrt&#160;θ&#160;holding&#160;q(X)&#160;fixed:<br/>
+X<br/>
+θ[t+1]&#160;←&#160;argmax<br/>
+q(X)&#160;log&#160;p(Y,&#160;X|θ)<br/>
+θ<br/>
+X<br/>
+The&#160;E-step&#160;requires&#160;solving&#160;the&#160;inference&#160;problem,&#160;finding&#160;the&#160;distribution&#160;over&#160;the&#160;hidden<br/>variables&#160;p(X|Y,&#160;θ[t])&#160;given&#160;the&#160;current&#160;model&#160;parameters.&#160;This&#160;can&#160;be&#160;done&#160;using&#160;belief<br/>propagation&#160;or&#160;the&#160;junction&#160;tree&#160;algorithm.<br/>
+<hr/>
+<a name=8></a>Maximum&#160;Likelihood&#160;Learning&#160;without&#160;and&#160;with&#160;Hidden&#160;Variables<br/>
+ML&#160;Learning&#160;with&#160;Complete&#160;Data&#160;(No&#160;Hidden&#160;Variables)<br/>
+Log&#160;likelihood&#160;decomposes&#160;into&#160;sum&#160;of&#160;functions&#160;of&#160;θi.&#160;Each&#160;θi&#160;can&#160;be&#160;optimized&#160;separately:<br/>
+ˆ<br/>
+nijk<br/>
+θijk&#160;←&#160;P<br/>
+k0&#160;nijk0<br/>
+where&#160;nijk&#160;is&#160;the&#160;number&#160;of&#160;times&#160;in&#160;D&#160;where&#160;xi&#160;=&#160;k&#160;and&#160;xpa(i)&#160;=&#160;j.<br/>
+Maximum&#160;likelihood&#160;solution:&#160;Simply&#160;calculate&#160;frequencies!<br/>
+ML&#160;Learning&#160;with&#160;Incomplete&#160;Data&#160;(i.e.&#160;with&#160;Hidden&#160;Variables)<br/>
+Iterative&#160;EM&#160;algorithm<br/>
+E&#160;step:&#160;compute&#160;expected&#160;counts&#160;given&#160;previous&#160;settings&#160;of&#160;parameters&#160;E[nijk|D,&#160;θ[t]].<br/>
+M&#160;step:&#160;re-estimate&#160;parameters&#160;using&#160;these&#160;expected&#160;counts<br/>
+[t+1]<br/>
+E[nijk|D,&#160;θ[t]]<br/>
+θ<br/>
+←<br/>
+ijk<br/>
+P<br/>
+k0&#160;E[nijk0|D,&#160;θ[t]]<br/>
+<hr/>
+<a name=9></a>Bayesian&#160;Learning<br/>
+Apply&#160;the&#160;basic&#160;rules&#160;of&#160;probability&#160;to&#160;learning&#160;from&#160;data.<br/>
+Data&#160;set:&#160;D&#160;=&#160;{x1,&#160;.&#160;.&#160;.&#160;,&#160;xn}<br/>
+Models:&#160;m,&#160;m0&#160;etc.<br/>
+Model&#160;parameters:&#160;θ<br/>
+Prior&#160;probability&#160;of&#160;models:&#160;P&#160;(m),&#160;P&#160;(m0)&#160;etc.<br/>Prior&#160;probabilities&#160;of&#160;model&#160;parameters:&#160;P&#160;(θ|m)<br/>Model&#160;of&#160;data&#160;given&#160;parameters&#160;(likelihood&#160;model):&#160;P&#160;(x|θ,&#160;m)<br/>
+If&#160;the&#160;data&#160;are&#160;independently&#160;and&#160;identically&#160;distributed&#160;then:<br/>
+n<br/>
+Y<br/>
+P&#160;(D|θ,&#160;m)&#160;=<br/>
+P&#160;(xi|θ,&#160;m)<br/>
+i=1<br/>
+Posterior&#160;probability&#160;of&#160;model&#160;parameters:<br/>
+P&#160;(D|θ,&#160;m)P&#160;(θ|m)<br/>
+P&#160;(θ|D,&#160;m)&#160;=<br/>
+P&#160;(D|m)<br/>
+Posterior&#160;probability&#160;of&#160;models:<br/>
+P&#160;(m)P&#160;(D|m)<br/>
+P&#160;(m|D)&#160;=<br/>
+P&#160;(D)<br/>
+<hr/>
+<a name=10></a>Bayesian&#160;parameter&#160;learning&#160;with&#160;no&#160;hidden&#160;variables<br/>
+(n)<br/>
+(n)<br/>
+Let&#160;nijk&#160;be&#160;the&#160;number&#160;of&#160;times&#160;(x<br/>
+=&#160;k&#160;and&#160;x<br/>
+=&#160;j)&#160;in&#160;D.<br/>
+i<br/>
+pa(i)<br/>
+For&#160;each&#160;i&#160;and&#160;j,&#160;θij·&#160;is&#160;a&#160;probability&#160;vector&#160;of&#160;length&#160;Ki&#160;×&#160;1.<br/>
+Since&#160;xi&#160;is&#160;a&#160;discrete&#160;variable&#160;with&#160;probabilities&#160;given&#160;by&#160;θi,j,·,&#160;the&#160;likelihood&#160;is:<br/>
+Y&#160;Y<br/>
+(n)<br/>
+(n)<br/>
+Y&#160;Y&#160;Y<br/>
+n<br/>
+p(D|θ)&#160;=<br/>
+p(x<br/>
+|x<br/>
+,&#160;θ)&#160;=<br/>
+θ&#160;ijk<br/>
+i<br/>
+pa(i)<br/>
+ijk<br/>
+n<br/>
+i<br/>
+i<br/>
+j<br/>
+k<br/>
+If&#160;we&#160;choose&#160;a&#160;prior&#160;on&#160;θ&#160;of&#160;the&#160;form:<br/>
+Y&#160;Y&#160;Y<br/>
+α<br/>
+p(θ)&#160;=&#160;c<br/>
+θ&#160;ijk−1<br/>
+ijk<br/>
+i<br/>
+j<br/>
+k<br/>
+where&#160;c&#160;is&#160;a&#160;normalization&#160;constant,&#160;and&#160;P&#160;θ<br/>
+k<br/>
+ijk&#160;=&#160;1&#160;∀i,&#160;j,&#160;then&#160;the&#160;posterior&#160;distribution<br/>
+also&#160;has&#160;the&#160;same&#160;form:<br/>
+Y&#160;Y<br/>
+˜<br/>
+α<br/>
+p(θ|D)&#160;=&#160;c0&#160;Y<br/>
+θ&#160;ijk−1<br/>
+ijk<br/>
+i<br/>
+j<br/>
+k<br/>
+where&#160;˜<br/>
+αijk&#160;=&#160;αijk&#160;+&#160;nijk.<br/>
+This&#160;distribution&#160;is&#160;called&#160;the&#160;Dirichlet&#160;distribution.<br/>
+<hr/>
+<a name=11></a>Dirichlet&#160;Distribution<br/>
+The&#160;Dirichlet&#160;distribution&#160;is&#160;a&#160;distribution&#160;over&#160;the&#160;K-dim&#160;probability&#160;simplex.<br/>
+Let&#160;θ&#160;be&#160;a&#160;K-dimensional&#160;vector&#160;s.t.&#160;∀j&#160;:&#160;θj&#160;≥&#160;0&#160;and&#160;PK&#160;θ<br/>
+j=1<br/>
+j&#160;=&#160;1<br/>
+Γ(P&#160;α<br/>
+K<br/>
+def<br/>
+j<br/>
+j&#160;)&#160;Y<br/>
+α<br/>
+p(θ|α)&#160;=&#160;Dir(α<br/>
+j&#160;−1<br/>
+1,&#160;.&#160;.&#160;.&#160;,&#160;αK&#160;)&#160;=<br/>
+θ<br/>
+Q<br/>
+Γ(α<br/>
+j<br/>
+j<br/>
+j&#160;)&#160;j=1<br/>
+where&#160;the&#160;first&#160;term&#160;is&#160;a&#160;normalization&#160;consta<a href="Ghahramani_3s.html#11">nt1&#160;</a>and&#160;E(θj)&#160;=&#160;αj/(P&#160;α<br/>
+k<br/>
+k)<br/>
+The&#160;Dirichlet&#160;is&#160;conjugate&#160;to&#160;the&#160;multinomial&#160;distribution.&#160;Let<br/>
+x|θ&#160;∼&#160;Multinomial(·|θ)<br/>
+That&#160;is,&#160;p(x&#160;=&#160;j|θ)&#160;=&#160;θj.&#160;Then&#160;the&#160;posterior&#160;is&#160;also&#160;Dirichlet:<br/>
+p(x&#160;=&#160;j|θ)p(θ|α)<br/>
+p(θ|x&#160;=&#160;j,&#160;α)&#160;=<br/>
+=&#160;Dir(&#160;˜<br/>
+α)<br/>
+p(x&#160;=&#160;j|α)<br/>
+where&#160;˜<br/>
+αj&#160;=&#160;αj&#160;+&#160;1,&#160;and&#160;∀`&#160;6=&#160;j&#160;:&#160;˜<br/>
+α`&#160;=&#160;α`<br/>
+1Γ(x)&#160;=&#160;(x&#160;−&#160;1)Γ(x&#160;−&#160;1)&#160;=&#160;R&#160;∞&#160;tx−1e−tdt.&#160;For&#160;integer&#160;n,&#160;Γ(n)&#160;=&#160;(n&#160;−&#160;1)!<br/>
+0<br/>
+<hr/>
+<a name=12></a><img src="./Ghahramani_3-12_1.png"/><br/>
+<img src="./Ghahramani_3-12_2.png"/><br/>
+<img src="./Ghahramani_3-12_3.png"/><br/>
+<img src="./Ghahramani_3-12_4.png"/><br/>
+<img src="./Ghahramani_3-12_5.png"/><br/>
+<img src="./Ghahramani_3-12_6.png"/><br/>
+<img src="./Ghahramani_3-12_7.png"/><br/>
+<img src="./Ghahramani_3-12_8.png"/><br/>
+<img src="./Ghahramani_3-12_9.png"/><br/>
+<img src="./Ghahramani_3-12_10.png"/><br/>
+<img src="./Ghahramani_3-12_11.png"/><br/>
+<img src="./Ghahramani_3-12_12.png"/><br/>
+<img src="./Ghahramani_3-12_13.png"/><br/>
+<img src="./Ghahramani_3-12_14.png"/><br/>
+<img src="./Ghahramani_3-12_15.png"/><br/>
+<img src="./Ghahramani_3-12_16.png"/><br/>
+<img src="./Ghahramani_3-12_17.png"/><br/>
+<img src="./Ghahramani_3-12_18.png"/><br/>
+<img src="./Ghahramani_3-12_19.png"/><br/>
+<img src="./Ghahramani_3-12_20.png"/><br/>
+<img src="./Ghahramani_3-12_21.png"/><br/>
+<img src="./Ghahramani_3-12_22.png"/><br/>
+<img src="./Ghahramani_3-12_23.png"/><br/>
+<img src="./Ghahramani_3-12_24.png"/><br/>
+<img src="./Ghahramani_3-12_25.png"/><br/>
+<img src="./Ghahramani_3-12_26.png"/><br/>
+<img src="./Ghahramani_3-12_27.png"/><br/>
+<img src="./Ghahramani_3-12_28.png"/><br/>
+<img src="./Ghahramani_3-12_29.png"/><br/>
+<img src="./Ghahramani_3-12_30.png"/><br/>
+<img src="./Ghahramani_3-12_31.png"/><br/>
+<img src="./Ghahramani_3-12_32.png"/><br/>
+<img src="./Ghahramani_3-12_33.png"/><br/>
+<img src="./Ghahramani_3-12_34.png"/><br/>
+<img src="./Ghahramani_3-12_35.png"/><br/>
+<img src="./Ghahramani_3-12_36.png"/><br/>
+<img src="./Ghahramani_3-12_37.png"/><br/>
+<img src="./Ghahramani_3-12_38.png"/><br/>
+<img src="./Ghahramani_3-12_39.png"/><br/>
+<img src="./Ghahramani_3-12_40.jpg"/><br/>
+<img src="./Ghahramani_3-12_41.png"/><br/>
+<img src="./Ghahramani_3-12_42.png"/><br/>
+Dirichlet&#160;Distributions<br/>
+Examples&#160;of&#160;Dirichlet&#160;distributions&#160;over&#160;θ&#160;=&#160;(θ1,&#160;θ2,&#160;θ3)&#160;which&#160;can&#160;be&#160;plotted&#160;in&#160;2D&#160;since<br/>θ3&#160;=&#160;1&#160;−&#160;θ1&#160;−&#160;θ2:<br/>
+<hr/>
+<a name=13></a><img src="./Ghahramani_3-13_1.png"/><br/>
+<img src="./Ghahramani_3-13_2.png"/><br/>
+<img src="./Ghahramani_3-13_3.png"/><br/>
+<img src="./Ghahramani_3-13_4.png"/><br/>
+<img src="./Ghahramani_3-13_5.png"/><br/>
+<img src="./Ghahramani_3-13_6.png"/><br/>
+<img src="./Ghahramani_3-13_7.png"/><br/>
+Example<br/>
+Assume&#160;αijk&#160;=&#160;1&#160;∀i,&#160;j,&#160;k.<br/>
+This&#160;corresponds&#160;to&#160;a&#160;uniform&#160;prior&#160;distribution&#160;over&#160;parameters&#160;θ.&#160;This&#160;is&#160;not&#160;a&#160;very<br/>strong/dogmatic&#160;prior,&#160;since&#160;any&#160;parameter&#160;setting&#160;is&#160;assumed&#160;a&#160;priori&#160;possible.<br/>
+After&#160;observed&#160;data&#160;D,&#160;what&#160;are&#160;the&#160;parameter&#160;posterior&#160;distributions?<br/>
+p(θij·|D)&#160;=&#160;Dir(nij·&#160;+&#160;1)<br/>
+This&#160;distribution&#160;predicts,&#160;for&#160;future&#160;data:<br/>
+nijk&#160;+&#160;1<br/>
+p(xi&#160;=&#160;k|xpa(i)&#160;=&#160;j,&#160;D)&#160;=&#160;P<br/>
+k0(nijk0&#160;+&#160;1)<br/>
+Adding&#160;1&#160;to&#160;each&#160;of&#160;the&#160;counts&#160;is&#160;a&#160;form&#160;of&#160;smoothing&#160;called&#160;“Laplace’s&#160;Rule”.<br/>
+<hr/>
+<a name=14></a>Bayesian&#160;parameter&#160;learning&#160;with&#160;hidden&#160;variables<br/>
+Notation:&#160;let&#160;D&#160;be&#160;the&#160;observed&#160;data&#160;set,&#160;X&#160;be&#160;hidden&#160;variables,&#160;and&#160;θ&#160;be&#160;model<br/>parameters.&#160;Assume&#160;discrete&#160;variables&#160;and&#160;Dirichlet&#160;priors&#160;on&#160;θ<br/>
+Goal:&#160;to&#160;infer&#160;p(θ|D)&#160;=&#160;P&#160;p(X&#160;,&#160;θ|D)<br/>
+X<br/>
+Problem:&#160;since&#160;(a)<br/>
+X<br/>
+p(θ|D)&#160;=<br/>
+p(θ|X&#160;,&#160;D)p(X&#160;|D),<br/>
+X<br/>
+and&#160;(b)&#160;for&#160;every&#160;way&#160;of&#160;filling&#160;in&#160;the&#160;missing&#160;data,&#160;p(θ|X&#160;,&#160;D)&#160;is&#160;a&#160;Dirichlet&#160;distribution,<br/>and&#160;(c)&#160;there&#160;are&#160;exponentially&#160;many&#160;ways&#160;of&#160;filling&#160;in&#160;X&#160;,&#160;it&#160;follows&#160;that&#160;p(θ|D)&#160;is&#160;a&#160;mixture<br/>of&#160;Dirichlets&#160;with&#160;exponentially&#160;many&#160;terms!<br/>
+Solutions:<br/>
+•&#160;Find&#160;a&#160;single&#160;best&#160;(“Viterbi”)&#160;completion&#160;of&#160;X&#160;(Stolcke&#160;and&#160;Omohundro,&#160;1993)<br/>
+•&#160;Markov&#160;chain&#160;Monte&#160;Carlo&#160;methods<br/>
+•&#160;Variational&#160;Bayesian&#160;(VB)&#160;methods&#160;(Beal&#160;and&#160;Ghahramani,&#160;2003)<br/>
+<hr/>
+<a name=15></a>Summary&#160;of&#160;parameter&#160;learning<br/>
+Complete&#160;(fully&#160;observed)&#160;data<br/>
+Incomplete&#160;(hidden&#160;/missing)&#160;data<br/>
+ML<br/>
+calculate&#160;frequencies<br/>
+EM<br/>
+Bayesian<br/>
+update&#160;Dirichlet&#160;distributions<br/>
+MCMC&#160;/&#160;Viterbi&#160;/&#160;VB<br/>
+•&#160;For&#160;complete&#160;data&#160;Bayesian&#160;learning&#160;is&#160;not&#160;more&#160;costly&#160;than&#160;ML<br/>
+•&#160;For&#160;incomplete&#160;data&#160;VB&#160;≈&#160;EM&#160;time&#160;complexity<br/>
+•&#160;Other&#160;parameter&#160;priors&#160;are&#160;possible&#160;but&#160;Dirichlet&#160;is&#160;pretty&#160;flexible&#160;and&#160;intuitive.<br/>
+•&#160;For&#160;non-discrete&#160;data,&#160;similar&#160;ideas&#160;but&#160;generally&#160;harder&#160;inference&#160;and&#160;learning.<br/>
+<hr/>
+<a name=16></a>Structure&#160;learning<br/>
+Given&#160;a&#160;data&#160;set&#160;of&#160;observations&#160;of&#160;(A,&#160;B,&#160;C,&#160;D,&#160;E)&#160;can&#160;we&#160;learn&#160;the&#160;structure&#160;of&#160;the<br/>graphical&#160;model?<br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>C</i><br/>
+<i>C</i><br/>
+<i>C</i><br/>
+<i>C</i><br/>
+<i>D</i><br/>
+<i>D</i><br/>
+<i>D</i><br/>
+<i>D</i><br/>
+<i>E</i><br/>
+<i>E</i><br/>
+<i>E</i><br/>
+<i>E</i><br/>
+Let&#160;m&#160;denote&#160;the&#160;graph&#160;structure&#160;=&#160;the&#160;set&#160;of&#160;edges.<br/>
+<hr/>
+<a name=17></a>Structure&#160;learning<br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>C</i><br/>
+<i>C</i><br/>
+<i>C</i><br/>
+<i>C</i><br/>
+<i>D</i><br/>
+<i>D</i><br/>
+<i>D</i><br/>
+<i>D</i><br/>
+<i>E</i><br/>
+<i>E</i><br/>
+<i>E</i><br/>
+<i>E</i><br/>
+Constraint-Based&#160;Learning:<br/>
+Use&#160;statistical&#160;tests&#160;of&#160;marginal&#160;and&#160;conditional<br/>
+independence.&#160;Find&#160;the&#160;set&#160;of&#160;DAGs&#160;whose&#160;d-separation&#160;relations&#160;match&#160;the&#160;results&#160;of<br/>conditional&#160;independence&#160;tests.<br/>
+Score-Based&#160;Learning:&#160;Use&#160;a&#160;global&#160;score&#160;such&#160;as&#160;the&#160;BIC&#160;score&#160;or&#160;Bayesian&#160;marginal<br/>likelihood.&#160;Find&#160;the&#160;structures&#160;that&#160;maximize&#160;this&#160;score.<br/>
+<hr/>
+<a name=18></a>Score-based&#160;structure&#160;learning&#160;for&#160;complete&#160;data<br/>
+Consider&#160;a&#160;graphical&#160;model&#160;with&#160;structure&#160;m,&#160;discrete&#160;observed&#160;data&#160;D,&#160;and&#160;parameters&#160;θ.<br/>Assume&#160;Dirichlet&#160;priors.<br/>
+The&#160;Bayesian&#160;marginal&#160;likelihood&#160;score&#160;is&#160;easy&#160;to&#160;compute:<br/>
+Z<br/>
+score(m)&#160;=&#160;log&#160;p(D|m)&#160;=&#160;log<br/>
+p(D|θ,&#160;m)p(θ|m)dθ<br/>
+&#34;<br/>
+#<br/>
+X&#160;X<br/>
+X<br/>
+X<br/>
+X<br/>
+X<br/>
+score(m)&#160;=<br/>
+log&#160;Γ(<br/>
+αijk)&#160;−<br/>
+log&#160;Γ(αijk)&#160;−&#160;log&#160;Γ(<br/>
+˜<br/>
+αijk)&#160;+<br/>
+log&#160;Γ(&#160;˜<br/>
+αijk)<br/>
+i<br/>
+j<br/>
+k<br/>
+k<br/>
+k<br/>
+k<br/>
+where&#160;˜<br/>
+αijk&#160;=&#160;αijk&#160;+&#160;nijk.&#160;Note&#160;that&#160;the&#160;score&#160;decomposes&#160;over&#160;i.<br/>
+One&#160;can&#160;incorporate&#160;structure&#160;prior&#160;information&#160;p(m)&#160;as&#160;well:<br/>
+score(m)&#160;=&#160;log&#160;p(D|m)&#160;+&#160;log&#160;p(m)<br/>
+Greedy&#160;search&#160;algorithm:&#160;Start&#160;with&#160;m.&#160;Consider&#160;modifications&#160;m&#160;→&#160;m0&#160;(edge&#160;deletions,<br/>additions,&#160;reversals).&#160;Accept&#160;m0&#160;if&#160;score(m0)&#160;&gt;&#160;score(m).&#160;Repeat.<br/>
+Bayesian&#160;inference&#160;of&#160;model&#160;structure:&#160;Run&#160;MCMC&#160;on&#160;m.<br/>
+<hr/>
+<a name=19></a>Bayesian&#160;Structural&#160;EM&#160;for&#160;incomplete&#160;data<br/>
+Consider&#160;a&#160;graphical&#160;model&#160;with&#160;structure&#160;m,&#160;observed&#160;data&#160;D,&#160;hidden&#160;variables&#160;X&#160;and<br/>parameters&#160;θ<br/>
+The&#160;Bayesian&#160;score&#160;is&#160;generally&#160;intractable&#160;to&#160;compute:<br/>
+Z<br/>
+X<br/>
+score(m)&#160;=&#160;p(D|m)&#160;=<br/>
+p(X&#160;,&#160;θ,&#160;D|m)dθ<br/>
+X<br/>
+Bayesian&#160;Structure&#160;EM&#160;(Friedman,&#160;1998):<br/>
+1.&#160;compute&#160;MAP&#160;parameters&#160;ˆ<br/>
+θ&#160;for&#160;current&#160;model&#160;m&#160;using&#160;EM<br/>
+2.&#160;find&#160;hidden&#160;variable&#160;distribution&#160;p(X&#160;|D,&#160;ˆ<br/>
+θ)<br/>
+3.&#160;for&#160;a&#160;small&#160;set&#160;of&#160;candidate&#160;structures&#160;compute&#160;or&#160;approximate<br/>
+X<br/>
+score(m0)&#160;=<br/>
+p(X&#160;|D,&#160;ˆ<br/>
+θ)&#160;log&#160;p(D,&#160;X&#160;|m0)<br/>
+X<br/>
+4.&#160;m&#160;←&#160;m0&#160;with&#160;highest&#160;score<br/>
+<hr/>
+<a name=20></a>Directed&#160;Graphical&#160;Models&#160;and&#160;Causality<br/>
+Causal&#160;relationships&#160;are&#160;a&#160;fundamental&#160;component&#160;of&#160;cognition&#160;and&#160;scientific&#160;discovery.<br/>
+Even&#160;though&#160;the&#160;independence&#160;relations&#160;are&#160;identical,&#160;there&#160;is&#160;a&#160;causal&#160;difference&#160;between<br/>
+•&#160;“smoking”&#160;→&#160;“yellow&#160;teeth”<br/>
+•&#160;“yellow&#160;teeth”&#160;→&#160;“smoking”<br/>
+Key&#160;idea:&#160;interventions&#160;and&#160;the&#160;do-calculus:<br/>
+p(S|Y&#160;=&#160;y)&#160;6=&#160;p(S|do(Y&#160;=&#160;y))<br/>
+p(Y&#160;|S&#160;=&#160;s)&#160;=&#160;p(Y&#160;|do(S&#160;=&#160;s))<br/>
+Causal&#160;relationships&#160;are&#160;robust&#160;to&#160;interventions&#160;on&#160;the&#160;parents.<br/>
+The&#160;key&#160;difficulty&#160;in&#160;learning&#160;causal&#160;relationships&#160;from&#160;observational&#160;data&#160;is&#160;the&#160;presence<br/>of&#160;hidden&#160;common&#160;causes:<br/>
+<i>H</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<hr/>
+<a name=21></a>Learning&#160;parameters&#160;and&#160;structure&#160;in&#160;undirected&#160;graphs<br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>A</i><br/>
+<i>B</i><br/>
+<i>C</i><br/>
+<i>C</i><br/>
+<i>D</i><br/>
+<i>D</i><br/>
+<i>E</i><br/>
+<i>E</i><br/>
+p(x|θ)&#160;=<br/>
+1<br/>
+Q<br/>
+g<br/>
+;&#160;θ<br/>
+Q<br/>
+g<br/>
+;&#160;θ<br/>
+Z(θ)<br/>
+j<br/>
+j&#160;(xCj<br/>
+j&#160;)&#160;where&#160;Z&#160;(θ)&#160;=&#160;Px<br/>
+j<br/>
+j&#160;(xCj<br/>
+j&#160;).<br/>
+Problem:&#160;computing&#160;Z(θ)&#160;is&#160;computationally&#160;intractable&#160;for&#160;general&#160;(non-tree-structured)<br/>undirected&#160;models.<br/>
+Therefore,&#160;maximum-likelihood&#160;learning&#160;of&#160;parameters&#160;is&#160;generally<br/>
+intractable,&#160;Bayesian&#160;scoring&#160;of&#160;structures&#160;is&#160;intractable,&#160;etc.<br/>
+Solutions:<br/>
+•&#160;directly&#160;approximate&#160;Z(θ)&#160;and/or&#160;its&#160;derivatives&#160;(cf.&#160;Boltzmann&#160;machine&#160;learning;<br/>
+contrastive&#160;divergence;&#160;pseudo-likelihood)<br/>
+•&#160;use&#160;approx&#160;inference&#160;methods&#160;(e.g.&#160;loopy&#160;belief&#160;propagation,&#160;bounding&#160;methods,&#160;EP).<br/>
+See:&#160;(Murray&#160;and&#160;Ghahramani,&#160;2004;&#160;Murray&#160;et&#160;al,&#160;2006)&#160;for&#160;Bayesian&#160;learning&#160;in&#160;undirected&#160;models.<br/>
+<hr/>
+<a name=22></a>Summary<br/>
+•&#160;Parameter&#160;learning&#160;in&#160;directed&#160;models:<br/>
+–&#160;complete&#160;and&#160;incomplete&#160;data;<br/>–&#160;ML&#160;and&#160;Bayesian&#160;methods<br/>
+•&#160;Structure&#160;learning&#160;in&#160;directed&#160;models:&#160;complete&#160;and&#160;incomplete&#160;data<br/>
+•&#160;Causality<br/>
+•&#160;Parameter&#160;and&#160;Structure&#160;learning&#160;in&#160;undirected&#160;models<br/>
+<hr/>
+<a name=23></a>Readings&#160;and&#160;References<br/>
+•&#160;Beal,&#160;M.J.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2006)&#160;Variational&#160;Bayesian&#160;learning&#160;of&#160;directed&#160;graphical&#160;models&#160;with<br/>
+hidden&#160;variables.&#160;Bayesian&#160;Analysis&#160;1(4):793–832.<br/>
+http://learning.eng.cam.ac.uk/zoubin/papers/BeaGha06.pdf<br/>
+•&#160;Friedman,&#160;N.&#160;(1998)&#160;The&#160;Bayesian&#160;structural&#160;EM&#160;algorithm.<br/>
+In&#160;Uncertainty&#160;in&#160;Artificial&#160;Intelligence<br/>
+(UAI-1998).&#160;http://robotics.stanford.edu/&#160;nir/Papers/Fr2.pdf<br/>
+•&#160;Friedman,&#160;N.&#160;and&#160;Koller,&#160;D.&#160;(2003)&#160;Being&#160;Bayesian&#160;about&#160;network&#160;structure.&#160;A&#160;Bayesian&#160;approach&#160;to<br/>
+structure&#160;discovery&#160;in&#160;Bayesian&#160;networks.&#160;Machine&#160;Learning.&#160;50(1):&#160;95–125.<br/>
+http://www.springerlink.com/index/NQ13817217667435.pdf<br/>
+•&#160;Ghahramani,&#160;Z.&#160;(2004)&#160;Unsupervised&#160;Learning.&#160;In&#160;Bousquet,&#160;O.,&#160;von&#160;Luxburg,&#160;U.&#160;and&#160;Raetsch,&#160;G.<br/>
+Advanced&#160;Lectures&#160;in&#160;Machine&#160;Learning.&#160;72-112.<br/>
+http://learning.eng.cam.ac.uk/zoubin/papers/ul.pdf<br/>
+•&#160;Heckerman,&#160;D.&#160;(1995)&#160;A&#160;tutorial&#160;on&#160;learning&#160;with&#160;Bayesian&#160;networks.&#160;In&#160;Learning&#160;in&#160;Graphical&#160;Models.<br/>
+http://research.microsoft.com/pubs/69588/tr-95-06.pdf<br/>
+•&#160;Murray,&#160;I.A.,&#160;Ghahramani,&#160;Z.,&#160;and&#160;MacKay,&#160;D.J.C.&#160;(2006)&#160;MCMC&#160;for&#160;doubly-intractable&#160;distributions.&#160;In<br/>
+Uncertainty&#160;in&#160;Artificial&#160;Intelligence&#160;(UAI-2006).<br/>
+http://learning.eng.cam.ac.uk/zoubin/papers/doubly&#160;intractable.pdf<br/>
+•&#160;Murray,&#160;I.A.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2004)&#160;Bayesian&#160;Learning&#160;in&#160;Undirected&#160;Graphical&#160;Models:&#160;Approximate<br/>
+MCMC&#160;algorithms.&#160;In&#160;Uncertainty&#160;in&#160;Artificial&#160;Intelligence&#160;(UAI-2004).<br/>
+http://learning.eng.cam.ac.uk/zoubin/papers/uai04murray.pdf<br/>
+•&#160;Stolcke,&#160;A.&#160;and&#160;Omohundro,&#160;S.&#160;(1993)&#160;Hidden&#160;Markov&#160;model&#160;induction&#160;by&#160;Bayesian&#160;model&#160;merging.&#160;In<br/>
+Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems&#160;(NIPS).<br/>
+http://omohundro.files.wordpress.com/2009/03/stolcke&#160;omohundro93&#160;hmm&#160;induction&#160;bayesian&#160;model&#160;merging.pdf<br/>
+<hr/>
+</body>
+</html>

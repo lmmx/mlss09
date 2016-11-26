@@ -1,0 +1,3550 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Approximate&#160;Inference<br/>
+Part&#160;2&#160;of&#160;2<br/>
+Tom&#160;Minka<br/>
+Microsoft&#160;Research,&#160;Cambridge,&#160;UK<br/>
+Machine&#160;Learning&#160;Summer&#160;School&#160;2009<br/>
+http://mlg.eng.cam.ac.uk/mlss09/<br/>
+1<br/>
+<hr/>
+<a name=2></a>Expectation&#160;Propagation<br/>
+•&#160;Fits&#160;an&#160;exponential-family&#160;approximation&#160;<br/>
+to&#160;the&#160;posterior<br/>
+•&#160;Belief&#160;propagation&#160;is&#160;a&#160;special&#160;case<br/>•&#160;Ka<br/>
+K&#160;l<br/>
+a&#160;m<br/>
+l&#160;a<br/>
+m&#160;n<br/>
+a&#160;&#160;<br/>
+n&#160;f<br/>
+&#160;&#160;i<br/>
+f&#160;lit<br/>
+l&#160;e<br/>
+t&#160;r<br/>
+e&#160;in<br/>
+i&#160;g<br/>
+n&#160;&#160;<br/>
+g&#160;i<br/>
+&#160;&#160;s<br/>
+i&#160;&#160;a<br/>
+&#160;&#160;&#160;<br/>
+a&#160;s<br/>
+&#160;&#160;pe<br/>
+p&#160;c<br/>
+e&#160;ia<br/>
+i&#160;l<br/>
+a&#160;&#160;<br/>
+l&#160;c<br/>
+&#160;&#160;as<br/>
+a&#160;e<br/>
+•&#160;Does&#160;not&#160;always&#160;converge<br/>
+–&#160;May&#160;get&#160;stuck&#160;due&#160;to&#160;improper&#160;distributions&#160;<br/>
+(negative&#160;variances)<br/>
+–&#160;May&#160;oscillate&#160;due&#160;to&#160;loopy&#160;graph<br/>
+2<br/>
+<hr/>
+<a name=3></a>Clas<br/>
+a&#160;sifi<br/>
+f&#160;c<br/>
+i&#160;at<br/>
+a&#160;i<br/>
+t&#160;o<br/>
+i&#160;n<br/>
+o&#160;&#160;<br/>
+n&#160;p<br/>
+&#160;&#160;r<br/>
+p&#160;o<br/>
+r&#160;b<br/>
+o&#160;l<br/>
+b&#160;em<br/>
+e&#160;s<br/>
+3<br/>
+<hr/>
+<a name=4></a>Spam&#160;filtering&#160;by&#160;linear&#160;separation<br/>
+Not&#160;spam<br/>
+Spam<br/>
+Choose&#160;a&#160;boundary&#160;that&#160;will&#160;generalize&#160;to&#160;new&#160;data<br/>
+4<br/>
+<hr/>
+<a name=5></a>Linear&#160;separation<br/>
+Minimum&#160;training&#160;error<br/>solution&#160;(Perceptron)<br/>
+Too&#160;arbitrary&#160;–&#160;won’t&#160;generalize&#160;well<br/>
+5<br/>
+<hr/>
+<a name=6></a>Linear&#160;separation<br/>
+Maximum-margin&#160;<br/>solution&#160;(SVM)<br/>
+Ignores&#160;information&#160;in&#160;the&#160;vertical&#160;direction<br/>
+6<br/>
+<hr/>
+<a name=7></a>Linear&#160;separation<br/>
+Bayesian&#160;<br/>solution<br/>(via&#160;averaging)<br/>
+Has&#160;a&#160;margin, and uses&#160;information&#160;in&#160;all&#160;dimensions<br/>
+7<br/>
+<hr/>
+<a name=8></a><img src="./Minka_slides2_ink-8_1.png"/><br/>
+<img src="./Minka_slides2_ink-8_2.png"/><br/>
+Geometry&#160;of&#160;linear&#160;separation<br/>
+Separator&#160;is&#160;any vector&#160;w&#160;such that:<br/>
+<i>T</i><br/>
+<b>w&#160;x</b><br/>
+(class&#160;1)<br/>
+<i>i&#160;</i>&gt;&#160;0<br/>
+<i>T</i><br/>
+<b>w&#160;x</b><br/>
+(class&#160;2)<br/>
+<i>i&#160;</i>&lt;&#160;0<br/>
+<b>w&#160;</b>=&#160;1<br/>
+(sphere)<br/>
+This&#160;set&#160;has&#160;an&#160;unusual&#160;shape<br/>SVM:&#160;Optimize&#160;over&#160;it<br/>Bayes:&#160;Average&#160;over&#160;it<br/>
+8<br/>
+<hr/>
+<a name=9></a><img src="./Minka_slides2_ink-9_1.jpg"/><br/>
+<img src="./Minka_slides2_ink-9_2.jpg"/><br/>
+Performance&#160;on&#160;linear&#160;<br/>
+separation<br/>
+EP&#160;Gaussian&#160;approximation&#160;to&#160;posterior<br/>
+9<br/>
+<hr/>
+<a name=10></a><img src="./Minka_slides2_ink-10_1.png"/><br/>
+<img src="./Minka_slides2_ink-10_2.png"/><br/>
+<img src="./Minka_slides2_ink-10_3.png"/><br/>
+<img src="./Minka_slides2_ink-10_4.png"/><br/>
+<img src="./Minka_slides2_ink-10_5.png"/><br/>
+<img src="./Minka_slides2_ink-10_6.png"/><br/>
+<img src="./Minka_slides2_ink-10_7.png"/><br/>
+<img src="./Minka_slides2_ink-10_8.png"/><br/>
+<img src="./Minka_slides2_ink-10_9.png"/><br/>
+<img src="./Minka_slides2_ink-10_10.png"/><br/>
+<img src="./Minka_slides2_ink-10_11.png"/><br/>
+<img src="./Minka_slides2_ink-10_12.png"/><br/>
+<img src="./Minka_slides2_ink-10_13.png"/><br/>
+<img src="./Minka_slides2_ink-10_14.png"/><br/>
+<img src="./Minka_slides2_ink-10_15.png"/><br/>
+<img src="./Minka_slides2_ink-10_16.png"/><br/>
+<img src="./Minka_slides2_ink-10_17.png"/><br/>
+<img src="./Minka_slides2_ink-10_18.png"/><br/>
+<img src="./Minka_slides2_ink-10_19.png"/><br/>
+<img src="./Minka_slides2_ink-10_20.png"/><br/>
+<img src="./Minka_slides2_ink-10_21.png"/><br/>
+<img src="./Minka_slides2_ink-10_22.png"/><br/>
+<img src="./Minka_slides2_ink-10_23.png"/><br/>
+<img src="./Minka_slides2_ink-10_24.png"/><br/>
+<img src="./Minka_slides2_ink-10_25.png"/><br/>
+<img src="./Minka_slides2_ink-10_26.png"/><br/>
+<img src="./Minka_slides2_ink-10_27.png"/><br/>
+<img src="./Minka_slides2_ink-10_28.png"/><br/>
+<img src="./Minka_slides2_ink-10_29.png"/><br/>
+<img src="./Minka_slides2_ink-10_30.png"/><br/>
+<img src="./Minka_slides2_ink-10_31.png"/><br/>
+<img src="./Minka_slides2_ink-10_32.png"/><br/>
+<img src="./Minka_slides2_ink-10_33.png"/><br/>
+<img src="./Minka_slides2_ink-10_34.png"/><br/>
+<img src="./Minka_slides2_ink-10_35.png"/><br/>
+<img src="./Minka_slides2_ink-10_36.png"/><br/>
+<img src="./Minka_slides2_ink-10_37.png"/><br/>
+<img src="./Minka_slides2_ink-10_38.png"/><br/>
+<img src="./Minka_slides2_ink-10_39.png"/><br/>
+<img src="./Minka_slides2_ink-10_40.png"/><br/>
+<img src="./Minka_slides2_ink-10_41.png"/><br/>
+<img src="./Minka_slides2_ink-10_42.png"/><br/>
+<img src="./Minka_slides2_ink-10_43.png"/><br/>
+<img src="./Minka_slides2_ink-10_44.png"/><br/>
+<img src="./Minka_slides2_ink-10_45.png"/><br/>
+<img src="./Minka_slides2_ink-10_46.png"/><br/>
+<img src="./Minka_slides2_ink-10_47.png"/><br/>
+<img src="./Minka_slides2_ink-10_48.png"/><br/>
+<img src="./Minka_slides2_ink-10_49.png"/><br/>
+<img src="./Minka_slides2_ink-10_50.png"/><br/>
+<img src="./Minka_slides2_ink-10_51.png"/><br/>
+<img src="./Minka_slides2_ink-10_52.png"/><br/>
+<img src="./Minka_slides2_ink-10_53.png"/><br/>
+<img src="./Minka_slides2_ink-10_54.png"/><br/>
+<img src="./Minka_slides2_ink-10_55.png"/><br/>
+<img src="./Minka_slides2_ink-10_56.png"/><br/>
+<img src="./Minka_slides2_ink-10_57.png"/><br/>
+<img src="./Minka_slides2_ink-10_58.png"/><br/>
+<img src="./Minka_slides2_ink-10_59.png"/><br/>
+<img src="./Minka_slides2_ink-10_60.png"/><br/>
+<img src="./Minka_slides2_ink-10_61.png"/><br/>
+<img src="./Minka_slides2_ink-10_62.png"/><br/>
+<img src="./Minka_slides2_ink-10_63.png"/><br/>
+<img src="./Minka_slides2_ink-10_64.png"/><br/>
+<img src="./Minka_slides2_ink-10_65.png"/><br/>
+<img src="./Minka_slides2_ink-10_66.png"/><br/>
+<img src="./Minka_slides2_ink-10_67.png"/><br/>
+<img src="./Minka_slides2_ink-10_68.png"/><br/>
+<img src="./Minka_slides2_ink-10_69.png"/><br/>
+<img src="./Minka_slides2_ink-10_70.png"/><br/>
+<img src="./Minka_slides2_ink-10_71.png"/><br/>
+<img src="./Minka_slides2_ink-10_72.png"/><br/>
+<img src="./Minka_slides2_ink-10_73.png"/><br/>
+<img src="./Minka_slides2_ink-10_74.png"/><br/>
+<img src="./Minka_slides2_ink-10_75.png"/><br/>
+<img src="./Minka_slides2_ink-10_76.png"/><br/>
+<img src="./Minka_slides2_ink-10_77.png"/><br/>
+<img src="./Minka_slides2_ink-10_78.png"/><br/>
+<img src="./Minka_slides2_ink-10_79.png"/><br/>
+<img src="./Minka_slides2_ink-10_80.png"/><br/>
+<img src="./Minka_slides2_ink-10_81.png"/><br/>
+<img src="./Minka_slides2_ink-10_82.png"/><br/>
+<img src="./Minka_slides2_ink-10_83.png"/><br/>
+<img src="./Minka_slides2_ink-10_84.png"/><br/>
+<img src="./Minka_slides2_ink-10_85.png"/><br/>
+<img src="./Minka_slides2_ink-10_86.png"/><br/>
+<img src="./Minka_slides2_ink-10_87.png"/><br/>
+<img src="./Minka_slides2_ink-10_88.png"/><br/>
+<img src="./Minka_slides2_ink-10_89.png"/><br/>
+<img src="./Minka_slides2_ink-10_90.png"/><br/>
+<img src="./Minka_slides2_ink-10_91.png"/><br/>
+<img src="./Minka_slides2_ink-10_92.png"/><br/>
+<img src="./Minka_slides2_ink-10_93.png"/><br/>
+<img src="./Minka_slides2_ink-10_94.png"/><br/>
+<img src="./Minka_slides2_ink-10_95.png"/><br/>
+<img src="./Minka_slides2_ink-10_96.png"/><br/>
+<img src="./Minka_slides2_ink-10_97.png"/><br/>
+<img src="./Minka_slides2_ink-10_98.png"/><br/>
+<img src="./Minka_slides2_ink-10_99.png"/><br/>
+<img src="./Minka_slides2_ink-10_100.png"/><br/>
+<img src="./Minka_slides2_ink-10_101.png"/><br/>
+<img src="./Minka_slides2_ink-10_102.png"/><br/>
+<img src="./Minka_slides2_ink-10_103.png"/><br/>
+<img src="./Minka_slides2_ink-10_104.png"/><br/>
+<img src="./Minka_slides2_ink-10_105.png"/><br/>
+<img src="./Minka_slides2_ink-10_106.png"/><br/>
+<img src="./Minka_slides2_ink-10_107.png"/><br/>
+<img src="./Minka_slides2_ink-10_108.png"/><br/>
+<img src="./Minka_slides2_ink-10_109.png"/><br/>
+<img src="./Minka_slides2_ink-10_110.png"/><br/>
+<img src="./Minka_slides2_ink-10_111.png"/><br/>
+<img src="./Minka_slides2_ink-10_112.png"/><br/>
+<img src="./Minka_slides2_ink-10_113.png"/><br/>
+<img src="./Minka_slides2_ink-10_114.png"/><br/>
+<img src="./Minka_slides2_ink-10_115.png"/><br/>
+<img src="./Minka_slides2_ink-10_116.png"/><br/>
+<img src="./Minka_slides2_ink-10_117.png"/><br/>
+<img src="./Minka_slides2_ink-10_118.png"/><br/>
+<img src="./Minka_slides2_ink-10_119.png"/><br/>
+<img src="./Minka_slides2_ink-10_120.png"/><br/>
+<img src="./Minka_slides2_ink-10_121.png"/><br/>
+<img src="./Minka_slides2_ink-10_122.png"/><br/>
+<img src="./Minka_slides2_ink-10_123.png"/><br/>
+<img src="./Minka_slides2_ink-10_124.png"/><br/>
+<img src="./Minka_slides2_ink-10_125.png"/><br/>
+<img src="./Minka_slides2_ink-10_126.png"/><br/>
+<img src="./Minka_slides2_ink-10_127.png"/><br/>
+<img src="./Minka_slides2_ink-10_128.png"/><br/>
+<img src="./Minka_slides2_ink-10_129.png"/><br/>
+<img src="./Minka_slides2_ink-10_130.png"/><br/>
+<img src="./Minka_slides2_ink-10_131.png"/><br/>
+<img src="./Minka_slides2_ink-10_132.png"/><br/>
+<img src="./Minka_slides2_ink-10_133.png"/><br/>
+<img src="./Minka_slides2_ink-10_134.png"/><br/>
+<img src="./Minka_slides2_ink-10_135.png"/><br/>
+<img src="./Minka_slides2_ink-10_136.png"/><br/>
+<img src="./Minka_slides2_ink-10_137.png"/><br/>
+<img src="./Minka_slides2_ink-10_138.png"/><br/>
+<img src="./Minka_slides2_ink-10_139.png"/><br/>
+<img src="./Minka_slides2_ink-10_140.png"/><br/>
+<img src="./Minka_slides2_ink-10_141.png"/><br/>
+<img src="./Minka_slides2_ink-10_142.png"/><br/>
+<img src="./Minka_slides2_ink-10_143.png"/><br/>
+<img src="./Minka_slides2_ink-10_144.png"/><br/>
+<img src="./Minka_slides2_ink-10_145.png"/><br/>
+<img src="./Minka_slides2_ink-10_146.png"/><br/>
+Factor&#160;graph<br/>
+<i>p</i>(<b>w</b>)&#160;=&#160;<i>N&#160;</i>(<b>w</b>;&#160;,<br/>
+<b>0&#160;I</b>)<br/>
+10<br/>
+<hr/>
+<a name=11></a><img src="./Minka_slides2_ink-11_1.png"/><br/>
+<img src="./Minka_slides2_ink-11_2.png"/><br/>
+<img src="./Minka_slides2_ink-11_3.png"/><br/>
+<img src="./Minka_slides2_ink-11_4.png"/><br/>
+<img src="./Minka_slides2_ink-11_5.png"/><br/>
+<img src="./Minka_slides2_ink-11_6.png"/><br/>
+<img src="./Minka_slides2_ink-11_7.png"/><br/>
+<img src="./Minka_slides2_ink-11_8.png"/><br/>
+<img src="./Minka_slides2_ink-11_9.png"/><br/>
+<img src="./Minka_slides2_ink-11_10.png"/><br/>
+<img src="./Minka_slides2_ink-11_11.png"/><br/>
+<img src="./Minka_slides2_ink-11_12.png"/><br/>
+<img src="./Minka_slides2_ink-11_13.png"/><br/>
+<img src="./Minka_slides2_ink-11_14.png"/><br/>
+<img src="./Minka_slides2_ink-11_15.png"/><br/>
+<img src="./Minka_slides2_ink-11_16.png"/><br/>
+<img src="./Minka_slides2_ink-11_17.png"/><br/>
+<img src="./Minka_slides2_ink-11_18.png"/><br/>
+<img src="./Minka_slides2_ink-11_19.png"/><br/>
+<img src="./Minka_slides2_ink-11_20.png"/><br/>
+<img src="./Minka_slides2_ink-11_21.png"/><br/>
+<img src="./Minka_slides2_ink-11_22.png"/><br/>
+<img src="./Minka_slides2_ink-11_23.png"/><br/>
+<img src="./Minka_slides2_ink-11_24.png"/><br/>
+<img src="./Minka_slides2_ink-11_25.png"/><br/>
+<img src="./Minka_slides2_ink-11_26.png"/><br/>
+<img src="./Minka_slides2_ink-11_27.png"/><br/>
+<img src="./Minka_slides2_ink-11_28.png"/><br/>
+<img src="./Minka_slides2_ink-11_29.png"/><br/>
+<img src="./Minka_slides2_ink-11_30.png"/><br/>
+<img src="./Minka_slides2_ink-11_31.png"/><br/>
+<img src="./Minka_slides2_ink-11_32.png"/><br/>
+<img src="./Minka_slides2_ink-11_33.png"/><br/>
+<img src="./Minka_slides2_ink-11_34.png"/><br/>
+<img src="./Minka_slides2_ink-11_35.png"/><br/>
+<img src="./Minka_slides2_ink-11_36.png"/><br/>
+<img src="./Minka_slides2_ink-11_37.png"/><br/>
+<img src="./Minka_slides2_ink-11_38.png"/><br/>
+<img src="./Minka_slides2_ink-11_39.png"/><br/>
+<img src="./Minka_slides2_ink-11_40.png"/><br/>
+<img src="./Minka_slides2_ink-11_41.png"/><br/>
+<img src="./Minka_slides2_ink-11_42.png"/><br/>
+<img src="./Minka_slides2_ink-11_43.png"/><br/>
+<img src="./Minka_slides2_ink-11_44.png"/><br/>
+<img src="./Minka_slides2_ink-11_45.png"/><br/>
+<img src="./Minka_slides2_ink-11_46.png"/><br/>
+<img src="./Minka_slides2_ink-11_47.png"/><br/>
+<img src="./Minka_slides2_ink-11_48.png"/><br/>
+<img src="./Minka_slides2_ink-11_49.png"/><br/>
+<img src="./Minka_slides2_ink-11_50.png"/><br/>
+<img src="./Minka_slides2_ink-11_51.png"/><br/>
+<img src="./Minka_slides2_ink-11_52.png"/><br/>
+<img src="./Minka_slides2_ink-11_53.png"/><br/>
+<img src="./Minka_slides2_ink-11_54.png"/><br/>
+<img src="./Minka_slides2_ink-11_55.png"/><br/>
+<img src="./Minka_slides2_ink-11_56.png"/><br/>
+<img src="./Minka_slides2_ink-11_57.png"/><br/>
+<img src="./Minka_slides2_ink-11_58.png"/><br/>
+<img src="./Minka_slides2_ink-11_59.png"/><br/>
+<img src="./Minka_slides2_ink-11_60.png"/><br/>
+<img src="./Minka_slides2_ink-11_61.png"/><br/>
+<img src="./Minka_slides2_ink-11_62.png"/><br/>
+<img src="./Minka_slides2_ink-11_63.png"/><br/>
+<img src="./Minka_slides2_ink-11_64.png"/><br/>
+<img src="./Minka_slides2_ink-11_65.png"/><br/>
+<img src="./Minka_slides2_ink-11_66.png"/><br/>
+<img src="./Minka_slides2_ink-11_67.png"/><br/>
+<img src="./Minka_slides2_ink-11_68.png"/><br/>
+<img src="./Minka_slides2_ink-11_69.png"/><br/>
+<img src="./Minka_slides2_ink-11_70.png"/><br/>
+<img src="./Minka_slides2_ink-11_71.png"/><br/>
+<img src="./Minka_slides2_ink-11_72.png"/><br/>
+<img src="./Minka_slides2_ink-11_73.png"/><br/>
+<img src="./Minka_slides2_ink-11_74.png"/><br/>
+<img src="./Minka_slides2_ink-11_75.png"/><br/>
+<img src="./Minka_slides2_ink-11_76.png"/><br/>
+<img src="./Minka_slides2_ink-11_77.png"/><br/>
+<img src="./Minka_slides2_ink-11_78.png"/><br/>
+<img src="./Minka_slides2_ink-11_79.png"/><br/>
+<img src="./Minka_slides2_ink-11_80.png"/><br/>
+<img src="./Minka_slides2_ink-11_81.png"/><br/>
+<img src="./Minka_slides2_ink-11_82.png"/><br/>
+<img src="./Minka_slides2_ink-11_83.png"/><br/>
+<img src="./Minka_slides2_ink-11_84.png"/><br/>
+<img src="./Minka_slides2_ink-11_85.png"/><br/>
+<img src="./Minka_slides2_ink-11_86.png"/><br/>
+<img src="./Minka_slides2_ink-11_87.png"/><br/>
+<img src="./Minka_slides2_ink-11_88.png"/><br/>
+<img src="./Minka_slides2_ink-11_89.png"/><br/>
+<img src="./Minka_slides2_ink-11_90.png"/><br/>
+<img src="./Minka_slides2_ink-11_91.png"/><br/>
+<img src="./Minka_slides2_ink-11_92.png"/><br/>
+<img src="./Minka_slides2_ink-11_93.png"/><br/>
+<img src="./Minka_slides2_ink-11_94.png"/><br/>
+<img src="./Minka_slides2_ink-11_95.png"/><br/>
+<img src="./Minka_slides2_ink-11_96.png"/><br/>
+<img src="./Minka_slides2_ink-11_97.png"/><br/>
+<img src="./Minka_slides2_ink-11_98.png"/><br/>
+<img src="./Minka_slides2_ink-11_99.png"/><br/>
+<img src="./Minka_slides2_ink-11_100.png"/><br/>
+<img src="./Minka_slides2_ink-11_101.png"/><br/>
+<img src="./Minka_slides2_ink-11_102.png"/><br/>
+<img src="./Minka_slides2_ink-11_103.png"/><br/>
+<img src="./Minka_slides2_ink-11_104.png"/><br/>
+<img src="./Minka_slides2_ink-11_105.png"/><br/>
+<img src="./Minka_slides2_ink-11_106.png"/><br/>
+<img src="./Minka_slides2_ink-11_107.png"/><br/>
+<img src="./Minka_slides2_ink-11_108.png"/><br/>
+<img src="./Minka_slides2_ink-11_109.png"/><br/>
+<img src="./Minka_slides2_ink-11_110.png"/><br/>
+<img src="./Minka_slides2_ink-11_111.png"/><br/>
+<img src="./Minka_slides2_ink-11_112.png"/><br/>
+<img src="./Minka_slides2_ink-11_113.png"/><br/>
+<img src="./Minka_slides2_ink-11_114.png"/><br/>
+<img src="./Minka_slides2_ink-11_115.png"/><br/>
+<img src="./Minka_slides2_ink-11_116.png"/><br/>
+<img src="./Minka_slides2_ink-11_117.png"/><br/>
+<img src="./Minka_slides2_ink-11_118.png"/><br/>
+<img src="./Minka_slides2_ink-11_119.png"/><br/>
+<img src="./Minka_slides2_ink-11_120.png"/><br/>
+<img src="./Minka_slides2_ink-11_121.png"/><br/>
+<img src="./Minka_slides2_ink-11_122.png"/><br/>
+<img src="./Minka_slides2_ink-11_123.png"/><br/>
+<img src="./Minka_slides2_ink-11_124.png"/><br/>
+<img src="./Minka_slides2_ink-11_125.png"/><br/>
+<img src="./Minka_slides2_ink-11_126.png"/><br/>
+<img src="./Minka_slides2_ink-11_127.png"/><br/>
+<img src="./Minka_slides2_ink-11_128.png"/><br/>
+<img src="./Minka_slides2_ink-11_129.png"/><br/>
+<img src="./Minka_slides2_ink-11_130.png"/><br/>
+<img src="./Minka_slides2_ink-11_131.png"/><br/>
+<img src="./Minka_slides2_ink-11_132.png"/><br/>
+<img src="./Minka_slides2_ink-11_133.png"/><br/>
+<img src="./Minka_slides2_ink-11_134.png"/><br/>
+<img src="./Minka_slides2_ink-11_135.png"/><br/>
+<img src="./Minka_slides2_ink-11_136.png"/><br/>
+<img src="./Minka_slides2_ink-11_137.png"/><br/>
+<img src="./Minka_slides2_ink-11_138.png"/><br/>
+<img src="./Minka_slides2_ink-11_139.png"/><br/>
+<img src="./Minka_slides2_ink-11_140.png"/><br/>
+<img src="./Minka_slides2_ink-11_141.png"/><br/>
+<img src="./Minka_slides2_ink-11_142.png"/><br/>
+<img src="./Minka_slides2_ink-11_143.png"/><br/>
+<img src="./Minka_slides2_ink-11_144.png"/><br/>
+<img src="./Minka_slides2_ink-11_145.png"/><br/>
+<img src="./Minka_slides2_ink-11_146.png"/><br/>
+<img src="./Minka_slides2_ink-11_147.png"/><br/>
+<img src="./Minka_slides2_ink-11_148.png"/><br/>
+Computing&#160;moments<br/>
+\<i>i</i><br/>
+<i>q&#160;</i>(<b>w</b>)&#160;=&#160;<i>N&#160;</i>(<b>w</b>;<br/>
+\<i>i</i><br/>
+<b>m&#160;</b>,<br/>
+\<i>i</i><br/>
+<b>V&#160;</b>)<br/>
+11<br/>
+<hr/>
+<a name=12></a>Computing&#160;moments<br/>
+12<br/>
+<hr/>
+<a name=13></a><img src="./Minka_slides2_ink-13_1.png"/><br/>
+<img src="./Minka_slides2_ink-13_2.png"/><br/>
+Time&#160;vs.&#160;accuracy<br/>
+A&#160;typical&#160;run&#160;on&#160;the&#160;3-point&#160;problem<br/>
+Error&#160;=&#160;distance&#160;to&#160;true&#160;mean&#160;of&#160;w<br/>
+Billiard&#160;=&#160;Monte&#160;Carlo&#160;sampling<br/>(Herbrich&#160;et&#160;al,&#160;2001)<br/>
+Opper&amp;Winther’s&#160;algorithms:<br/>
+MF&#160;=&#160;mean-field&#160;theory<br/>
+TAP&#160;=&#160;cavity&#160;method&#160;(equiv&#160;to&#160;Gaussian&#160;EP&#160;for&#160;this&#160;problem)<br/>
+13<br/>
+<hr/>
+<a name=14></a><img src="./Minka_slides2_ink-14_1.png"/><br/>
+<img src="./Minka_slides2_ink-14_2.png"/><br/>
+<img src="./Minka_slides2_ink-14_3.png"/><br/>
+<img src="./Minka_slides2_ink-14_4.png"/><br/>
+<img src="./Minka_slides2_ink-14_5.png"/><br/>
+Gaussian&#160;kernels<br/>
+•&#160;Map&#160;data&#160;into&#160;high-dimensional&#160;space&#160;so&#160;<br/>
+that<br/>
+14<br/>
+<hr/>
+<a name=15></a><img src="./Minka_slides2_ink-15_1.png"/><br/>
+<img src="./Minka_slides2_ink-15_2.png"/><br/>
+<img src="./Minka_slides2_ink-15_3.png"/><br/>
+<img src="./Minka_slides2_ink-15_4.png"/><br/>
+<img src="./Minka_slides2_ink-15_5.png"/><br/>
+<img src="./Minka_slides2_ink-15_6.png"/><br/>
+<img src="./Minka_slides2_ink-15_7.png"/><br/>
+<img src="./Minka_slides2_ink-15_8.png"/><br/>
+<img src="./Minka_slides2_ink-15_9.png"/><br/>
+<img src="./Minka_slides2_ink-15_10.png"/><br/>
+<img src="./Minka_slides2_ink-15_11.png"/><br/>
+<img src="./Minka_slides2_ink-15_12.png"/><br/>
+<img src="./Minka_slides2_ink-15_13.png"/><br/>
+<img src="./Minka_slides2_ink-15_14.png"/><br/>
+<img src="./Minka_slides2_ink-15_15.png"/><br/>
+<img src="./Minka_slides2_ink-15_16.png"/><br/>
+<img src="./Minka_slides2_ink-15_17.png"/><br/>
+<img src="./Minka_slides2_ink-15_18.png"/><br/>
+<img src="./Minka_slides2_ink-15_19.png"/><br/>
+<img src="./Minka_slides2_ink-15_20.png"/><br/>
+<img src="./Minka_slides2_ink-15_21.png"/><br/>
+<img src="./Minka_slides2_ink-15_22.png"/><br/>
+<img src="./Minka_slides2_ink-15_23.png"/><br/>
+<img src="./Minka_slides2_ink-15_24.png"/><br/>
+<img src="./Minka_slides2_ink-15_25.png"/><br/>
+<img src="./Minka_slides2_ink-15_26.png"/><br/>
+<img src="./Minka_slides2_ink-15_27.png"/><br/>
+<img src="./Minka_slides2_ink-15_28.png"/><br/>
+<img src="./Minka_slides2_ink-15_29.png"/><br/>
+<img src="./Minka_slides2_ink-15_30.png"/><br/>
+<img src="./Minka_slides2_ink-15_31.png"/><br/>
+<img src="./Minka_slides2_ink-15_32.png"/><br/>
+<img src="./Minka_slides2_ink-15_33.png"/><br/>
+<img src="./Minka_slides2_ink-15_34.png"/><br/>
+<img src="./Minka_slides2_ink-15_35.png"/><br/>
+<img src="./Minka_slides2_ink-15_36.png"/><br/>
+<img src="./Minka_slides2_ink-15_37.png"/><br/>
+<img src="./Minka_slides2_ink-15_38.png"/><br/>
+<img src="./Minka_slides2_ink-15_39.png"/><br/>
+<img src="./Minka_slides2_ink-15_40.png"/><br/>
+<img src="./Minka_slides2_ink-15_41.png"/><br/>
+<img src="./Minka_slides2_ink-15_42.png"/><br/>
+<img src="./Minka_slides2_ink-15_43.png"/><br/>
+<img src="./Minka_slides2_ink-15_44.png"/><br/>
+<img src="./Minka_slides2_ink-15_45.png"/><br/>
+<img src="./Minka_slides2_ink-15_46.png"/><br/>
+<img src="./Minka_slides2_ink-15_47.png"/><br/>
+<img src="./Minka_slides2_ink-15_48.png"/><br/>
+<img src="./Minka_slides2_ink-15_49.png"/><br/>
+<img src="./Minka_slides2_ink-15_50.png"/><br/>
+<img src="./Minka_slides2_ink-15_51.png"/><br/>
+<img src="./Minka_slides2_ink-15_52.png"/><br/>
+<img src="./Minka_slides2_ink-15_53.png"/><br/>
+<img src="./Minka_slides2_ink-15_54.png"/><br/>
+<img src="./Minka_slides2_ink-15_55.png"/><br/>
+<img src="./Minka_slides2_ink-15_56.png"/><br/>
+<img src="./Minka_slides2_ink-15_57.png"/><br/>
+<img src="./Minka_slides2_ink-15_58.png"/><br/>
+<img src="./Minka_slides2_ink-15_59.png"/><br/>
+<img src="./Minka_slides2_ink-15_60.png"/><br/>
+<img src="./Minka_slides2_ink-15_61.png"/><br/>
+<img src="./Minka_slides2_ink-15_62.png"/><br/>
+<img src="./Minka_slides2_ink-15_63.png"/><br/>
+<img src="./Minka_slides2_ink-15_64.png"/><br/>
+<img src="./Minka_slides2_ink-15_65.png"/><br/>
+<img src="./Minka_slides2_ink-15_66.png"/><br/>
+<img src="./Minka_slides2_ink-15_67.png"/><br/>
+<img src="./Minka_slides2_ink-15_68.png"/><br/>
+<img src="./Minka_slides2_ink-15_69.png"/><br/>
+<img src="./Minka_slides2_ink-15_70.png"/><br/>
+<img src="./Minka_slides2_ink-15_71.png"/><br/>
+<img src="./Minka_slides2_ink-15_72.png"/><br/>
+<img src="./Minka_slides2_ink-15_73.png"/><br/>
+<img src="./Minka_slides2_ink-15_74.png"/><br/>
+<img src="./Minka_slides2_ink-15_75.png"/><br/>
+<img src="./Minka_slides2_ink-15_76.png"/><br/>
+<img src="./Minka_slides2_ink-15_77.png"/><br/>
+<img src="./Minka_slides2_ink-15_78.png"/><br/>
+<img src="./Minka_slides2_ink-15_79.png"/><br/>
+<img src="./Minka_slides2_ink-15_80.png"/><br/>
+<img src="./Minka_slides2_ink-15_81.png"/><br/>
+<img src="./Minka_slides2_ink-15_82.png"/><br/>
+<img src="./Minka_slides2_ink-15_83.png"/><br/>
+<img src="./Minka_slides2_ink-15_84.png"/><br/>
+<img src="./Minka_slides2_ink-15_85.png"/><br/>
+<img src="./Minka_slides2_ink-15_86.png"/><br/>
+<img src="./Minka_slides2_ink-15_87.png"/><br/>
+<img src="./Minka_slides2_ink-15_88.png"/><br/>
+<img src="./Minka_slides2_ink-15_89.png"/><br/>
+<img src="./Minka_slides2_ink-15_90.png"/><br/>
+<img src="./Minka_slides2_ink-15_91.png"/><br/>
+<img src="./Minka_slides2_ink-15_92.png"/><br/>
+<img src="./Minka_slides2_ink-15_93.png"/><br/>
+<img src="./Minka_slides2_ink-15_94.png"/><br/>
+<img src="./Minka_slides2_ink-15_95.png"/><br/>
+<img src="./Minka_slides2_ink-15_96.png"/><br/>
+<img src="./Minka_slides2_ink-15_97.png"/><br/>
+<img src="./Minka_slides2_ink-15_98.png"/><br/>
+<img src="./Minka_slides2_ink-15_99.png"/><br/>
+<img src="./Minka_slides2_ink-15_100.png"/><br/>
+<img src="./Minka_slides2_ink-15_101.png"/><br/>
+<img src="./Minka_slides2_ink-15_102.png"/><br/>
+<img src="./Minka_slides2_ink-15_103.png"/><br/>
+<img src="./Minka_slides2_ink-15_104.png"/><br/>
+<img src="./Minka_slides2_ink-15_105.png"/><br/>
+<img src="./Minka_slides2_ink-15_106.png"/><br/>
+<img src="./Minka_slides2_ink-15_107.png"/><br/>
+<img src="./Minka_slides2_ink-15_108.png"/><br/>
+<img src="./Minka_slides2_ink-15_109.png"/><br/>
+<img src="./Minka_slides2_ink-15_110.png"/><br/>
+<img src="./Minka_slides2_ink-15_111.png"/><br/>
+<img src="./Minka_slides2_ink-15_112.png"/><br/>
+<img src="./Minka_slides2_ink-15_113.png"/><br/>
+<img src="./Minka_slides2_ink-15_114.png"/><br/>
+<img src="./Minka_slides2_ink-15_115.png"/><br/>
+<img src="./Minka_slides2_ink-15_116.png"/><br/>
+<img src="./Minka_slides2_ink-15_117.png"/><br/>
+<img src="./Minka_slides2_ink-15_118.png"/><br/>
+<img src="./Minka_slides2_ink-15_119.png"/><br/>
+<img src="./Minka_slides2_ink-15_120.png"/><br/>
+<img src="./Minka_slides2_ink-15_121.png"/><br/>
+<img src="./Minka_slides2_ink-15_122.png"/><br/>
+<img src="./Minka_slides2_ink-15_123.png"/><br/>
+<img src="./Minka_slides2_ink-15_124.png"/><br/>
+<img src="./Minka_slides2_ink-15_125.png"/><br/>
+<img src="./Minka_slides2_ink-15_126.png"/><br/>
+<img src="./Minka_slides2_ink-15_127.png"/><br/>
+<img src="./Minka_slides2_ink-15_128.png"/><br/>
+<img src="./Minka_slides2_ink-15_129.png"/><br/>
+<img src="./Minka_slides2_ink-15_130.png"/><br/>
+<img src="./Minka_slides2_ink-15_131.png"/><br/>
+<img src="./Minka_slides2_ink-15_132.png"/><br/>
+<img src="./Minka_slides2_ink-15_133.png"/><br/>
+<img src="./Minka_slides2_ink-15_134.png"/><br/>
+<img src="./Minka_slides2_ink-15_135.png"/><br/>
+<img src="./Minka_slides2_ink-15_136.png"/><br/>
+<img src="./Minka_slides2_ink-15_137.png"/><br/>
+<img src="./Minka_slides2_ink-15_138.png"/><br/>
+<img src="./Minka_slides2_ink-15_139.png"/><br/>
+<img src="./Minka_slides2_ink-15_140.png"/><br/>
+<img src="./Minka_slides2_ink-15_141.png"/><br/>
+<img src="./Minka_slides2_ink-15_142.png"/><br/>
+<img src="./Minka_slides2_ink-15_143.png"/><br/>
+<img src="./Minka_slides2_ink-15_144.png"/><br/>
+<img src="./Minka_slides2_ink-15_145.png"/><br/>
+<img src="./Minka_slides2_ink-15_146.png"/><br/>
+<img src="./Minka_slides2_ink-15_147.png"/><br/>
+<img src="./Minka_slides2_ink-15_148.png"/><br/>
+<img src="./Minka_slides2_ink-15_149.png"/><br/>
+<img src="./Minka_slides2_ink-15_150.png"/><br/>
+<img src="./Minka_slides2_ink-15_151.png"/><br/>
+<img src="./Minka_slides2_ink-15_152.png"/><br/>
+<img src="./Minka_slides2_ink-15_153.png"/><br/>
+<img src="./Minka_slides2_ink-15_154.png"/><br/>
+<img src="./Minka_slides2_ink-15_155.png"/><br/>
+<img src="./Minka_slides2_ink-15_156.png"/><br/>
+<img src="./Minka_slides2_ink-15_157.png"/><br/>
+<img src="./Minka_slides2_ink-15_158.png"/><br/>
+<img src="./Minka_slides2_ink-15_159.png"/><br/>
+<img src="./Minka_slides2_ink-15_160.png"/><br/>
+<img src="./Minka_slides2_ink-15_161.png"/><br/>
+<img src="./Minka_slides2_ink-15_162.png"/><br/>
+<img src="./Minka_slides2_ink-15_163.png"/><br/>
+<img src="./Minka_slides2_ink-15_164.png"/><br/>
+<img src="./Minka_slides2_ink-15_165.png"/><br/>
+<img src="./Minka_slides2_ink-15_166.png"/><br/>
+<img src="./Minka_slides2_ink-15_167.png"/><br/>
+<img src="./Minka_slides2_ink-15_168.png"/><br/>
+<img src="./Minka_slides2_ink-15_169.png"/><br/>
+<img src="./Minka_slides2_ink-15_170.png"/><br/>
+<img src="./Minka_slides2_ink-15_171.png"/><br/>
+<img src="./Minka_slides2_ink-15_172.png"/><br/>
+<img src="./Minka_slides2_ink-15_173.png"/><br/>
+<img src="./Minka_slides2_ink-15_174.png"/><br/>
+<img src="./Minka_slides2_ink-15_175.png"/><br/>
+<img src="./Minka_slides2_ink-15_176.png"/><br/>
+<img src="./Minka_slides2_ink-15_177.png"/><br/>
+<img src="./Minka_slides2_ink-15_178.png"/><br/>
+<img src="./Minka_slides2_ink-15_179.png"/><br/>
+<img src="./Minka_slides2_ink-15_180.png"/><br/>
+<img src="./Minka_slides2_ink-15_181.png"/><br/>
+<img src="./Minka_slides2_ink-15_182.png"/><br/>
+<img src="./Minka_slides2_ink-15_183.png"/><br/>
+<img src="./Minka_slides2_ink-15_184.png"/><br/>
+<img src="./Minka_slides2_ink-15_185.png"/><br/>
+<img src="./Minka_slides2_ink-15_186.png"/><br/>
+<img src="./Minka_slides2_ink-15_187.png"/><br/>
+<img src="./Minka_slides2_ink-15_188.png"/><br/>
+<img src="./Minka_slides2_ink-15_189.png"/><br/>
+<img src="./Minka_slides2_ink-15_190.png"/><br/>
+<img src="./Minka_slides2_ink-15_191.png"/><br/>
+<img src="./Minka_slides2_ink-15_192.png"/><br/>
+<img src="./Minka_slides2_ink-15_193.png"/><br/>
+<img src="./Minka_slides2_ink-15_194.png"/><br/>
+<img src="./Minka_slides2_ink-15_195.png"/><br/>
+<img src="./Minka_slides2_ink-15_196.png"/><br/>
+<img src="./Minka_slides2_ink-15_197.png"/><br/>
+<img src="./Minka_slides2_ink-15_198.png"/><br/>
+<img src="./Minka_slides2_ink-15_199.png"/><br/>
+<img src="./Minka_slides2_ink-15_200.png"/><br/>
+<img src="./Minka_slides2_ink-15_201.png"/><br/>
+<img src="./Minka_slides2_ink-15_202.png"/><br/>
+<img src="./Minka_slides2_ink-15_203.png"/><br/>
+<img src="./Minka_slides2_ink-15_204.png"/><br/>
+<img src="./Minka_slides2_ink-15_205.png"/><br/>
+<img src="./Minka_slides2_ink-15_206.png"/><br/>
+<img src="./Minka_slides2_ink-15_207.png"/><br/>
+<img src="./Minka_slides2_ink-15_208.png"/><br/>
+<img src="./Minka_slides2_ink-15_209.png"/><br/>
+<img src="./Minka_slides2_ink-15_210.png"/><br/>
+<img src="./Minka_slides2_ink-15_211.png"/><br/>
+<img src="./Minka_slides2_ink-15_212.png"/><br/>
+<img src="./Minka_slides2_ink-15_213.png"/><br/>
+<img src="./Minka_slides2_ink-15_214.png"/><br/>
+<img src="./Minka_slides2_ink-15_215.png"/><br/>
+<img src="./Minka_slides2_ink-15_216.png"/><br/>
+<img src="./Minka_slides2_ink-15_217.png"/><br/>
+<img src="./Minka_slides2_ink-15_218.png"/><br/>
+<img src="./Minka_slides2_ink-15_219.png"/><br/>
+<img src="./Minka_slides2_ink-15_220.png"/><br/>
+<img src="./Minka_slides2_ink-15_221.png"/><br/>
+<img src="./Minka_slides2_ink-15_222.png"/><br/>
+<img src="./Minka_slides2_ink-15_223.png"/><br/>
+<img src="./Minka_slides2_ink-15_224.png"/><br/>
+<img src="./Minka_slides2_ink-15_225.png"/><br/>
+<img src="./Minka_slides2_ink-15_226.png"/><br/>
+<img src="./Minka_slides2_ink-15_227.png"/><br/>
+<img src="./Minka_slides2_ink-15_228.png"/><br/>
+<img src="./Minka_slides2_ink-15_229.png"/><br/>
+<img src="./Minka_slides2_ink-15_230.png"/><br/>
+<img src="./Minka_slides2_ink-15_231.png"/><br/>
+<img src="./Minka_slides2_ink-15_232.png"/><br/>
+<img src="./Minka_slides2_ink-15_233.png"/><br/>
+<img src="./Minka_slides2_ink-15_234.png"/><br/>
+<img src="./Minka_slides2_ink-15_235.png"/><br/>
+<img src="./Minka_slides2_ink-15_236.png"/><br/>
+<img src="./Minka_slides2_ink-15_237.png"/><br/>
+<img src="./Minka_slides2_ink-15_238.png"/><br/>
+<img src="./Minka_slides2_ink-15_239.png"/><br/>
+<img src="./Minka_slides2_ink-15_240.png"/><br/>
+<img src="./Minka_slides2_ink-15_241.png"/><br/>
+<img src="./Minka_slides2_ink-15_242.png"/><br/>
+<img src="./Minka_slides2_ink-15_243.png"/><br/>
+<img src="./Minka_slides2_ink-15_244.png"/><br/>
+<img src="./Minka_slides2_ink-15_245.png"/><br/>
+<img src="./Minka_slides2_ink-15_246.png"/><br/>
+<img src="./Minka_slides2_ink-15_247.png"/><br/>
+<img src="./Minka_slides2_ink-15_248.png"/><br/>
+<img src="./Minka_slides2_ink-15_249.png"/><br/>
+<img src="./Minka_slides2_ink-15_250.png"/><br/>
+<img src="./Minka_slides2_ink-15_251.png"/><br/>
+<img src="./Minka_slides2_ink-15_252.png"/><br/>
+<img src="./Minka_slides2_ink-15_253.png"/><br/>
+<img src="./Minka_slides2_ink-15_254.png"/><br/>
+<img src="./Minka_slides2_ink-15_255.png"/><br/>
+<img src="./Minka_slides2_ink-15_256.png"/><br/>
+<img src="./Minka_slides2_ink-15_257.png"/><br/>
+<img src="./Minka_slides2_ink-15_258.png"/><br/>
+<img src="./Minka_slides2_ink-15_259.png"/><br/>
+<img src="./Minka_slides2_ink-15_260.png"/><br/>
+<img src="./Minka_slides2_ink-15_261.png"/><br/>
+<img src="./Minka_slides2_ink-15_262.png"/><br/>
+<img src="./Minka_slides2_ink-15_263.png"/><br/>
+<img src="./Minka_slides2_ink-15_264.png"/><br/>
+<img src="./Minka_slides2_ink-15_265.png"/><br/>
+<img src="./Minka_slides2_ink-15_266.png"/><br/>
+<img src="./Minka_slides2_ink-15_267.png"/><br/>
+<img src="./Minka_slides2_ink-15_268.png"/><br/>
+<img src="./Minka_slides2_ink-15_269.png"/><br/>
+<img src="./Minka_slides2_ink-15_270.png"/><br/>
+<img src="./Minka_slides2_ink-15_271.png"/><br/>
+<img src="./Minka_slides2_ink-15_272.png"/><br/>
+<img src="./Minka_slides2_ink-15_273.png"/><br/>
+<img src="./Minka_slides2_ink-15_274.png"/><br/>
+<img src="./Minka_slides2_ink-15_275.png"/><br/>
+<img src="./Minka_slides2_ink-15_276.png"/><br/>
+<img src="./Minka_slides2_ink-15_277.png"/><br/>
+<img src="./Minka_slides2_ink-15_278.png"/><br/>
+<img src="./Minka_slides2_ink-15_279.png"/><br/>
+<img src="./Minka_slides2_ink-15_280.png"/><br/>
+<img src="./Minka_slides2_ink-15_281.png"/><br/>
+<img src="./Minka_slides2_ink-15_282.png"/><br/>
+<img src="./Minka_slides2_ink-15_283.png"/><br/>
+<img src="./Minka_slides2_ink-15_284.png"/><br/>
+<img src="./Minka_slides2_ink-15_285.png"/><br/>
+<img src="./Minka_slides2_ink-15_286.png"/><br/>
+<img src="./Minka_slides2_ink-15_287.png"/><br/>
+<img src="./Minka_slides2_ink-15_288.png"/><br/>
+<img src="./Minka_slides2_ink-15_289.png"/><br/>
+<img src="./Minka_slides2_ink-15_290.png"/><br/>
+<img src="./Minka_slides2_ink-15_291.png"/><br/>
+<img src="./Minka_slides2_ink-15_292.png"/><br/>
+Bayesian&#160;model&#160;comparison<br/>
+•&#160;Multiple&#160;models&#160;M&#160;with&#160;prior&#160;probabilities&#160;<br/>
+i<br/>
+p(M&#160;)<br/>
+i<br/>
+•&#160;Posterior&#160;probabilities:<br/>
+•&#160;For&#160;equal&#160;priors,&#160;models&#160;are&#160;compared&#160;<br/>
+using&#160;model&#160;evidence:<br/>
+15<br/>
+<hr/>
+<a name=16></a><img src="./Minka_slides2_ink-16_1.png"/><br/>
+<img src="./Minka_slides2_ink-16_2.png"/><br/>
+Highest-probability&#160;kernel<br/>
+16<br/>
+<hr/>
+<a name=17></a><img src="./Minka_slides2_ink-17_1.png"/><br/>
+<img src="./Minka_slides2_ink-17_2.png"/><br/>
+Margin-maximizing&#160;kernel<br/>
+17<br/>
+<hr/>
+<a name=18></a><img src="./Minka_slides2_ink-18_1.png"/><br/>
+<img src="./Minka_slides2_ink-18_2.png"/><br/>
+Bayesian&#160;feature&#160;selection<br/>
+Synthetic&#160;data&#160;where&#160;6 features&#160;are&#160;relevant&#160;(out&#160;of&#160;20)<br/>
+Bayes&#160;picks&#160;6<br/>
+Margin&#160;picks&#160;13<br/>
+18<br/>
+<hr/>
+<a name=19></a>Further&#160;reading<br/>
+•&#160;“Divergence&#160;measures&#160;and&#160;message&#160;<br/>
+passing”&#160;&#160;http://research.microsoft.com/~minka/papers/<br/>
+•&#160;EP<br/>
+E&#160;&#160;<br/>
+P&#160;b<br/>
+&#160;&#160;i<br/>
+b&#160;b<br/>
+i&#160;l<br/>
+b&#160;ilo<br/>
+i&#160;g<br/>
+o&#160;r<br/>
+g&#160;ap<br/>
+a&#160;h<br/>
+p&#160;y<br/>
+h&#160;&#160;&#160;<br/>
+&#160;<br/>
+http://research.microsoft.com/~minka/papers/ep/roadmap.html<br/>
+•&#160;EP&#160;quick&#160;reference<br/>
+http://research.microsoft.com/~minka/papers/ep/minka-ep-<br/>quickref.pdf<br/>
+19<br/>
+<hr/>
+<a name=20></a><img src="./Minka_slides2_ink-20_1.png"/><br/>
+<img src="./Minka_slides2_ink-20_2.png"/><br/>
+How&#160;negative&#160;variances&#160;arise&#160;in&#160;EP<br/>
+<i>p</i>(<i>x</i>)&#160;=&#160;<i>N&#160;</i>(&#160;;<br/>
+<i>x</i><br/>
+,<br/>
+0<br/>
+)<br/>
+1<br/>
+.<br/>
+0<br/>
+<i>f&#160;</i>(<i>x</i>)&#160;=&#160;<i>p</i>(&#160;<i>y&#160;</i>=&#160;2&#160;|&#160;<i>x</i>)<br/>
+<i>p</i>(&#160;<i>y&#160;</i>|&#160;<i>x</i>)&#160;=&#160;0.5<i>N&#160;</i>(&#160;<i>y</i>;&#160;<i>x</i>,&#160;)<br/>
+1&#160;+&#160;0&#160;5<br/>
+.&#160;<i>N&#160;</i>(&#160;<i>y</i>;&#160;,<br/>
+0&#160;10)<br/>
+pr&#160;[<br/>
+oj&#160;<i>f&#160;</i>(<i>x</i>)&#160;<i>p</i>(<i>x</i>)]&#160;=&#160;<i>N&#160;</i>(&#160;;<br/>
+<i>x</i><br/>
+.<br/>
+0<br/>
+,<br/>
+068&#160;0&#160;104<br/>
+.<br/>
+)<br/>
+20<br/>
+<hr/>
+<a name=21></a>Belief&#160;propagation<br/>
+Special&#160;case&#160;when&#160;marginal&#160;distribution&#160;<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+already&#160;has&#160;the&#160;correct&#160;form&#160;(no&#160;projection)<br/>
+2<br/>
+3<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+2<br/>
+3<br/>
+21<br/>
+<hr/>
+<a name=22></a>Divergence&#160;minimization<br/>
+•&#160;For&#160;exponential&#160;families,&#160;moment&#160;<br/>
+matching&#160;step&#160;can&#160;be&#160;interpreted&#160;as&#160;<br/>minimizing&#160;KL&#160;divergence<br/>
+<i>q</i>(<i>x</i>)&#160;=&#160;pr&#160;[<br/>
+oj&#160;<i>p</i>(<i>x</i>)]<br/>
+<i>q</i>(<i>x</i>)&#160;=&#160;ar<br/>
+a&#160;g&#160;mi<br/>
+m&#160;n<br/>
+i&#160;<i>KL</i><br/>
+<i>K&#160;</i>(&#160;<i>p</i>(<i>x</i>)&#160;|||&#160;<i>q</i>(<i>x</i>))<br/>
+22<br/>
+<hr/>
+<a name=23></a><img src="./Minka_slides2_ink-23_1.png"/><br/>
+<img src="./Minka_slides2_ink-23_2.png"/><br/>
+<img src="./Minka_slides2_ink-23_3.png"/><br/>
+<img src="./Minka_slides2_ink-23_4.png"/><br/>
+<img src="./Minka_slides2_ink-23_5.png"/><br/>
+<img src="./Minka_slides2_ink-23_6.png"/><br/>
+<img src="./Minka_slides2_ink-23_7.png"/><br/>
+<img src="./Minka_slides2_ink-23_8.png"/><br/>
+<img src="./Minka_slides2_ink-23_9.png"/><br/>
+<img src="./Minka_slides2_ink-23_10.png"/><br/>
+<img src="./Minka_slides2_ink-23_11.png"/><br/>
+Global&#160;divergence&#160;to&#160;local&#160;divergence<br/>
+•&#160;Global&#160;divergence:<br/>
+•&#160;Local&#160;divergence:<br/>
+23<br/>
+<hr/>
+<a name=24></a>Fixed&#160;points&#160;of&#160;EP<br/>
+•&#160;Fixed&#160;points&#160;of&#160;EP&#160;are&#160;the&#160;stationary&#160;<br/>
+points&#160;of&#160;the&#160;EP&#160;model&#160;evidence:<br/>
+−<br/>
+<br/>
+1&#160;<i>n&#160;n</i><br/>
+~&#160;~<br/>
+~<br/>
+<br/>
+~<br/>
+<br/>
+<i>f&#160;</i>(<b>x</b><br/>
+(&#160;)<br/>
+<i>Z&#160;</i>(&#160;<i>f&#160;</i>,...,&#160;<i>f&#160;</i>)<br/>
+(<b>x</b>)&#160;<b>x</b><br/>
+(<b>x</b>)&#160;<b>x</b><br/>
+1<br/>
+=&#160;<br/>
+=<br/>
+<i>i</i><br/>
+<i>q</i><br/>
+<i>d</i><br/>
+<i>q</i><br/>
+<i>d</i><br/>
+<i>n</i><br/>
+&#160;∫&#160;<b>x&#160;x</b><br/>
+∫&#160;<i>q</i>(&#160;)<i>d&#160;</i>&#160;∏∫&#160;<i>fi</i><br/>
+∫<br/>
+<i>q</i>(<b>x</b>)<br/>
+~<br/>
+<br/>
+<b>x</b><br/>
+<b>x</b><br/>
+<br/>
+1<br/>
+<i>f&#160;</i>(&#160;)<br/>
+<i>i</i>=<br/>
+<b>x</b><br/>
+<i>i</i><br/>
+<i>n</i><br/>
+~<br/>
+where<br/>
+<i>q</i>(<b>x</b>)&#160;=&#160;∏&#160;<i>f&#160;</i>(<b>x</b>)<br/>
+<i>i</i><br/>
+<i>i&#160;</i>=1<br/>
+<i>(“Divergence&#160;measures&#160;and&#160;message&#160;passing”,&#160;Minka,&#160;2005)</i><br/>
+24<br/>
+<hr/>
+<a name=25></a>Other&#160;divergences<br/>
+•&#160;Same&#160;recipe&#160;can&#160;be&#160;used&#160;to&#160;minimize&#160;<br/>
+other&#160;divergence&#160;measures<br/>
+•&#160;Minimizing&#160;KL(q||p)&#160;leads&#160;to&#160;mean-field&#160;<br/>
+ap<br/>
+a&#160;p<br/>
+p&#160;r<br/>
+p&#160;ox<br/>
+o&#160;im<br/>
+i&#160;a<br/>
+m&#160;t<br/>
+a&#160;i<br/>
+t&#160;o<br/>
+i&#160;n<br/>
+o<br/>
+•&#160;Minimizing&#160;alpha-divergence&#160;leads&#160;to&#160;tree-<br/>
+reweighted&#160;belief&#160;propagation&#160;and&#160;power&#160;<br/>EP<br/>
+25<br/>
+<hr/>
+<a name=26></a>Special&#160;property&#160;of&#160;KL(q||p)<br/>
+•&#160;Minimizing&#160;local&#160;divergence&#160;is&#160;equivalent&#160;<br/>
+to&#160;minimizing&#160;global&#160;divergence<br/>
+26<br/>
+<hr/>
+<a name=27></a>Other&#160;properties<br/>
+•&#160;KL(q||p)&#160;is&#160;<i>mode-seeking</i><br/>
+–&#160;Distant&#160;modes&#160;of&#160;posterior&#160;are&#160;ignored,&#160;rather&#160;<br/>
+than&#160;averaged&#160;together<br/>
+•&#160;KL<br/>
+K&#160;(<br/>
+L&#160;q|<br/>
+q&#160;|<br/>
+|&#160;p<br/>
+|&#160;)<br/>
+p&#160;&#160;i<br/>
+&#160;&#160;s<br/>
+i&#160;&#160;<i>z</i><br/>
+&#160;&#160;<i>er</i><br/>
+<i>e&#160;o-</i><br/>
+<i>o&#160;fo</i><br/>
+<i>f&#160;r</i><br/>
+<i>o&#160;cin</i><br/>
+<i>i&#160;g</i><br/>
+<i>n</i><br/>
+–&#160;Causes&#160;under-estimate&#160;of&#160;variance<br/>
+•&#160;When&#160;scaled&#160;by&#160;model&#160;evidence,&#160;the&#160;<br/>
+optimal&#160;q&#160;is&#160;a&#160;pointwise&#160;lower&#160;bound&#160;on&#160;p<br/>(in&#160;conjugate-exponential&#160;case)<br/>
+27<br/>
+<hr/>
+<a name=28></a>Clutter&#160;problem<br/>
+•&#160;Want&#160;to&#160;estimate&#160;x&#160;given&#160;multiple&#160;y’s<br/>
+<i>p</i>(<i>x</i>)&#160;~&#160;<i>N&#160;</i>(&#160;100<br/>
+,<br/>
+0<br/>
+)<br/>
+<i>p</i>(&#160;<i>y&#160;</i>|&#160;<i>x</i>)&#160;=<br/>
+<i>N&#160;y&#160;x</i><br/>
++<br/>
+<i>N&#160;y</i><br/>
+<i>i</i><br/>
+=&#160;(0&#160;)<br/>
+5<br/>
+.&#160;<i>N&#160;</i>(&#160;<i>y&#160;</i>;&#160;<i>x</i>,&#160;)<br/>
+1<br/>
+<i>i</i><br/>
++&#160;(0&#160;)<br/>
+5<br/>
+.&#160;<i>N&#160;</i>(&#160;;&#160;,<br/>
+0&#160;10)<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+28<br/>
+<hr/>
+<a name=29></a>Exact&#160;posterior<br/>
+exact<br/>
+)<br/>,D<br/>(x<br/>p<br/>
+-1<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+x<br/>
+29<br/>
+<hr/>
+<a name=30></a>Clutter&#160;problem&#160;with&#160;latent&#160;variables<br/>
+<i>p</i>(<i>x</i>)&#160;~&#160;<i>N&#160;</i>(&#160;100<br/>
+,<br/>
+0<br/>
+)<br/>
+<i>p</i>(<i>ci&#160;</i>=&#160;)<br/>
+1&#160;=&#160;.<br/>
+0&#160;5<br/>
+<i>c</i><br/>
+−<br/>
+1&#160;<i>c</i><br/>
+<i>i</i><br/>
+−<br/>
+1<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>p</i>(&#160;<i>y&#160;</i>|&#160;<i>c&#160;</i>,&#160;<i>x</i>)&#160;=&#160;<i>N&#160;</i>(&#160;<i>y&#160;</i>;&#160;<i>x</i>,&#160;)<br/>
+1<br/>
+<i>N&#160;</i>(&#160;<i>y&#160;</i>;&#160;,<br/>
+0&#160;10)<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+=&#160;<i>N</i>(&#160;<i>y&#160;</i>;&#160;<i>x</i>,&#160;)<br/>
+1<br/>
+<i>N&#160;</i>(&#160;<i>y&#160;</i>;&#160;,<br/>
+0&#160;10<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+30<br/>
+<hr/>
+<a name=31></a>Strategy<br/>
+•&#160;Approximate&#160;<i>each&#160;</i>factor&#160;by&#160;a&#160;Gaussian&#160;in&#160;<br/>
+x&#160;and&#160;Bernoulli&#160;in&#160;c<br/>
+<i>c</i><br/>
+−<br/>
+<i>i</i><br/>
+1<br/>
+<i>i</i><br/>
+<i>c</i><br/>
+<i>p</i>(&#160;<i>y&#160;</i>|&#160;<i>c&#160;</i>,&#160;<i>x</i>)&#160;=&#160;<i>N&#160;</i>(&#160;<i>y&#160;</i>;&#160;<i>x</i>,&#160;)<br/>
+1<br/>
+<i>N&#160;</i>(&#160;<i>y&#160;</i>;&#160;,<br/>
+0&#160;10)<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+=&#160;<i>N</i>(&#160;<i>y&#160;</i>;&#160;<i>x</i>,&#160;)<br/>
+1<br/>
+<i>N&#160;</i>(&#160;<i>y&#160;</i>;&#160;,<br/>
+0&#160;10<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>c</i><br/>
+−<br/>
+<i>i</i><br/>
+1&#160;<i>ci</i><br/>
+≈&#160;<i>N</i>(<i>x</i>;&#160;<i>m&#160;</i>,&#160;<i>v&#160;</i>)&#160;<i>p&#160;</i>1<br/>
+(&#160;−&#160;<i>p&#160;</i>)<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+31<br/>
+<hr/>
+<a name=32></a>Approximating&#160;a&#160;single&#160;factor<br/>
+<i>x</i><br/>
+<i>ci</i><br/>
+<i>x</i><br/>
+<i>ci</i><br/>
+32<br/>
+<hr/>
+<a name=33></a>Two&#160;factors<br/>
+33<br/>
+<hr/>
+<a name=34></a>KL-minimizing&#160;Gaussian&#160;(vb)<br/>
+vb<br/>laplace<br/>exact<br/>
+)<br/>,D<br/>(x<br/>p<br/>
+-1<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+x<br/>
+34<br/>
+<hr/>
+<a name=35></a>Accuracy<br/>
+Posterior&#160;mean:<br/>
+exact&#160;&#160;&#160;&#160;=&#160;1.64864<br/>ep&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;=&#160;1.64514<br/>laplace&#160;=&#160;1.61946<br/>vb&#160;<br/>
+vb&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;=<br/>
+&#160;&#160;&#160;1<br/>
+&#160;&#160;.<br/>
+1&#160;61<br/>
+6&#160;8<br/>
+1&#160;3<br/>
+8&#160;4<br/>
+3<br/>
+Posterior&#160;variance:<br/>
+exact&#160;&#160;&#160;&#160;=&#160;0.359673<br/>ep&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;=&#160;0.311474<br/>laplace&#160;=&#160;0.234616<br/>vb&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;=&#160;0.171155<br/>
+35<br/>
+<hr/>
+<a name=36></a><img src="./Minka_slides2_ink-36_1.png"/><br/>
+<img src="./Minka_slides2_ink-36_2.png"/><br/>
+Example:&#160;Poisson&#160;tracking<br/>
+•&#160;y&#160;is&#160;a&#160;Poisson-distributed&#160;integer&#160;with&#160;&#160;&#160;&#160;&#160;&#160;<br/>
+t&#160;<br/>
+mean&#160;exp(x&#160;)<br/>
+t<br/>
+36<br/>
+<hr/>
+<a name=37></a>Poisson&#160;tracking&#160;model<br/>
+<i>p</i>(<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(&#160;1<br/>
+,<br/>
+0&#160;0&#160;)<br/>
+0<br/>
+1<br/>
+<i>p</i>(<i>x&#160;</i>|&#160;<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(<i>x&#160;</i>,&#160;0<br/>
+.<br/>
+0<br/>
+)<br/>
+1<br/>
+<i>t</i><br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+<i>p</i>(&#160;<i>y&#160;</i>|&#160;<i>x&#160;</i>)&#160;=&#160;exp(<br/>
+<i>x</i><br/>
+<i>y&#160;x</i><br/>
+<i>e&#160;t</i><br/>
+−&#160;)&#160;/&#160;<i>y&#160;</i>!<br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<i>t</i><br/>
+37<br/>
+<hr/>
+<a name=38></a>Factor&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+38<br/>
+<hr/>
+<a name=39></a>Splitting&#160;in&#160;context<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+2<br/>
+3<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+2<br/>
+3<br/>
+39<br/>
+<hr/>
+<a name=40></a>Approximating&#160;a&#160;measurement&#160;<br/>
+factor<br/>
+<i>x</i>1<br/>
+<i>y</i>1<br/>
+<i>x</i>1<br/>
+40<br/>
+<hr/>
+<a name=41></a><img src="./Minka_slides2_ink-41_1.png"/><br/>
+<img src="./Minka_slides2_ink-41_2.png"/><br/>
+<img src="./Minka_slides2_ink-41_3.png"/><br/>
+<img src="./Minka_slides2_ink-41_4.png"/><br/>
+<img src="./Minka_slides2_ink-41_5.png"/><br/>
+<img src="./Minka_slides2_ink-41_6.png"/><br/>
+<img src="./Minka_slides2_ink-41_7.png"/><br/>
+<img src="./Minka_slides2_ink-41_8.png"/><br/>
+<img src="./Minka_slides2_ink-41_9.png"/><br/>
+<img src="./Minka_slides2_ink-41_10.png"/><br/>
+<img src="./Minka_slides2_ink-41_11.png"/><br/>
+<img src="./Minka_slides2_ink-41_12.png"/><br/>
+<img src="./Minka_slides2_ink-41_13.png"/><br/>
+<img src="./Minka_slides2_ink-41_14.png"/><br/>
+<img src="./Minka_slides2_ink-41_15.png"/><br/>
+<img src="./Minka_slides2_ink-41_16.png"/><br/>
+<img src="./Minka_slides2_ink-41_17.png"/><br/>
+<img src="./Minka_slides2_ink-41_18.png"/><br/>
+<img src="./Minka_slides2_ink-41_19.png"/><br/>
+<img src="./Minka_slides2_ink-41_20.png"/><br/>
+<img src="./Minka_slides2_ink-41_21.png"/><br/>
+<img src="./Minka_slides2_ink-41_22.png"/><br/>
+<img src="./Minka_slides2_ink-41_23.png"/><br/>
+<img src="./Minka_slides2_ink-41_24.png"/><br/>
+<img src="./Minka_slides2_ink-41_25.png"/><br/>
+<img src="./Minka_slides2_ink-41_26.png"/><br/>
+<img src="./Minka_slides2_ink-41_27.png"/><br/>
+<img src="./Minka_slides2_ink-41_28.png"/><br/>
+<img src="./Minka_slides2_ink-41_29.png"/><br/>
+<img src="./Minka_slides2_ink-41_30.png"/><br/>
+<img src="./Minka_slides2_ink-41_31.png"/><br/>
+<img src="./Minka_slides2_ink-41_32.png"/><br/>
+<img src="./Minka_slides2_ink-41_33.png"/><br/>
+<img src="./Minka_slides2_ink-41_34.png"/><br/>
+<img src="./Minka_slides2_ink-41_35.png"/><br/>
+<img src="./Minka_slides2_ink-41_36.png"/><br/>
+<img src="./Minka_slides2_ink-41_37.png"/><br/>
+<img src="./Minka_slides2_ink-41_38.png"/><br/>
+<img src="./Minka_slides2_ink-41_39.png"/><br/>
+<img src="./Minka_slides2_ink-41_40.png"/><br/>
+<img src="./Minka_slides2_ink-41_41.png"/><br/>
+<img src="./Minka_slides2_ink-41_42.png"/><br/>
+<img src="./Minka_slides2_ink-41_43.png"/><br/>
+<img src="./Minka_slides2_ink-41_44.png"/><br/>
+<img src="./Minka_slides2_ink-41_45.png"/><br/>
+<img src="./Minka_slides2_ink-41_46.png"/><br/>
+<img src="./Minka_slides2_ink-41_47.png"/><br/>
+<img src="./Minka_slides2_ink-41_48.png"/><br/>
+<img src="./Minka_slides2_ink-41_49.png"/><br/>
+<img src="./Minka_slides2_ink-41_50.png"/><br/>
+<img src="./Minka_slides2_ink-41_51.png"/><br/>
+<img src="./Minka_slides2_ink-41_52.png"/><br/>
+<img src="./Minka_slides2_ink-41_53.png"/><br/>
+<img src="./Minka_slides2_ink-41_54.png"/><br/>
+<img src="./Minka_slides2_ink-41_55.png"/><br/>
+<img src="./Minka_slides2_ink-41_56.png"/><br/>
+<img src="./Minka_slides2_ink-41_57.png"/><br/>
+<img src="./Minka_slides2_ink-41_58.png"/><br/>
+<img src="./Minka_slides2_ink-41_59.png"/><br/>
+<img src="./Minka_slides2_ink-41_60.png"/><br/>
+<img src="./Minka_slides2_ink-41_61.png"/><br/>
+<img src="./Minka_slides2_ink-41_62.png"/><br/>
+<img src="./Minka_slides2_ink-41_63.png"/><br/>
+<img src="./Minka_slides2_ink-41_64.png"/><br/>
+<img src="./Minka_slides2_ink-41_65.png"/><br/>
+<img src="./Minka_slides2_ink-41_66.png"/><br/>
+<img src="./Minka_slides2_ink-41_67.png"/><br/>
+<img src="./Minka_slides2_ink-41_68.png"/><br/>
+<img src="./Minka_slides2_ink-41_69.png"/><br/>
+<img src="./Minka_slides2_ink-41_70.png"/><br/>
+<img src="./Minka_slides2_ink-41_71.png"/><br/>
+<img src="./Minka_slides2_ink-41_72.png"/><br/>
+<img src="./Minka_slides2_ink-41_73.png"/><br/>
+<img src="./Minka_slides2_ink-41_74.png"/><br/>
+<img src="./Minka_slides2_ink-41_75.png"/><br/>
+<img src="./Minka_slides2_ink-41_76.png"/><br/>
+<img src="./Minka_slides2_ink-41_77.png"/><br/>
+<img src="./Minka_slides2_ink-41_78.png"/><br/>
+<img src="./Minka_slides2_ink-41_79.png"/><br/>
+<img src="./Minka_slides2_ink-41_80.png"/><br/>
+<img src="./Minka_slides2_ink-41_81.png"/><br/>
+<img src="./Minka_slides2_ink-41_82.png"/><br/>
+<img src="./Minka_slides2_ink-41_83.png"/><br/>
+<img src="./Minka_slides2_ink-41_84.png"/><br/>
+<img src="./Minka_slides2_ink-41_85.png"/><br/>
+<img src="./Minka_slides2_ink-41_86.png"/><br/>
+<img src="./Minka_slides2_ink-41_87.png"/><br/>
+<img src="./Minka_slides2_ink-41_88.png"/><br/>
+<img src="./Minka_slides2_ink-41_89.png"/><br/>
+<img src="./Minka_slides2_ink-41_90.png"/><br/>
+<img src="./Minka_slides2_ink-41_91.png"/><br/>
+<img src="./Minka_slides2_ink-41_92.png"/><br/>
+<img src="./Minka_slides2_ink-41_93.png"/><br/>
+<img src="./Minka_slides2_ink-41_94.png"/><br/>
+<img src="./Minka_slides2_ink-41_95.png"/><br/>
+<img src="./Minka_slides2_ink-41_96.png"/><br/>
+<img src="./Minka_slides2_ink-41_97.png"/><br/>
+<img src="./Minka_slides2_ink-41_98.png"/><br/>
+<img src="./Minka_slides2_ink-41_99.png"/><br/>
+<img src="./Minka_slides2_ink-41_100.png"/><br/>
+<img src="./Minka_slides2_ink-41_101.png"/><br/>
+<img src="./Minka_slides2_ink-41_102.png"/><br/>
+<img src="./Minka_slides2_ink-41_103.png"/><br/>
+<img src="./Minka_slides2_ink-41_104.png"/><br/>
+<img src="./Minka_slides2_ink-41_105.png"/><br/>
+<img src="./Minka_slides2_ink-41_106.png"/><br/>
+<img src="./Minka_slides2_ink-41_107.png"/><br/>
+<img src="./Minka_slides2_ink-41_108.png"/><br/>
+<img src="./Minka_slides2_ink-41_109.png"/><br/>
+<img src="./Minka_slides2_ink-41_110.png"/><br/>
+<img src="./Minka_slides2_ink-41_111.png"/><br/>
+<img src="./Minka_slides2_ink-41_112.png"/><br/>
+<img src="./Minka_slides2_ink-41_113.png"/><br/>
+<img src="./Minka_slides2_ink-41_114.png"/><br/>
+<img src="./Minka_slides2_ink-41_115.png"/><br/>
+<img src="./Minka_slides2_ink-41_116.png"/><br/>
+<img src="./Minka_slides2_ink-41_117.png"/><br/>
+<img src="./Minka_slides2_ink-41_118.png"/><br/>
+<img src="./Minka_slides2_ink-41_119.png"/><br/>
+<img src="./Minka_slides2_ink-41_120.png"/><br/>
+<img src="./Minka_slides2_ink-41_121.png"/><br/>
+<img src="./Minka_slides2_ink-41_122.png"/><br/>
+<img src="./Minka_slides2_ink-41_123.png"/><br/>
+<img src="./Minka_slides2_ink-41_124.png"/><br/>
+<img src="./Minka_slides2_ink-41_125.png"/><br/>
+<img src="./Minka_slides2_ink-41_126.png"/><br/>
+<img src="./Minka_slides2_ink-41_127.png"/><br/>
+<img src="./Minka_slides2_ink-41_128.png"/><br/>
+<img src="./Minka_slides2_ink-41_129.png"/><br/>
+<img src="./Minka_slides2_ink-41_130.png"/><br/>
+<img src="./Minka_slides2_ink-41_131.png"/><br/>
+<img src="./Minka_slides2_ink-41_132.png"/><br/>
+<img src="./Minka_slides2_ink-41_133.png"/><br/>
+<img src="./Minka_slides2_ink-41_134.png"/><br/>
+<img src="./Minka_slides2_ink-41_135.png"/><br/>
+<img src="./Minka_slides2_ink-41_136.png"/><br/>
+<img src="./Minka_slides2_ink-41_137.png"/><br/>
+<img src="./Minka_slides2_ink-41_138.png"/><br/>
+<img src="./Minka_slides2_ink-41_139.png"/><br/>
+<img src="./Minka_slides2_ink-41_140.png"/><br/>
+<img src="./Minka_slides2_ink-41_141.png"/><br/>
+<img src="./Minka_slides2_ink-41_142.png"/><br/>
+<img src="./Minka_slides2_ink-41_143.png"/><br/>
+<img src="./Minka_slides2_ink-41_144.png"/><br/>
+<img src="./Minka_slides2_ink-41_145.png"/><br/>
+<img src="./Minka_slides2_ink-41_146.png"/><br/>
+<img src="./Minka_slides2_ink-41_147.png"/><br/>
+<img src="./Minka_slides2_ink-41_148.png"/><br/>
+<img src="./Minka_slides2_ink-41_149.png"/><br/>
+<img src="./Minka_slides2_ink-41_150.png"/><br/>
+<img src="./Minka_slides2_ink-41_151.png"/><br/>
+<img src="./Minka_slides2_ink-41_152.png"/><br/>
+<img src="./Minka_slides2_ink-41_153.png"/><br/>
+<img src="./Minka_slides2_ink-41_154.png"/><br/>
+<img src="./Minka_slides2_ink-41_155.png"/><br/>
+<img src="./Minka_slides2_ink-41_156.png"/><br/>
+<img src="./Minka_slides2_ink-41_157.png"/><br/>
+<img src="./Minka_slides2_ink-41_158.png"/><br/>
+<img src="./Minka_slides2_ink-41_159.png"/><br/>
+<img src="./Minka_slides2_ink-41_160.png"/><br/>
+<img src="./Minka_slides2_ink-41_161.png"/><br/>
+<img src="./Minka_slides2_ink-41_162.png"/><br/>
+<img src="./Minka_slides2_ink-41_163.png"/><br/>
+<img src="./Minka_slides2_ink-41_164.png"/><br/>
+<img src="./Minka_slides2_ink-41_165.png"/><br/>
+<img src="./Minka_slides2_ink-41_166.png"/><br/>
+<img src="./Minka_slides2_ink-41_167.png"/><br/>
+<img src="./Minka_slides2_ink-41_168.png"/><br/>
+<img src="./Minka_slides2_ink-41_169.png"/><br/>
+<img src="./Minka_slides2_ink-41_170.png"/><br/>
+<img src="./Minka_slides2_ink-41_171.png"/><br/>
+<img src="./Minka_slides2_ink-41_172.png"/><br/>
+<img src="./Minka_slides2_ink-41_173.png"/><br/>
+<img src="./Minka_slides2_ink-41_174.png"/><br/>
+<img src="./Minka_slides2_ink-41_175.png"/><br/>
+<img src="./Minka_slides2_ink-41_176.png"/><br/>
+<img src="./Minka_slides2_ink-41_177.png"/><br/>
+<img src="./Minka_slides2_ink-41_178.png"/><br/>
+<img src="./Minka_slides2_ink-41_179.png"/><br/>
+<img src="./Minka_slides2_ink-41_180.png"/><br/>
+<img src="./Minka_slides2_ink-41_181.png"/><br/>
+<img src="./Minka_slides2_ink-41_182.png"/><br/>
+<img src="./Minka_slides2_ink-41_183.png"/><br/>
+<img src="./Minka_slides2_ink-41_184.png"/><br/>
+<img src="./Minka_slides2_ink-41_185.png"/><br/>
+<img src="./Minka_slides2_ink-41_186.png"/><br/>
+<img src="./Minka_slides2_ink-41_187.png"/><br/>
+<img src="./Minka_slides2_ink-41_188.png"/><br/>
+<img src="./Minka_slides2_ink-41_189.png"/><br/>
+<img src="./Minka_slides2_ink-41_190.png"/><br/>
+<img src="./Minka_slides2_ink-41_191.png"/><br/>
+<img src="./Minka_slides2_ink-41_192.png"/><br/>
+<img src="./Minka_slides2_ink-41_193.png"/><br/>
+<img src="./Minka_slides2_ink-41_194.png"/><br/>
+<img src="./Minka_slides2_ink-41_195.png"/><br/>
+<img src="./Minka_slides2_ink-41_196.png"/><br/>
+<img src="./Minka_slides2_ink-41_197.png"/><br/>
+<img src="./Minka_slides2_ink-41_198.png"/><br/>
+<img src="./Minka_slides2_ink-41_199.png"/><br/>
+<img src="./Minka_slides2_ink-41_200.png"/><br/>
+<img src="./Minka_slides2_ink-41_201.png"/><br/>
+<img src="./Minka_slides2_ink-41_202.png"/><br/>
+<img src="./Minka_slides2_ink-41_203.png"/><br/>
+<img src="./Minka_slides2_ink-41_204.png"/><br/>
+<img src="./Minka_slides2_ink-41_205.png"/><br/>
+<img src="./Minka_slides2_ink-41_206.png"/><br/>
+<img src="./Minka_slides2_ink-41_207.png"/><br/>
+<img src="./Minka_slides2_ink-41_208.png"/><br/>
+<img src="./Minka_slides2_ink-41_209.png"/><br/>
+<img src="./Minka_slides2_ink-41_210.png"/><br/>
+<img src="./Minka_slides2_ink-41_211.png"/><br/>
+<img src="./Minka_slides2_ink-41_212.png"/><br/>
+<img src="./Minka_slides2_ink-41_213.png"/><br/>
+<img src="./Minka_slides2_ink-41_214.png"/><br/>
+<img src="./Minka_slides2_ink-41_215.png"/><br/>
+<img src="./Minka_slides2_ink-41_216.png"/><br/>
+<img src="./Minka_slides2_ink-41_217.png"/><br/>
+<img src="./Minka_slides2_ink-41_218.png"/><br/>
+<img src="./Minka_slides2_ink-41_219.png"/><br/>
+<img src="./Minka_slides2_ink-41_220.png"/><br/>
+<img src="./Minka_slides2_ink-41_221.png"/><br/>
+<img src="./Minka_slides2_ink-41_222.png"/><br/>
+<img src="./Minka_slides2_ink-41_223.png"/><br/>
+<img src="./Minka_slides2_ink-41_224.png"/><br/>
+<img src="./Minka_slides2_ink-41_225.png"/><br/>
+<img src="./Minka_slides2_ink-41_226.png"/><br/>
+<img src="./Minka_slides2_ink-41_227.png"/><br/>
+<img src="./Minka_slides2_ink-41_228.png"/><br/>
+<img src="./Minka_slides2_ink-41_229.png"/><br/>
+<img src="./Minka_slides2_ink-41_230.png"/><br/>
+<img src="./Minka_slides2_ink-41_231.png"/><br/>
+<img src="./Minka_slides2_ink-41_232.png"/><br/>
+<img src="./Minka_slides2_ink-41_233.png"/><br/>
+<img src="./Minka_slides2_ink-41_234.png"/><br/>
+<img src="./Minka_slides2_ink-41_235.png"/><br/>
+<img src="./Minka_slides2_ink-41_236.png"/><br/>
+<img src="./Minka_slides2_ink-41_237.png"/><br/>
+<img src="./Minka_slides2_ink-41_238.png"/><br/>
+<img src="./Minka_slides2_ink-41_239.png"/><br/>
+<img src="./Minka_slides2_ink-41_240.png"/><br/>
+<img src="./Minka_slides2_ink-41_241.png"/><br/>
+<img src="./Minka_slides2_ink-41_242.png"/><br/>
+<img src="./Minka_slides2_ink-41_243.png"/><br/>
+<img src="./Minka_slides2_ink-41_244.png"/><br/>
+<img src="./Minka_slides2_ink-41_245.png"/><br/>
+<img src="./Minka_slides2_ink-41_246.png"/><br/>
+<img src="./Minka_slides2_ink-41_247.png"/><br/>
+<img src="./Minka_slides2_ink-41_248.png"/><br/>
+<img src="./Minka_slides2_ink-41_249.png"/><br/>
+<img src="./Minka_slides2_ink-41_250.png"/><br/>
+<img src="./Minka_slides2_ink-41_251.png"/><br/>
+<img src="./Minka_slides2_ink-41_252.png"/><br/>
+<img src="./Minka_slides2_ink-41_253.png"/><br/>
+<img src="./Minka_slides2_ink-41_254.png"/><br/>
+<img src="./Minka_slides2_ink-41_255.png"/><br/>
+<img src="./Minka_slides2_ink-41_256.png"/><br/>
+<img src="./Minka_slides2_ink-41_257.png"/><br/>
+<img src="./Minka_slides2_ink-41_258.png"/><br/>
+<img src="./Minka_slides2_ink-41_259.png"/><br/>
+<img src="./Minka_slides2_ink-41_260.png"/><br/>
+<img src="./Minka_slides2_ink-41_261.png"/><br/>
+<img src="./Minka_slides2_ink-41_262.png"/><br/>
+<img src="./Minka_slides2_ink-41_263.png"/><br/>
+<img src="./Minka_slides2_ink-41_264.png"/><br/>
+<img src="./Minka_slides2_ink-41_265.png"/><br/>
+<img src="./Minka_slides2_ink-41_266.png"/><br/>
+<img src="./Minka_slides2_ink-41_267.png"/><br/>
+<img src="./Minka_slides2_ink-41_268.png"/><br/>
+<img src="./Minka_slides2_ink-41_269.png"/><br/>
+<img src="./Minka_slides2_ink-41_270.png"/><br/>
+<img src="./Minka_slides2_ink-41_271.png"/><br/>
+<img src="./Minka_slides2_ink-41_272.png"/><br/>
+<img src="./Minka_slides2_ink-41_273.png"/><br/>
+<img src="./Minka_slides2_ink-41_274.png"/><br/>
+<img src="./Minka_slides2_ink-41_275.png"/><br/>
+<img src="./Minka_slides2_ink-41_276.png"/><br/>
+<img src="./Minka_slides2_ink-41_277.png"/><br/>
+<img src="./Minka_slides2_ink-41_278.png"/><br/>
+<img src="./Minka_slides2_ink-41_279.png"/><br/>
+<img src="./Minka_slides2_ink-41_280.png"/><br/>
+<img src="./Minka_slides2_ink-41_281.png"/><br/>
+<img src="./Minka_slides2_ink-41_282.png"/><br/>
+<img src="./Minka_slides2_ink-41_283.png"/><br/>
+<img src="./Minka_slides2_ink-41_284.png"/><br/>
+<img src="./Minka_slides2_ink-41_285.png"/><br/>
+<img src="./Minka_slides2_ink-41_286.png"/><br/>
+<img src="./Minka_slides2_ink-41_287.png"/><br/>
+<img src="./Minka_slides2_ink-41_288.png"/><br/>
+<img src="./Minka_slides2_ink-41_289.png"/><br/>
+<img src="./Minka_slides2_ink-41_290.png"/><br/>
+<img src="./Minka_slides2_ink-41_291.png"/><br/>
+<img src="./Minka_slides2_ink-41_292.png"/><br/>
+<img src="./Minka_slides2_ink-41_293.png"/><br/>
+<img src="./Minka_slides2_ink-41_294.png"/><br/>
+<img src="./Minka_slides2_ink-41_295.png"/><br/>
+<img src="./Minka_slides2_ink-41_296.png"/><br/>
+<img src="./Minka_slides2_ink-41_297.png"/><br/>
+<img src="./Minka_slides2_ink-41_298.png"/><br/>
+<img src="./Minka_slides2_ink-41_299.png"/><br/>
+<img src="./Minka_slides2_ink-41_300.png"/><br/>
+<img src="./Minka_slides2_ink-41_301.png"/><br/>
+<img src="./Minka_slides2_ink-41_302.png"/><br/>
+<img src="./Minka_slides2_ink-41_303.png"/><br/>
+<img src="./Minka_slides2_ink-41_304.png"/><br/>
+<img src="./Minka_slides2_ink-41_305.png"/><br/>
+<img src="./Minka_slides2_ink-41_306.png"/><br/>
+<img src="./Minka_slides2_ink-41_307.png"/><br/>
+<img src="./Minka_slides2_ink-41_308.png"/><br/>
+<img src="./Minka_slides2_ink-41_309.png"/><br/>
+<img src="./Minka_slides2_ink-41_310.png"/><br/>
+<img src="./Minka_slides2_ink-41_311.png"/><br/>
+<img src="./Minka_slides2_ink-41_312.png"/><br/>
+<img src="./Minka_slides2_ink-41_313.png"/><br/>
+<img src="./Minka_slides2_ink-41_314.png"/><br/>
+<img src="./Minka_slides2_ink-41_315.png"/><br/>
+<img src="./Minka_slides2_ink-41_316.png"/><br/>
+<img src="./Minka_slides2_ink-41_317.png"/><br/>
+<img src="./Minka_slides2_ink-41_318.png"/><br/>
+<img src="./Minka_slides2_ink-41_319.png"/><br/>
+<img src="./Minka_slides2_ink-41_320.png"/><br/>
+<img src="./Minka_slides2_ink-41_321.png"/><br/>
+<img src="./Minka_slides2_ink-41_322.png"/><br/>
+<img src="./Minka_slides2_ink-41_323.png"/><br/>
+<img src="./Minka_slides2_ink-41_324.png"/><br/>
+<img src="./Minka_slides2_ink-41_325.png"/><br/>
+<img src="./Minka_slides2_ink-41_326.png"/><br/>
+<img src="./Minka_slides2_ink-41_327.png"/><br/>
+<img src="./Minka_slides2_ink-41_328.png"/><br/>
+<img src="./Minka_slides2_ink-41_329.png"/><br/>
+<img src="./Minka_slides2_ink-41_330.png"/><br/>
+<img src="./Minka_slides2_ink-41_331.png"/><br/>
+<img src="./Minka_slides2_ink-41_332.png"/><br/>
+<img src="./Minka_slides2_ink-41_333.png"/><br/>
+<img src="./Minka_slides2_ink-41_334.png"/><br/>
+<img src="./Minka_slides2_ink-41_335.png"/><br/>
+<img src="./Minka_slides2_ink-41_336.png"/><br/>
+<img src="./Minka_slides2_ink-41_337.png"/><br/>
+<img src="./Minka_slides2_ink-41_338.png"/><br/>
+<img src="./Minka_slides2_ink-41_339.png"/><br/>
+<img src="./Minka_slides2_ink-41_340.png"/><br/>
+<img src="./Minka_slides2_ink-41_341.png"/><br/>
+<img src="./Minka_slides2_ink-41_342.png"/><br/>
+<img src="./Minka_slides2_ink-41_343.png"/><br/>
+<img src="./Minka_slides2_ink-41_344.png"/><br/>
+<img src="./Minka_slides2_ink-41_345.png"/><br/>
+<img src="./Minka_slides2_ink-41_346.png"/><br/>
+<img src="./Minka_slides2_ink-41_347.png"/><br/>
+<img src="./Minka_slides2_ink-41_348.png"/><br/>
+<img src="./Minka_slides2_ink-41_349.png"/><br/>
+<img src="./Minka_slides2_ink-41_350.png"/><br/>
+<img src="./Minka_slides2_ink-41_351.png"/><br/>
+<img src="./Minka_slides2_ink-41_352.png"/><br/>
+<img src="./Minka_slides2_ink-41_353.png"/><br/>
+<img src="./Minka_slides2_ink-41_354.png"/><br/>
+<img src="./Minka_slides2_ink-41_355.png"/><br/>
+<img src="./Minka_slides2_ink-41_356.png"/><br/>
+<img src="./Minka_slides2_ink-41_357.png"/><br/>
+<img src="./Minka_slides2_ink-41_358.png"/><br/>
+<img src="./Minka_slides2_ink-41_359.png"/><br/>
+<img src="./Minka_slides2_ink-41_360.png"/><br/>
+<img src="./Minka_slides2_ink-41_361.png"/><br/>
+<img src="./Minka_slides2_ink-41_362.png"/><br/>
+<img src="./Minka_slides2_ink-41_363.png"/><br/>
+<img src="./Minka_slides2_ink-41_364.png"/><br/>
+<img src="./Minka_slides2_ink-41_365.png"/><br/>
+<img src="./Minka_slides2_ink-41_366.png"/><br/>
+<img src="./Minka_slides2_ink-41_367.png"/><br/>
+<img src="./Minka_slides2_ink-41_368.png"/><br/>
+<img src="./Minka_slides2_ink-41_369.png"/><br/>
+<img src="./Minka_slides2_ink-41_370.png"/><br/>
+<img src="./Minka_slides2_ink-41_371.png"/><br/>
+<img src="./Minka_slides2_ink-41_372.png"/><br/>
+<img src="./Minka_slides2_ink-41_373.png"/><br/>
+<img src="./Minka_slides2_ink-41_374.png"/><br/>
+<img src="./Minka_slides2_ink-41_375.png"/><br/>
+<img src="./Minka_slides2_ink-41_376.png"/><br/>
+<img src="./Minka_slides2_ink-41_377.png"/><br/>
+<img src="./Minka_slides2_ink-41_378.png"/><br/>
+<img src="./Minka_slides2_ink-41_379.png"/><br/>
+<img src="./Minka_slides2_ink-41_380.png"/><br/>
+<img src="./Minka_slides2_ink-41_381.png"/><br/>
+<img src="./Minka_slides2_ink-41_382.png"/><br/>
+<img src="./Minka_slides2_ink-41_383.png"/><br/>
+<img src="./Minka_slides2_ink-41_384.png"/><br/>
+<img src="./Minka_slides2_ink-41_385.png"/><br/>
+<img src="./Minka_slides2_ink-41_386.png"/><br/>
+<img src="./Minka_slides2_ink-41_387.png"/><br/>
+<img src="./Minka_slides2_ink-41_388.png"/><br/>
+<img src="./Minka_slides2_ink-41_389.png"/><br/>
+<img src="./Minka_slides2_ink-41_390.png"/><br/>
+<img src="./Minka_slides2_ink-41_391.png"/><br/>
+<img src="./Minka_slides2_ink-41_392.png"/><br/>
+<img src="./Minka_slides2_ink-41_393.png"/><br/>
+<img src="./Minka_slides2_ink-41_394.png"/><br/>
+<img src="./Minka_slides2_ink-41_395.png"/><br/>
+<img src="./Minka_slides2_ink-41_396.png"/><br/>
+<img src="./Minka_slides2_ink-41_397.png"/><br/>
+<img src="./Minka_slides2_ink-41_398.png"/><br/>
+<img src="./Minka_slides2_ink-41_399.png"/><br/>
+<img src="./Minka_slides2_ink-41_400.png"/><br/>
+<img src="./Minka_slides2_ink-41_401.png"/><br/>
+<img src="./Minka_slides2_ink-41_402.png"/><br/>
+<img src="./Minka_slides2_ink-41_403.png"/><br/>
+<img src="./Minka_slides2_ink-41_404.png"/><br/>
+<img src="./Minka_slides2_ink-41_405.png"/><br/>
+<img src="./Minka_slides2_ink-41_406.png"/><br/>
+<img src="./Minka_slides2_ink-41_407.png"/><br/>
+<img src="./Minka_slides2_ink-41_408.png"/><br/>
+<img src="./Minka_slides2_ink-41_409.png"/><br/>
+<img src="./Minka_slides2_ink-41_410.png"/><br/>
+<img src="./Minka_slides2_ink-41_411.png"/><br/>
+<img src="./Minka_slides2_ink-41_412.png"/><br/>
+<img src="./Minka_slides2_ink-41_413.png"/><br/>
+<img src="./Minka_slides2_ink-41_414.png"/><br/>
+<img src="./Minka_slides2_ink-41_415.png"/><br/>
+<img src="./Minka_slides2_ink-41_416.png"/><br/>
+<img src="./Minka_slides2_ink-41_417.png"/><br/>
+<img src="./Minka_slides2_ink-41_418.png"/><br/>
+<img src="./Minka_slides2_ink-41_419.png"/><br/>
+<img src="./Minka_slides2_ink-41_420.png"/><br/>
+<img src="./Minka_slides2_ink-41_421.png"/><br/>
+<img src="./Minka_slides2_ink-41_422.png"/><br/>
+<img src="./Minka_slides2_ink-41_423.png"/><br/>
+<img src="./Minka_slides2_ink-41_424.png"/><br/>
+<img src="./Minka_slides2_ink-41_425.png"/><br/>
+<img src="./Minka_slides2_ink-41_426.png"/><br/>
+<img src="./Minka_slides2_ink-41_427.png"/><br/>
+<img src="./Minka_slides2_ink-41_428.png"/><br/>
+<img src="./Minka_slides2_ink-41_429.png"/><br/>
+<img src="./Minka_slides2_ink-41_430.png"/><br/>
+<img src="./Minka_slides2_ink-41_431.png"/><br/>
+<img src="./Minka_slides2_ink-41_432.png"/><br/>
+<img src="./Minka_slides2_ink-41_433.png"/><br/>
+<img src="./Minka_slides2_ink-41_434.png"/><br/>
+<img src="./Minka_slides2_ink-41_435.png"/><br/>
+<img src="./Minka_slides2_ink-41_436.png"/><br/>
+<img src="./Minka_slides2_ink-41_437.png"/><br/>
+<img src="./Minka_slides2_ink-41_438.png"/><br/>
+<img src="./Minka_slides2_ink-41_439.png"/><br/>
+<img src="./Minka_slides2_ink-41_440.png"/><br/>
+<img src="./Minka_slides2_ink-41_441.png"/><br/>
+<img src="./Minka_slides2_ink-41_442.png"/><br/>
+<img src="./Minka_slides2_ink-41_443.png"/><br/>
+<img src="./Minka_slides2_ink-41_444.png"/><br/>
+<img src="./Minka_slides2_ink-41_445.png"/><br/>
+<img src="./Minka_slides2_ink-41_446.png"/><br/>
+<img src="./Minka_slides2_ink-41_447.png"/><br/>
+<img src="./Minka_slides2_ink-41_448.png"/><br/>
+<img src="./Minka_slides2_ink-41_449.png"/><br/>
+<img src="./Minka_slides2_ink-41_450.png"/><br/>
+<img src="./Minka_slides2_ink-41_451.png"/><br/>
+<img src="./Minka_slides2_ink-41_452.png"/><br/>
+<img src="./Minka_slides2_ink-41_453.png"/><br/>
+<img src="./Minka_slides2_ink-41_454.png"/><br/>
+<img src="./Minka_slides2_ink-41_455.png"/><br/>
+<img src="./Minka_slides2_ink-41_456.png"/><br/>
+<img src="./Minka_slides2_ink-41_457.png"/><br/>
+<img src="./Minka_slides2_ink-41_458.png"/><br/>
+<img src="./Minka_slides2_ink-41_459.png"/><br/>
+<img src="./Minka_slides2_ink-41_460.png"/><br/>
+<img src="./Minka_slides2_ink-41_461.png"/><br/>
+<img src="./Minka_slides2_ink-41_462.png"/><br/>
+<img src="./Minka_slides2_ink-41_463.png"/><br/>
+<img src="./Minka_slides2_ink-41_464.png"/><br/>
+<img src="./Minka_slides2_ink-41_465.png"/><br/>
+<img src="./Minka_slides2_ink-41_466.png"/><br/>
+<img src="./Minka_slides2_ink-41_467.png"/><br/>
+<img src="./Minka_slides2_ink-41_468.png"/><br/>
+<img src="./Minka_slides2_ink-41_469.png"/><br/>
+<img src="./Minka_slides2_ink-41_470.png"/><br/>
+<img src="./Minka_slides2_ink-41_471.png"/><br/>
+<img src="./Minka_slides2_ink-41_472.png"/><br/>
+<img src="./Minka_slides2_ink-41_473.png"/><br/>
+<img src="./Minka_slides2_ink-41_474.png"/><br/>
+<img src="./Minka_slides2_ink-41_475.png"/><br/>
+<img src="./Minka_slides2_ink-41_476.png"/><br/>
+<img src="./Minka_slides2_ink-41_477.png"/><br/>
+<img src="./Minka_slides2_ink-41_478.png"/><br/>
+<img src="./Minka_slides2_ink-41_479.png"/><br/>
+<img src="./Minka_slides2_ink-41_480.png"/><br/>
+<img src="./Minka_slides2_ink-41_481.png"/><br/>
+<img src="./Minka_slides2_ink-41_482.png"/><br/>
+<img src="./Minka_slides2_ink-41_483.png"/><br/>
+<img src="./Minka_slides2_ink-41_484.png"/><br/>
+<img src="./Minka_slides2_ink-41_485.png"/><br/>
+<img src="./Minka_slides2_ink-41_486.png"/><br/>
+<img src="./Minka_slides2_ink-41_487.png"/><br/>
+<img src="./Minka_slides2_ink-41_488.png"/><br/>
+<img src="./Minka_slides2_ink-41_489.png"/><br/>
+<img src="./Minka_slides2_ink-41_490.png"/><br/>
+<img src="./Minka_slides2_ink-41_491.png"/><br/>
+<img src="./Minka_slides2_ink-41_492.png"/><br/>
+<img src="./Minka_slides2_ink-41_493.png"/><br/>
+<img src="./Minka_slides2_ink-41_494.png"/><br/>
+<img src="./Minka_slides2_ink-41_495.png"/><br/>
+<img src="./Minka_slides2_ink-41_496.png"/><br/>
+<img src="./Minka_slides2_ink-41_497.png"/><br/>
+<img src="./Minka_slides2_ink-41_498.png"/><br/>
+<img src="./Minka_slides2_ink-41_499.png"/><br/>
+<img src="./Minka_slides2_ink-41_500.png"/><br/>
+<img src="./Minka_slides2_ink-41_501.png"/><br/>
+<img src="./Minka_slides2_ink-41_502.png"/><br/>
+<img src="./Minka_slides2_ink-41_503.png"/><br/>
+<img src="./Minka_slides2_ink-41_504.png"/><br/>
+<img src="./Minka_slides2_ink-41_505.png"/><br/>
+<img src="./Minka_slides2_ink-41_506.png"/><br/>
+<img src="./Minka_slides2_ink-41_507.png"/><br/>
+<img src="./Minka_slides2_ink-41_508.png"/><br/>
+<img src="./Minka_slides2_ink-41_509.png"/><br/>
+<img src="./Minka_slides2_ink-41_510.png"/><br/>
+<img src="./Minka_slides2_ink-41_511.png"/><br/>
+<img src="./Minka_slides2_ink-41_512.png"/><br/>
+<img src="./Minka_slides2_ink-41_513.png"/><br/>
+<img src="./Minka_slides2_ink-41_514.png"/><br/>
+<img src="./Minka_slides2_ink-41_515.png"/><br/>
+<img src="./Minka_slides2_ink-41_516.png"/><br/>
+<img src="./Minka_slides2_ink-41_517.png"/><br/>
+<img src="./Minka_slides2_ink-41_518.png"/><br/>
+<img src="./Minka_slides2_ink-41_519.png"/><br/>
+<img src="./Minka_slides2_ink-41_520.png"/><br/>
+<img src="./Minka_slides2_ink-41_521.png"/><br/>
+<img src="./Minka_slides2_ink-41_522.png"/><br/>
+<img src="./Minka_slides2_ink-41_523.png"/><br/>
+<img src="./Minka_slides2_ink-41_524.png"/><br/>
+<img src="./Minka_slides2_ink-41_525.png"/><br/>
+<img src="./Minka_slides2_ink-41_526.png"/><br/>
+<img src="./Minka_slides2_ink-41_527.png"/><br/>
+<img src="./Minka_slides2_ink-41_528.png"/><br/>
+<img src="./Minka_slides2_ink-41_529.png"/><br/>
+<img src="./Minka_slides2_ink-41_530.png"/><br/>
+<img src="./Minka_slides2_ink-41_531.png"/><br/>
+<img src="./Minka_slides2_ink-41_532.png"/><br/>
+<img src="./Minka_slides2_ink-41_533.png"/><br/>
+<img src="./Minka_slides2_ink-41_534.png"/><br/>
+<img src="./Minka_slides2_ink-41_535.png"/><br/>
+<img src="./Minka_slides2_ink-41_536.png"/><br/>
+<img src="./Minka_slides2_ink-41_537.png"/><br/>
+<img src="./Minka_slides2_ink-41_538.png"/><br/>
+<img src="./Minka_slides2_ink-41_539.png"/><br/>
+<img src="./Minka_slides2_ink-41_540.png"/><br/>
+<img src="./Minka_slides2_ink-41_541.png"/><br/>
+<img src="./Minka_slides2_ink-41_542.png"/><br/>
+<img src="./Minka_slides2_ink-41_543.png"/><br/>
+<img src="./Minka_slides2_ink-41_544.png"/><br/>
+<img src="./Minka_slides2_ink-41_545.png"/><br/>
+<img src="./Minka_slides2_ink-41_546.png"/><br/>
+<img src="./Minka_slides2_ink-41_547.png"/><br/>
+<img src="./Minka_slides2_ink-41_548.png"/><br/>
+<img src="./Minka_slides2_ink-41_549.png"/><br/>
+<img src="./Minka_slides2_ink-41_550.png"/><br/>
+<img src="./Minka_slides2_ink-41_551.png"/><br/>
+<img src="./Minka_slides2_ink-41_552.png"/><br/>
+<img src="./Minka_slides2_ink-41_553.png"/><br/>
+<img src="./Minka_slides2_ink-41_554.png"/><br/>
+<img src="./Minka_slides2_ink-41_555.png"/><br/>
+<img src="./Minka_slides2_ink-41_556.png"/><br/>
+<img src="./Minka_slides2_ink-41_557.png"/><br/>
+<img src="./Minka_slides2_ink-41_558.png"/><br/>
+<img src="./Minka_slides2_ink-41_559.png"/><br/>
+<img src="./Minka_slides2_ink-41_560.png"/><br/>
+<img src="./Minka_slides2_ink-41_561.png"/><br/>
+<img src="./Minka_slides2_ink-41_562.png"/><br/>
+<img src="./Minka_slides2_ink-41_563.png"/><br/>
+<img src="./Minka_slides2_ink-41_564.png"/><br/>
+<img src="./Minka_slides2_ink-41_565.png"/><br/>
+<img src="./Minka_slides2_ink-41_566.png"/><br/>
+<img src="./Minka_slides2_ink-41_567.png"/><br/>
+<img src="./Minka_slides2_ink-41_568.png"/><br/>
+<img src="./Minka_slides2_ink-41_569.png"/><br/>
+<img src="./Minka_slides2_ink-41_570.png"/><br/>
+<img src="./Minka_slides2_ink-41_571.png"/><br/>
+<img src="./Minka_slides2_ink-41_572.png"/><br/>
+<img src="./Minka_slides2_ink-41_573.png"/><br/>
+<img src="./Minka_slides2_ink-41_574.png"/><br/>
+<img src="./Minka_slides2_ink-41_575.png"/><br/>
+<img src="./Minka_slides2_ink-41_576.png"/><br/>
+<img src="./Minka_slides2_ink-41_577.png"/><br/>
+<img src="./Minka_slides2_ink-41_578.png"/><br/>
+<img src="./Minka_slides2_ink-41_579.png"/><br/>
+<img src="./Minka_slides2_ink-41_580.png"/><br/>
+<img src="./Minka_slides2_ink-41_581.png"/><br/>
+<img src="./Minka_slides2_ink-41_582.png"/><br/>
+<img src="./Minka_slides2_ink-41_583.png"/><br/>
+<img src="./Minka_slides2_ink-41_584.png"/><br/>
+<img src="./Minka_slides2_ink-41_585.png"/><br/>
+<img src="./Minka_slides2_ink-41_586.png"/><br/>
+<img src="./Minka_slides2_ink-41_587.png"/><br/>
+<img src="./Minka_slides2_ink-41_588.png"/><br/>
+<img src="./Minka_slides2_ink-41_589.png"/><br/>
+<img src="./Minka_slides2_ink-41_590.png"/><br/>
+<img src="./Minka_slides2_ink-41_591.png"/><br/>
+<img src="./Minka_slides2_ink-41_592.png"/><br/>
+<img src="./Minka_slides2_ink-41_593.png"/><br/>
+<img src="./Minka_slides2_ink-41_594.png"/><br/>
+<img src="./Minka_slides2_ink-41_595.png"/><br/>
+<img src="./Minka_slides2_ink-41_596.png"/><br/>
+<img src="./Minka_slides2_ink-41_597.png"/><br/>
+<img src="./Minka_slides2_ink-41_598.png"/><br/>
+<img src="./Minka_slides2_ink-41_599.png"/><br/>
+<img src="./Minka_slides2_ink-41_600.png"/><br/>
+<img src="./Minka_slides2_ink-41_601.png"/><br/>
+<img src="./Minka_slides2_ink-41_602.png"/><br/>
+<img src="./Minka_slides2_ink-41_603.png"/><br/>
+<img src="./Minka_slides2_ink-41_604.png"/><br/>
+<img src="./Minka_slides2_ink-41_605.png"/><br/>
+<img src="./Minka_slides2_ink-41_606.png"/><br/>
+<img src="./Minka_slides2_ink-41_607.png"/><br/>
+<img src="./Minka_slides2_ink-41_608.png"/><br/>
+<img src="./Minka_slides2_ink-41_609.png"/><br/>
+<img src="./Minka_slides2_ink-41_610.png"/><br/>
+<img src="./Minka_slides2_ink-41_611.png"/><br/>
+<img src="./Minka_slides2_ink-41_612.png"/><br/>
+<img src="./Minka_slides2_ink-41_613.png"/><br/>
+<img src="./Minka_slides2_ink-41_614.png"/><br/>
+<img src="./Minka_slides2_ink-41_615.png"/><br/>
+<img src="./Minka_slides2_ink-41_616.png"/><br/>
+<img src="./Minka_slides2_ink-41_617.png"/><br/>
+<img src="./Minka_slides2_ink-41_618.png"/><br/>
+<img src="./Minka_slides2_ink-41_619.png"/><br/>
+<img src="./Minka_slides2_ink-41_620.png"/><br/>
+<img src="./Minka_slides2_ink-41_621.png"/><br/>
+<img src="./Minka_slides2_ink-41_622.png"/><br/>
+<img src="./Minka_slides2_ink-41_623.png"/><br/>
+<img src="./Minka_slides2_ink-41_624.png"/><br/>
+<img src="./Minka_slides2_ink-41_625.png"/><br/>
+<img src="./Minka_slides2_ink-41_626.png"/><br/>
+<img src="./Minka_slides2_ink-41_627.png"/><br/>
+<img src="./Minka_slides2_ink-41_628.png"/><br/>
+<img src="./Minka_slides2_ink-41_629.png"/><br/>
+<img src="./Minka_slides2_ink-41_630.png"/><br/>
+<img src="./Minka_slides2_ink-41_631.png"/><br/>
+<img src="./Minka_slides2_ink-41_632.png"/><br/>
+<img src="./Minka_slides2_ink-41_633.png"/><br/>
+<img src="./Minka_slides2_ink-41_634.png"/><br/>
+<img src="./Minka_slides2_ink-41_635.png"/><br/>
+<img src="./Minka_slides2_ink-41_636.png"/><br/>
+<img src="./Minka_slides2_ink-41_637.png"/><br/>
+<img src="./Minka_slides2_ink-41_638.png"/><br/>
+<img src="./Minka_slides2_ink-41_639.png"/><br/>
+<img src="./Minka_slides2_ink-41_640.png"/><br/>
+<img src="./Minka_slides2_ink-41_641.png"/><br/>
+<img src="./Minka_slides2_ink-41_642.png"/><br/>
+<img src="./Minka_slides2_ink-41_643.png"/><br/>
+<img src="./Minka_slides2_ink-41_644.png"/><br/>
+<img src="./Minka_slides2_ink-41_645.png"/><br/>
+<img src="./Minka_slides2_ink-41_646.png"/><br/>
+<img src="./Minka_slides2_ink-41_647.png"/><br/>
+<img src="./Minka_slides2_ink-41_648.png"/><br/>
+<img src="./Minka_slides2_ink-41_649.png"/><br/>
+<img src="./Minka_slides2_ink-41_650.png"/><br/>
+<img src="./Minka_slides2_ink-41_651.png"/><br/>
+<img src="./Minka_slides2_ink-41_652.png"/><br/>
+<img src="./Minka_slides2_ink-41_653.png"/><br/>
+<img src="./Minka_slides2_ink-41_654.png"/><br/>
+<img src="./Minka_slides2_ink-41_655.png"/><br/>
+<img src="./Minka_slides2_ink-41_656.png"/><br/>
+<img src="./Minka_slides2_ink-41_657.png"/><br/>
+<img src="./Minka_slides2_ink-41_658.png"/><br/>
+<img src="./Minka_slides2_ink-41_659.png"/><br/>
+<img src="./Minka_slides2_ink-41_660.png"/><br/>
+<img src="./Minka_slides2_ink-41_661.png"/><br/>
+<img src="./Minka_slides2_ink-41_662.png"/><br/>
+<img src="./Minka_slides2_ink-41_663.png"/><br/>
+<img src="./Minka_slides2_ink-41_664.png"/><br/>
+<img src="./Minka_slides2_ink-41_665.png"/><br/>
+<img src="./Minka_slides2_ink-41_666.png"/><br/>
+<img src="./Minka_slides2_ink-41_667.png"/><br/>
+<img src="./Minka_slides2_ink-41_668.png"/><br/>
+<img src="./Minka_slides2_ink-41_669.png"/><br/>
+<img src="./Minka_slides2_ink-41_670.png"/><br/>
+<img src="./Minka_slides2_ink-41_671.png"/><br/>
+<img src="./Minka_slides2_ink-41_672.png"/><br/>
+<img src="./Minka_slides2_ink-41_673.png"/><br/>
+<img src="./Minka_slides2_ink-41_674.png"/><br/>
+<img src="./Minka_slides2_ink-41_675.png"/><br/>
+<img src="./Minka_slides2_ink-41_676.png"/><br/>
+<img src="./Minka_slides2_ink-41_677.png"/><br/>
+<img src="./Minka_slides2_ink-41_678.png"/><br/>
+<img src="./Minka_slides2_ink-41_679.png"/><br/>
+<img src="./Minka_slides2_ink-41_680.png"/><br/>
+<img src="./Minka_slides2_ink-41_681.png"/><br/>
+<img src="./Minka_slides2_ink-41_682.png"/><br/>
+<img src="./Minka_slides2_ink-41_683.png"/><br/>
+<img src="./Minka_slides2_ink-41_684.png"/><br/>
+<img src="./Minka_slides2_ink-41_685.png"/><br/>
+<img src="./Minka_slides2_ink-41_686.png"/><br/>
+<img src="./Minka_slides2_ink-41_687.png"/><br/>
+<img src="./Minka_slides2_ink-41_688.png"/><br/>
+<img src="./Minka_slides2_ink-41_689.png"/><br/>
+<img src="./Minka_slides2_ink-41_690.png"/><br/>
+<img src="./Minka_slides2_ink-41_691.png"/><br/>
+<img src="./Minka_slides2_ink-41_692.png"/><br/>
+<img src="./Minka_slides2_ink-41_693.png"/><br/>
+<img src="./Minka_slides2_ink-41_694.png"/><br/>
+<img src="./Minka_slides2_ink-41_695.png"/><br/>
+<img src="./Minka_slides2_ink-41_696.png"/><br/>
+<img src="./Minka_slides2_ink-41_697.png"/><br/>
+<img src="./Minka_slides2_ink-41_698.png"/><br/>
+<img src="./Minka_slides2_ink-41_699.png"/><br/>
+<img src="./Minka_slides2_ink-41_700.png"/><br/>
+<img src="./Minka_slides2_ink-41_701.png"/><br/>
+<img src="./Minka_slides2_ink-41_702.png"/><br/>
+<img src="./Minka_slides2_ink-41_703.png"/><br/>
+<img src="./Minka_slides2_ink-41_704.png"/><br/>
+<img src="./Minka_slides2_ink-41_705.png"/><br/>
+<img src="./Minka_slides2_ink-41_706.png"/><br/>
+<img src="./Minka_slides2_ink-41_707.png"/><br/>
+<img src="./Minka_slides2_ink-41_708.png"/><br/>
+<img src="./Minka_slides2_ink-41_709.png"/><br/>
+<img src="./Minka_slides2_ink-41_710.png"/><br/>
+<img src="./Minka_slides2_ink-41_711.png"/><br/>
+<img src="./Minka_slides2_ink-41_712.png"/><br/>
+<img src="./Minka_slides2_ink-41_713.png"/><br/>
+<img src="./Minka_slides2_ink-41_714.png"/><br/>
+<img src="./Minka_slides2_ink-41_715.png"/><br/>
+<img src="./Minka_slides2_ink-41_716.png"/><br/>
+<img src="./Minka_slides2_ink-41_717.png"/><br/>
+<img src="./Minka_slides2_ink-41_718.png"/><br/>
+<img src="./Minka_slides2_ink-41_719.png"/><br/>
+<img src="./Minka_slides2_ink-41_720.png"/><br/>
+<img src="./Minka_slides2_ink-41_721.png"/><br/>
+<img src="./Minka_slides2_ink-41_722.png"/><br/>
+<img src="./Minka_slides2_ink-41_723.png"/><br/>
+<img src="./Minka_slides2_ink-41_724.png"/><br/>
+<img src="./Minka_slides2_ink-41_725.png"/><br/>
+<img src="./Minka_slides2_ink-41_726.png"/><br/>
+<img src="./Minka_slides2_ink-41_727.png"/><br/>
+<img src="./Minka_slides2_ink-41_728.png"/><br/>
+<img src="./Minka_slides2_ink-41_729.png"/><br/>
+<img src="./Minka_slides2_ink-41_730.png"/><br/>
+<img src="./Minka_slides2_ink-41_731.png"/><br/>
+<img src="./Minka_slides2_ink-41_732.png"/><br/>
+<img src="./Minka_slides2_ink-41_733.png"/><br/>
+<img src="./Minka_slides2_ink-41_734.png"/><br/>
+<img src="./Minka_slides2_ink-41_735.png"/><br/>
+<img src="./Minka_slides2_ink-41_736.png"/><br/>
+<img src="./Minka_slides2_ink-41_737.png"/><br/>
+<img src="./Minka_slides2_ink-41_738.png"/><br/>
+<img src="./Minka_slides2_ink-41_739.png"/><br/>
+<img src="./Minka_slides2_ink-41_740.png"/><br/>
+<img src="./Minka_slides2_ink-41_741.png"/><br/>
+<img src="./Minka_slides2_ink-41_742.png"/><br/>
+<img src="./Minka_slides2_ink-41_743.png"/><br/>
+<img src="./Minka_slides2_ink-41_744.png"/><br/>
+<img src="./Minka_slides2_ink-41_745.png"/><br/>
+<img src="./Minka_slides2_ink-41_746.png"/><br/>
+<img src="./Minka_slides2_ink-41_747.png"/><br/>
+<img src="./Minka_slides2_ink-41_748.png"/><br/>
+<img src="./Minka_slides2_ink-41_749.png"/><br/>
+<img src="./Minka_slides2_ink-41_750.png"/><br/>
+<img src="./Minka_slides2_ink-41_751.png"/><br/>
+<img src="./Minka_slides2_ink-41_752.png"/><br/>
+<img src="./Minka_slides2_ink-41_753.png"/><br/>
+<img src="./Minka_slides2_ink-41_754.png"/><br/>
+<img src="./Minka_slides2_ink-41_755.png"/><br/>
+<img src="./Minka_slides2_ink-41_756.png"/><br/>
+<img src="./Minka_slides2_ink-41_757.png"/><br/>
+<img src="./Minka_slides2_ink-41_758.png"/><br/>
+<img src="./Minka_slides2_ink-41_759.png"/><br/>
+<img src="./Minka_slides2_ink-41_760.png"/><br/>
+<img src="./Minka_slides2_ink-41_761.png"/><br/>
+<img src="./Minka_slides2_ink-41_762.png"/><br/>
+<img src="./Minka_slides2_ink-41_763.png"/><br/>
+<img src="./Minka_slides2_ink-41_764.png"/><br/>
+<img src="./Minka_slides2_ink-41_765.png"/><br/>
+<img src="./Minka_slides2_ink-41_766.png"/><br/>
+<img src="./Minka_slides2_ink-41_767.png"/><br/>
+<img src="./Minka_slides2_ink-41_768.png"/><br/>
+<img src="./Minka_slides2_ink-41_769.png"/><br/>
+<img src="./Minka_slides2_ink-41_770.png"/><br/>
+<img src="./Minka_slides2_ink-41_771.png"/><br/>
+<img src="./Minka_slides2_ink-41_772.png"/><br/>
+<img src="./Minka_slides2_ink-41_773.png"/><br/>
+<img src="./Minka_slides2_ink-41_774.png"/><br/>
+<img src="./Minka_slides2_ink-41_775.png"/><br/>
+<img src="./Minka_slides2_ink-41_776.png"/><br/>
+<img src="./Minka_slides2_ink-41_777.png"/><br/>
+<img src="./Minka_slides2_ink-41_778.png"/><br/>
+<img src="./Minka_slides2_ink-41_779.png"/><br/>
+<img src="./Minka_slides2_ink-41_780.png"/><br/>
+<img src="./Minka_slides2_ink-41_781.png"/><br/>
+<img src="./Minka_slides2_ink-41_782.png"/><br/>
+<img src="./Minka_slides2_ink-41_783.png"/><br/>
+<img src="./Minka_slides2_ink-41_784.png"/><br/>
+<img src="./Minka_slides2_ink-41_785.png"/><br/>
+<img src="./Minka_slides2_ink-41_786.png"/><br/>
+<img src="./Minka_slides2_ink-41_787.png"/><br/>
+<img src="./Minka_slides2_ink-41_788.png"/><br/>
+<img src="./Minka_slides2_ink-41_789.png"/><br/>
+<img src="./Minka_slides2_ink-41_790.png"/><br/>
+<img src="./Minka_slides2_ink-41_791.png"/><br/>
+<img src="./Minka_slides2_ink-41_792.png"/><br/>
+<img src="./Minka_slides2_ink-41_793.png"/><br/>
+<img src="./Minka_slides2_ink-41_794.png"/><br/>
+<img src="./Minka_slides2_ink-41_795.png"/><br/>
+<img src="./Minka_slides2_ink-41_796.png"/><br/>
+<img src="./Minka_slides2_ink-41_797.png"/><br/>
+<img src="./Minka_slides2_ink-41_798.png"/><br/>
+<img src="./Minka_slides2_ink-41_799.png"/><br/>
+<img src="./Minka_slides2_ink-41_800.png"/><br/>
+<img src="./Minka_slides2_ink-41_801.png"/><br/>
+<img src="./Minka_slides2_ink-41_802.png"/><br/>
+<img src="./Minka_slides2_ink-41_803.png"/><br/>
+<img src="./Minka_slides2_ink-41_804.png"/><br/>
+<img src="./Minka_slides2_ink-41_805.png"/><br/>
+<img src="./Minka_slides2_ink-41_806.png"/><br/>
+<img src="./Minka_slides2_ink-41_807.png"/><br/>
+<img src="./Minka_slides2_ink-41_808.png"/><br/>
+<img src="./Minka_slides2_ink-41_809.png"/><br/>
+<img src="./Minka_slides2_ink-41_810.png"/><br/>
+<img src="./Minka_slides2_ink-41_811.png"/><br/>
+<img src="./Minka_slides2_ink-41_812.png"/><br/>
+<img src="./Minka_slides2_ink-41_813.png"/><br/>
+<img src="./Minka_slides2_ink-41_814.png"/><br/>
+<img src="./Minka_slides2_ink-41_815.png"/><br/>
+<img src="./Minka_slides2_ink-41_816.png"/><br/>
+<img src="./Minka_slides2_ink-41_817.png"/><br/>
+<img src="./Minka_slides2_ink-41_818.png"/><br/>
+<img src="./Minka_slides2_ink-41_819.png"/><br/>
+<img src="./Minka_slides2_ink-41_820.png"/><br/>
+<img src="./Minka_slides2_ink-41_821.png"/><br/>
+<img src="./Minka_slides2_ink-41_822.png"/><br/>
+<img src="./Minka_slides2_ink-41_823.png"/><br/>
+<img src="./Minka_slides2_ink-41_824.png"/><br/>
+<img src="./Minka_slides2_ink-41_825.png"/><br/>
+<img src="./Minka_slides2_ink-41_826.png"/><br/>
+<img src="./Minka_slides2_ink-41_827.png"/><br/>
+<img src="./Minka_slides2_ink-41_828.png"/><br/>
+<img src="./Minka_slides2_ink-41_829.png"/><br/>
+<img src="./Minka_slides2_ink-41_830.png"/><br/>
+<img src="./Minka_slides2_ink-41_831.png"/><br/>
+<img src="./Minka_slides2_ink-41_832.png"/><br/>
+<img src="./Minka_slides2_ink-41_833.png"/><br/>
+<img src="./Minka_slides2_ink-41_834.png"/><br/>
+<img src="./Minka_slides2_ink-41_835.png"/><br/>
+<img src="./Minka_slides2_ink-41_836.png"/><br/>
+<img src="./Minka_slides2_ink-41_837.png"/><br/>
+<img src="./Minka_slides2_ink-41_838.png"/><br/>
+<img src="./Minka_slides2_ink-41_839.png"/><br/>
+<img src="./Minka_slides2_ink-41_840.png"/><br/>
+<img src="./Minka_slides2_ink-41_841.png"/><br/>
+<img src="./Minka_slides2_ink-41_842.png"/><br/>
+<img src="./Minka_slides2_ink-41_843.png"/><br/>
+<img src="./Minka_slides2_ink-41_844.png"/><br/>
+<img src="./Minka_slides2_ink-41_845.png"/><br/>
+<img src="./Minka_slides2_ink-41_846.png"/><br/>
+<img src="./Minka_slides2_ink-41_847.png"/><br/>
+<img src="./Minka_slides2_ink-41_848.png"/><br/>
+<img src="./Minka_slides2_ink-41_849.png"/><br/>
+<img src="./Minka_slides2_ink-41_850.png"/><br/>
+<img src="./Minka_slides2_ink-41_851.png"/><br/>
+<img src="./Minka_slides2_ink-41_852.png"/><br/>
+<img src="./Minka_slides2_ink-41_853.png"/><br/>
+<img src="./Minka_slides2_ink-41_854.png"/><br/>
+<img src="./Minka_slides2_ink-41_855.png"/><br/>
+<img src="./Minka_slides2_ink-41_856.png"/><br/>
+<img src="./Minka_slides2_ink-41_857.png"/><br/>
+<img src="./Minka_slides2_ink-41_858.png"/><br/>
+<img src="./Minka_slides2_ink-41_859.png"/><br/>
+<img src="./Minka_slides2_ink-41_860.png"/><br/>
+<img src="./Minka_slides2_ink-41_861.png"/><br/>
+<img src="./Minka_slides2_ink-41_862.png"/><br/>
+<img src="./Minka_slides2_ink-41_863.png"/><br/>
+<img src="./Minka_slides2_ink-41_864.png"/><br/>
+<img src="./Minka_slides2_ink-41_865.png"/><br/>
+<img src="./Minka_slides2_ink-41_866.png"/><br/>
+<img src="./Minka_slides2_ink-41_867.png"/><br/>
+<img src="./Minka_slides2_ink-41_868.png"/><br/>
+<img src="./Minka_slides2_ink-41_869.png"/><br/>
+<img src="./Minka_slides2_ink-41_870.png"/><br/>
+<img src="./Minka_slides2_ink-41_871.png"/><br/>
+<img src="./Minka_slides2_ink-41_872.png"/><br/>
+<img src="./Minka_slides2_ink-41_873.png"/><br/>
+<img src="./Minka_slides2_ink-41_874.png"/><br/>
+<img src="./Minka_slides2_ink-41_875.png"/><br/>
+<img src="./Minka_slides2_ink-41_876.png"/><br/>
+<img src="./Minka_slides2_ink-41_877.png"/><br/>
+<img src="./Minka_slides2_ink-41_878.png"/><br/>
+<img src="./Minka_slides2_ink-41_879.png"/><br/>
+<img src="./Minka_slides2_ink-41_880.png"/><br/>
+<img src="./Minka_slides2_ink-41_881.png"/><br/>
+<img src="./Minka_slides2_ink-41_882.png"/><br/>
+<img src="./Minka_slides2_ink-41_883.png"/><br/>
+<img src="./Minka_slides2_ink-41_884.png"/><br/>
+<img src="./Minka_slides2_ink-41_885.png"/><br/>
+<img src="./Minka_slides2_ink-41_886.png"/><br/>
+<img src="./Minka_slides2_ink-41_887.png"/><br/>
+<img src="./Minka_slides2_ink-41_888.png"/><br/>
+<img src="./Minka_slides2_ink-41_889.png"/><br/>
+<img src="./Minka_slides2_ink-41_890.png"/><br/>
+<img src="./Minka_slides2_ink-41_891.png"/><br/>
+<img src="./Minka_slides2_ink-41_892.png"/><br/>
+<img src="./Minka_slides2_ink-41_893.png"/><br/>
+<img src="./Minka_slides2_ink-41_894.png"/><br/>
+<img src="./Minka_slides2_ink-41_895.png"/><br/>
+<img src="./Minka_slides2_ink-41_896.png"/><br/>
+<img src="./Minka_slides2_ink-41_897.png"/><br/>
+<img src="./Minka_slides2_ink-41_898.png"/><br/>
+<img src="./Minka_slides2_ink-41_899.png"/><br/>
+<img src="./Minka_slides2_ink-41_900.png"/><br/>
+<img src="./Minka_slides2_ink-41_901.png"/><br/>
+<img src="./Minka_slides2_ink-41_902.png"/><br/>
+<img src="./Minka_slides2_ink-41_903.png"/><br/>
+<img src="./Minka_slides2_ink-41_904.png"/><br/>
+<img src="./Minka_slides2_ink-41_905.png"/><br/>
+<img src="./Minka_slides2_ink-41_906.png"/><br/>
+<img src="./Minka_slides2_ink-41_907.png"/><br/>
+<img src="./Minka_slides2_ink-41_908.png"/><br/>
+<img src="./Minka_slides2_ink-41_909.png"/><br/>
+<img src="./Minka_slides2_ink-41_910.png"/><br/>
+<img src="./Minka_slides2_ink-41_911.png"/><br/>
+<img src="./Minka_slides2_ink-41_912.png"/><br/>
+<img src="./Minka_slides2_ink-41_913.png"/><br/>
+<img src="./Minka_slides2_ink-41_914.png"/><br/>
+<img src="./Minka_slides2_ink-41_915.png"/><br/>
+<img src="./Minka_slides2_ink-41_916.png"/><br/>
+<img src="./Minka_slides2_ink-41_917.png"/><br/>
+<img src="./Minka_slides2_ink-41_918.png"/><br/>
+<img src="./Minka_slides2_ink-41_919.png"/><br/>
+<img src="./Minka_slides2_ink-41_920.png"/><br/>
+<img src="./Minka_slides2_ink-41_921.png"/><br/>
+<img src="./Minka_slides2_ink-41_922.png"/><br/>
+<img src="./Minka_slides2_ink-41_923.png"/><br/>
+<img src="./Minka_slides2_ink-41_924.png"/><br/>
+<img src="./Minka_slides2_ink-41_925.png"/><br/>
+<img src="./Minka_slides2_ink-41_926.png"/><br/>
+<img src="./Minka_slides2_ink-41_927.png"/><br/>
+<img src="./Minka_slides2_ink-41_928.png"/><br/>
+<img src="./Minka_slides2_ink-41_929.png"/><br/>
+<img src="./Minka_slides2_ink-41_930.png"/><br/>
+<img src="./Minka_slides2_ink-41_931.png"/><br/>
+<img src="./Minka_slides2_ink-41_932.png"/><br/>
+<img src="./Minka_slides2_ink-41_933.png"/><br/>
+<img src="./Minka_slides2_ink-41_934.png"/><br/>
+<img src="./Minka_slides2_ink-41_935.png"/><br/>
+<img src="./Minka_slides2_ink-41_936.png"/><br/>
+<img src="./Minka_slides2_ink-41_937.png"/><br/>
+<img src="./Minka_slides2_ink-41_938.png"/><br/>
+<img src="./Minka_slides2_ink-41_939.png"/><br/>
+<img src="./Minka_slides2_ink-41_940.png"/><br/>
+<img src="./Minka_slides2_ink-41_941.png"/><br/>
+<img src="./Minka_slides2_ink-41_942.png"/><br/>
+<img src="./Minka_slides2_ink-41_943.png"/><br/>
+<img src="./Minka_slides2_ink-41_944.png"/><br/>
+<img src="./Minka_slides2_ink-41_945.png"/><br/>
+<img src="./Minka_slides2_ink-41_946.png"/><br/>
+<img src="./Minka_slides2_ink-41_947.png"/><br/>
+<img src="./Minka_slides2_ink-41_948.png"/><br/>
+<img src="./Minka_slides2_ink-41_949.png"/><br/>
+<img src="./Minka_slides2_ink-41_950.png"/><br/>
+<img src="./Minka_slides2_ink-41_951.png"/><br/>
+<img src="./Minka_slides2_ink-41_952.png"/><br/>
+<img src="./Minka_slides2_ink-41_953.png"/><br/>
+<img src="./Minka_slides2_ink-41_954.png"/><br/>
+<img src="./Minka_slides2_ink-41_955.png"/><br/>
+<img src="./Minka_slides2_ink-41_956.png"/><br/>
+<img src="./Minka_slides2_ink-41_957.png"/><br/>
+<img src="./Minka_slides2_ink-41_958.png"/><br/>
+<img src="./Minka_slides2_ink-41_959.png"/><br/>
+<img src="./Minka_slides2_ink-41_960.png"/><br/>
+<img src="./Minka_slides2_ink-41_961.png"/><br/>
+<img src="./Minka_slides2_ink-41_962.png"/><br/>
+<img src="./Minka_slides2_ink-41_963.png"/><br/>
+<img src="./Minka_slides2_ink-41_964.png"/><br/>
+<img src="./Minka_slides2_ink-41_965.png"/><br/>
+<img src="./Minka_slides2_ink-41_966.png"/><br/>
+<img src="./Minka_slides2_ink-41_967.png"/><br/>
+<img src="./Minka_slides2_ink-41_968.png"/><br/>
+<img src="./Minka_slides2_ink-41_969.png"/><br/>
+<img src="./Minka_slides2_ink-41_970.png"/><br/>
+<img src="./Minka_slides2_ink-41_971.png"/><br/>
+<img src="./Minka_slides2_ink-41_972.png"/><br/>
+<img src="./Minka_slides2_ink-41_973.png"/><br/>
+<img src="./Minka_slides2_ink-41_974.png"/><br/>
+<img src="./Minka_slides2_ink-41_975.png"/><br/>
+<img src="./Minka_slides2_ink-41_976.png"/><br/>
+<img src="./Minka_slides2_ink-41_977.png"/><br/>
+<img src="./Minka_slides2_ink-41_978.png"/><br/>
+<img src="./Minka_slides2_ink-41_979.png"/><br/>
+<img src="./Minka_slides2_ink-41_980.png"/><br/>
+<img src="./Minka_slides2_ink-41_981.png"/><br/>
+<img src="./Minka_slides2_ink-41_982.png"/><br/>
+<img src="./Minka_slides2_ink-41_983.png"/><br/>
+<img src="./Minka_slides2_ink-41_984.png"/><br/>
+<img src="./Minka_slides2_ink-41_985.png"/><br/>
+<img src="./Minka_slides2_ink-41_986.png"/><br/>
+<img src="./Minka_slides2_ink-41_987.png"/><br/>
+<img src="./Minka_slides2_ink-41_988.png"/><br/>
+<img src="./Minka_slides2_ink-41_989.png"/><br/>
+<img src="./Minka_slides2_ink-41_990.png"/><br/>
+<img src="./Minka_slides2_ink-41_991.png"/><br/>
+<img src="./Minka_slides2_ink-41_992.png"/><br/>
+<img src="./Minka_slides2_ink-41_993.png"/><br/>
+<img src="./Minka_slides2_ink-41_994.png"/><br/>
+<img src="./Minka_slides2_ink-41_995.png"/><br/>
+<img src="./Minka_slides2_ink-41_996.png"/><br/>
+<img src="./Minka_slides2_ink-41_997.png"/><br/>
+<img src="./Minka_slides2_ink-41_998.png"/><br/>
+<img src="./Minka_slides2_ink-41_999.png"/><br/>
+<img src="./Minka_slides2_ink-41_1000.png"/><br/>
+<img src="./Minka_slides2_ink-41_1001.png"/><br/>
+<img src="./Minka_slides2_ink-41_1002.png"/><br/>
+<img src="./Minka_slides2_ink-41_1003.png"/><br/>
+<img src="./Minka_slides2_ink-41_1004.png"/><br/>
+<img src="./Minka_slides2_ink-41_1005.png"/><br/>
+<img src="./Minka_slides2_ink-41_1006.png"/><br/>
+<img src="./Minka_slides2_ink-41_1007.png"/><br/>
+<img src="./Minka_slides2_ink-41_1008.png"/><br/>
+<img src="./Minka_slides2_ink-41_1009.png"/><br/>
+<img src="./Minka_slides2_ink-41_1010.png"/><br/>
+<img src="./Minka_slides2_ink-41_1011.png"/><br/>
+<img src="./Minka_slides2_ink-41_1012.png"/><br/>
+<img src="./Minka_slides2_ink-41_1013.png"/><br/>
+<img src="./Minka_slides2_ink-41_1014.png"/><br/>
+<img src="./Minka_slides2_ink-41_1015.png"/><br/>
+<img src="./Minka_slides2_ink-41_1016.png"/><br/>
+<img src="./Minka_slides2_ink-41_1017.png"/><br/>
+<img src="./Minka_slides2_ink-41_1018.png"/><br/>
+<img src="./Minka_slides2_ink-41_1019.png"/><br/>
+<img src="./Minka_slides2_ink-41_1020.png"/><br/>
+<img src="./Minka_slides2_ink-41_1021.png"/><br/>
+<img src="./Minka_slides2_ink-41_1022.png"/><br/>
+<img src="./Minka_slides2_ink-41_1023.png"/><br/>
+<img src="./Minka_slides2_ink-41_1024.png"/><br/>
+<img src="./Minka_slides2_ink-41_1025.png"/><br/>
+<img src="./Minka_slides2_ink-41_1026.png"/><br/>
+<img src="./Minka_slides2_ink-41_1027.png"/><br/>
+<img src="./Minka_slides2_ink-41_1028.png"/><br/>
+<img src="./Minka_slides2_ink-41_1029.png"/><br/>
+<img src="./Minka_slides2_ink-41_1030.png"/><br/>
+<img src="./Minka_slides2_ink-41_1031.png"/><br/>
+<img src="./Minka_slides2_ink-41_1032.png"/><br/>
+<img src="./Minka_slides2_ink-41_1033.png"/><br/>
+<img src="./Minka_slides2_ink-41_1034.png"/><br/>
+<img src="./Minka_slides2_ink-41_1035.png"/><br/>
+<img src="./Minka_slides2_ink-41_1036.png"/><br/>
+<img src="./Minka_slides2_ink-41_1037.png"/><br/>
+<img src="./Minka_slides2_ink-41_1038.png"/><br/>
+<img src="./Minka_slides2_ink-41_1039.png"/><br/>
+<img src="./Minka_slides2_ink-41_1040.png"/><br/>
+<img src="./Minka_slides2_ink-41_1041.png"/><br/>
+<img src="./Minka_slides2_ink-41_1042.png"/><br/>
+<img src="./Minka_slides2_ink-41_1043.png"/><br/>
+<img src="./Minka_slides2_ink-41_1044.png"/><br/>
+<img src="./Minka_slides2_ink-41_1045.png"/><br/>
+<img src="./Minka_slides2_ink-41_1046.png"/><br/>
+<img src="./Minka_slides2_ink-41_1047.png"/><br/>
+<img src="./Minka_slides2_ink-41_1048.png"/><br/>
+<img src="./Minka_slides2_ink-41_1049.png"/><br/>
+<img src="./Minka_slides2_ink-41_1050.png"/><br/>
+<img src="./Minka_slides2_ink-41_1051.png"/><br/>
+<img src="./Minka_slides2_ink-41_1052.png"/><br/>
+<img src="./Minka_slides2_ink-41_1053.png"/><br/>
+<img src="./Minka_slides2_ink-41_1054.png"/><br/>
+<img src="./Minka_slides2_ink-41_1055.png"/><br/>
+<img src="./Minka_slides2_ink-41_1056.png"/><br/>
+<img src="./Minka_slides2_ink-41_1057.png"/><br/>
+<img src="./Minka_slides2_ink-41_1058.png"/><br/>
+<img src="./Minka_slides2_ink-41_1059.png"/><br/>
+<img src="./Minka_slides2_ink-41_1060.png"/><br/>
+<img src="./Minka_slides2_ink-41_1061.png"/><br/>
+<img src="./Minka_slides2_ink-41_1062.png"/><br/>
+<img src="./Minka_slides2_ink-41_1063.png"/><br/>
+<img src="./Minka_slides2_ink-41_1064.png"/><br/>
+<img src="./Minka_slides2_ink-41_1065.png"/><br/>
+<img src="./Minka_slides2_ink-41_1066.png"/><br/>
+<img src="./Minka_slides2_ink-41_1067.png"/><br/>
+<img src="./Minka_slides2_ink-41_1068.png"/><br/>
+<img src="./Minka_slides2_ink-41_1069.png"/><br/>
+<img src="./Minka_slides2_ink-41_1070.png"/><br/>
+<img src="./Minka_slides2_ink-41_1071.png"/><br/>
+<img src="./Minka_slides2_ink-41_1072.png"/><br/>
+<img src="./Minka_slides2_ink-41_1073.png"/><br/>
+<img src="./Minka_slides2_ink-41_1074.png"/><br/>
+<img src="./Minka_slides2_ink-41_1075.png"/><br/>
+<img src="./Minka_slides2_ink-41_1076.png"/><br/>
+<img src="./Minka_slides2_ink-41_1077.png"/><br/>
+<img src="./Minka_slides2_ink-41_1078.png"/><br/>
+<img src="./Minka_slides2_ink-41_1079.png"/><br/>
+<img src="./Minka_slides2_ink-41_1080.png"/><br/>
+<img src="./Minka_slides2_ink-41_1081.png"/><br/>
+<img src="./Minka_slides2_ink-41_1082.png"/><br/>
+<img src="./Minka_slides2_ink-41_1083.png"/><br/>
+<img src="./Minka_slides2_ink-41_1084.png"/><br/>
+<img src="./Minka_slides2_ink-41_1085.png"/><br/>
+<img src="./Minka_slides2_ink-41_1086.png"/><br/>
+<img src="./Minka_slides2_ink-41_1087.png"/><br/>
+<img src="./Minka_slides2_ink-41_1088.png"/><br/>
+<img src="./Minka_slides2_ink-41_1089.png"/><br/>
+<img src="./Minka_slides2_ink-41_1090.png"/><br/>
+<img src="./Minka_slides2_ink-41_1091.png"/><br/>
+<img src="./Minka_slides2_ink-41_1092.png"/><br/>
+<img src="./Minka_slides2_ink-41_1093.png"/><br/>
+<img src="./Minka_slides2_ink-41_1094.png"/><br/>
+<img src="./Minka_slides2_ink-41_1095.png"/><br/>
+<img src="./Minka_slides2_ink-41_1096.png"/><br/>
+<img src="./Minka_slides2_ink-41_1097.png"/><br/>
+<img src="./Minka_slides2_ink-41_1098.png"/><br/>
+<img src="./Minka_slides2_ink-41_1099.png"/><br/>
+<img src="./Minka_slides2_ink-41_1100.png"/><br/>
+<img src="./Minka_slides2_ink-41_1101.png"/><br/>
+<img src="./Minka_slides2_ink-41_1102.png"/><br/>
+<img src="./Minka_slides2_ink-41_1103.png"/><br/>
+<img src="./Minka_slides2_ink-41_1104.png"/><br/>
+<img src="./Minka_slides2_ink-41_1105.png"/><br/>
+<img src="./Minka_slides2_ink-41_1106.png"/><br/>
+<img src="./Minka_slides2_ink-41_1107.png"/><br/>
+<img src="./Minka_slides2_ink-41_1108.png"/><br/>
+<img src="./Minka_slides2_ink-41_1109.png"/><br/>
+<img src="./Minka_slides2_ink-41_1110.png"/><br/>
+<img src="./Minka_slides2_ink-41_1111.png"/><br/>
+<img src="./Minka_slides2_ink-41_1112.png"/><br/>
+<img src="./Minka_slides2_ink-41_1113.png"/><br/>
+<img src="./Minka_slides2_ink-41_1114.png"/><br/>
+<img src="./Minka_slides2_ink-41_1115.png"/><br/>
+<img src="./Minka_slides2_ink-41_1116.png"/><br/>
+<img src="./Minka_slides2_ink-41_1117.png"/><br/>
+<img src="./Minka_slides2_ink-41_1118.png"/><br/>
+<img src="./Minka_slides2_ink-41_1119.png"/><br/>
+<img src="./Minka_slides2_ink-41_1120.png"/><br/>
+<img src="./Minka_slides2_ink-41_1121.png"/><br/>
+<img src="./Minka_slides2_ink-41_1122.png"/><br/>
+<img src="./Minka_slides2_ink-41_1123.png"/><br/>
+<img src="./Minka_slides2_ink-41_1124.png"/><br/>
+<img src="./Minka_slides2_ink-41_1125.png"/><br/>
+<img src="./Minka_slides2_ink-41_1126.png"/><br/>
+<img src="./Minka_slides2_ink-41_1127.png"/><br/>
+<img src="./Minka_slides2_ink-41_1128.png"/><br/>
+<img src="./Minka_slides2_ink-41_1129.png"/><br/>
+<img src="./Minka_slides2_ink-41_1130.png"/><br/>
+<img src="./Minka_slides2_ink-41_1131.png"/><br/>
+<img src="./Minka_slides2_ink-41_1132.png"/><br/>
+<img src="./Minka_slides2_ink-41_1133.png"/><br/>
+<img src="./Minka_slides2_ink-41_1134.png"/><br/>
+<img src="./Minka_slides2_ink-41_1135.png"/><br/>
+<img src="./Minka_slides2_ink-41_1136.png"/><br/>
+<img src="./Minka_slides2_ink-41_1137.png"/><br/>
+<img src="./Minka_slides2_ink-41_1138.png"/><br/>
+<img src="./Minka_slides2_ink-41_1139.png"/><br/>
+<img src="./Minka_slides2_ink-41_1140.png"/><br/>
+<img src="./Minka_slides2_ink-41_1141.png"/><br/>
+<img src="./Minka_slides2_ink-41_1142.png"/><br/>
+<img src="./Minka_slides2_ink-41_1143.png"/><br/>
+<img src="./Minka_slides2_ink-41_1144.png"/><br/>
+<img src="./Minka_slides2_ink-41_1145.png"/><br/>
+<img src="./Minka_slides2_ink-41_1146.png"/><br/>
+<img src="./Minka_slides2_ink-41_1147.png"/><br/>
+<img src="./Minka_slides2_ink-41_1148.png"/><br/>
+<img src="./Minka_slides2_ink-41_1149.png"/><br/>
+<img src="./Minka_slides2_ink-41_1150.png"/><br/>
+<img src="./Minka_slides2_ink-41_1151.png"/><br/>
+<img src="./Minka_slides2_ink-41_1152.png"/><br/>
+<img src="./Minka_slides2_ink-41_1153.png"/><br/>
+<img src="./Minka_slides2_ink-41_1154.png"/><br/>
+<img src="./Minka_slides2_ink-41_1155.png"/><br/>
+<img src="./Minka_slides2_ink-41_1156.png"/><br/>
+<img src="./Minka_slides2_ink-41_1157.png"/><br/>
+<img src="./Minka_slides2_ink-41_1158.png"/><br/>
+<img src="./Minka_slides2_ink-41_1159.png"/><br/>
+<img src="./Minka_slides2_ink-41_1160.png"/><br/>
+<img src="./Minka_slides2_ink-41_1161.png"/><br/>
+<img src="./Minka_slides2_ink-41_1162.png"/><br/>
+<img src="./Minka_slides2_ink-41_1163.png"/><br/>
+<img src="./Minka_slides2_ink-41_1164.png"/><br/>
+<img src="./Minka_slides2_ink-41_1165.png"/><br/>
+<img src="./Minka_slides2_ink-41_1166.png"/><br/>
+<img src="./Minka_slides2_ink-41_1167.png"/><br/>
+<img src="./Minka_slides2_ink-41_1168.png"/><br/>
+<img src="./Minka_slides2_ink-41_1169.png"/><br/>
+<img src="./Minka_slides2_ink-41_1170.png"/><br/>
+<img src="./Minka_slides2_ink-41_1171.png"/><br/>
+<img src="./Minka_slides2_ink-41_1172.png"/><br/>
+<img src="./Minka_slides2_ink-41_1173.png"/><br/>
+<img src="./Minka_slides2_ink-41_1174.png"/><br/>
+<img src="./Minka_slides2_ink-41_1175.png"/><br/>
+<img src="./Minka_slides2_ink-41_1176.png"/><br/>
+<img src="./Minka_slides2_ink-41_1177.png"/><br/>
+<img src="./Minka_slides2_ink-41_1178.png"/><br/>
+<img src="./Minka_slides2_ink-41_1179.png"/><br/>
+<img src="./Minka_slides2_ink-41_1180.png"/><br/>
+<img src="./Minka_slides2_ink-41_1181.png"/><br/>
+<img src="./Minka_slides2_ink-41_1182.png"/><br/>
+<img src="./Minka_slides2_ink-41_1183.png"/><br/>
+<img src="./Minka_slides2_ink-41_1184.png"/><br/>
+<img src="./Minka_slides2_ink-41_1185.png"/><br/>
+<img src="./Minka_slides2_ink-41_1186.png"/><br/>
+<img src="./Minka_slides2_ink-41_1187.png"/><br/>
+<img src="./Minka_slides2_ink-41_1188.png"/><br/>
+<img src="./Minka_slides2_ink-41_1189.png"/><br/>
+<img src="./Minka_slides2_ink-41_1190.png"/><br/>
+<img src="./Minka_slides2_ink-41_1191.png"/><br/>
+<img src="./Minka_slides2_ink-41_1192.png"/><br/>
+<img src="./Minka_slides2_ink-41_1193.png"/><br/>
+<img src="./Minka_slides2_ink-41_1194.png"/><br/>
+<img src="./Minka_slides2_ink-41_1195.png"/><br/>
+<img src="./Minka_slides2_ink-41_1196.png"/><br/>
+<img src="./Minka_slides2_ink-41_1197.png"/><br/>
+<img src="./Minka_slides2_ink-41_1198.png"/><br/>
+<img src="./Minka_slides2_ink-41_1199.png"/><br/>
+<img src="./Minka_slides2_ink-41_1200.png"/><br/>
+<img src="./Minka_slides2_ink-41_1201.png"/><br/>
+<img src="./Minka_slides2_ink-41_1202.png"/><br/>
+<img src="./Minka_slides2_ink-41_1203.png"/><br/>
+<img src="./Minka_slides2_ink-41_1204.png"/><br/>
+<img src="./Minka_slides2_ink-41_1205.png"/><br/>
+<img src="./Minka_slides2_ink-41_1206.png"/><br/>
+<img src="./Minka_slides2_ink-41_1207.png"/><br/>
+<img src="./Minka_slides2_ink-41_1208.png"/><br/>
+<img src="./Minka_slides2_ink-41_1209.png"/><br/>
+<img src="./Minka_slides2_ink-41_1210.png"/><br/>
+<img src="./Minka_slides2_ink-41_1211.png"/><br/>
+<img src="./Minka_slides2_ink-41_1212.png"/><br/>
+<img src="./Minka_slides2_ink-41_1213.png"/><br/>
+<img src="./Minka_slides2_ink-41_1214.png"/><br/>
+<img src="./Minka_slides2_ink-41_1215.png"/><br/>
+<img src="./Minka_slides2_ink-41_1216.png"/><br/>
+<img src="./Minka_slides2_ink-41_1217.png"/><br/>
+<img src="./Minka_slides2_ink-41_1218.png"/><br/>
+<img src="./Minka_slides2_ink-41_1219.png"/><br/>
+<img src="./Minka_slides2_ink-41_1220.png"/><br/>
+<img src="./Minka_slides2_ink-41_1221.png"/><br/>
+<img src="./Minka_slides2_ink-41_1222.png"/><br/>
+<img src="./Minka_slides2_ink-41_1223.png"/><br/>
+<img src="./Minka_slides2_ink-41_1224.png"/><br/>
+<img src="./Minka_slides2_ink-41_1225.png"/><br/>
+<img src="./Minka_slides2_ink-41_1226.png"/><br/>
+<img src="./Minka_slides2_ink-41_1227.png"/><br/>
+<img src="./Minka_slides2_ink-41_1228.png"/><br/>
+<img src="./Minka_slides2_ink-41_1229.png"/><br/>
+<img src="./Minka_slides2_ink-41_1230.png"/><br/>
+<img src="./Minka_slides2_ink-41_1231.png"/><br/>
+<img src="./Minka_slides2_ink-41_1232.png"/><br/>
+<img src="./Minka_slides2_ink-41_1233.png"/><br/>
+<img src="./Minka_slides2_ink-41_1234.png"/><br/>
+<img src="./Minka_slides2_ink-41_1235.png"/><br/>
+<img src="./Minka_slides2_ink-41_1236.png"/><br/>
+<img src="./Minka_slides2_ink-41_1237.png"/><br/>
+<img src="./Minka_slides2_ink-41_1238.png"/><br/>
+<img src="./Minka_slides2_ink-41_1239.png"/><br/>
+<img src="./Minka_slides2_ink-41_1240.png"/><br/>
+<img src="./Minka_slides2_ink-41_1241.png"/><br/>
+<img src="./Minka_slides2_ink-41_1242.png"/><br/>
+<img src="./Minka_slides2_ink-41_1243.png"/><br/>
+<img src="./Minka_slides2_ink-41_1244.png"/><br/>
+<img src="./Minka_slides2_ink-41_1245.png"/><br/>
+<img src="./Minka_slides2_ink-41_1246.png"/><br/>
+<img src="./Minka_slides2_ink-41_1247.png"/><br/>
+<img src="./Minka_slides2_ink-41_1248.png"/><br/>
+<img src="./Minka_slides2_ink-41_1249.png"/><br/>
+<img src="./Minka_slides2_ink-41_1250.png"/><br/>
+<img src="./Minka_slides2_ink-41_1251.png"/><br/>
+<img src="./Minka_slides2_ink-41_1252.png"/><br/>
+<img src="./Minka_slides2_ink-41_1253.png"/><br/>
+<img src="./Minka_slides2_ink-41_1254.png"/><br/>
+<img src="./Minka_slides2_ink-41_1255.png"/><br/>
+<img src="./Minka_slides2_ink-41_1256.png"/><br/>
+<img src="./Minka_slides2_ink-41_1257.png"/><br/>
+<img src="./Minka_slides2_ink-41_1258.png"/><br/>
+<img src="./Minka_slides2_ink-41_1259.png"/><br/>
+<img src="./Minka_slides2_ink-41_1260.png"/><br/>
+<img src="./Minka_slides2_ink-41_1261.png"/><br/>
+<img src="./Minka_slides2_ink-41_1262.png"/><br/>
+<img src="./Minka_slides2_ink-41_1263.png"/><br/>
+<img src="./Minka_slides2_ink-41_1264.png"/><br/>
+<img src="./Minka_slides2_ink-41_1265.png"/><br/>
+<img src="./Minka_slides2_ink-41_1266.png"/><br/>
+<img src="./Minka_slides2_ink-41_1267.png"/><br/>
+<img src="./Minka_slides2_ink-41_1268.png"/><br/>
+<img src="./Minka_slides2_ink-41_1269.png"/><br/>
+<img src="./Minka_slides2_ink-41_1270.png"/><br/>
+<img src="./Minka_slides2_ink-41_1271.png"/><br/>
+<img src="./Minka_slides2_ink-41_1272.png"/><br/>
+<img src="./Minka_slides2_ink-41_1273.png"/><br/>
+<img src="./Minka_slides2_ink-41_1274.png"/><br/>
+<img src="./Minka_slides2_ink-41_1275.png"/><br/>
+<img src="./Minka_slides2_ink-41_1276.png"/><br/>
+<img src="./Minka_slides2_ink-41_1277.png"/><br/>
+<img src="./Minka_slides2_ink-41_1278.png"/><br/>
+<img src="./Minka_slides2_ink-41_1279.png"/><br/>
+<img src="./Minka_slides2_ink-41_1280.png"/><br/>
+<img src="./Minka_slides2_ink-41_1281.png"/><br/>
+<img src="./Minka_slides2_ink-41_1282.png"/><br/>
+<img src="./Minka_slides2_ink-41_1283.png"/><br/>
+<img src="./Minka_slides2_ink-41_1284.png"/><br/>
+<img src="./Minka_slides2_ink-41_1285.png"/><br/>
+<img src="./Minka_slides2_ink-41_1286.png"/><br/>
+<img src="./Minka_slides2_ink-41_1287.png"/><br/>
+<img src="./Minka_slides2_ink-41_1288.png"/><br/>
+<img src="./Minka_slides2_ink-41_1289.png"/><br/>
+<img src="./Minka_slides2_ink-41_1290.png"/><br/>
+<img src="./Minka_slides2_ink-41_1291.png"/><br/>
+<img src="./Minka_slides2_ink-41_1292.png"/><br/>
+<img src="./Minka_slides2_ink-41_1293.png"/><br/>
+<img src="./Minka_slides2_ink-41_1294.png"/><br/>
+<img src="./Minka_slides2_ink-41_1295.png"/><br/>
+<img src="./Minka_slides2_ink-41_1296.png"/><br/>
+<img src="./Minka_slides2_ink-41_1297.png"/><br/>
+<img src="./Minka_slides2_ink-41_1298.png"/><br/>
+<img src="./Minka_slides2_ink-41_1299.png"/><br/>
+<img src="./Minka_slides2_ink-41_1300.png"/><br/>
+<img src="./Minka_slides2_ink-41_1301.png"/><br/>
+<img src="./Minka_slides2_ink-41_1302.png"/><br/>
+<img src="./Minka_slides2_ink-41_1303.png"/><br/>
+<img src="./Minka_slides2_ink-41_1304.png"/><br/>
+<img src="./Minka_slides2_ink-41_1305.png"/><br/>
+<img src="./Minka_slides2_ink-41_1306.png"/><br/>
+<img src="./Minka_slides2_ink-41_1307.png"/><br/>
+<img src="./Minka_slides2_ink-41_1308.png"/><br/>
+<img src="./Minka_slides2_ink-41_1309.png"/><br/>
+<img src="./Minka_slides2_ink-41_1310.png"/><br/>
+<img src="./Minka_slides2_ink-41_1311.png"/><br/>
+<img src="./Minka_slides2_ink-41_1312.png"/><br/>
+<img src="./Minka_slides2_ink-41_1313.png"/><br/>
+<img src="./Minka_slides2_ink-41_1314.png"/><br/>
+<img src="./Minka_slides2_ink-41_1315.png"/><br/>
+<img src="./Minka_slides2_ink-41_1316.png"/><br/>
+<img src="./Minka_slides2_ink-41_1317.png"/><br/>
+<img src="./Minka_slides2_ink-41_1318.png"/><br/>
+<img src="./Minka_slides2_ink-41_1319.png"/><br/>
+<img src="./Minka_slides2_ink-41_1320.png"/><br/>
+<img src="./Minka_slides2_ink-41_1321.png"/><br/>
+<img src="./Minka_slides2_ink-41_1322.png"/><br/>
+<img src="./Minka_slides2_ink-41_1323.png"/><br/>
+<img src="./Minka_slides2_ink-41_1324.png"/><br/>
+<img src="./Minka_slides2_ink-41_1325.png"/><br/>
+<img src="./Minka_slides2_ink-41_1326.png"/><br/>
+<img src="./Minka_slides2_ink-41_1327.png"/><br/>
+<img src="./Minka_slides2_ink-41_1328.png"/><br/>
+<img src="./Minka_slides2_ink-41_1329.png"/><br/>
+<img src="./Minka_slides2_ink-41_1330.png"/><br/>
+<img src="./Minka_slides2_ink-41_1331.png"/><br/>
+<img src="./Minka_slides2_ink-41_1332.png"/><br/>
+<img src="./Minka_slides2_ink-41_1333.png"/><br/>
+<img src="./Minka_slides2_ink-41_1334.png"/><br/>
+<img src="./Minka_slides2_ink-41_1335.png"/><br/>
+<img src="./Minka_slides2_ink-41_1336.png"/><br/>
+<img src="./Minka_slides2_ink-41_1337.png"/><br/>
+<img src="./Minka_slides2_ink-41_1338.png"/><br/>
+<img src="./Minka_slides2_ink-41_1339.png"/><br/>
+<img src="./Minka_slides2_ink-41_1340.png"/><br/>
+<img src="./Minka_slides2_ink-41_1341.png"/><br/>
+<img src="./Minka_slides2_ink-41_1342.png"/><br/>
+<img src="./Minka_slides2_ink-41_1343.png"/><br/>
+<img src="./Minka_slides2_ink-41_1344.png"/><br/>
+<img src="./Minka_slides2_ink-41_1345.png"/><br/>
+<img src="./Minka_slides2_ink-41_1346.png"/><br/>
+<img src="./Minka_slides2_ink-41_1347.png"/><br/>
+<img src="./Minka_slides2_ink-41_1348.png"/><br/>
+<img src="./Minka_slides2_ink-41_1349.png"/><br/>
+<img src="./Minka_slides2_ink-41_1350.png"/><br/>
+<img src="./Minka_slides2_ink-41_1351.png"/><br/>
+<img src="./Minka_slides2_ink-41_1352.png"/><br/>
+<img src="./Minka_slides2_ink-41_1353.png"/><br/>
+<img src="./Minka_slides2_ink-41_1354.png"/><br/>
+<img src="./Minka_slides2_ink-41_1355.png"/><br/>
+<img src="./Minka_slides2_ink-41_1356.png"/><br/>
+<img src="./Minka_slides2_ink-41_1357.png"/><br/>
+<img src="./Minka_slides2_ink-41_1358.png"/><br/>
+<img src="./Minka_slides2_ink-41_1359.png"/><br/>
+<img src="./Minka_slides2_ink-41_1360.png"/><br/>
+<img src="./Minka_slides2_ink-41_1361.png"/><br/>
+<img src="./Minka_slides2_ink-41_1362.png"/><br/>
+<img src="./Minka_slides2_ink-41_1363.png"/><br/>
+<img src="./Minka_slides2_ink-41_1364.png"/><br/>
+<img src="./Minka_slides2_ink-41_1365.png"/><br/>
+<img src="./Minka_slides2_ink-41_1366.png"/><br/>
+<img src="./Minka_slides2_ink-41_1367.png"/><br/>
+<img src="./Minka_slides2_ink-41_1368.png"/><br/>
+<img src="./Minka_slides2_ink-41_1369.png"/><br/>
+<img src="./Minka_slides2_ink-41_1370.png"/><br/>
+<img src="./Minka_slides2_ink-41_1371.png"/><br/>
+<img src="./Minka_slides2_ink-41_1372.png"/><br/>
+<img src="./Minka_slides2_ink-41_1373.png"/><br/>
+<img src="./Minka_slides2_ink-41_1374.png"/><br/>
+<img src="./Minka_slides2_ink-41_1375.png"/><br/>
+<img src="./Minka_slides2_ink-41_1376.png"/><br/>
+<img src="./Minka_slides2_ink-41_1377.png"/><br/>
+<img src="./Minka_slides2_ink-41_1378.png"/><br/>
+<img src="./Minka_slides2_ink-41_1379.png"/><br/>
+<img src="./Minka_slides2_ink-41_1380.png"/><br/>
+<img src="./Minka_slides2_ink-41_1381.png"/><br/>
+<img src="./Minka_slides2_ink-41_1382.png"/><br/>
+<img src="./Minka_slides2_ink-41_1383.png"/><br/>
+<img src="./Minka_slides2_ink-41_1384.png"/><br/>
+<img src="./Minka_slides2_ink-41_1385.png"/><br/>
+<img src="./Minka_slides2_ink-41_1386.png"/><br/>
+<img src="./Minka_slides2_ink-41_1387.png"/><br/>
+<img src="./Minka_slides2_ink-41_1388.png"/><br/>
+<img src="./Minka_slides2_ink-41_1389.png"/><br/>
+<img src="./Minka_slides2_ink-41_1390.png"/><br/>
+<img src="./Minka_slides2_ink-41_1391.png"/><br/>
+<img src="./Minka_slides2_ink-41_1392.png"/><br/>
+<img src="./Minka_slides2_ink-41_1393.png"/><br/>
+<img src="./Minka_slides2_ink-41_1394.png"/><br/>
+<img src="./Minka_slides2_ink-41_1395.png"/><br/>
+<img src="./Minka_slides2_ink-41_1396.png"/><br/>
+<img src="./Minka_slides2_ink-41_1397.png"/><br/>
+<img src="./Minka_slides2_ink-41_1398.png"/><br/>
+<img src="./Minka_slides2_ink-41_1399.png"/><br/>
+<img src="./Minka_slides2_ink-41_1400.png"/><br/>
+<img src="./Minka_slides2_ink-41_1401.png"/><br/>
+<img src="./Minka_slides2_ink-41_1402.png"/><br/>
+<img src="./Minka_slides2_ink-41_1403.png"/><br/>
+<img src="./Minka_slides2_ink-41_1404.png"/><br/>
+<img src="./Minka_slides2_ink-41_1405.png"/><br/>
+<img src="./Minka_slides2_ink-41_1406.png"/><br/>
+<img src="./Minka_slides2_ink-41_1407.png"/><br/>
+<img src="./Minka_slides2_ink-41_1408.png"/><br/>
+<img src="./Minka_slides2_ink-41_1409.png"/><br/>
+<img src="./Minka_slides2_ink-41_1410.png"/><br/>
+<img src="./Minka_slides2_ink-41_1411.png"/><br/>
+<img src="./Minka_slides2_ink-41_1412.png"/><br/>
+<img src="./Minka_slides2_ink-41_1413.png"/><br/>
+<img src="./Minka_slides2_ink-41_1414.png"/><br/>
+<img src="./Minka_slides2_ink-41_1415.png"/><br/>
+<img src="./Minka_slides2_ink-41_1416.png"/><br/>
+<img src="./Minka_slides2_ink-41_1417.png"/><br/>
+<img src="./Minka_slides2_ink-41_1418.png"/><br/>
+<img src="./Minka_slides2_ink-41_1419.png"/><br/>
+<img src="./Minka_slides2_ink-41_1420.png"/><br/>
+<img src="./Minka_slides2_ink-41_1421.png"/><br/>
+<img src="./Minka_slides2_ink-41_1422.png"/><br/>
+<img src="./Minka_slides2_ink-41_1423.png"/><br/>
+<img src="./Minka_slides2_ink-41_1424.png"/><br/>
+<img src="./Minka_slides2_ink-41_1425.png"/><br/>
+<img src="./Minka_slides2_ink-41_1426.png"/><br/>
+<img src="./Minka_slides2_ink-41_1427.png"/><br/>
+<img src="./Minka_slides2_ink-41_1428.png"/><br/>
+<img src="./Minka_slides2_ink-41_1429.png"/><br/>
+<img src="./Minka_slides2_ink-41_1430.png"/><br/>
+<img src="./Minka_slides2_ink-41_1431.png"/><br/>
+<img src="./Minka_slides2_ink-41_1432.png"/><br/>
+<img src="./Minka_slides2_ink-41_1433.png"/><br/>
+<img src="./Minka_slides2_ink-41_1434.png"/><br/>
+<img src="./Minka_slides2_ink-41_1435.png"/><br/>
+<img src="./Minka_slides2_ink-41_1436.png"/><br/>
+<img src="./Minka_slides2_ink-41_1437.png"/><br/>
+<img src="./Minka_slides2_ink-41_1438.png"/><br/>
+<img src="./Minka_slides2_ink-41_1439.png"/><br/>
+<img src="./Minka_slides2_ink-41_1440.png"/><br/>
+<img src="./Minka_slides2_ink-41_1441.png"/><br/>
+<img src="./Minka_slides2_ink-41_1442.png"/><br/>
+<img src="./Minka_slides2_ink-41_1443.png"/><br/>
+<img src="./Minka_slides2_ink-41_1444.png"/><br/>
+<img src="./Minka_slides2_ink-41_1445.png"/><br/>
+<img src="./Minka_slides2_ink-41_1446.png"/><br/>
+<img src="./Minka_slides2_ink-41_1447.png"/><br/>
+<img src="./Minka_slides2_ink-41_1448.png"/><br/>
+<img src="./Minka_slides2_ink-41_1449.png"/><br/>
+<img src="./Minka_slides2_ink-41_1450.png"/><br/>
+<img src="./Minka_slides2_ink-41_1451.png"/><br/>
+<img src="./Minka_slides2_ink-41_1452.png"/><br/>
+<img src="./Minka_slides2_ink-41_1453.png"/><br/>
+<img src="./Minka_slides2_ink-41_1454.png"/><br/>
+<img src="./Minka_slides2_ink-41_1455.png"/><br/>
+<img src="./Minka_slides2_ink-41_1456.png"/><br/>
+<img src="./Minka_slides2_ink-41_1457.png"/><br/>
+<img src="./Minka_slides2_ink-41_1458.png"/><br/>
+<img src="./Minka_slides2_ink-41_1459.png"/><br/>
+<img src="./Minka_slides2_ink-41_1460.png"/><br/>
+<img src="./Minka_slides2_ink-41_1461.png"/><br/>
+<img src="./Minka_slides2_ink-41_1462.png"/><br/>
+<img src="./Minka_slides2_ink-41_1463.png"/><br/>
+<img src="./Minka_slides2_ink-41_1464.png"/><br/>
+<img src="./Minka_slides2_ink-41_1465.png"/><br/>
+<img src="./Minka_slides2_ink-41_1466.png"/><br/>
+<img src="./Minka_slides2_ink-41_1467.png"/><br/>
+<img src="./Minka_slides2_ink-41_1468.png"/><br/>
+<img src="./Minka_slides2_ink-41_1469.png"/><br/>
+<img src="./Minka_slides2_ink-41_1470.png"/><br/>
+<img src="./Minka_slides2_ink-41_1471.png"/><br/>
+<img src="./Minka_slides2_ink-41_1472.png"/><br/>
+<img src="./Minka_slides2_ink-41_1473.png"/><br/>
+<img src="./Minka_slides2_ink-41_1474.png"/><br/>
+<img src="./Minka_slides2_ink-41_1475.png"/><br/>
+<img src="./Minka_slides2_ink-41_1476.png"/><br/>
+<img src="./Minka_slides2_ink-41_1477.png"/><br/>
+<img src="./Minka_slides2_ink-41_1478.png"/><br/>
+<img src="./Minka_slides2_ink-41_1479.png"/><br/>
+<img src="./Minka_slides2_ink-41_1480.png"/><br/>
+<img src="./Minka_slides2_ink-41_1481.png"/><br/>
+<img src="./Minka_slides2_ink-41_1482.png"/><br/>
+<img src="./Minka_slides2_ink-41_1483.png"/><br/>
+<img src="./Minka_slides2_ink-41_1484.png"/><br/>
+<img src="./Minka_slides2_ink-41_1485.png"/><br/>
+<img src="./Minka_slides2_ink-41_1486.png"/><br/>
+<img src="./Minka_slides2_ink-41_1487.png"/><br/>
+<img src="./Minka_slides2_ink-41_1488.png"/><br/>
+<img src="./Minka_slides2_ink-41_1489.png"/><br/>
+<img src="./Minka_slides2_ink-41_1490.png"/><br/>
+<img src="./Minka_slides2_ink-41_1491.png"/><br/>
+<img src="./Minka_slides2_ink-41_1492.png"/><br/>
+<img src="./Minka_slides2_ink-41_1493.png"/><br/>
+<img src="./Minka_slides2_ink-41_1494.png"/><br/>
+<img src="./Minka_slides2_ink-41_1495.png"/><br/>
+<img src="./Minka_slides2_ink-41_1496.png"/><br/>
+<img src="./Minka_slides2_ink-41_1497.png"/><br/>
+<img src="./Minka_slides2_ink-41_1498.png"/><br/>
+<img src="./Minka_slides2_ink-41_1499.png"/><br/>
+<img src="./Minka_slides2_ink-41_1500.png"/><br/>
+<img src="./Minka_slides2_ink-41_1501.png"/><br/>
+<img src="./Minka_slides2_ink-41_1502.png"/><br/>
+<img src="./Minka_slides2_ink-41_1503.png"/><br/>
+<img src="./Minka_slides2_ink-41_1504.png"/><br/>
+<img src="./Minka_slides2_ink-41_1505.png"/><br/>
+<img src="./Minka_slides2_ink-41_1506.png"/><br/>
+<img src="./Minka_slides2_ink-41_1507.png"/><br/>
+<img src="./Minka_slides2_ink-41_1508.png"/><br/>
+<img src="./Minka_slides2_ink-41_1509.png"/><br/>
+<img src="./Minka_slides2_ink-41_1510.png"/><br/>
+<img src="./Minka_slides2_ink-41_1511.png"/><br/>
+<img src="./Minka_slides2_ink-41_1512.png"/><br/>
+<img src="./Minka_slides2_ink-41_1513.png"/><br/>
+<img src="./Minka_slides2_ink-41_1514.png"/><br/>
+<img src="./Minka_slides2_ink-41_1515.png"/><br/>
+<img src="./Minka_slides2_ink-41_1516.png"/><br/>
+<img src="./Minka_slides2_ink-41_1517.png"/><br/>
+<img src="./Minka_slides2_ink-41_1518.png"/><br/>
+<img src="./Minka_slides2_ink-41_1519.png"/><br/>
+<img src="./Minka_slides2_ink-41_1520.png"/><br/>
+<img src="./Minka_slides2_ink-41_1521.png"/><br/>
+<img src="./Minka_slides2_ink-41_1522.png"/><br/>
+<img src="./Minka_slides2_ink-41_1523.png"/><br/>
+<img src="./Minka_slides2_ink-41_1524.png"/><br/>
+<img src="./Minka_slides2_ink-41_1525.png"/><br/>
+<img src="./Minka_slides2_ink-41_1526.png"/><br/>
+<img src="./Minka_slides2_ink-41_1527.png"/><br/>
+<img src="./Minka_slides2_ink-41_1528.png"/><br/>
+<img src="./Minka_slides2_ink-41_1529.png"/><br/>
+<img src="./Minka_slides2_ink-41_1530.png"/><br/>
+<img src="./Minka_slides2_ink-41_1531.png"/><br/>
+<img src="./Minka_slides2_ink-41_1532.png"/><br/>
+<img src="./Minka_slides2_ink-41_1533.png"/><br/>
+<img src="./Minka_slides2_ink-41_1534.png"/><br/>
+<img src="./Minka_slides2_ink-41_1535.png"/><br/>
+<img src="./Minka_slides2_ink-41_1536.png"/><br/>
+<img src="./Minka_slides2_ink-41_1537.png"/><br/>
+<img src="./Minka_slides2_ink-41_1538.png"/><br/>
+<img src="./Minka_slides2_ink-41_1539.png"/><br/>
+<img src="./Minka_slides2_ink-41_1540.png"/><br/>
+<img src="./Minka_slides2_ink-41_1541.png"/><br/>
+<img src="./Minka_slides2_ink-41_1542.png"/><br/>
+<img src="./Minka_slides2_ink-41_1543.png"/><br/>
+<img src="./Minka_slides2_ink-41_1544.png"/><br/>
+<img src="./Minka_slides2_ink-41_1545.png"/><br/>
+<img src="./Minka_slides2_ink-41_1546.png"/><br/>
+<img src="./Minka_slides2_ink-41_1547.png"/><br/>
+<img src="./Minka_slides2_ink-41_1548.png"/><br/>
+<img src="./Minka_slides2_ink-41_1549.png"/><br/>
+<img src="./Minka_slides2_ink-41_1550.png"/><br/>
+<img src="./Minka_slides2_ink-41_1551.png"/><br/>
+<img src="./Minka_slides2_ink-41_1552.png"/><br/>
+<img src="./Minka_slides2_ink-41_1553.png"/><br/>
+<img src="./Minka_slides2_ink-41_1554.png"/><br/>
+<img src="./Minka_slides2_ink-41_1555.png"/><br/>
+<img src="./Minka_slides2_ink-41_1556.png"/><br/>
+<img src="./Minka_slides2_ink-41_1557.png"/><br/>
+<img src="./Minka_slides2_ink-41_1558.png"/><br/>
+<img src="./Minka_slides2_ink-41_1559.png"/><br/>
+<img src="./Minka_slides2_ink-41_1560.png"/><br/>
+<img src="./Minka_slides2_ink-41_1561.png"/><br/>
+<img src="./Minka_slides2_ink-41_1562.png"/><br/>
+<img src="./Minka_slides2_ink-41_1563.png"/><br/>
+<img src="./Minka_slides2_ink-41_1564.png"/><br/>
+<img src="./Minka_slides2_ink-41_1565.png"/><br/>
+<img src="./Minka_slides2_ink-41_1566.png"/><br/>
+<img src="./Minka_slides2_ink-41_1567.png"/><br/>
+<img src="./Minka_slides2_ink-41_1568.png"/><br/>
+<img src="./Minka_slides2_ink-41_1569.png"/><br/>
+<img src="./Minka_slides2_ink-41_1570.png"/><br/>
+<img src="./Minka_slides2_ink-41_1571.png"/><br/>
+<img src="./Minka_slides2_ink-41_1572.png"/><br/>
+<img src="./Minka_slides2_ink-41_1573.png"/><br/>
+<img src="./Minka_slides2_ink-41_1574.png"/><br/>
+<img src="./Minka_slides2_ink-41_1575.png"/><br/>
+<img src="./Minka_slides2_ink-41_1576.png"/><br/>
+<img src="./Minka_slides2_ink-41_1577.png"/><br/>
+<img src="./Minka_slides2_ink-41_1578.png"/><br/>
+<img src="./Minka_slides2_ink-41_1579.png"/><br/>
+<img src="./Minka_slides2_ink-41_1580.png"/><br/>
+<img src="./Minka_slides2_ink-41_1581.png"/><br/>
+<img src="./Minka_slides2_ink-41_1582.png"/><br/>
+<img src="./Minka_slides2_ink-41_1583.png"/><br/>
+<img src="./Minka_slides2_ink-41_1584.png"/><br/>
+<img src="./Minka_slides2_ink-41_1585.png"/><br/>
+<img src="./Minka_slides2_ink-41_1586.png"/><br/>
+<img src="./Minka_slides2_ink-41_1587.png"/><br/>
+<img src="./Minka_slides2_ink-41_1588.png"/><br/>
+<img src="./Minka_slides2_ink-41_1589.png"/><br/>
+<img src="./Minka_slides2_ink-41_1590.png"/><br/>
+<img src="./Minka_slides2_ink-41_1591.png"/><br/>
+<img src="./Minka_slides2_ink-41_1592.png"/><br/>
+<img src="./Minka_slides2_ink-41_1593.png"/><br/>
+<img src="./Minka_slides2_ink-41_1594.png"/><br/>
+<img src="./Minka_slides2_ink-41_1595.png"/><br/>
+<img src="./Minka_slides2_ink-41_1596.png"/><br/>
+<img src="./Minka_slides2_ink-41_1597.png"/><br/>
+<img src="./Minka_slides2_ink-41_1598.png"/><br/>
+<img src="./Minka_slides2_ink-41_1599.png"/><br/>
+<img src="./Minka_slides2_ink-41_1600.png"/><br/>
+<img src="./Minka_slides2_ink-41_1601.png"/><br/>
+<img src="./Minka_slides2_ink-41_1602.png"/><br/>
+<img src="./Minka_slides2_ink-41_1603.png"/><br/>
+<img src="./Minka_slides2_ink-41_1604.png"/><br/>
+<img src="./Minka_slides2_ink-41_1605.png"/><br/>
+<img src="./Minka_slides2_ink-41_1606.png"/><br/>
+<img src="./Minka_slides2_ink-41_1607.png"/><br/>
+<img src="./Minka_slides2_ink-41_1608.png"/><br/>
+<img src="./Minka_slides2_ink-41_1609.png"/><br/>
+<img src="./Minka_slides2_ink-41_1610.png"/><br/>
+<img src="./Minka_slides2_ink-41_1611.png"/><br/>
+<img src="./Minka_slides2_ink-41_1612.png"/><br/>
+<img src="./Minka_slides2_ink-41_1613.png"/><br/>
+<img src="./Minka_slides2_ink-41_1614.png"/><br/>
+<img src="./Minka_slides2_ink-41_1615.png"/><br/>
+<img src="./Minka_slides2_ink-41_1616.png"/><br/>
+<img src="./Minka_slides2_ink-41_1617.png"/><br/>
+<img src="./Minka_slides2_ink-41_1618.png"/><br/>
+<img src="./Minka_slides2_ink-41_1619.png"/><br/>
+<img src="./Minka_slides2_ink-41_1620.png"/><br/>
+<img src="./Minka_slides2_ink-41_1621.png"/><br/>
+<img src="./Minka_slides2_ink-41_1622.png"/><br/>
+<img src="./Minka_slides2_ink-41_1623.png"/><br/>
+<img src="./Minka_slides2_ink-41_1624.png"/><br/>
+<img src="./Minka_slides2_ink-41_1625.png"/><br/>
+<img src="./Minka_slides2_ink-41_1626.png"/><br/>
+<img src="./Minka_slides2_ink-41_1627.png"/><br/>
+<img src="./Minka_slides2_ink-41_1628.png"/><br/>
+<img src="./Minka_slides2_ink-41_1629.png"/><br/>
+<img src="./Minka_slides2_ink-41_1630.png"/><br/>
+<img src="./Minka_slides2_ink-41_1631.png"/><br/>
+<img src="./Minka_slides2_ink-41_1632.png"/><br/>
+<img src="./Minka_slides2_ink-41_1633.png"/><br/>
+<img src="./Minka_slides2_ink-41_1634.png"/><br/>
+<img src="./Minka_slides2_ink-41_1635.png"/><br/>
+<img src="./Minka_slides2_ink-41_1636.png"/><br/>
+<img src="./Minka_slides2_ink-41_1637.png"/><br/>
+<img src="./Minka_slides2_ink-41_1638.png"/><br/>
+<img src="./Minka_slides2_ink-41_1639.png"/><br/>
+<img src="./Minka_slides2_ink-41_1640.png"/><br/>
+<img src="./Minka_slides2_ink-41_1641.png"/><br/>
+<img src="./Minka_slides2_ink-41_1642.png"/><br/>
+<img src="./Minka_slides2_ink-41_1643.png"/><br/>
+<img src="./Minka_slides2_ink-41_1644.png"/><br/>
+<img src="./Minka_slides2_ink-41_1645.png"/><br/>
+<img src="./Minka_slides2_ink-41_1646.png"/><br/>
+<img src="./Minka_slides2_ink-41_1647.png"/><br/>
+<img src="./Minka_slides2_ink-41_1648.png"/><br/>
+<img src="./Minka_slides2_ink-41_1649.png"/><br/>
+<img src="./Minka_slides2_ink-41_1650.png"/><br/>
+<img src="./Minka_slides2_ink-41_1651.png"/><br/>
+<img src="./Minka_slides2_ink-41_1652.png"/><br/>
+<img src="./Minka_slides2_ink-41_1653.png"/><br/>
+<img src="./Minka_slides2_ink-41_1654.png"/><br/>
+<img src="./Minka_slides2_ink-41_1655.png"/><br/>
+<img src="./Minka_slides2_ink-41_1656.png"/><br/>
+<img src="./Minka_slides2_ink-41_1657.png"/><br/>
+<img src="./Minka_slides2_ink-41_1658.png"/><br/>
+<img src="./Minka_slides2_ink-41_1659.png"/><br/>
+<img src="./Minka_slides2_ink-41_1660.png"/><br/>
+<img src="./Minka_slides2_ink-41_1661.png"/><br/>
+<img src="./Minka_slides2_ink-41_1662.png"/><br/>
+<img src="./Minka_slides2_ink-41_1663.png"/><br/>
+<img src="./Minka_slides2_ink-41_1664.png"/><br/>
+<img src="./Minka_slides2_ink-41_1665.png"/><br/>
+<img src="./Minka_slides2_ink-41_1666.png"/><br/>
+<img src="./Minka_slides2_ink-41_1667.png"/><br/>
+<img src="./Minka_slides2_ink-41_1668.png"/><br/>
+<img src="./Minka_slides2_ink-41_1669.png"/><br/>
+<img src="./Minka_slides2_ink-41_1670.png"/><br/>
+<img src="./Minka_slides2_ink-41_1671.png"/><br/>
+<img src="./Minka_slides2_ink-41_1672.png"/><br/>
+<img src="./Minka_slides2_ink-41_1673.png"/><br/>
+<img src="./Minka_slides2_ink-41_1674.png"/><br/>
+<img src="./Minka_slides2_ink-41_1675.png"/><br/>
+<img src="./Minka_slides2_ink-41_1676.png"/><br/>
+<img src="./Minka_slides2_ink-41_1677.png"/><br/>
+<img src="./Minka_slides2_ink-41_1678.png"/><br/>
+<img src="./Minka_slides2_ink-41_1679.png"/><br/>
+<img src="./Minka_slides2_ink-41_1680.png"/><br/>
+<img src="./Minka_slides2_ink-41_1681.png"/><br/>
+<img src="./Minka_slides2_ink-41_1682.png"/><br/>
+<img src="./Minka_slides2_ink-41_1683.png"/><br/>
+<img src="./Minka_slides2_ink-41_1684.png"/><br/>
+<img src="./Minka_slides2_ink-41_1685.png"/><br/>
+<img src="./Minka_slides2_ink-41_1686.png"/><br/>
+<img src="./Minka_slides2_ink-41_1687.png"/><br/>
+<img src="./Minka_slides2_ink-41_1688.png"/><br/>
+<img src="./Minka_slides2_ink-41_1689.png"/><br/>
+<img src="./Minka_slides2_ink-41_1690.png"/><br/>
+<img src="./Minka_slides2_ink-41_1691.png"/><br/>
+<img src="./Minka_slides2_ink-41_1692.png"/><br/>
+<img src="./Minka_slides2_ink-41_1693.png"/><br/>
+<img src="./Minka_slides2_ink-41_1694.png"/><br/>
+<img src="./Minka_slides2_ink-41_1695.png"/><br/>
+<img src="./Minka_slides2_ink-41_1696.png"/><br/>
+<img src="./Minka_slides2_ink-41_1697.png"/><br/>
+<img src="./Minka_slides2_ink-41_1698.png"/><br/>
+<img src="./Minka_slides2_ink-41_1699.png"/><br/>
+<img src="./Minka_slides2_ink-41_1700.png"/><br/>
+<img src="./Minka_slides2_ink-41_1701.png"/><br/>
+<img src="./Minka_slides2_ink-41_1702.png"/><br/>
+<img src="./Minka_slides2_ink-41_1703.png"/><br/>
+<img src="./Minka_slides2_ink-41_1704.png"/><br/>
+<img src="./Minka_slides2_ink-41_1705.png"/><br/>
+<img src="./Minka_slides2_ink-41_1706.png"/><br/>
+<img src="./Minka_slides2_ink-41_1707.png"/><br/>
+<img src="./Minka_slides2_ink-41_1708.png"/><br/>
+<img src="./Minka_slides2_ink-41_1709.png"/><br/>
+<img src="./Minka_slides2_ink-41_1710.png"/><br/>
+<img src="./Minka_slides2_ink-41_1711.png"/><br/>
+<img src="./Minka_slides2_ink-41_1712.png"/><br/>
+<img src="./Minka_slides2_ink-41_1713.png"/><br/>
+<img src="./Minka_slides2_ink-41_1714.png"/><br/>
+<img src="./Minka_slides2_ink-41_1715.png"/><br/>
+<img src="./Minka_slides2_ink-41_1716.png"/><br/>
+<img src="./Minka_slides2_ink-41_1717.png"/><br/>
+<img src="./Minka_slides2_ink-41_1718.png"/><br/>
+<img src="./Minka_slides2_ink-41_1719.png"/><br/>
+<img src="./Minka_slides2_ink-41_1720.png"/><br/>
+<img src="./Minka_slides2_ink-41_1721.png"/><br/>
+<img src="./Minka_slides2_ink-41_1722.png"/><br/>
+<img src="./Minka_slides2_ink-41_1723.png"/><br/>
+<img src="./Minka_slides2_ink-41_1724.png"/><br/>
+<img src="./Minka_slides2_ink-41_1725.png"/><br/>
+<img src="./Minka_slides2_ink-41_1726.png"/><br/>
+<img src="./Minka_slides2_ink-41_1727.png"/><br/>
+<img src="./Minka_slides2_ink-41_1728.png"/><br/>
+<img src="./Minka_slides2_ink-41_1729.png"/><br/>
+<img src="./Minka_slides2_ink-41_1730.png"/><br/>
+<img src="./Minka_slides2_ink-41_1731.png"/><br/>
+<img src="./Minka_slides2_ink-41_1732.png"/><br/>
+<img src="./Minka_slides2_ink-41_1733.png"/><br/>
+<img src="./Minka_slides2_ink-41_1734.png"/><br/>
+<img src="./Minka_slides2_ink-41_1735.png"/><br/>
+<img src="./Minka_slides2_ink-41_1736.png"/><br/>
+<img src="./Minka_slides2_ink-41_1737.png"/><br/>
+<img src="./Minka_slides2_ink-41_1738.png"/><br/>
+<img src="./Minka_slides2_ink-41_1739.png"/><br/>
+<img src="./Minka_slides2_ink-41_1740.png"/><br/>
+<img src="./Minka_slides2_ink-41_1741.png"/><br/>
+<img src="./Minka_slides2_ink-41_1742.png"/><br/>
+<img src="./Minka_slides2_ink-41_1743.png"/><br/>
+<img src="./Minka_slides2_ink-41_1744.png"/><br/>
+<img src="./Minka_slides2_ink-41_1745.png"/><br/>
+<img src="./Minka_slides2_ink-41_1746.png"/><br/>
+<img src="./Minka_slides2_ink-41_1747.png"/><br/>
+<img src="./Minka_slides2_ink-41_1748.png"/><br/>
+<img src="./Minka_slides2_ink-41_1749.png"/><br/>
+<img src="./Minka_slides2_ink-41_1750.png"/><br/>
+<img src="./Minka_slides2_ink-41_1751.png"/><br/>
+<img src="./Minka_slides2_ink-41_1752.png"/><br/>
+<img src="./Minka_slides2_ink-41_1753.png"/><br/>
+<img src="./Minka_slides2_ink-41_1754.png"/><br/>
+<img src="./Minka_slides2_ink-41_1755.png"/><br/>
+<img src="./Minka_slides2_ink-41_1756.png"/><br/>
+<img src="./Minka_slides2_ink-41_1757.png"/><br/>
+<img src="./Minka_slides2_ink-41_1758.png"/><br/>
+<img src="./Minka_slides2_ink-41_1759.png"/><br/>
+<img src="./Minka_slides2_ink-41_1760.png"/><br/>
+<img src="./Minka_slides2_ink-41_1761.png"/><br/>
+<img src="./Minka_slides2_ink-41_1762.png"/><br/>
+<img src="./Minka_slides2_ink-41_1763.png"/><br/>
+<img src="./Minka_slides2_ink-41_1764.png"/><br/>
+<img src="./Minka_slides2_ink-41_1765.png"/><br/>
+<img src="./Minka_slides2_ink-41_1766.png"/><br/>
+<img src="./Minka_slides2_ink-41_1767.png"/><br/>
+<img src="./Minka_slides2_ink-41_1768.png"/><br/>
+<img src="./Minka_slides2_ink-41_1769.png"/><br/>
+<img src="./Minka_slides2_ink-41_1770.png"/><br/>
+<img src="./Minka_slides2_ink-41_1771.png"/><br/>
+<img src="./Minka_slides2_ink-41_1772.png"/><br/>
+<img src="./Minka_slides2_ink-41_1773.png"/><br/>
+<img src="./Minka_slides2_ink-41_1774.png"/><br/>
+<img src="./Minka_slides2_ink-41_1775.png"/><br/>
+<img src="./Minka_slides2_ink-41_1776.png"/><br/>
+<img src="./Minka_slides2_ink-41_1777.png"/><br/>
+<img src="./Minka_slides2_ink-41_1778.png"/><br/>
+<img src="./Minka_slides2_ink-41_1779.png"/><br/>
+<img src="./Minka_slides2_ink-41_1780.png"/><br/>
+<img src="./Minka_slides2_ink-41_1781.png"/><br/>
+<img src="./Minka_slides2_ink-41_1782.png"/><br/>
+<img src="./Minka_slides2_ink-41_1783.png"/><br/>
+<img src="./Minka_slides2_ink-41_1784.png"/><br/>
+<img src="./Minka_slides2_ink-41_1785.png"/><br/>
+<img src="./Minka_slides2_ink-41_1786.png"/><br/>
+<img src="./Minka_slides2_ink-41_1787.png"/><br/>
+<img src="./Minka_slides2_ink-41_1788.png"/><br/>
+<img src="./Minka_slides2_ink-41_1789.png"/><br/>
+<img src="./Minka_slides2_ink-41_1790.png"/><br/>
+<img src="./Minka_slides2_ink-41_1791.png"/><br/>
+<img src="./Minka_slides2_ink-41_1792.png"/><br/>
+<img src="./Minka_slides2_ink-41_1793.png"/><br/>
+<img src="./Minka_slides2_ink-41_1794.png"/><br/>
+<img src="./Minka_slides2_ink-41_1795.png"/><br/>
+<img src="./Minka_slides2_ink-41_1796.png"/><br/>
+<img src="./Minka_slides2_ink-41_1797.png"/><br/>
+<img src="./Minka_slides2_ink-41_1798.png"/><br/>
+<img src="./Minka_slides2_ink-41_1799.png"/><br/>
+<img src="./Minka_slides2_ink-41_1800.png"/><br/>
+<img src="./Minka_slides2_ink-41_1801.png"/><br/>
+<img src="./Minka_slides2_ink-41_1802.png"/><br/>
+<img src="./Minka_slides2_ink-41_1803.png"/><br/>
+<img src="./Minka_slides2_ink-41_1804.png"/><br/>
+<img src="./Minka_slides2_ink-41_1805.png"/><br/>
+<img src="./Minka_slides2_ink-41_1806.png"/><br/>
+<img src="./Minka_slides2_ink-41_1807.png"/><br/>
+<img src="./Minka_slides2_ink-41_1808.png"/><br/>
+<img src="./Minka_slides2_ink-41_1809.png"/><br/>
+<img src="./Minka_slides2_ink-41_1810.png"/><br/>
+<img src="./Minka_slides2_ink-41_1811.png"/><br/>
+<img src="./Minka_slides2_ink-41_1812.png"/><br/>
+<img src="./Minka_slides2_ink-41_1813.png"/><br/>
+<img src="./Minka_slides2_ink-41_1814.png"/><br/>
+<img src="./Minka_slides2_ink-41_1815.png"/><br/>
+<img src="./Minka_slides2_ink-41_1816.png"/><br/>
+<img src="./Minka_slides2_ink-41_1817.png"/><br/>
+<img src="./Minka_slides2_ink-41_1818.png"/><br/>
+<img src="./Minka_slides2_ink-41_1819.png"/><br/>
+<img src="./Minka_slides2_ink-41_1820.png"/><br/>
+<img src="./Minka_slides2_ink-41_1821.png"/><br/>
+<img src="./Minka_slides2_ink-41_1822.png"/><br/>
+<img src="./Minka_slides2_ink-41_1823.png"/><br/>
+<img src="./Minka_slides2_ink-41_1824.png"/><br/>
+<img src="./Minka_slides2_ink-41_1825.png"/><br/>
+<img src="./Minka_slides2_ink-41_1826.png"/><br/>
+<img src="./Minka_slides2_ink-41_1827.png"/><br/>
+<img src="./Minka_slides2_ink-41_1828.png"/><br/>
+<img src="./Minka_slides2_ink-41_1829.png"/><br/>
+<img src="./Minka_slides2_ink-41_1830.png"/><br/>
+<img src="./Minka_slides2_ink-41_1831.png"/><br/>
+<img src="./Minka_slides2_ink-41_1832.png"/><br/>
+<img src="./Minka_slides2_ink-41_1833.png"/><br/>
+<img src="./Minka_slides2_ink-41_1834.png"/><br/>
+<img src="./Minka_slides2_ink-41_1835.png"/><br/>
+<img src="./Minka_slides2_ink-41_1836.png"/><br/>
+<img src="./Minka_slides2_ink-41_1837.png"/><br/>
+<img src="./Minka_slides2_ink-41_1838.png"/><br/>
+<img src="./Minka_slides2_ink-41_1839.png"/><br/>
+<img src="./Minka_slides2_ink-41_1840.png"/><br/>
+<img src="./Minka_slides2_ink-41_1841.png"/><br/>
+<img src="./Minka_slides2_ink-41_1842.png"/><br/>
+<img src="./Minka_slides2_ink-41_1843.png"/><br/>
+<img src="./Minka_slides2_ink-41_1844.png"/><br/>
+<img src="./Minka_slides2_ink-41_1845.png"/><br/>
+<img src="./Minka_slides2_ink-41_1846.png"/><br/>
+<img src="./Minka_slides2_ink-41_1847.png"/><br/>
+<img src="./Minka_slides2_ink-41_1848.png"/><br/>
+<img src="./Minka_slides2_ink-41_1849.png"/><br/>
+<img src="./Minka_slides2_ink-41_1850.png"/><br/>
+<img src="./Minka_slides2_ink-41_1851.png"/><br/>
+<img src="./Minka_slides2_ink-41_1852.png"/><br/>
+<img src="./Minka_slides2_ink-41_1853.png"/><br/>
+<img src="./Minka_slides2_ink-41_1854.png"/><br/>
+<img src="./Minka_slides2_ink-41_1855.png"/><br/>
+<img src="./Minka_slides2_ink-41_1856.png"/><br/>
+<img src="./Minka_slides2_ink-41_1857.png"/><br/>
+<img src="./Minka_slides2_ink-41_1858.png"/><br/>
+<img src="./Minka_slides2_ink-41_1859.png"/><br/>
+<img src="./Minka_slides2_ink-41_1860.png"/><br/>
+<img src="./Minka_slides2_ink-41_1861.png"/><br/>
+<img src="./Minka_slides2_ink-41_1862.png"/><br/>
+<img src="./Minka_slides2_ink-41_1863.png"/><br/>
+<img src="./Minka_slides2_ink-41_1864.png"/><br/>
+<img src="./Minka_slides2_ink-41_1865.png"/><br/>
+<img src="./Minka_slides2_ink-41_1866.png"/><br/>
+<img src="./Minka_slides2_ink-41_1867.png"/><br/>
+<img src="./Minka_slides2_ink-41_1868.png"/><br/>
+<img src="./Minka_slides2_ink-41_1869.png"/><br/>
+<img src="./Minka_slides2_ink-41_1870.png"/><br/>
+<img src="./Minka_slides2_ink-41_1871.png"/><br/>
+<img src="./Minka_slides2_ink-41_1872.png"/><br/>
+<img src="./Minka_slides2_ink-41_1873.png"/><br/>
+<img src="./Minka_slides2_ink-41_1874.png"/><br/>
+<img src="./Minka_slides2_ink-41_1875.png"/><br/>
+<img src="./Minka_slides2_ink-41_1876.png"/><br/>
+<img src="./Minka_slides2_ink-41_1877.png"/><br/>
+<img src="./Minka_slides2_ink-41_1878.png"/><br/>
+<img src="./Minka_slides2_ink-41_1879.png"/><br/>
+<img src="./Minka_slides2_ink-41_1880.png"/><br/>
+<img src="./Minka_slides2_ink-41_1881.png"/><br/>
+<img src="./Minka_slides2_ink-41_1882.png"/><br/>
+<img src="./Minka_slides2_ink-41_1883.png"/><br/>
+<img src="./Minka_slides2_ink-41_1884.png"/><br/>
+<img src="./Minka_slides2_ink-41_1885.png"/><br/>
+<img src="./Minka_slides2_ink-41_1886.png"/><br/>
+<img src="./Minka_slides2_ink-41_1887.png"/><br/>
+<img src="./Minka_slides2_ink-41_1888.png"/><br/>
+<img src="./Minka_slides2_ink-41_1889.png"/><br/>
+<img src="./Minka_slides2_ink-41_1890.png"/><br/>
+<img src="./Minka_slides2_ink-41_1891.png"/><br/>
+<img src="./Minka_slides2_ink-41_1892.png"/><br/>
+<img src="./Minka_slides2_ink-41_1893.png"/><br/>
+<img src="./Minka_slides2_ink-41_1894.png"/><br/>
+<img src="./Minka_slides2_ink-41_1895.png"/><br/>
+<img src="./Minka_slides2_ink-41_1896.png"/><br/>
+<img src="./Minka_slides2_ink-41_1897.png"/><br/>
+<img src="./Minka_slides2_ink-41_1898.png"/><br/>
+<img src="./Minka_slides2_ink-41_1899.png"/><br/>
+<img src="./Minka_slides2_ink-41_1900.png"/><br/>
+<img src="./Minka_slides2_ink-41_1901.png"/><br/>
+<img src="./Minka_slides2_ink-41_1902.png"/><br/>
+<img src="./Minka_slides2_ink-41_1903.png"/><br/>
+<img src="./Minka_slides2_ink-41_1904.png"/><br/>
+<img src="./Minka_slides2_ink-41_1905.png"/><br/>
+<img src="./Minka_slides2_ink-41_1906.png"/><br/>
+<img src="./Minka_slides2_ink-41_1907.png"/><br/>
+<img src="./Minka_slides2_ink-41_1908.png"/><br/>
+<img src="./Minka_slides2_ink-41_1909.png"/><br/>
+<img src="./Minka_slides2_ink-41_1910.png"/><br/>
+<img src="./Minka_slides2_ink-41_1911.png"/><br/>
+<img src="./Minka_slides2_ink-41_1912.png"/><br/>
+<img src="./Minka_slides2_ink-41_1913.png"/><br/>
+<img src="./Minka_slides2_ink-41_1914.png"/><br/>
+<img src="./Minka_slides2_ink-41_1915.png"/><br/>
+<img src="./Minka_slides2_ink-41_1916.png"/><br/>
+<img src="./Minka_slides2_ink-41_1917.png"/><br/>
+<img src="./Minka_slides2_ink-41_1918.png"/><br/>
+<img src="./Minka_slides2_ink-41_1919.png"/><br/>
+<img src="./Minka_slides2_ink-41_1920.png"/><br/>
+<img src="./Minka_slides2_ink-41_1921.png"/><br/>
+<img src="./Minka_slides2_ink-41_1922.png"/><br/>
+<img src="./Minka_slides2_ink-41_1923.png"/><br/>
+<img src="./Minka_slides2_ink-41_1924.png"/><br/>
+<img src="./Minka_slides2_ink-41_1925.png"/><br/>
+<img src="./Minka_slides2_ink-41_1926.png"/><br/>
+<img src="./Minka_slides2_ink-41_1927.png"/><br/>
+<img src="./Minka_slides2_ink-41_1928.png"/><br/>
+<img src="./Minka_slides2_ink-41_1929.png"/><br/>
+<img src="./Minka_slides2_ink-41_1930.png"/><br/>
+<img src="./Minka_slides2_ink-41_1931.png"/><br/>
+<img src="./Minka_slides2_ink-41_1932.png"/><br/>
+<img src="./Minka_slides2_ink-41_1933.png"/><br/>
+<img src="./Minka_slides2_ink-41_1934.png"/><br/>
+<img src="./Minka_slides2_ink-41_1935.png"/><br/>
+<img src="./Minka_slides2_ink-41_1936.png"/><br/>
+<img src="./Minka_slides2_ink-41_1937.png"/><br/>
+<img src="./Minka_slides2_ink-41_1938.png"/><br/>
+<img src="./Minka_slides2_ink-41_1939.png"/><br/>
+<img src="./Minka_slides2_ink-41_1940.png"/><br/>
+<img src="./Minka_slides2_ink-41_1941.png"/><br/>
+<img src="./Minka_slides2_ink-41_1942.png"/><br/>
+<img src="./Minka_slides2_ink-41_1943.png"/><br/>
+<img src="./Minka_slides2_ink-41_1944.png"/><br/>
+<img src="./Minka_slides2_ink-41_1945.png"/><br/>
+<img src="./Minka_slides2_ink-41_1946.png"/><br/>
+<img src="./Minka_slides2_ink-41_1947.png"/><br/>
+<img src="./Minka_slides2_ink-41_1948.png"/><br/>
+<img src="./Minka_slides2_ink-41_1949.png"/><br/>
+<img src="./Minka_slides2_ink-41_1950.png"/><br/>
+<img src="./Minka_slides2_ink-41_1951.png"/><br/>
+<img src="./Minka_slides2_ink-41_1952.png"/><br/>
+<img src="./Minka_slides2_ink-41_1953.png"/><br/>
+<img src="./Minka_slides2_ink-41_1954.png"/><br/>
+<img src="./Minka_slides2_ink-41_1955.png"/><br/>
+<img src="./Minka_slides2_ink-41_1956.png"/><br/>
+<img src="./Minka_slides2_ink-41_1957.png"/><br/>
+<img src="./Minka_slides2_ink-41_1958.png"/><br/>
+<img src="./Minka_slides2_ink-41_1959.png"/><br/>
+<img src="./Minka_slides2_ink-41_1960.png"/><br/>
+<img src="./Minka_slides2_ink-41_1961.png"/><br/>
+<img src="./Minka_slides2_ink-41_1962.png"/><br/>
+<img src="./Minka_slides2_ink-41_1963.png"/><br/>
+<img src="./Minka_slides2_ink-41_1964.png"/><br/>
+<img src="./Minka_slides2_ink-41_1965.png"/><br/>
+<img src="./Minka_slides2_ink-41_1966.png"/><br/>
+<img src="./Minka_slides2_ink-41_1967.png"/><br/>
+<img src="./Minka_slides2_ink-41_1968.png"/><br/>
+<img src="./Minka_slides2_ink-41_1969.png"/><br/>
+<img src="./Minka_slides2_ink-41_1970.png"/><br/>
+<img src="./Minka_slides2_ink-41_1971.png"/><br/>
+<img src="./Minka_slides2_ink-41_1972.png"/><br/>
+<img src="./Minka_slides2_ink-41_1973.png"/><br/>
+<img src="./Minka_slides2_ink-41_1974.png"/><br/>
+<img src="./Minka_slides2_ink-41_1975.png"/><br/>
+<img src="./Minka_slides2_ink-41_1976.png"/><br/>
+<img src="./Minka_slides2_ink-41_1977.png"/><br/>
+<img src="./Minka_slides2_ink-41_1978.png"/><br/>
+<img src="./Minka_slides2_ink-41_1979.png"/><br/>
+<img src="./Minka_slides2_ink-41_1980.png"/><br/>
+<img src="./Minka_slides2_ink-41_1981.png"/><br/>
+<img src="./Minka_slides2_ink-41_1982.png"/><br/>
+<img src="./Minka_slides2_ink-41_1983.png"/><br/>
+<img src="./Minka_slides2_ink-41_1984.png"/><br/>
+<img src="./Minka_slides2_ink-41_1985.png"/><br/>
+<img src="./Minka_slides2_ink-41_1986.png"/><br/>
+<img src="./Minka_slides2_ink-41_1987.png"/><br/>
+<img src="./Minka_slides2_ink-41_1988.png"/><br/>
+<img src="./Minka_slides2_ink-41_1989.png"/><br/>
+<img src="./Minka_slides2_ink-41_1990.png"/><br/>
+<img src="./Minka_slides2_ink-41_1991.png"/><br/>
+<img src="./Minka_slides2_ink-41_1992.png"/><br/>
+<img src="./Minka_slides2_ink-41_1993.png"/><br/>
+<img src="./Minka_slides2_ink-41_1994.png"/><br/>
+<img src="./Minka_slides2_ink-41_1995.png"/><br/>
+<img src="./Minka_slides2_ink-41_1996.png"/><br/>
+<img src="./Minka_slides2_ink-41_1997.png"/><br/>
+<img src="./Minka_slides2_ink-41_1998.png"/><br/>
+<img src="./Minka_slides2_ink-41_1999.png"/><br/>
+<img src="./Minka_slides2_ink-41_2000.png"/><br/>
+<img src="./Minka_slides2_ink-41_2001.png"/><br/>
+<img src="./Minka_slides2_ink-41_2002.png"/><br/>
+<img src="./Minka_slides2_ink-41_2003.png"/><br/>
+<img src="./Minka_slides2_ink-41_2004.png"/><br/>
+<img src="./Minka_slides2_ink-41_2005.png"/><br/>
+<img src="./Minka_slides2_ink-41_2006.png"/><br/>
+<img src="./Minka_slides2_ink-41_2007.png"/><br/>
+<img src="./Minka_slides2_ink-41_2008.png"/><br/>
+<img src="./Minka_slides2_ink-41_2009.png"/><br/>
+<img src="./Minka_slides2_ink-41_2010.png"/><br/>
+<img src="./Minka_slides2_ink-41_2011.png"/><br/>
+<img src="./Minka_slides2_ink-41_2012.png"/><br/>
+<img src="./Minka_slides2_ink-41_2013.png"/><br/>
+<img src="./Minka_slides2_ink-41_2014.png"/><br/>
+<img src="./Minka_slides2_ink-41_2015.png"/><br/>
+<img src="./Minka_slides2_ink-41_2016.png"/><br/>
+<img src="./Minka_slides2_ink-41_2017.png"/><br/>
+<img src="./Minka_slides2_ink-41_2018.png"/><br/>
+<img src="./Minka_slides2_ink-41_2019.png"/><br/>
+<img src="./Minka_slides2_ink-41_2020.png"/><br/>
+<img src="./Minka_slides2_ink-41_2021.png"/><br/>
+<img src="./Minka_slides2_ink-41_2022.png"/><br/>
+<img src="./Minka_slides2_ink-41_2023.png"/><br/>
+<img src="./Minka_slides2_ink-41_2024.png"/><br/>
+<img src="./Minka_slides2_ink-41_2025.png"/><br/>
+<img src="./Minka_slides2_ink-41_2026.png"/><br/>
+<img src="./Minka_slides2_ink-41_2027.png"/><br/>
+<img src="./Minka_slides2_ink-41_2028.png"/><br/>
+<img src="./Minka_slides2_ink-41_2029.png"/><br/>
+<img src="./Minka_slides2_ink-41_2030.png"/><br/>
+<img src="./Minka_slides2_ink-41_2031.png"/><br/>
+<img src="./Minka_slides2_ink-41_2032.png"/><br/>
+<img src="./Minka_slides2_ink-41_2033.png"/><br/>
+<img src="./Minka_slides2_ink-41_2034.png"/><br/>
+<img src="./Minka_slides2_ink-41_2035.png"/><br/>
+<img src="./Minka_slides2_ink-41_2036.png"/><br/>
+<img src="./Minka_slides2_ink-41_2037.png"/><br/>
+<img src="./Minka_slides2_ink-41_2038.png"/><br/>
+<img src="./Minka_slides2_ink-41_2039.png"/><br/>
+<img src="./Minka_slides2_ink-41_2040.png"/><br/>
+<img src="./Minka_slides2_ink-41_2041.png"/><br/>
+<img src="./Minka_slides2_ink-41_2042.png"/><br/>
+<img src="./Minka_slides2_ink-41_2043.png"/><br/>
+<img src="./Minka_slides2_ink-41_2044.png"/><br/>
+<img src="./Minka_slides2_ink-41_2045.png"/><br/>
+<img src="./Minka_slides2_ink-41_2046.png"/><br/>
+<img src="./Minka_slides2_ink-41_2047.png"/><br/>
+<img src="./Minka_slides2_ink-41_2048.png"/><br/>
+<img src="./Minka_slides2_ink-41_2049.png"/><br/>
+<img src="./Minka_slides2_ink-41_2050.png"/><br/>
+<img src="./Minka_slides2_ink-41_2051.png"/><br/>
+<img src="./Minka_slides2_ink-41_2052.png"/><br/>
+<img src="./Minka_slides2_ink-41_2053.png"/><br/>
+<img src="./Minka_slides2_ink-41_2054.png"/><br/>
+<img src="./Minka_slides2_ink-41_2055.png"/><br/>
+<img src="./Minka_slides2_ink-41_2056.png"/><br/>
+<img src="./Minka_slides2_ink-41_2057.png"/><br/>
+<img src="./Minka_slides2_ink-41_2058.png"/><br/>
+<img src="./Minka_slides2_ink-41_2059.png"/><br/>
+<img src="./Minka_slides2_ink-41_2060.png"/><br/>
+<img src="./Minka_slides2_ink-41_2061.png"/><br/>
+<img src="./Minka_slides2_ink-41_2062.png"/><br/>
+<img src="./Minka_slides2_ink-41_2063.png"/><br/>
+<img src="./Minka_slides2_ink-41_2064.png"/><br/>
+<img src="./Minka_slides2_ink-41_2065.png"/><br/>
+<img src="./Minka_slides2_ink-41_2066.png"/><br/>
+<img src="./Minka_slides2_ink-41_2067.png"/><br/>
+<img src="./Minka_slides2_ink-41_2068.png"/><br/>
+<img src="./Minka_slides2_ink-41_2069.png"/><br/>
+<img src="./Minka_slides2_ink-41_2070.png"/><br/>
+<img src="./Minka_slides2_ink-41_2071.png"/><br/>
+<img src="./Minka_slides2_ink-41_2072.png"/><br/>
+<img src="./Minka_slides2_ink-41_2073.png"/><br/>
+<img src="./Minka_slides2_ink-41_2074.png"/><br/>
+<img src="./Minka_slides2_ink-41_2075.png"/><br/>
+<img src="./Minka_slides2_ink-41_2076.png"/><br/>
+<img src="./Minka_slides2_ink-41_2077.png"/><br/>
+<img src="./Minka_slides2_ink-41_2078.png"/><br/>
+<img src="./Minka_slides2_ink-41_2079.png"/><br/>
+<img src="./Minka_slides2_ink-41_2080.png"/><br/>
+<img src="./Minka_slides2_ink-41_2081.png"/><br/>
+<img src="./Minka_slides2_ink-41_2082.png"/><br/>
+<img src="./Minka_slides2_ink-41_2083.png"/><br/>
+<img src="./Minka_slides2_ink-41_2084.png"/><br/>
+<img src="./Minka_slides2_ink-41_2085.png"/><br/>
+<img src="./Minka_slides2_ink-41_2086.png"/><br/>
+<img src="./Minka_slides2_ink-41_2087.png"/><br/>
+<img src="./Minka_slides2_ink-41_2088.png"/><br/>
+<img src="./Minka_slides2_ink-41_2089.png"/><br/>
+<img src="./Minka_slides2_ink-41_2090.png"/><br/>
+<img src="./Minka_slides2_ink-41_2091.png"/><br/>
+<img src="./Minka_slides2_ink-41_2092.png"/><br/>
+<img src="./Minka_slides2_ink-41_2093.png"/><br/>
+<img src="./Minka_slides2_ink-41_2094.png"/><br/>
+<img src="./Minka_slides2_ink-41_2095.png"/><br/>
+<img src="./Minka_slides2_ink-41_2096.png"/><br/>
+<img src="./Minka_slides2_ink-41_2097.png"/><br/>
+<img src="./Minka_slides2_ink-41_2098.png"/><br/>
+<img src="./Minka_slides2_ink-41_2099.png"/><br/>
+<img src="./Minka_slides2_ink-41_2100.png"/><br/>
+<img src="./Minka_slides2_ink-41_2101.png"/><br/>
+<img src="./Minka_slides2_ink-41_2102.png"/><br/>
+<img src="./Minka_slides2_ink-41_2103.png"/><br/>
+<img src="./Minka_slides2_ink-41_2104.png"/><br/>
+<img src="./Minka_slides2_ink-41_2105.png"/><br/>
+<img src="./Minka_slides2_ink-41_2106.png"/><br/>
+<img src="./Minka_slides2_ink-41_2107.png"/><br/>
+<img src="./Minka_slides2_ink-41_2108.png"/><br/>
+<img src="./Minka_slides2_ink-41_2109.png"/><br/>
+<img src="./Minka_slides2_ink-41_2110.png"/><br/>
+<img src="./Minka_slides2_ink-41_2111.png"/><br/>
+<img src="./Minka_slides2_ink-41_2112.png"/><br/>
+<img src="./Minka_slides2_ink-41_2113.png"/><br/>
+<img src="./Minka_slides2_ink-41_2114.png"/><br/>
+<img src="./Minka_slides2_ink-41_2115.png"/><br/>
+<img src="./Minka_slides2_ink-41_2116.png"/><br/>
+<img src="./Minka_slides2_ink-41_2117.png"/><br/>
+<img src="./Minka_slides2_ink-41_2118.png"/><br/>
+<img src="./Minka_slides2_ink-41_2119.png"/><br/>
+<img src="./Minka_slides2_ink-41_2120.png"/><br/>
+<img src="./Minka_slides2_ink-41_2121.png"/><br/>
+<img src="./Minka_slides2_ink-41_2122.png"/><br/>
+<img src="./Minka_slides2_ink-41_2123.png"/><br/>
+<img src="./Minka_slides2_ink-41_2124.png"/><br/>
+<img src="./Minka_slides2_ink-41_2125.png"/><br/>
+<img src="./Minka_slides2_ink-41_2126.png"/><br/>
+<img src="./Minka_slides2_ink-41_2127.png"/><br/>
+<img src="./Minka_slides2_ink-41_2128.png"/><br/>
+<img src="./Minka_slides2_ink-41_2129.png"/><br/>
+<img src="./Minka_slides2_ink-41_2130.png"/><br/>
+<img src="./Minka_slides2_ink-41_2131.png"/><br/>
+<img src="./Minka_slides2_ink-41_2132.png"/><br/>
+<img src="./Minka_slides2_ink-41_2133.png"/><br/>
+<img src="./Minka_slides2_ink-41_2134.png"/><br/>
+<img src="./Minka_slides2_ink-41_2135.png"/><br/>
+<img src="./Minka_slides2_ink-41_2136.png"/><br/>
+<img src="./Minka_slides2_ink-41_2137.png"/><br/>
+<img src="./Minka_slides2_ink-41_2138.png"/><br/>
+<img src="./Minka_slides2_ink-41_2139.png"/><br/>
+<img src="./Minka_slides2_ink-41_2140.png"/><br/>
+<img src="./Minka_slides2_ink-41_2141.png"/><br/>
+<img src="./Minka_slides2_ink-41_2142.png"/><br/>
+<img src="./Minka_slides2_ink-41_2143.png"/><br/>
+<img src="./Minka_slides2_ink-41_2144.png"/><br/>
+<img src="./Minka_slides2_ink-41_2145.png"/><br/>
+<img src="./Minka_slides2_ink-41_2146.png"/><br/>
+<img src="./Minka_slides2_ink-41_2147.png"/><br/>
+<img src="./Minka_slides2_ink-41_2148.png"/><br/>
+<img src="./Minka_slides2_ink-41_2149.png"/><br/>
+<img src="./Minka_slides2_ink-41_2150.png"/><br/>
+<img src="./Minka_slides2_ink-41_2151.png"/><br/>
+<img src="./Minka_slides2_ink-41_2152.png"/><br/>
+<img src="./Minka_slides2_ink-41_2153.png"/><br/>
+<img src="./Minka_slides2_ink-41_2154.png"/><br/>
+<img src="./Minka_slides2_ink-41_2155.png"/><br/>
+<img src="./Minka_slides2_ink-41_2156.png"/><br/>
+<img src="./Minka_slides2_ink-41_2157.png"/><br/>
+<img src="./Minka_slides2_ink-41_2158.png"/><br/>
+<img src="./Minka_slides2_ink-41_2159.png"/><br/>
+<img src="./Minka_slides2_ink-41_2160.png"/><br/>
+<img src="./Minka_slides2_ink-41_2161.png"/><br/>
+<img src="./Minka_slides2_ink-41_2162.png"/><br/>
+<img src="./Minka_slides2_ink-41_2163.png"/><br/>
+<img src="./Minka_slides2_ink-41_2164.png"/><br/>
+<img src="./Minka_slides2_ink-41_2165.png"/><br/>
+<img src="./Minka_slides2_ink-41_2166.png"/><br/>
+<img src="./Minka_slides2_ink-41_2167.png"/><br/>
+<img src="./Minka_slides2_ink-41_2168.png"/><br/>
+<img src="./Minka_slides2_ink-41_2169.png"/><br/>
+<img src="./Minka_slides2_ink-41_2170.png"/><br/>
+<img src="./Minka_slides2_ink-41_2171.png"/><br/>
+<img src="./Minka_slides2_ink-41_2172.png"/><br/>
+<img src="./Minka_slides2_ink-41_2173.png"/><br/>
+<img src="./Minka_slides2_ink-41_2174.png"/><br/>
+<img src="./Minka_slides2_ink-41_2175.png"/><br/>
+<img src="./Minka_slides2_ink-41_2176.png"/><br/>
+<img src="./Minka_slides2_ink-41_2177.png"/><br/>
+<img src="./Minka_slides2_ink-41_2178.png"/><br/>
+<img src="./Minka_slides2_ink-41_2179.png"/><br/>
+<img src="./Minka_slides2_ink-41_2180.png"/><br/>
+<img src="./Minka_slides2_ink-41_2181.png"/><br/>
+<img src="./Minka_slides2_ink-41_2182.png"/><br/>
+<img src="./Minka_slides2_ink-41_2183.png"/><br/>
+<img src="./Minka_slides2_ink-41_2184.png"/><br/>
+<img src="./Minka_slides2_ink-41_2185.png"/><br/>
+<img src="./Minka_slides2_ink-41_2186.png"/><br/>
+<img src="./Minka_slides2_ink-41_2187.png"/><br/>
+<img src="./Minka_slides2_ink-41_2188.png"/><br/>
+<img src="./Minka_slides2_ink-41_2189.png"/><br/>
+<img src="./Minka_slides2_ink-41_2190.png"/><br/>
+<img src="./Minka_slides2_ink-41_2191.png"/><br/>
+<img src="./Minka_slides2_ink-41_2192.png"/><br/>
+<img src="./Minka_slides2_ink-41_2193.png"/><br/>
+<img src="./Minka_slides2_ink-41_2194.png"/><br/>
+<img src="./Minka_slides2_ink-41_2195.png"/><br/>
+<img src="./Minka_slides2_ink-41_2196.png"/><br/>
+<img src="./Minka_slides2_ink-41_2197.png"/><br/>
+<img src="./Minka_slides2_ink-41_2198.png"/><br/>
+<img src="./Minka_slides2_ink-41_2199.png"/><br/>
+<img src="./Minka_slides2_ink-41_2200.png"/><br/>
+<img src="./Minka_slides2_ink-41_2201.png"/><br/>
+<img src="./Minka_slides2_ink-41_2202.png"/><br/>
+<img src="./Minka_slides2_ink-41_2203.png"/><br/>
+<img src="./Minka_slides2_ink-41_2204.png"/><br/>
+<img src="./Minka_slides2_ink-41_2205.png"/><br/>
+<img src="./Minka_slides2_ink-41_2206.png"/><br/>
+<img src="./Minka_slides2_ink-41_2207.png"/><br/>
+<img src="./Minka_slides2_ink-41_2208.png"/><br/>
+<img src="./Minka_slides2_ink-41_2209.png"/><br/>
+<img src="./Minka_slides2_ink-41_2210.png"/><br/>
+<img src="./Minka_slides2_ink-41_2211.png"/><br/>
+<img src="./Minka_slides2_ink-41_2212.png"/><br/>
+<img src="./Minka_slides2_ink-41_2213.png"/><br/>
+<img src="./Minka_slides2_ink-41_2214.png"/><br/>
+<img src="./Minka_slides2_ink-41_2215.png"/><br/>
+<img src="./Minka_slides2_ink-41_2216.png"/><br/>
+<img src="./Minka_slides2_ink-41_2217.png"/><br/>
+<img src="./Minka_slides2_ink-41_2218.png"/><br/>
+<img src="./Minka_slides2_ink-41_2219.png"/><br/>
+<img src="./Minka_slides2_ink-41_2220.png"/><br/>
+<img src="./Minka_slides2_ink-41_2221.png"/><br/>
+<img src="./Minka_slides2_ink-41_2222.png"/><br/>
+<img src="./Minka_slides2_ink-41_2223.png"/><br/>
+<img src="./Minka_slides2_ink-41_2224.png"/><br/>
+<img src="./Minka_slides2_ink-41_2225.png"/><br/>
+<img src="./Minka_slides2_ink-41_2226.png"/><br/>
+<img src="./Minka_slides2_ink-41_2227.png"/><br/>
+<img src="./Minka_slides2_ink-41_2228.png"/><br/>
+<img src="./Minka_slides2_ink-41_2229.png"/><br/>
+<img src="./Minka_slides2_ink-41_2230.png"/><br/>
+<img src="./Minka_slides2_ink-41_2231.png"/><br/>
+<img src="./Minka_slides2_ink-41_2232.png"/><br/>
+<img src="./Minka_slides2_ink-41_2233.png"/><br/>
+<img src="./Minka_slides2_ink-41_2234.png"/><br/>
+<img src="./Minka_slides2_ink-41_2235.png"/><br/>
+<img src="./Minka_slides2_ink-41_2236.png"/><br/>
+<img src="./Minka_slides2_ink-41_2237.png"/><br/>
+<img src="./Minka_slides2_ink-41_2238.png"/><br/>
+<img src="./Minka_slides2_ink-41_2239.png"/><br/>
+<img src="./Minka_slides2_ink-41_2240.png"/><br/>
+<img src="./Minka_slides2_ink-41_2241.png"/><br/>
+<img src="./Minka_slides2_ink-41_2242.png"/><br/>
+<img src="./Minka_slides2_ink-41_2243.png"/><br/>
+<img src="./Minka_slides2_ink-41_2244.png"/><br/>
+<img src="./Minka_slides2_ink-41_2245.png"/><br/>
+<img src="./Minka_slides2_ink-41_2246.png"/><br/>
+<img src="./Minka_slides2_ink-41_2247.png"/><br/>
+<img src="./Minka_slides2_ink-41_2248.png"/><br/>
+<img src="./Minka_slides2_ink-41_2249.png"/><br/>
+<img src="./Minka_slides2_ink-41_2250.png"/><br/>
+<img src="./Minka_slides2_ink-41_2251.png"/><br/>
+<img src="./Minka_slides2_ink-41_2252.png"/><br/>
+<img src="./Minka_slides2_ink-41_2253.png"/><br/>
+41<br/>
+<hr/>
+<a name=42></a><img src="./Minka_slides2_ink-42_1.png"/><br/>
+<img src="./Minka_slides2_ink-42_2.png"/><br/>
+Posterior&#160;for&#160;the&#160;last&#160;state<br/>
+42<br/>
+<hr/>
+<a name=43></a>Why&#160;is&#160;VMP&#160;so&#160;certain?<br/>
+•&#160;Uncertainty&#160;does&#160;not&#160;propagate&#160;correctly&#160;<br/>
+though&#160;the&#160;Markov&#160;chain<br/>
+<i>p</i>(<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(&#160;1<br/>
+,<br/>
+0&#160;0&#160;)<br/>
+0<br/>
+1<br/>
+<i>p</i>(<i>x&#160;</i>|&#160;<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(<i>x&#160;</i>,&#160;0<br/>
+.<br/>
+0<br/>
+)<br/>
+1<br/>
+<i>t</i><br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+var(<i>x&#160;</i>)&#160;≈&#160;0<br/>
+.<br/>
+0&#160;1<br/>
+1<br/>
+var(<i>x&#160;</i>)&#160;≈&#160;.<br/>
+0&#160;005<br/>
+2<br/>
+43<br/>
+<hr/>
+<a name=44></a>VMP&#160;messages&#160;for&#160;Gaussian&#160;factor<br/>
+<i>N&#160;</i>(<i>x&#160;</i>;&#160;<i>x&#160;</i>,&#160;<i>v</i>)<br/>
+3<br/>
+2<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+2<br/>
+3<br/>
+44<br/>
+<hr/>
+<a name=45></a>Simple&#160;example<br/>
+<i>p</i>(<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(&#160;,<br/>
+0&#160;100)<br/>
+<i>p</i>(&#160;<i>x&#160;</i>|&#160;<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(&#160;<i>x&#160;</i>,&#160;0&#160;0<br/>
+.<br/>
+)<br/>
+1<br/>
+1<br/>
+2<br/>
+1<br/>
+1<br/>
+45<br/>
+<hr/>
+<a name=46></a>Conclusions<br/>
+•&#160;Variational&#160;message&#160;passing&#160;does&#160;not&#160;<br/>
+handle&#160;chains&#160;correctly<br/>
+–&#160;But&#160;it&#160;is&#160;not&#160;as&#160;troubled&#160;by&#160;loops<br/>
+•&#160;VM<br/>
+V&#160;P<br/>
+M&#160;&#160;<br/>
+P&#160;w<br/>
+&#160;&#160;or<br/>
+o&#160;ks&#160;b<br/>
+&#160;&#160;e<br/>
+b&#160;s<br/>
+e&#160;t&#160;<br/>
+t&#160;o<br/>
+&#160;&#160;n<br/>
+o&#160;&#160;<br/>
+n&#160;t<br/>
+&#160;&#160;i<br/>
+t&#160;g<br/>
+i&#160;h<br/>
+g&#160;t<br/>
+h&#160;&#160;<br/>
+t&#160;c<br/>
+&#160;&#160;lilq<br/>
+i&#160;u<br/>
+q&#160;e<br/>
+u&#160;s<br/>
+e&#160;&#160;o<br/>
+&#160;&#160;r<br/>
+o&#160;&#160;s<br/>
+&#160;&#160;ta<br/>
+t&#160;r<br/>
+a&#160;&#160;<br/>
+graphs<br/>
+•&#160;Make&#160;factor&#160;graph&#160;as&#160;compact&#160;as&#160;possible<br/>
+–&#160;Remove&#160;missing&#160;data&#160;from&#160;factor&#160;graph<br/>
+46<br/>
+<hr/>
+</body>
+</html>

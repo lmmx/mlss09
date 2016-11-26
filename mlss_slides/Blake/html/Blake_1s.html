@@ -1,0 +1,784 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><b>Markov&#160;Models&#160;in&#160;Computer&#160;Vision</b><br/>
+Andrew&#160;Blake,&#160;Microsoft&#160;Research&#160;Cambridge<br/>
+Modern&#160;probabilistic&#160;modelling&#160;has&#160;revolutionized&#160;the&#160;design&#160;and&#160;<br/>implementation&#160;of&#160;machine&#160;vision&#160;systems.&#160;There&#160;are&#160;now&#160;numerous&#160;<br/>instances&#160;of&#160;systems&#160;that&#160;can&#160;see&#160;stereoscopically&#160;in&#160;depth,&#160;or&#160;separate&#160;<br/>foreground&#160;from&#160;background,&#160;or&#160;accurately&#160;pinpoint objects&#160;of&#160;a&#160;<br/>particular&#160;class,&#160;all&#160;in&#160;real time.&#160;Each&#160;of&#160;those&#160;three&#160;vision&#160;<br/>functionalities&#160;will&#160;be&#160;demonstrated&#160;in&#160;the&#160;lecture.&#160;The&#160;underlying&#160;<br/>advances&#160;owe&#160;a&#160;lot&#160;to&#160;probabilistic&#160;frameworks&#160;for&#160;inference&#160;in&#160;images.&#160;<br/>In&#160;particular,&#160;the&#160;Markov&#160;Random&#160;Field&#160;(MRF),&#160;borrowed&#160;originally&#160;<br/>from&#160;statistical&#160;physics,&#160;first appeared&#160;in&#160;image&#160;processing&#160;in&#160;the&#160;70s.&#160;It&#160;<br/>has staged&#160;a&#160;resounding&#160;comeback&#160;in&#160;the&#160;last&#160;decade,&#160;for&#160;very&#160;<br/>interesting&#160;reasons.<br/>
+Seeing&#160;as&#160;an&#160;intelligent&#160;behaviour<br/>
+<a href="..\..\..\..\home\talks\movies\CambPhilSoc\NASA_heli_vid1016-106-video6.avi">Sony&#160;&#34;Qrio&#34;&#160;humanoid</a><br/>
+<a href="..\..\..\..\home\talks\movies\CambPhilSoc\NASA_heli_vid1016-106-video6.avi">Robot&#160;car</a><br/>
+<a href="..\..\..\..\home\talks\movies\CambPhilSoc\NASA_heli_vid1016-106-video6.avi">Visual&#160;cruise&#160;control</a><br/>
+<a href="..\..\..\..\home\talks\movies\CambPhilSoc\NASA_heli_vid1016-106-video6.avi">Live&#160;Object</a><br/>
+<a href="..\..\..\..\home\talks\movies\CambPhilSoc\NASA_heli_vid1016-106-video6.avi">Xbox&#160;Natal</a><br/>
+1<br/>
+<hr/>
+<a name=2></a><img src="./Blake_1-2_1.jpg"/><br/>
+<img src="./Blake_1-2_2.jpg"/><br/>
+<img src="./Blake_1-2_3.jpg"/><br/>
+<img src="./Blake_1-2_4.jpg"/><br/>
+<img src="./Blake_1-2_5.jpg"/><br/>
+<img src="./Blake_1-2_6.jpg"/><br/>
+<img src="./Blake_1-2_7.jpg"/><br/>
+<img src="./Blake_1-2_8.jpg"/><br/>
+Seeing:&#160;hardware&#160;or&#160;software?<br/>
+<b>Hypercolumns&#160;in&#160;visual&#160;cortex</b><br/>
+<b>(Mountcastle&#160;-&#160;1957,&#160;Hubel&#160;&amp;&#160;Wiesel&#160;-&#160;1962)</b><br/>
+An&#160;account&#160;of&#160;how&#160;vision&#160;might&#160;work<br/>
+Having&#160;the&#160;ability&#160;to&#160;test&#160;hypotheses<br/>
+Dealing with&#160;the&#160;ambiguity&#160;of&#160;the&#160;visual&#160;world<br/>
+Having&#160;the&#160;ability&#160;to&#160;“fuse”&#160;information<br/>
+Having&#160;the&#160;ability&#160;to&#160;learn<br/>
+Reasoning with&#160;probabilities<br/>
+2<br/>
+<hr/>
+<a name=3></a><img src="./Blake_1-3_1.jpg"/><br/>
+Machines&#160;that see<br/>
+<i>...&#160;perceptions&#160;are&#160;predictive,&#160;never entirely certain,&#160;</i>hypotheses&#160;<i>of&#160;what&#160;may&#160;be&#160;out&#160;there.</i><br/>
+R.L.&#160;Gregory,&#160;psychologist,&#160;1966<br/>
+<i>...&#160;the&#160;essential&#160;problem&#160;of&#160;perception&#160;...&#160;is&#160;how&#160;reliable&#160;knowledge&#160;of&#160;the&#160;world&#160;around&#160;us&#160;is&#160;<br/>extracted&#160;from a&#160;mass&#160;of&#160;noisy&#160;and&#160;potentially&#160;misleading&#160;sensory&#160;messages.</i><br/>
+<i>What&#160;I&#160;am&#160;suggesting&#160;is&#160;that&#160;the&#160;statistical&#160;step&#160;of&#160;extracting&#160;knowledge&#160;is&#160;often&#160;solved&#160;<br/>before&#160;we&#160;consciously&#160;perceive&#160;anything&#160;at&#160;all,&#160;and&#160;that&#160;is&#160;why&#160;our&#160;perceptions&#160;are&#160;usually&#160;<br/>reliable.</i><br/>
+HB&#160;Barlow,&#160;neurophysiologist,&#160;1980.<br/>
+<i>As&#160;Grenander&#160;has&#160;emphasized,&#160;a&#160;very&#160;useful&#160;test&#160;for a&#160;class&#160;of&#160;models&#160;is&#160;to&#160;synthesize&#160;from&#160;<br/>it,&#160;i.e.&#160;choose&#160;random&#160;samples&#160;according&#160;to&#160;this&#160;probability&#160;measure&#160;and&#160;to&#160;see&#160;how&#160;well&#160;<br/>they&#160;resemble&#160;the&#160;signals.</i><br/>
+D.&#160;Mumford,&#160;mathematician,&#160;2002.<br/>
+“Particles” for&#160;head&#160;location<br/>
+3<br/>
+<hr/>
+<a name=4></a><img src="./Blake_1-4_1.jpg"/><br/>
+<img src="./Blake_1-4_2.jpg"/><br/>
+Tracking&#160;against&#160;clutter 2<br/>
+Visual&#160;ambiguity&#160;in&#160;the&#160;location&#160;of&#160;a&#160;head<br/>
+<i>z</i><br/>
+<i>z</i><br/>
+<i>1</i><br/>
+<i>M</i><br/>
+<i>x</i><br/>
+4<br/>
+<hr/>
+<a name=5></a><img src="./Blake_1-5_1.jpg"/><br/>
+<img src="./Blake_1-5_2.jpg"/><br/>
+<img src="./Blake_1-5_3.png"/><br/>
+<img src="./Blake_1-5_4.jpg"/><br/>
+<img src="./Blake_1-5_5.png"/><br/>
+<img src="./Blake_1-5_6.jpg"/><br/>
+<img src="./Blake_1-5_7.jpg"/><br/>
+<img src="./Blake_1-5_8.jpg"/><br/>
+<img src="./Blake_1-5_9.jpg"/><br/>
+..&#160;What&#160;is&#160;hard&#160;about vision&#160;--&#160;ambiguity<br/>
+--&#160;what you&#160;want from an&#160;interactive&#160;segmentation:<br/>
+--&#160;what you&#160;get&#160;from local analysis&#160;of&#160;colour and&#160;texture:<br/>
+...&#160;more&#160;ambiguity<br/>
+true&#160;depths<br/>
+computed<br/>depths<br/>
+Stereo&#160;Vision&#160;–&#160;local analysis<br/>
+(Scharstein&#160;&amp;&#160;Szeliski&#160;2002)<br/>
+5<br/>
+<hr/>
+<a name=6></a><img src="./Blake_1-6_1.jpg"/><br/>
+<img src="./Blake_1-6_2.jpg"/><br/>
+<img src="./Blake_1-6_3.jpg"/><br/>
+<img src="./Blake_1-6_4.jpg"/><br/>
+<img src="./Blake_1-6_5.jpg"/><br/>
+<img src="./Blake_1-6_6.jpg"/><br/>
+Fusion&#160;of cues: sound&#160;and visual&#160;<br/>
+appearance<br/>
+Sound&#160;only<br/>
+Appearance&#160;only<br/>
+Fusion&#160;with&#160;sound&#160;and&#160;appearance<br/>
+Learning&#160;by&#160;example<br/>
+faces<br/>
+(Viola&#160;&amp;&#160;Jones,&#160;2001)<br/>
+non-faces<br/>
+6<br/>
+<hr/>
+<a name=7></a><img src="./Blake_1-7_1.jpg"/><br/>
+<img src="./Blake_1-7_2.jpg"/><br/>
+<img src="./Blake_1-7_3.jpg"/><br/>
+<img src="./Blake_1-7_4.jpg"/><br/>
+<img src="./Blake_1-7_5.jpg"/><br/>
+An&#160;account&#160;of&#160;how&#160;vision&#160;might&#160;work<br/>
+Having&#160;the&#160;ability&#160;to&#160;test&#160;hypotheses<br/>
+Dealing with&#160;the&#160;ambiguity&#160;of&#160;the&#160;visual&#160;world<br/>
+Having&#160;the&#160;ability&#160;to&#160;“fuse”&#160;information<br/>
+Having&#160;the&#160;ability&#160;to&#160;learn<br/>
+Reasoning with&#160;probabilities<br/>
+How&#160;vision&#160;might&#160;work:&#160;digging deeper<br/>
+Remainder&#160;of&#160;lectures&#160;focus&#160;on&#160;one&#160;or two&#160;key&#160;problems&#160;in&#160;<br/>vision:<br/>
+--&#160;principally&#160;the&#160;problem&#160;of&#160;segmentation<br/>--&#160;considered&#160;in&#160;probabilistic/optimization&#160;framework<br/>--&#160;also&#160;look&#160;briefly&#160;at&#160;stereo&#160;vision<br/>--&#160;all&#160;peppered&#160;liberally&#160;with&#160;some&#160;mainstream&#160;apps.<br/>
+7<br/>
+<hr/>
+<a name=8></a><img src="./Blake_1-8_1.jpg"/><br/>
+<img src="./Blake_1-8_2.jpg"/><br/>
+<img src="./Blake_1-8_3.jpg"/><br/>
+<img src="./Blake_1-8_4.jpg"/><br/>
+<img src="./Blake_1-8_5.jpg"/><br/>
+<img src="./Blake_1-8_6.png"/><br/>
+<img src="./Blake_1-8_7.jpg"/><br/>
+<img src="./Blake_1-8_8.jpg"/><br/>
+<img src="./Blake_1-8_9.jpg"/><br/>
+Segmentation&#160;(Berkeley)<br/>
+...&#160;Better&#160;defined&#160;problem:&#160;foreground&#160;segmentation<br/>
+Bayesian&#160;Matting&#160;(Chuang&#160;et&#160;al.&#160;01)<br/>
+8<br/>
+<hr/>
+<a name=9></a><img src="./Blake_1-9_1.png"/><br/>
+<img src="./Blake_1-9_2.png"/><br/>
+<img src="./Blake_1-9_3.png"/><br/>
+<img src="./Blake_1-9_4.jpg"/><br/>
+<img src="./Blake_1-9_5.jpg"/><br/>
+<img src="./Blake_1-9_6.png"/><br/>
+<img src="./Blake_1-9_7.jpg"/><br/>
+<img src="./Blake_1-9_8.jpg"/><br/>
+Mixture&#160;of&#160;Gaussian&#160;colour&#160;priors<br/>
+Training&#160;data&#160;in&#160;Colour&#160;Space<br/>
+Learned&#160;mixture&#160;of&#160;Gaussian&#160;Models<br/>
+MAP&#160;inference&#160;of&#160;&#160;<br/>
+(Ruzon&#160;and&#160;Tomasi 99;&#160;&#160;Chuang,&#160;Curless,&#160;Salesin,&#160;Szeliski&#160;01)<br/>
+...&#160;Segmentation&#160;in camouflage&#160;&#160;<br/>
+9<br/>
+<hr/>
+<a name=10></a><img src="./Blake_1-10_1.png"/><br/>
+<img src="./Blake_1-10_2.png"/><br/>
+Need&#160;for spatial&#160;priors<br/>
+Data&#160;in&#160;Colour&#160;Space<br/>
+Mixture&#160;of&#160;Gaussian&#160;Models<br/>
+--&#160;f/b distributions&#160;intertwined<br/>
+Connecting&#160;up&#160;pixels<br/>
+How&#160;can you&#160;express coherence&#160;in a way&#160;that&#160;is practical?<br/>
+<i>N</i><br/>
+<i>N</i><br/>
+10<br/>
+<hr/>
+<a name=11></a><img src="./Blake_1-11_1.png"/><br/>
+<img src="./Blake_1-11_2.jpg"/><br/>
+<img src="./Blake_1-11_3.jpg"/><br/>
+1st&#160;order&#160;with&#160;stochastic&#160;observations&#160;–&#160;Hidden&#160;Markov&#160;Model<br/>
+HMMs&#160;–&#160;ubiquitous&#160;in&#160;speech&#160;recognition<br/>
+tractable&#160;–<br/>
+(Rabiner,&#160;89;&#160;Jelinek&#160;98)&#160;&#160;&#160;&#160;HTK&#160;(Young,Woodland&#160;et&#160;al.&#160;97)<br/>
+Dynamic&#160;Programming<br/>etc.<br/>
+time<br/>
+Temporal&#160;HMMs in&#160;vision<br/>
+11<br/>
+<hr/>
+<a name=12></a><img src="./Blake_1-12_1.png"/><br/>
+<img src="./Blake_1-12_2.png"/><br/>
+<img src="./Blake_1-12_3.png"/><br/>
+<img src="./Blake_1-12_4.png"/><br/>
+<img src="./Blake_1-12_5.png"/><br/>
+<img src="./Blake_1-12_6.png"/><br/>
+<img src="./Blake_1-12_7.png"/><br/>
+<img src="./Blake_1-12_8.png"/><br/>
+2D&#160;Markov&#160;model?<br/>
+Tree&#160;of&#160;connected pixels<br/>
+Markov Network&#160;(1st&#160;order)<br/>
+(Veksler&#160;2005)<br/>
+(Geman&#160;&amp;&#160;Geman&#160;84;&#160;&#160;Besag,&#160;1974,&#160;<br/>1986)<br/>
+neighbours&#160;of&#160;<i>i</i><br/>
+Independence:<br/>
+where<br/>
+2D&#160;Markov&#160;Model 1st&#160;order&#160;Example<br/>
+<b>Ising&#160;Model</b><br/>
+Binary&#160;variables:<br/>
+Joint&#160;probability&#160;distribution:<br/>
+where<br/>
+and&#160;<br/>
+12<br/>
+<hr/>
+<a name=13></a><img src="./Blake_1-13_1.png"/><br/>
+<img src="./Blake_1-13_2.png"/><br/>
+<img src="./Blake_1-13_3.png"/><br/>
+<img src="./Blake_1-13_4.png"/><br/>
+<img src="./Blake_1-13_5.png"/><br/>
+<img src="./Blake_1-13_6.png"/><br/>
+<img src="./Blake_1-13_7.png"/><br/>
+<img src="./Blake_1-13_8.png"/><br/>
+<img src="./Blake_1-13_9.png"/><br/>
+<img src="./Blake_1-13_10.png"/><br/>
+2D&#160;Markov&#160;simulation&#160;(Swensden&#160;Wang&#160;MCMC)<br/>
+Ising&#160;Model<br/>
+K=0.4<br/>
+K=0.5<br/>
+K=0.55<br/>
+2D&#160;Hidden Markov&#160;Model<br/>
+observation<br/>
+prior<br/>
+likelihood<br/>
+13<br/>
+<hr/>
+<a name=14></a><img src="./Blake_1-14_1.png"/><br/>
+<img src="./Blake_1-14_2.png"/><br/>
+<img src="./Blake_1-14_3.png"/><br/>
+<img src="./Blake_1-14_4.png"/><br/>
+<img src="./Blake_1-14_5.png"/><br/>
+<img src="./Blake_1-14_6.png"/><br/>
+<img src="./Blake_1-14_7.png"/><br/>
+<img src="./Blake_1-14_8.png"/><br/>
+<img src="./Blake_1-14_9.png"/><br/>
+<img src="./Blake_1-14_10.png"/><br/>
+<img src="./Blake_1-14_11.jpg"/><br/>
+Simple&#160;segmentation&#160;---&#160;Ising&#160;prior&#160;<br/>
+MRF&#160;–&#160;expressed&#160;as additive&#160;energy&#160;terms<br/>
+where&#160;“energy”<br/>
+and&#160;&#160;<br/>
+colour<br/>observations<br/>
+(-ve) log-prior&#160;<i>V(x)</i><br/>
+with&#160;&#160;<br/>
+and&#160;&#160;<br/>
+MAP<br/>
+energy/cost&#160;minimization<br/>
+??&#160;How&#160;to compute&#160;<br/>
+ie<br/>
+Segmentation&#160;artefacts&#160;---&#160;Ising&#160;prior&#160;<br/>
+(Boykov&#160;and&#160;Kolmogorov&#160;ICCV&#160;2003)<br/>
+??&#160;How&#160;to overcome&#160;artefacts&#160;<br/>
+14<br/>
+<hr/>
+<a name=15></a><img src="./Blake_1-15_1.png"/><br/>
+<img src="./Blake_1-15_2.png"/><br/>
+<img src="./Blake_1-15_3.png"/><br/>
+<img src="./Blake_1-15_4.png"/><br/>
+<img src="./Blake_1-15_5.png"/><br/>
+<img src="./Blake_1-15_6.png"/><br/>
+<img src="./Blake_1-15_7.png"/><br/>
+Boykov-Jolly&#160;contrast-sensitive&#160;segmentation&#160;<br/>
+(Boykov&#160;and&#160;Jolly&#160;2001;&#160;Rother&#160;et&#160;al.&#160;2004;&#160;Li,&#160;Shum&#160;et&#160;al.&#160;2004&#160;)<br/>
+•&#160;Conditional&#160;Random&#160;Field&#160;--&#160;CRF<br/>
+(Lafferty&#160;et&#160;al.&#160;2001;&#160;Kumar&#160;and&#160;Hebert&#160;2003)<br/>
+with<br/>
+where&#160; now<br/>
+log-”prior”&#160;<i>V(<b>x</b>,<b>z)</b></i><br/>
+data-dependence<br/>
+Labelled&#160;database<br/>
+Available&#160;online:&#160;&#160;http://research.microsoft.com/vision/cambridge/segmentation/<br/>
+15&#160;training&#160;and&#160;35&#160;test&#160;images,&#160;eg:<br/>
+image<br/>
+user&#160;trimap<br/>
+expert&#160;trimap<br/>
+Training&#160;error&#160;for&#160;<b></b><br/>
+:<br/>
+Error&#160;(%)&#160;over&#160;training&#160;set:<br/>
+25<br/>
+(see&#160;also&#160;Blake&#160;et&#160;al.&#160;ECCV&#160;2004)<br/>
+15<br/>
+<hr/>
+<a name=16></a><img src="./Blake_1-16_1.jpg"/><br/>
+<img src="./Blake_1-16_2.jpg"/><br/>
+<img src="./Blake_1-16_3.jpg"/><br/>
+<img src="./Blake_1-16_4.jpg"/><br/>
+<img src="./Blake_1-16_5.jpg"/><br/>
+<img src="./Blake_1-16_6.jpg"/><br/>
+<img src="./Blake_1-16_7.png"/><br/>
+<img src="./Blake_1-16_8.png"/><br/>
+<img src="./Blake_1-16_9.jpg"/><br/>
+<img src="./Blake_1-16_10.png"/><br/>
+<img src="./Blake_1-16_11.png"/><br/>
+<img src="./Blake_1-16_12.png"/><br/>
+<img src="./Blake_1-16_13.png"/><br/>
+<img src="./Blake_1-16_14.png"/><br/>
+GrabCut:&#160;partially&#160;supervised&#160;inference<br/>
+(Rother,&#160;&#160;Kolmogorov&#160;and&#160;Blake,&#160;Siggraph&#160;2004;)<br/>
+Iteration&#160;1)<br/>
+Iteration&#160;2)<br/>
+Iteration&#160;3)<br/>
+Iteration&#160;4)<br/>
+Evaluation&#160;of Grabcut over database<br/>
+<b>Input&#160;Image&#160;&#160;&#160;&#160; &#160;&#160;&#160; &#160;&#160;&#160; &#160;&#160;Ground&#160;Truth</b><br/>
+<b>Trimap&#160;</b><br/>
+<b>Bimap</b><br/>
+<b>Boykov&#160;and&#160;Jolly</b><br/>
+<b>GrabCut</b><br/>
+<b>Error&#160;Rate:&#160;1.36%</b><br/>
+<b>Error&#160;Rate:&#160;2.13%</b><br/>
+User&#160;Interactions&#160;-&#160;considerably&#160;reduced<br/>
+Error rate:&#160;modest&#160;increase<br/>
+<b>GrabCut&#160;–&#160;Interactive&#160;Foreground&#160;Extraction</b><br/>
+14<br/>
+16<br/>
+<hr/>
+<a name=17></a><img src="./Blake_1-17_1.png"/><br/>
+<img src="./Blake_1-17_2.jpg"/><br/>
+<img src="./Blake_1-17_3.jpg"/><br/>
+<img src="./Blake_1-17_4.jpg"/><br/>
+<img src="./Blake_1-17_5.png"/><br/>
+<img src="./Blake_1-17_6.jpg"/><br/>
+<img src="./Blake_1-17_7.png"/><br/>
+<img src="./Blake_1-17_8.jpg"/><br/>
+<img src="./Blake_1-17_9.jpg"/><br/>
+<img src="./Blake_1-17_10.jpg"/><br/>
+<img src="./Blake_1-17_11.jpg"/><br/>
+<img src="./Blake_1-17_12.jpg"/><br/>
+<img src="./Blake_1-17_13.png"/><br/>
+<img src="./Blake_1-17_14.jpg"/><br/>
+<img src="./Blake_1-17_15.jpg"/><br/>
+<img src="./Blake_1-17_16.jpg"/><br/>
+Straightforward&#160;examples<br/>
+<b>GrabCut&#160;–&#160;Interactive&#160;Foreground&#160;Extraction</b><br/>
+10<br/>
+Difficult Examples<br/>
+<b>Fine&#160;structure</b><br/>
+<b>No&#160;telepathy</b><br/>
+<b>Camouflage &amp;&#160;</b><br/>
+<b>Low&#160;Contrast</b><br/>
+Selected&#160;<br/>
+Rectangle<br/>
+Result<br/>
+<b>GrabCut&#160;–&#160;Interactive&#160;Foreground&#160;Extraction</b><br/>
+11<br/>
+17<br/>
+<hr/>
+<a name=18></a><img src="./Blake_1-18_1.png"/><br/>
+<img src="./Blake_1-18_2.png"/><br/>
+<img src="./Blake_1-18_3.png"/><br/>
+<img src="./Blake_1-18_4.png"/><br/>
+<img src="./Blake_1-18_5.png"/><br/>
+<img src="./Blake_1-18_6.png"/><br/>
+<img src="./Blake_1-18_7.png"/><br/>
+<img src="./Blake_1-18_8.png"/><br/>
+<img src="./Blake_1-18_9.png"/><br/>
+MAP&#160;estimation&#160;for&#160;Markov&#160;Random&#160;Fields<br/>
+–&#160;Energy&#160;Minimization&#160;<br/>
+Generally&#160;NP-hard,&#160;so&#160;approximate:<br/>
+Simulated&#160;annealing&#160;[Metropolis,&#160;Rosenbluth,&#160;Rosenbluth,&#160;Teller&#160;and&#160;Teller,&#160;1953]<br/>
+Gibbs&#160;sampling&#160;[Geman&#160;and&#160;Geman&#160;1984]<br/>
+Iterated&#160;conditional&#160;Modes&#160;[Besag&#160;1986]<br/>
+Approximate&#160;variational&#160;extremum&#160;[Mumford&#160;and&#160;Shah&#160;1985,9]<br/>
+Graduated&#160;nonconvexity&#160;[Blake&#160;and&#160;Zisserman&#160;1987]<br/>
+Graph&#160;cut&#160;[Greig,&#160;Porteous&#160;and&#160;Seheult,&#160;1989]<br/>
+Loopy&#160;Belief&#160;Propagation&#160;[Freeman&#160;and&#160;Pasztor,&#160;1999]<br/>
+“Modern”&#160;graph&#160;cut&#160;[Boykov,&#160;Veksler&#160;and&#160;Zabih,&#160;2001]<br/>
+Graph&#160;Cut&#160;engine&#160;for&#160;Markov&#160;segmentation<br/>
+binary&#160;<i><b>x</b></i><br/>
+Source&#160;<i>x=1</i><br/>
+<i>f&#160;(x&#160;=0,z&#160;)</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i&#160;</i><br/>
+Minimum&#160;Cut<br/>
+<i>fi(0)</i><br/>
+<i>fi(0)</i><br/>
+<i>gi,j</i>(0,1)<br/>
+=<i>gi,j</i>(1,0)<br/>
+<i>gk,k’</i><br/>
+<i>f</i><br/>
+<i>f</i><br/>
+<i>i(1)</i><br/>
+<i>i(1)</i><br/>
+<i>g</i><br/>
+Sink<br/>
+<i>x=0</i><br/>
+<i>i,j</i>(0,0)=<i>gi,j</i>(1,1)=0<br/>
+18<br/>
+<hr/>
+<a name=19></a>Ford-Fulkerson&#160;Min-cut/Max&#160;Flow<br/>
+Source&#160;<i>x=1</i><br/>
+Minimum&#160;Cut<br/>
+<i>gi,j</i><br/>
+Sink<br/>
+<i>x=0</i><br/>
+*&#160;Max&#160;flow&#160;you&#160;can&#160;push&#160;through&#160;the&#160;network&#160;=&#160;min&#160;cut<br/>
+--&#160;ie capacity&#160;of&#160;cut&#160;with&#160;smallest&#160;total&#160;capacity<br/>
+*&#160;Links&#160;saturated&#160;by&#160;max&#160;flow&#160;=&#160;links separated&#160;by&#160;min&#160;cut<br/>
+Example: optimization&#160;as&#160;graph cut&#160;problem<br/>
+Problem:<br/>
+min<i><b>x&#160;</b>E&#160;</i>=&#160;<i>f1(x1)&#160;+ f2(x2)&#160;&#160;+ g(x1,x2)</i><br/>
+where:&#160;<i>f1(0)=2;&#160;f1(1)=7;&#160;f2(0)=5;&#160;f2(1)=3;&#160;</i>[all&#160;weights&#160;+ve]<br/>
+<i>g(0,1)=g(1,0)=1;&#160;&#160;g(0,0)=g(1,1)=0;&#160;&#160;&#160;</i>[canonical&#160;form]<br/>
+source&#160;<i>x=1</i><br/>
+Graph:<br/>
+2<br/>
+5<br/>
+<i>1</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+Trial&#160;Solution&#160;&#160;<i>x&#160;=1,&#160;x&#160;=0</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+7<br/>
+3<br/>
+Energy:&#160;<i>E(x&#160;, x&#160;)&#160;= 7+1+5&#160;= 13</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+sink&#160;<i>x=0</i><br/>
+19<br/>
+<hr/>
+<a name=20></a>Example: graph&#160;cut&#160;optimization&#160;–&#160;min&#160;cut/max&#160;flow<br/>
+Solve&#160;(exactly)&#160;by&#160;augmenting&#160;flow:<br/>
+source&#160;<i>x=1</i><br/>
+source&#160;<i>x=1</i><br/>
+source&#160;<i>x=1</i><br/>
+source&#160;<i>x=1</i><br/>
+<b>0&#160;</b>2<br/>
+<b>0&#160;</b>5<br/>
+<b>2&#160;</b>2<br/>
+<b>0&#160;</b>5<br/>
+<b>2&#160;</b>2<br/>
+<b>3&#160;</b>5<br/>
+<b>2&#160;</b>2<br/>
+<b>4&#160;</b>5<br/>
+<b>0</b><i>1</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<b>0</b><i>1</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<b>0</b><i>1</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<b>1</b><i>1</i><br/>
+<i>x</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+<i>x</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+<b>0&#160;</b>7<br/>
+<b>0&#160;</b>3<br/>
+<b>2&#160;</b>7<br/>
+<b>0&#160;</b>3<br/>
+<b>2&#160;</b>7<br/>
+<b>3&#160;</b>3<br/>
+<b>3&#160;</b>7<br/>
+<b>3&#160;</b>3<br/>
+sink&#160;<i>x=0</i><br/>
+sink&#160;<i>x=0</i><br/>
+sink&#160;<i>x=0</i><br/>
+sink&#160;<i>x=0</i><br/>
+Solution&#160;from&#160;saturated&#160;paths<br/>
+<i>x&#160;=0,&#160;x&#160;=1&#160;&#160;&#160;E(x&#160;, x&#160;)&#160;= 2+1+3&#160;= 6</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+Augmenting&#160;flow&#160;<br/>
+[Boykov&#160;and&#160;Kolmogorov,&#160;PAMI&#160;2004]<br/>
+--&#160;Breadth-first search&#160;for&#160;augmenting&#160;paths<br/>
+--&#160;Augment&#160;flow&#160;along&#160;non-saturated&#160;paths<br/>
+--&#160;Termination&#160;if&#160;weights&#160;all&#160;positive<br/>
+--&#160;Typical&#160;complexity&#160;<i>O(n3)&#160;&#160;</i>[Dinic&#160;1970]<br/>
+--&#160;Special&#160;algorithms&#160;for&#160;vision&#160;problems&#160;–&#160;wide,&#160;shallow&#160;<br/>graphs<br/>
+http://www.adastral.ucl.ac.uk/~vladkolm/software.html<br/>
+20<br/>
+<hr/>
+<a name=21></a>Graph&#160;cut&#160;–&#160;submodularity<br/>
+What&#160;energy&#160;functions&#160;<i>E&#160;</i>can&#160;be&#160;minimized&#160;by&#160;graph&#160;cut?<br/>
+--&#160;Augmenting&#160;paths&#160;terminates&#160;finitely&#160;if&#160;all&#160;<br/>costs&#160;+ve.<br/>
+<i>fi(0)</i><br/>
+--&#160;WLOG&#160;reduce&#160;to&#160;canonical&#160;form<br/>
+<i>gi,j</i>(0,1)<br/>
+define<br/>
+<i>D=g</i><br/>
+=<i>g</i><br/>
+<i>i,j(0,1)+gi,j(1,0)&#160;</i>–&#160;<i>gi,j(0,0)-gi,j(1,1)</i><br/>
+<i>i,j</i>(1,0)<br/>
+canonical<i>g</i><br/>
+form:<br/>
+<i>i,j(0,0)=gi,j(1,1)</i>&#160;<i>0;</i><br/>
+<i>fi(1)</i><br/>
+<i>gi,j(0,1)=gi,j(1,0)</i>&#160;<i>D/2;</i><br/>
+<i>f&#160;(x&#160;)</i>¸&#160;<i>0</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+--&#160;Solvability&#160;if&#160;<i>D</i>¸&#160;<i>0&#160;&#160;</i>[invariant&#160;to&#160;transfms&#160;of&#160;problem]<br/>
+[Kolmogorov&#160;and&#160;Zabih&#160;2004]<br/>
+Regularity: achieving&#160;canonical&#160;form&#160;<br/>
+[Kolmogorov&#160;and&#160;Zabih&#160;PAMI&#160;2004]<br/>
+Simplifying&#160;unary&#160;&#160;<i>fi(xi&#160;)&#160;</i>:<br/>
+<i>m&#160;=&#160;</i>min<i>(fi(0&#160;),&#160;fi(1&#160;))</i><br/>
+<i>if&#160;m&lt;0</i><br/>
+<i>fi(0)&#160;:=&#160;fi(0)&#160;-&#160;m</i><br/>
+--&#160;reparameterization<br/>
+<i>fi(1)&#160;:=&#160;fi(1)&#160;-&#160;m</i><br/>
+???&#160;Simplifying&#160;pairwise&#160;&#160;<i>gi,j(xi&#160;,xj&#160;)&#160;</i>:<br/>
+21<br/>
+<hr/>
+<a name=22></a><img src="./Blake_1-22_1.png"/><br/>
+<img src="./Blake_1-22_2.png"/><br/>
+...&#160;Regularity: achieving&#160;canonical form<br/>
+[Kolmogorov&#160;and&#160;Zabih&#160;2004]<br/>
+Simplifying&#160;pairwise&#160;&#160;<i>gi,j(xi&#160;,xj&#160;)&#160;</i>:<br/>
+<i>g(0,0)</i><br/>
+<i>g(0,1)</i><br/>
+<i>0</i><br/>
+<i>g(0,1)&#160;-g(0,0)</i><br/>
+<i>g(1,0)</i><br/>
+<i>g(1,1)</i><br/>
+<i>g(1,0)&#160;–g(0,0)</i><br/>
+<i>g(1,1)&#160;–g(0,0)</i><br/>
+<i>0</i><br/>
+<i>0</i><br/>
+<i>0</i><br/>
+<i>0</i><br/>
+<i>g(1,0)&#160;–g(0,0)</i><br/>
+<i>0</i><br/>
+<i>g(1,0)&#160;–g(0,0)</i><br/>
+<i>g(1,1)&#160;–g(0,1)</i><br/>
+<i>-g(1,1)&#160;+g(0,1)</i><br/>
+<i>D</i><br/>
+--&#160;reparameterization<br/>
+Graph&#160;cut&#160;–&#160;submodularity<br/>
+Do&#160;they&#160;satisfy&#160;submodularity?<br/>
+<i>g(x,x’)</i><br/>
+<i>x</i><br/>
+<i>0</i><br/>
+<i>1</i><br/>
+<i>0&#160;0&#160;&#160;&#160;</i><br/>
+Ising&#160;prior<br/>
+<i>x’1&#160;0</i><br/>
+?<br/>
+Ising&#160;with&#160;contrast sensitivity<br/>
+?<br/>
+22<br/>
+<hr/>
+<a name=23></a><img src="./Blake_1-23_1.jpg"/><br/>
+Dynamic&#160;graph cut&#160;–&#160;Markov&#160;editing.<br/>
+Boykov,&#160;Y.,&#160;Jolly,&#160;M.P.:&#160;Interactive&#160;graph&#160;cuts&#160;for&#160;optimal&#160;boundary&#160;and&#160;region&#160;segmentation&#160;of&#160;objects&#160;in&#160;N-D&#160;<br/>images.&#160;Proc&#160;CVPR&#160;2001.<br/>
+1)<br/>
+2)<br/>
+3)<br/>
+4)<br/>
+Dynamic graph&#160;cuts<br/>
+(Boykov&#160;and&#160;Jolly,&#160;2001;&#160;Kohli&#160;&amp;&#160;Torr&#160;ICCV&#160;2005)<br/>
+Changing&#160;the&#160;unaries:<br/>
+Re-use&#160;old&#160;flow&#160;with&#160;new&#160;Energy&#160;fn&#160;&#160;&#160;&#160;&#160;???problem<br/>
+Where&#160;flow&#160;exceeds&#160;capacity&#160;by&#160;<i>c</i>,&#160;reparametrise:<br/>
+source<br/>
+source<br/>
+<i>fi(0)&#160;:=&#160;fi(0)&#160;+&#160;c</i><br/>
+<i>fi(0)</i><br/>
+<i>fi(0)+c</i><br/>
+<i>fi(1)&#160;:=&#160;fi(1)&#160;+&#160;c</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>1</i><br/>
+<i>1</i><br/>
+<i>fi(1)</i><br/>
+<i>fi(1)+c</i><br/>
+???Changing&#160;the&#160;pairwise&#160;potentials<br/>
+sink&#160;<br/>
+sink&#160;<br/>
+23<br/>
+<hr/>
+<a name=24></a><img src="./Blake_1-24_1.jpg"/><br/>
+Dynamic graph&#160;cuts<br/>
+(Boykov&#160;and&#160;Jolly,&#160;2001;&#160;Kohli&#160;&amp;&#160;Torr&#160;ICCV&#160;2005)<br/>
+Changing&#160;the&#160;binaries:<br/>
+Where&#160;flow,&#160;eg&#160;F2,1&#160;exceeds&#160;capacity&#160;by&#160;e,&#160;reparametrise:<br/>
+source&#160;s<br/>
+source&#160;s<br/>
+Fs,1<br/>
+Fs,1+e<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+<i>1</i><br/>
+<i>2</i><br/>
+F<br/>
+F<br/>
+2,1<br/>
+2,1&#160;-e<br/>
+F2,t<br/>
+F2,t+e<br/>
+sink&#160;t<br/>
+sink&#160;t<br/>
+--&#160;then&#160;follow&#160;procedure&#160;for&#160;unary&#160;flow&#160;excess<br/>
+???&#160;what’s&#160;this&#160;good&#160;for<br/>
+Dynamic graph&#160;cuts<br/>
+(Kohli&#160;&amp;&#160;Torr&#160;ICCV&#160;2005)<br/>
+details&#160;to&#160;follow.<br/>
+24<br/>
+<hr/>
+<a name=25></a><img src="./Blake_1-25_1.jpg"/><br/>
+<img src="./Blake_1-25_2.png"/><br/>
+<img src="./Blake_1-25_3.jpg"/><br/>
+<img src="./Blake_1-25_4.png"/><br/>
+<img src="./Blake_1-25_5.jpg"/><br/>
+<img src="./Blake_1-25_6.png"/><br/>
+<img src="./Blake_1-25_7.png"/><br/>
+<img src="./Blake_1-25_8.png"/><br/>
+Stereo&#160;matching&#160;–&#160;full&#160;depth<br/>
+e<br/>
+magI<br/>ht&#160;<br/>ig<br/>R<br/>
+Left&#160;Image<br/>
+Stereo&#160;matching&#160;--&#160;cost function<br/>
+(Ohta&#160;&amp;&#160;Kanade,&#160;1985;&#160;Cox,&#160;Hingorani&#160;&amp;&#160;Rao,&#160;1996;&#160;Belhumeur&#160;1996)<br/>
+Minimize:<br/>
+log-prior&#160;<i>V(<b>x</b>)</i><br/>
+log-likelihood&#160;<i>U(<b>x</b>,<b>z</b>)</i><br/>
+“Potts”<br/>
+Note:&#160;<i>x&#160;</i>now&#160;integer&#160;valued<br/>
+max&#160;disparity<br/>
+1D&#160;DP:&#160;Dijkstra<br/>
+??&#160;2D algorithm<br/>
+25<br/>
+<hr/>
+<a name=26></a><img src="./Blake_1-26_1.jpg"/><br/>
+<img src="./Blake_1-26_2.jpg"/><br/>
+<img src="./Blake_1-26_3.png"/><br/>
+<img src="./Blake_1-26_4.png"/><br/>
+<img src="./Blake_1-26_5.png"/><br/>
+<img src="./Blake_1-26_6.png"/><br/>
+<img src="./Blake_1-26_7.png"/><br/>
+<img src="./Blake_1-26_8.png"/><br/>
+Nonlinear&#160;image&#160;restoration<br/>
+data<br/>
+with<br/>
+data<br/>
+coherence<br/>
+Image&#160;restoration<br/>
+noise&#160;model<br/>
+??&#160;choice&#160;of&#160;<i>g</i><br/>
+Graph&#160;cut&#160;–&#160;expanded&#160;graph&#160;(Roy&#160;and&#160;Cox,&#160;ICCV 1998)<br/>
+Problem&#160;graph&#160;of&#160;size&#160;<i>n&#160;</i>nodes,&#160;with&#160;<i>k&#160;</i>integer&#160;levels:<br/>
+--&#160;optimize&#160;by&#160;cutting&#160;graph&#160;of&#160;<i>nk+2&#160;</i>nodes<br/>
+<i>f&#160;(x&#160;=3,z&#160;)</i><br/>
+<i>k</i><br/>
+<i>k</i><br/>
+<i>k</i><br/>
+(Ishikawa,&#160;03)<br/>
+<i>f&#160;(x&#160;=1,z&#160;)</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+1<br/>
+<i>i</i><br/>
+??&#160;<i>g</i><br/>
+26<br/>
+<hr/>
+<a name=27></a><img src="./Blake_1-27_1.png"/><br/>
+<img src="./Blake_1-27_2.png"/><br/>
+<img src="./Blake_1-27_3.png"/><br/>
+<img src="./Blake_1-27_4.png"/><br/>
+<img src="./Blake_1-27_5.png"/><br/>
+<img src="./Blake_1-27_6.png"/><br/>
+Convexity&#160;constraint&#160;(general connectivity)<br/>
+(Ishikawa&#160;03)<br/>
+Suppose:<br/>
+then<br/>
+must&#160;be&#160;convex<br/>
+??&#160;beyond&#160;convexity<br/>
+Graph&#160;cut&#160;–&#160;®-expansion<br/>
+Alternative&#160;optimizer&#160;for<br/>
+with<br/>
+<i>x</i>2&#160;<i>{1,....,L}</i><br/>
+–&#160;repeated&#160;binary&#160;optimization:<br/>
+--&#160;cycle&#160;over&#160;®&#160;in&#160;the&#160;range&#160;of&#160;<i>x&#160;:</i><br/>
+??&#160;escapes limitations&#160;on&#160;<i>g</i><br/>
+27<br/>
+<hr/>
+<a name=28></a><img src="./Blake_1-28_1.png"/><br/>
+<img src="./Blake_1-28_2.png"/><br/>
+<img src="./Blake_1-28_3.png"/><br/>
+<img src="./Blake_1-28_4.png"/><br/>
+<img src="./Blake_1-28_5.png"/><br/>
+Submodularity&#160;–&#160;®-expansion<br/>
+(Kolmogorov&#160;and&#160;Zabih,&#160;PAMI&#160;2004)<br/>
+Back&#160;to&#160;integer-valued&#160;problems: restoration,&#160;stereo,&#160;Tapestry,&#160;obj-rec&#160;with&#160;parts.<br/>
+Given:<br/>
+<i>y</i><br/>
+giving<br/>
+<i>gy(y,y’)</i><br/>
+<i>0</i><br/>
+<i>1</i><br/>
+<i>0</i><br/>
+<i>g(x,x’)&#160;g(x,</i>®<i>)</i><br/>
+<i>y’</i><br/>
+<i>g(</i>®<i>,x’)&#160;g(</i>®<i>,</i>®<i>)</i><br/>
+<i>1</i><br/>
+then&#160;regularity&#160;requires&#160;(diagonal&#160;subdominance):<br/>
+<i>g(x,x’)&#160;+&#160;g(</i>®<i>,</i>®<i>)&#160;&#160;&#160;</i>·&#160;<i>g(x,</i>®<i>)&#160;+&#160;g(</i>®&#160;<i>,&#160;x’)</i><br/>
+satisfied&#160;by&#160;any&#160;metric&#160;<i>g&#160;</i>(since:&#160;<i>g</i>¸&#160;<i>0;&#160;&#160;&#160;g(</i>®<i>,</i>®<i>)=0;&#160;</i>triangle&#160;ineq)<br/>
+--&#160;eg&#160;Potts<br/>
+Submodularity&#160;–&#160;®-¯&#160;swap<br/>
+Alternative&#160;move&#160;–&#160;more&#160;expensive&#160;–&#160;more&#160;generality&#160;in&#160;model<br/>
+Given:<br/>
+<i>y</i><br/>
+giving<br/>
+<i>gy(y,y’)</i><br/>
+<i>0</i><br/>
+<i>1</i><br/>
+<i>0</i><br/>
+<i>g(</i>¯<i>,</i>¯<i>)&#160;g(</i>®<i>,</i>¯<i>)</i><br/>
+<i>y’</i><br/>
+<i>g(</i>¯<i>,</i>®<i>)&#160;g(</i>®<i>,</i>®<i>)</i><br/>
+<i>1</i><br/>
+then&#160;regularity&#160;requires&#160;(diagonal&#160;subdominance):<br/>
+<i>g(</i><br/>
+<i>,</i><br/>
+<i>)&#160;+&#160;g(b,b)&#160;&#160;&#160;</i>·&#160;<i>g(</i><br/>
+<i>,b)&#160;+&#160;g(b,</i><br/>
+<i>)</i><br/>
+class&#160;of&#160;<i>g&#160;</i>?<br/>
+satisfied&#160;by&#160;any&#160;semi-metric&#160;<i>g&#160;</i>(since:&#160;<i>g</i>¸&#160;<i>0;&#160;&#160;&#160;g(</i><br/>
+<i>,</i><br/>
+<i>)=0</i>)<br/>
+--&#160;eg&#160;<br/>
+28<br/>
+<hr/>
+<a name=29></a><img src="./Blake_1-29_1.png"/><br/>
+<img src="./Blake_1-29_2.png"/><br/>
+<img src="./Blake_1-29_3.png"/><br/>
+<img src="./Blake_1-29_4.png"/><br/>
+<img src="./Blake_1-29_5.png"/><br/>
+<img src="./Blake_1-29_6.png"/><br/>
+<img src="./Blake_1-29_7.png"/><br/>
+<img src="./Blake_1-29_8.jpg"/><br/>
+<img src="./Blake_1-29_9.jpg"/><br/>
+Energy&#160;bound&#160;for&#160;®-expansion<br/>
+(Boykov,&#160;Veksler&#160;and&#160;Zabih,&#160;PAMI&#160;2001)<br/>
+Problem&#160;as usual:<br/>
+Global&#160;minimum<br/>
+Local&#160;min&#160;under<br/><br/>
+-expansion:<br/>
+Energy&#160;bound<br/>
+where<br/>
+??&#160;bound&#160;for&#160;Potts<br/>
+Energy&#160;bound&#160;–&#160;is&#160;it&#160;useful??<br/>
+(Lempitsky,&#160;Rother&#160;and&#160;Blake,&#160;ICCV&#160;2007)<br/>
+Sample&#160;restoration&#160;problem:<br/>
+??&#160;useful&#160;bound<br/>
+29<br/>
+<hr/>
+<a name=30></a><img src="./Blake_1-30_1.jpg"/><br/>
+<img src="./Blake_1-30_2.jpg"/><br/>
+Results&#160;of&#160;stereo&#160;matching<br/>
+(Woodford,&#160;Torr,&#160;Reid,&#160;Fitzgibbon&#160;2008)<br/>
+30<br/>
+<hr/>
+</body>
+</html>

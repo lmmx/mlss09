@@ -1,0 +1,1057 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Approximate&#160;Inference<br/>
+Part&#160;1&#160;of&#160;2<br/>
+Tom&#160;Minka<br/>
+Microsoft&#160;Research,&#160;Cambridge,&#160;UK<br/>
+Machine&#160;Learning&#160;Summer&#160;School&#160;2009<br/>
+http://mlg.eng.cam.ac.uk/mlss09/<br/>
+<hr/>
+<a name=2></a>Bayesian&#160;paradigm<br/>
+•&#160;Consistent&#160;use&#160;of&#160;probability&#160;theory&#160;for&#160;<br/>
+representing&#160;unknowns&#160;(parameters,&#160;<br/>latent&#160;variables,&#160;missing&#160;data)<br/>
+<hr/>
+<a name=3></a>Bayesian&#160;paradigm<br/>
+•&#160;Bayesian&#160;posterior&#160;distribution&#160;<br/>
+summarizes&#160;what&#160;we’ve&#160;learned&#160;from&#160;<br/>training&#160;data&#160;and&#160;prior&#160;knowledge<br/>
+•&#160;Can<br/>
+a&#160;&#160;<br/>
+n&#160;u<br/>
+&#160;&#160;s<br/>
+u&#160;e&#160;<br/>
+e&#160;p<br/>
+&#160;&#160;o<br/>
+p&#160;s<br/>
+o&#160;te<br/>
+t&#160;r<br/>
+e&#160;io<br/>
+i&#160;r<br/>
+o&#160;&#160;t<br/>
+&#160;&#160;o<br/>
+t&#160;:<br/>
+o<br/>
+–&#160;Describe&#160;training&#160;data<br/>
+–&#160;Make&#160;predictions&#160;on&#160;test&#160;data<br/>
+–&#160;Incorporate&#160;new&#160;data&#160;(online&#160;learning)<br/>
+•&#160;Today’s&#160;question:&#160;How&#160;to&#160;efficiently&#160;<br/>
+represent&#160;and&#160;compute&#160;posteriors?<br/>
+<hr/>
+<a name=4></a>Factor&#160;graphs<br/>
+•&#160;Shows&#160;how&#160;a&#160;function&#160;of&#160;several&#160;variables&#160;<br/>
+can&#160;be&#160;factored&#160;into&#160;a&#160;product&#160;of&#160;simpler&#160;<br/>functions<br/>
+•&#160;f(<br/>
+f&#160;x,y<br/>
+,&#160;,z<br/>
+,&#160;)&#160;=<br/>
+&#160;&#160;&#160;(<br/>
+&#160;&#160;x+y)(y+z)(x+<br/>
+x&#160;z)<br/>
+•&#160;Very&#160;useful&#160;for&#160;representing&#160;posteriors<br/>
+<hr/>
+<a name=5></a>Example&#160;factor&#160;graph<br/>
+<i>p</i>(<i>x&#160;</i>|&#160;<i>m</i>)&#160;=&#160;<i>N&#160;</i>(<i>x&#160;</i>;&#160;<i>m&#160;</i>)<br/>
+1<br/>
+,<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<hr/>
+<a name=6></a>Two&#160;tasks<br/>
+•&#160;Modeling<br/>
+–&#160;What&#160;graph&#160;should&#160;I&#160;use&#160;for&#160;this&#160;data?<br/>
+•&#160;Inference<br/>
+–&#160;Gi<br/>
+G&#160;ven&#160;t<br/>
+&#160;&#160;he&#160;graph&#160;and&#160;data,&#160;wh<br/>
+w&#160;at&#160;is&#160;t<br/>
+&#160;&#160;he&#160;me<br/>
+m&#160;an&#160;<br/>
+of&#160;x&#160;(for&#160;example)?<br/>
+–&#160;Algorithms:&#160;<br/>
+•&#160;Sampling<br/>•&#160;Variable&#160;elimination<br/>•&#160;Message-passing&#160;(Expectation&#160;Propagation,&#160;<br/>
+Variational&#160;Bayes,&#160;…)<br/>
+<hr/>
+<a name=7></a>A&#160;<br/>
+A&#160;(<br/>
+&#160;&#160;see<br/>
+e&#160;m<br/>
+e&#160;i<br/>
+m&#160;ng<br/>
+n&#160;l<br/>
+g&#160;y)&#160;int<br/>
+n&#160;rac<br/>
+a&#160;tab<br/>
+a&#160;l<br/>
+b&#160;e&#160;<br/>
+e&#160;pr<br/>
+p&#160;ob<br/>
+o&#160;l<br/>
+b&#160;em<br/>
+e<br/>
+<hr/>
+<a name=8></a><img src="./Minka_slides1-8_1.png"/><br/>
+<img src="./Minka_slides1-8_2.png"/><br/>
+<img src="./Minka_slides1-8_3.png"/><br/>
+<img src="./Minka_slides1-8_4.png"/><br/>
+<img src="./Minka_slides1-8_5.png"/><br/>
+Clutter&#160;problem<br/>
+•&#160;Want&#160;to&#160;estimate&#160;x&#160;given&#160;multiple&#160;y’s<br/>
+<hr/>
+<a name=9></a>Exact&#160;posterior<br/>
+exact<br/>
+)<br/>,D<br/>(x<br/>p<br/>
+-1<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+x<br/>
+<hr/>
+<a name=10></a><img src="./Minka_slides1-10_1.png"/><br/>
+<img src="./Minka_slides1-10_2.png"/><br/>
+<img src="./Minka_slides1-10_3.png"/><br/>
+<img src="./Minka_slides1-10_4.png"/><br/>
+Representing&#160;posterior&#160;distributions<br/>
+Sampling<br/>
+Deterministic&#160;approximation<br/>
+Good&#160;for&#160;complex,<br/>
+Good&#160;for&#160;simple,&#160;<br/>
+multi-modal&#160;distributions<br/>
+smooth&#160;distributions<br/>
+Slow,&#160;but&#160;predictable&#160;accuracy<br/>
+Fast,&#160;but&#160;unpredictable&#160;accuracy<br/>
+<hr/>
+<a name=11></a><img src="./Minka_slides1-11_1.png"/><br/>
+<img src="./Minka_slides1-11_2.png"/><br/>
+<img src="./Minka_slides1-11_3.png"/><br/>
+Deterministic&#160;approximation<br/>
+Laplace’s&#160;method<br/>•&#160;Bayesian&#160;curve&#160;fitting,&#160;neural&#160;&#160;&#160;&#160;<br/>networks&#160;(MacKay)<br/>•&#160;Bayesian&#160;PCA&#160;(Minka)<br/>
+Variational&#160;bounds<br/>•&#160;Bayesian&#160;mixture&#160;of&#160;experts&#160;(Waterhouse)<br/>•&#160;Mixtures&#160;of&#160;PCA&#160;(Tipping,&#160;Bishop)<br/>•&#160;Factorial/coupled&#160;Markov&#160;models&#160;<br/>(Ghahramani,&#160;Jordan,&#160;Williams)<br/>
+<hr/>
+<a name=12></a><img src="./Minka_slides1-12_1.png"/><br/>
+<img src="./Minka_slides1-12_2.png"/><br/>
+Moment&#160;matching<br/>
+Another&#160;way&#160;to&#160;perform<br/>deterministic&#160;approximation<br/>•&#160;Much&#160;higher&#160;accuracy&#160;on&#160;some&#160;<br/>problems<br/>
+Assumed-density&#160;filtering<br/>
+(1984)<br/>
+Loopy&#160;belief&#160;propagation<br/>
+(1997)<br/>
+Expectation&#160;Propagation<br/>
+(2001)<br/>
+<hr/>
+<a name=13></a>Today<br/>
+•&#160;Moment&#160;matching&#160;<br/>
+(Expectation&#160;Propagation)<br/>
+Tomorrow<br/>
+•&#160;Variational&#160;bounds&#160;<br/>
+(Variational&#160;Message&#160;Passing)<br/>
+<hr/>
+<a name=14></a>Best&#160;Gaussian&#160;by&#160;moment&#160;<br/>
+matching<br/>
+exact<br/>bestGaussian<br/>
+)<br/>,D<br/>(x<br/>p<br/>
+-1<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+x<br/>
+<hr/>
+<a name=15></a><img src="./Minka_slides1-15_1.png"/><br/>
+<img src="./Minka_slides1-15_2.png"/><br/>
+<img src="./Minka_slides1-15_3.png"/><br/>
+<img src="./Minka_slides1-15_4.png"/><br/>
+<img src="./Minka_slides1-15_5.png"/><br/>
+<img src="./Minka_slides1-15_6.png"/><br/>
+<img src="./Minka_slides1-15_7.png"/><br/>
+<img src="./Minka_slides1-15_8.png"/><br/>
+Strategy<br/>
+•&#160;Approximate&#160;<i>each&#160;</i>factor&#160;by&#160;a&#160;Gaussian&#160;in&#160;<br/>
+x<br/>
+<hr/>
+<a name=16></a>Approximating&#160;a&#160;single&#160;factor<br/>
+<hr/>
+<a name=17></a><img src="./Minka_slides1-17_1.png"/><br/>
+<img src="./Minka_slides1-17_2.png"/><br/>
+<img src="./Minka_slides1-17_3.png"/><br/>
+<img src="./Minka_slides1-17_4.png"/><br/>
+(naïve)<br/>
+<i>f&#160;</i>(<i>x</i>)<br/>
+<i>i</i><br/>
+×<br/>
+\<br/>
+×<br/>
+<i>q&#160;i</i><br/>
+<i>q&#160;</i>(<i>x</i>)<br/>
+=<br/>
+<i>p</i>(<i>x</i>)<br/>
+<hr/>
+<a name=18></a><img src="./Minka_slides1-18_1.png"/><br/>
+<img src="./Minka_slides1-18_2.png"/><br/>
+<img src="./Minka_slides1-18_3.png"/><br/>
+<img src="./Minka_slides1-18_4.png"/><br/>
+(informed)<br/>
+<i>f&#160;</i>(<i>x</i>)<br/>
+<i>i</i><br/>
+×<br/>
+\<br/>
+<i>q&#160;i</i><br/>
+×<br/>
+<i>q&#160;</i>(<i>x</i>)<br/>
+=<br/>
+<i>p</i>(<i>x</i>)<br/>
+<hr/>
+<a name=19></a>Single&#160;factor&#160;with&#160;Gaussian&#160;context<br/>
+<hr/>
+<a name=20></a><img src="./Minka_slides1-20_1.png"/><br/>
+<img src="./Minka_slides1-20_2.png"/><br/>
+<img src="./Minka_slides1-20_3.png"/><br/>
+<img src="./Minka_slides1-20_4.png"/><br/>
+<img src="./Minka_slides1-20_5.png"/><br/>
+<img src="./Minka_slides1-20_6.png"/><br/>
+<img src="./Minka_slides1-20_7.png"/><br/>
+<img src="./Minka_slides1-20_8.png"/><br/>
+<img src="./Minka_slides1-20_9.png"/><br/>
+<img src="./Minka_slides1-20_10.png"/><br/>
+<img src="./Minka_slides1-20_11.png"/><br/>
+<img src="./Minka_slides1-20_12.png"/><br/>
+<img src="./Minka_slides1-20_13.png"/><br/>
+<img src="./Minka_slides1-20_14.png"/><br/>
+<img src="./Minka_slides1-20_15.png"/><br/>
+<img src="./Minka_slides1-20_16.png"/><br/>
+<img src="./Minka_slides1-20_17.png"/><br/>
+<img src="./Minka_slides1-20_18.png"/><br/>
+<img src="./Minka_slides1-20_19.png"/><br/>
+<img src="./Minka_slides1-20_20.png"/><br/>
+<img src="./Minka_slides1-20_21.png"/><br/>
+<img src="./Minka_slides1-20_22.png"/><br/>
+<img src="./Minka_slides1-20_23.png"/><br/>
+<img src="./Minka_slides1-20_24.png"/><br/>
+<img src="./Minka_slides1-20_25.png"/><br/>
+<img src="./Minka_slides1-20_26.png"/><br/>
+<img src="./Minka_slides1-20_27.png"/><br/>
+<img src="./Minka_slides1-20_28.png"/><br/>
+<img src="./Minka_slides1-20_29.png"/><br/>
+<img src="./Minka_slides1-20_30.png"/><br/>
+<img src="./Minka_slides1-20_31.png"/><br/>
+<img src="./Minka_slides1-20_32.png"/><br/>
+<img src="./Minka_slides1-20_33.png"/><br/>
+<img src="./Minka_slides1-20_34.png"/><br/>
+<img src="./Minka_slides1-20_35.png"/><br/>
+<img src="./Minka_slides1-20_36.png"/><br/>
+<img src="./Minka_slides1-20_37.png"/><br/>
+<img src="./Minka_slides1-20_38.png"/><br/>
+<img src="./Minka_slides1-20_39.png"/><br/>
+<img src="./Minka_slides1-20_40.png"/><br/>
+<img src="./Minka_slides1-20_41.png"/><br/>
+<img src="./Minka_slides1-20_42.png"/><br/>
+<img src="./Minka_slides1-20_43.png"/><br/>
+<img src="./Minka_slides1-20_44.png"/><br/>
+<img src="./Minka_slides1-20_45.png"/><br/>
+<img src="./Minka_slides1-20_46.png"/><br/>
+<img src="./Minka_slides1-20_47.png"/><br/>
+<img src="./Minka_slides1-20_48.png"/><br/>
+Gaussian&#160;multiplication&#160;formula<br/>
+<hr/>
+<a name=21></a><img src="./Minka_slides1-21_1.png"/><br/>
+<img src="./Minka_slides1-21_2.png"/><br/>
+Approximation&#160;with&#160;narrow&#160;context<br/>
+<hr/>
+<a name=22></a><img src="./Minka_slides1-22_1.png"/><br/>
+<img src="./Minka_slides1-22_2.png"/><br/>
+Approximation&#160;with&#160;medium&#160;context<br/>
+<hr/>
+<a name=23></a><img src="./Minka_slides1-23_1.png"/><br/>
+<img src="./Minka_slides1-23_2.png"/><br/>
+Approximation&#160;with&#160;wide&#160;context<br/>
+<hr/>
+<a name=24></a><img src="./Minka_slides1-24_1.png"/><br/>
+<img src="./Minka_slides1-24_2.png"/><br/>
+<img src="./Minka_slides1-24_3.png"/><br/>
+<img src="./Minka_slides1-24_4.png"/><br/>
+<img src="./Minka_slides1-24_5.png"/><br/>
+<img src="./Minka_slides1-24_6.png"/><br/>
+<img src="./Minka_slides1-24_7.png"/><br/>
+<img src="./Minka_slides1-24_8.png"/><br/>
+<img src="./Minka_slides1-24_9.png"/><br/>
+<img src="./Minka_slides1-24_10.png"/><br/>
+Two&#160;factors<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>Message&#160;passing</i><br/>
+<hr/>
+<a name=25></a><img src="./Minka_slides1-25_1.png"/><br/>
+<img src="./Minka_slides1-25_2.png"/><br/>
+<img src="./Minka_slides1-25_3.png"/><br/>
+<img src="./Minka_slides1-25_4.png"/><br/>
+<img src="./Minka_slides1-25_5.png"/><br/>
+<img src="./Minka_slides1-25_6.png"/><br/>
+Three&#160;factors<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>Message&#160;passing</i><br/>
+<hr/>
+<a name=26></a>Message&#160;Passing&#160;=&#160;<br/>
+Distributed&#160;Optimization<br/>
+•&#160;Messages&#160;represent&#160;a&#160;simpler&#160;distribution&#160;q(x)<br/>
+that&#160;approximates&#160;p(x)<br/>
+–&#160;A&#160;<i>distributed&#160;</i>representation<br/>
+•&#160;Me<br/>
+M&#160;ssage&#160;passing&#160;=<br/>
+&#160;&#160;&#160;<br/>
+=&#160;optimi<br/>
+m&#160;zing&#160;q&#160;to&#160;f<br/>
+&#160;&#160;it&#160;p<br/>
+&#160;<br/>
+–&#160;q&#160;stands&#160;in&#160;for&#160;p&#160;when&#160;answering&#160;queries<br/>
+•&#160;Choices:<br/>
+–&#160;What&#160;type&#160;of&#160;distribution&#160;to&#160;construct&#160;(approximating&#160;<br/>
+family)<br/>
+–&#160;What&#160;cost&#160;to&#160;minimize&#160;(divergence&#160;measure)<br/>
+<hr/>
+<a name=27></a><img src="./Minka_slides1-27_1.png"/><br/>
+<img src="./Minka_slides1-27_2.png"/><br/>
+<img src="./Minka_slides1-27_3.png"/><br/>
+Distributed&#160;divergence&#160;minimization<br/>
+•&#160;Write&#160;p&#160;as&#160;product&#160;of&#160;factors:<br/>
+•&#160;Ap<br/>
+A&#160;p<br/>
+p&#160;r<br/>
+p&#160;ox<br/>
+o&#160;im<br/>
+i&#160;a<br/>
+m&#160;t<br/>
+a&#160;e<br/>
+t&#160;&#160;<br/>
+e&#160;f<br/>
+&#160;&#160;a<br/>
+f&#160;c<br/>
+a&#160;to<br/>
+t&#160;r<br/>
+o&#160;s&#160;o<br/>
+&#160;&#160;n<br/>
+o&#160;e<br/>
+n&#160;&#160;<br/>
+e&#160;b<br/>
+&#160;&#160;y<br/>
+b&#160;&#160;o<br/>
+&#160;&#160;n<br/>
+o&#160;e<br/>
+n&#160;:<br/>
+e<br/>
+•&#160;Multiply&#160;to&#160;get&#160;the&#160;approximation:<br/>
+<hr/>
+<a name=28></a><img src="./Minka_slides1-28_1.png"/><br/>
+<img src="./Minka_slides1-28_2.png"/><br/>
+<img src="./Minka_slides1-28_3.png"/><br/>
+<img src="./Minka_slides1-28_4.png"/><br/>
+<img src="./Minka_slides1-28_5.png"/><br/>
+<img src="./Minka_slides1-28_6.png"/><br/>
+<img src="./Minka_slides1-28_7.png"/><br/>
+<img src="./Minka_slides1-28_8.png"/><br/>
+<img src="./Minka_slides1-28_9.png"/><br/>
+<img src="./Minka_slides1-28_10.png"/><br/>
+<img src="./Minka_slides1-28_11.png"/><br/>
+Global&#160;divergence&#160;to&#160;local&#160;divergence<br/>
+•&#160;Global&#160;divergence:<br/>
+•&#160;Local&#160;divergence:<br/>
+<hr/>
+<a name=29></a><img src="./Minka_slides1-29_1.png"/><br/>
+<img src="./Minka_slides1-29_2.png"/><br/>
+<img src="./Minka_slides1-29_3.png"/><br/>
+<img src="./Minka_slides1-29_4.png"/><br/>
+<img src="./Minka_slides1-29_5.png"/><br/>
+<img src="./Minka_slides1-29_6.png"/><br/>
+<img src="./Minka_slides1-29_7.png"/><br/>
+<img src="./Minka_slides1-29_8.png"/><br/>
+<img src="./Minka_slides1-29_9.png"/><br/>
+<img src="./Minka_slides1-29_10.png"/><br/>
+<img src="./Minka_slides1-29_11.png"/><br/>
+Message&#160;passing<br/>
+•&#160;Messages&#160;are&#160;passed&#160;between&#160;<i>factors<br/></i>•&#160;Messages&#160;are&#160;factor&#160;approximations:<br/>•&#160;Factor&#160;a&#160;receives&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<br/>
+–&#160;Mi<br/>
+M&#160;nimi<br/>
+m&#160;ze&#160;local&#160;divergence&#160;to&#160;g<br/>
+&#160;&#160;et&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;&#160;<br/>
+&#160;<br/>
+–&#160;Send&#160;to&#160;other&#160;factors<br/>
+–&#160;Repeat&#160;until&#160;convergence<br/>
+<hr/>
+<a name=30></a>Gaussian&#160;found&#160;by&#160;EP<br/>
+ep<br/>exact<br/>bestGaussian<br/>
+)<br/>,D<br/>(x<br/>p<br/>
+-1<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+x<br/>
+<hr/>
+<a name=31></a>Other&#160;methods<br/>
+vb<br/>laplace<br/>exact<br/>
+)<br/>,D<br/>(x<br/>p<br/>
+-1<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+x<br/>
+<hr/>
+<a name=32></a>Accuracy<br/>
+Posterior&#160;mean:<br/>
+exact&#160;&#160;&#160;&#160;=&#160;1.64864<br/>ep&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;=&#160;1.64514<br/>laplace&#160;=&#160;1.61946<br/>vb&#160;<br/>
+vb&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;=<br/>
+&#160;&#160;&#160;1<br/>
+&#160;&#160;.<br/>
+1&#160;61<br/>
+6&#160;8<br/>
+1&#160;3<br/>
+8&#160;4<br/>
+3<br/>
+Posterior&#160;variance:<br/>
+exact&#160;&#160;&#160;&#160;=&#160;0.359673<br/>ep&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;=&#160;0.311474<br/>laplace&#160;=&#160;0.234616<br/>vb&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;=&#160;0.171155<br/>
+<hr/>
+<a name=33></a><img src="./Minka_slides1-33_1.jpg"/><br/>
+<img src="./Minka_slides1-33_2.png"/><br/>
+<img src="./Minka_slides1-33_3.png"/><br/>
+<img src="./Minka_slides1-33_4.png"/><br/>
+Cost&#160;vs.&#160;accuracy<br/>
+20&#160;points<br/>
+200&#160;points<br/>
+Deterministic&#160;methods&#160;improve&#160;with&#160;more&#160;data&#160;(posterior&#160;is&#160;more&#160;Gaussian)<br/>Sampling&#160;methods&#160;do&#160;not<br/>
+<hr/>
+<a name=34></a>Ti<br/>
+T&#160;me&#160;<br/>
+e&#160;s<br/>
+&#160;&#160;er<br/>
+e&#160;i<br/>
+r&#160;es<br/>
+e&#160;&#160;p<br/>
+&#160;&#160;r<br/>
+p&#160;o<br/>
+r&#160;b<br/>
+o&#160;l<br/>
+b&#160;em<br/>
+e&#160;s<br/>
+<hr/>
+<a name=35></a>Example:&#160;Tracking<br/>
+Guess&#160;the&#160;position&#160;of&#160;an&#160;object&#160;given&#160;noisy&#160;measurements<br/>
+<i>y</i>2<br/>
+<i>x</i>2<br/>
+<i>x</i>1<br/>
+<i>x</i>3<br/>
+<i>y</i>4<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+3<br/>
+<i>x</i>4<br/>
+Object<br/>
+<hr/>
+<a name=36></a>Factor&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+ν<br/>
+e.g.<br/>
+<i>x&#160;</i>=&#160;<i>x&#160;</i>−1&#160;+<br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<i>t</i><br/>
+(random&#160;walk)<br/>
+<i>y</i><br/>
+<i>x</i><br/>
+<i>t&#160;</i>=<br/>
+<i>t&#160;</i>+&#160;noise<br/>
+want&#160;distribution&#160;of&#160;x’s&#160;given&#160;y’s<br/>
+<hr/>
+<a name=37></a>Approximate&#160;factor&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<hr/>
+<a name=38></a>Splitting&#160;a&#160;pairwise&#160;factor<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+<hr/>
+<a name=39></a>Splitting&#160;in&#160;context<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+2<br/>
+3<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+2<br/>
+3<br/>
+<hr/>
+<a name=40></a>Sweeping&#160;through&#160;the&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<hr/>
+<a name=41></a>Sweeping&#160;through&#160;the&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<hr/>
+<a name=42></a>Sweeping&#160;through&#160;the&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<hr/>
+<a name=43></a>Sweeping&#160;through&#160;the&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<hr/>
+<a name=44></a><img src="./Minka_slides1-44_1.png"/><br/>
+<img src="./Minka_slides1-44_2.png"/><br/>
+Example:&#160;Poisson&#160;tracking<br/>
+•&#160;y&#160;is&#160;a&#160;Poisson-distributed&#160;integer&#160;with&#160;&#160;&#160;&#160;&#160;&#160;<br/>
+t&#160;<br/>
+mean&#160;exp(x&#160;)<br/>
+t<br/>
+<hr/>
+<a name=45></a>Poisson&#160;tracking&#160;model<br/>
+<i>p</i>(<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(&#160;1<br/>
+,<br/>
+0&#160;0&#160;)<br/>
+0<br/>
+1<br/>
+<i>p</i>(<i>x&#160;</i>|&#160;<i>x&#160;</i>)&#160;~&#160;<i>N&#160;</i>(<i>x&#160;</i>,&#160;0<br/>
+.<br/>
+0<br/>
+)<br/>
+1<br/>
+<i>t</i><br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+<i>p</i>(&#160;<i>y&#160;</i>|&#160;<i>x&#160;</i>)&#160;=&#160;exp(<br/>
+<i>x</i><br/>
+<i>y&#160;x</i><br/>
+<i>e&#160;t</i><br/>
+−&#160;)&#160;/&#160;<i>y&#160;</i>!<br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<i>t</i><br/>
+<hr/>
+<a name=46></a>Factor&#160;graph<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<hr/>
+<a name=47></a>Approximating&#160;a&#160;measurement&#160;<br/>
+factor<br/>
+<i>x</i>1<br/>
+<i>y</i>1<br/>
+<i>x</i>1<br/>
+<hr/>
+<a name=48></a><img src="./Minka_slides1-48_1.png"/><br/>
+<img src="./Minka_slides1-48_2.png"/><br/>
+<hr/>
+<a name=49></a><img src="./Minka_slides1-49_1.png"/><br/>
+<img src="./Minka_slides1-49_2.png"/><br/>
+Posterior&#160;for&#160;the&#160;last&#160;state<br/>
+<hr/>
+<a name=50></a><img src="./Minka_slides1-50_1.png"/><br/>
+<img src="./Minka_slides1-50_2.png"/><br/>
+<hr/>
+<a name=51></a><img src="./Minka_slides1-51_1.png"/><br/>
+<img src="./Minka_slides1-51_2.png"/><br/>
+<hr/>
+<a name=52></a>EP&#160;for&#160;signal&#160;detection<br/>
+(Qi&#160;and&#160;Minka,&#160;2003)<br/>
+•&#160;Wireless&#160;communication&#160;problem<br/>•&#160;Transmitted&#160;signal&#160;=&#160;<i>a&#160;</i>sin(ω<i>t&#160;</i>+&#160;φ&#160;)<br/>•&#160;(<i>a</i>,φ)&#160;vary&#160;to&#160;encode&#160;each&#160;symbol&#160;<br/>•&#160;In<br/>
+I&#160;&#160;<br/>
+n&#160;c<br/>
+&#160;&#160;om<br/>
+o&#160;p<br/>
+m&#160;l<br/>
+p&#160;e<br/>
+l&#160;x<br/>
+e&#160;&#160;n<br/>
+&#160;&#160;u<br/>
+n&#160;m<br/>
+u&#160;b<br/>
+m&#160;e<br/>
+b&#160;r<br/>
+e&#160;s:<br/>
+φ<br/>
+<i>i</i><br/>
+:&#160;<i>ae</i><br/>
+Im<br/>
+<i>a</i><br/>
+φ<br/>
+Re<br/>
+<hr/>
+<a name=53></a>Binary&#160;symbols,&#160;Gaussian&#160;noise<br/>
+•&#160;Symbols&#160;are&#160;&#160;&#160;<br/>
+<i>s&#160;</i>&#160;<br/>
+1&#160;&#160;&#160;&#160;<br/>
+=&#160;&#160;&#160;1&#160;and&#160;&#160;&#160;&#160;0<br/>
+<i>s&#160;</i>=&#160;1<br/>
+−<br/>
+(in&#160;complex&#160;plane)<br/>
+•&#160;Received&#160;signal&#160;&#160;<i>yt&#160;</i>=&#160;<i>a&#160;</i>sin(ω<i>t&#160;</i>+&#160;φ)&#160;+&#160;noise<br/>•&#160;Opt<br/>
+p&#160;i<br/>
+t&#160;m<br/>
+i&#160;a<br/>
+m&#160;l<br/>
+a&#160;&#160;<br/>
+l&#160;d<br/>
+&#160;&#160;e<br/>
+d&#160;t<br/>
+e&#160;e<br/>
+t&#160;c<br/>
+e&#160;ti<br/>
+t&#160;o<br/>
+i&#160;n<br/>
+o&#160;&#160;<br/>
+n&#160;i<br/>
+&#160;&#160;s<br/>
+i&#160;&#160;e<br/>
+&#160;&#160;a<br/>
+e&#160;s<br/>
+a&#160;y&#160;i<br/>
+&#160;&#160;n<br/>
+i&#160;&#160;<br/>
+n&#160;t<br/>
+&#160;&#160;h<br/>
+t&#160;i<br/>
+h&#160;s<br/>
+i&#160;&#160;c<br/>
+&#160;&#160;as<br/>
+a&#160;e&#160;<br/>
+e&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+&#160;<br/>
+<i>yt</i><br/>
+0<br/>
+<i>s</i><br/>
+1<br/>
+<i>s</i><br/>
+<hr/>
+<a name=54></a>Fading&#160;channel<br/>
+•&#160;Channel&#160;systematically&#160;changes&#160;amplitude&#160;<br/>
+and&#160;phase:<br/>
+<i>y</i><br/>
+<i>x&#160;s</i><br/>
+<i>t&#160;</i>=<br/>
+<i>t&#160;t&#160;</i>+&#160;noise<br/>
+•&#160;<i>st&#160;</i>=&#160;t<br/>
+&#160;&#160;r<br/>
+t&#160;an<br/>
+a&#160;s<br/>
+n&#160;mi<br/>
+m&#160;t<br/>
+i&#160;t<br/>
+t&#160;e<br/>
+t&#160;d<br/>
+e&#160;&#160;<br/>
+d&#160;s<br/>
+&#160;&#160;ymb<br/>
+m&#160;o<br/>
+b&#160;l<br/>
+o<br/>
+•&#160;<i>xt&#160;</i>=&#160;channel&#160;multiplier&#160;(complex&#160;number)<br/>•&#160;<i>x</i><br/>
+<i>y</i><br/>
+1<br/>
+<i>t</i><br/>
+changes&#160;over&#160;time<br/>
+<i>t</i><br/>
+<i>x&#160;s</i><br/>
+<i>t</i><br/>
+0<br/>
+<i>x&#160;s</i><br/>
+<i>t</i><br/>
+<hr/>
+<a name=55></a>Differential&#160;detection<br/>
+•&#160;Use&#160;last&#160;measurement&#160;to&#160;estimate&#160;state:<br/>
+<i>x</i><br/>
+<i>y</i><br/>
+<i>s</i><br/>
+<i>t&#160;</i>≈<br/>
+/<br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+<i>t&#160;</i>1<br/>
+−<br/>
+•&#160;State&#160;estimate&#160;is&#160;noisy&#160;–&#160;can&#160;we&#160;do&#160;<br/>
+be<br/>
+b&#160;t<br/>
+e&#160;t<br/>
+t&#160;e<br/>
+t&#160;r<br/>
+e&#160;?<br/>
+<i>yt</i><br/>
+<i>yt&#160;</i>1<br/>
+−<br/>
+−&#160;<i>yt&#160;</i>1−<br/>
+<hr/>
+<a name=56></a>Factor&#160;graph<br/>
+<i>s</i><br/>
+<i>s</i><br/>
+<i>s</i><br/>
+<i>s</i><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+2<br/>
+<i>y</i>3<br/>
+4<br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+1<br/>
+2<br/>
+3<br/>
+<i>x</i>4<br/>
+Symbols&#160;can&#160;also&#160;be&#160;correlated&#160;(e.g. error-correcting&#160;code)<br/>
+Channel&#160;dynamics&#160;are&#160;learned&#160;from&#160;training&#160;data&#160;(all&#160;1’s)<br/>
+<hr/>
+<a name=57></a><img src="./Minka_slides1-57_1.png"/><br/>
+<img src="./Minka_slides1-57_2.png"/><br/>
+<hr/>
+<a name=58></a><img src="./Minka_slides1-58_1.png"/><br/>
+<img src="./Minka_slides1-58_2.png"/><br/>
+<hr/>
+<a name=59></a><img src="./Minka_slides1-59_1.png"/><br/>
+<img src="./Minka_slides1-59_2.png"/><br/>
+Splitting&#160;a&#160;transition&#160;factor<br/>
+<hr/>
+<a name=60></a><img src="./Minka_slides1-60_1.png"/><br/>
+<img src="./Minka_slides1-60_2.png"/><br/>
+<img src="./Minka_slides1-60_3.png"/><br/>
+<img src="./Minka_slides1-60_4.png"/><br/>
+Splitting&#160;a&#160;measurement&#160;factor<br/>
+<hr/>
+<a name=61></a>On-line&#160;implementation<br/>
+•&#160;Iterate&#160;over&#160;the&#160;last&#160;δ&#160;measurements<br/>•&#160;Previous&#160;measurements&#160;act&#160;as&#160;prior<br/>
+•&#160;Res<br/>
+e&#160;ul<br/>
+u&#160;t<br/>
+l&#160;s<br/>
+t&#160;&#160;c<br/>
+&#160;&#160;om<br/>
+o&#160;p<br/>
+m&#160;a<br/>
+p&#160;r<br/>
+a&#160;ab<br/>
+a&#160;l<br/>
+b&#160;e<br/>
+l&#160;&#160;<br/>
+e&#160;t<br/>
+&#160;&#160;o<br/>
+t&#160;&#160;<br/>
+o&#160;p<br/>
+&#160;&#160;a<br/>
+p&#160;r<br/>
+a&#160;ti<br/>
+t&#160;c<br/>
+i&#160;le<br/>
+l&#160;&#160;<br/>
+e&#160;f<br/>
+&#160;&#160;i<br/>
+f&#160;lit<br/>
+l&#160;e<br/>
+t&#160;r<br/>
+e&#160;in<br/>
+i&#160;g<br/>
+n&#160;,<br/>
+g&#160;&#160;<br/>
+,&#160;b<br/>
+&#160;&#160;u<br/>
+b&#160;t<br/>
+u&#160;&#160;<br/>
+t<br/>
+much&#160;faster<br/>
+<hr/>
+<a name=62></a><img src="./Minka_slides1-62_1.png"/><br/>
+<img src="./Minka_slides1-62_2.png"/><br/>
+<hr/>
+<a name=63></a>Clas<br/>
+a&#160;sifi<br/>
+f&#160;c<br/>
+i&#160;at<br/>
+a&#160;i<br/>
+t&#160;o<br/>
+i&#160;n<br/>
+o&#160;&#160;<br/>
+n&#160;p<br/>
+&#160;&#160;r<br/>
+p&#160;o<br/>
+r&#160;b<br/>
+o&#160;l<br/>
+b&#160;em<br/>
+e&#160;s<br/>
+<hr/>
+<a name=64></a>Spam&#160;filtering&#160;by&#160;linear&#160;separation<br/>
+Not&#160;spam<br/>
+Spam<br/>
+Choose&#160;a&#160;boundary&#160;that&#160;will&#160;generalize&#160;to&#160;new&#160;data<br/>
+<hr/>
+<a name=65></a>Linear&#160;separation<br/>
+Minimum&#160;training&#160;error<br/>solution&#160;(Perceptron)<br/>
+Too&#160;arbitrary&#160;–&#160;won’t&#160;generalize&#160;well<br/>
+<hr/>
+<a name=66></a>Linear&#160;separation<br/>
+Maximum-margin&#160;<br/>solution&#160;(SVM)<br/>
+Ignores&#160;information&#160;in&#160;the&#160;vertical&#160;direction<br/>
+<hr/>
+<a name=67></a>Linear&#160;separation<br/>
+Bayesian&#160;<br/>solution<br/>(via&#160;averaging)<br/>
+Has&#160;a&#160;margin, and uses&#160;information&#160;in&#160;all&#160;dimensions<br/>
+<hr/>
+<a name=68></a><img src="./Minka_slides1-68_1.png"/><br/>
+<img src="./Minka_slides1-68_2.png"/><br/>
+Geometry&#160;of&#160;linear&#160;separation<br/>
+Separator&#160;is&#160;any vector&#160;w&#160;such that:<br/>
+<i>T</i><br/>
+<b>w</b><br/>
+<b>x</b><br/>
+(class&#160;1)<br/>
+<i>i&#160;</i>&gt;&#160;0<br/>
+<i>T</i><br/>
+<b>w</b><br/>
+<b>x</b><br/>
+(class&#160;2)<br/>
+<i>i&#160;</i>&lt;&#160;0<br/>
+<b>w</b><br/>
+=1<br/>
+(sphere)<br/>
+This&#160;set&#160;has&#160;an&#160;unusual&#160;shape<br/>SVM:&#160;Optimize&#160;over&#160;it<br/>Bayes:&#160;Average&#160;over&#160;it<br/>
+<hr/>
+<a name=69></a><img src="./Minka_slides1-69_1.png"/><br/>
+<img src="./Minka_slides1-69_2.png"/><br/>
+<img src="./Minka_slides1-69_3.png"/><br/>
+Factor&#160;graph<br/>
+<hr/>
+<a name=70></a><img src="./Minka_slides1-70_1.jpg"/><br/>
+<img src="./Minka_slides1-70_2.jpg"/><br/>
+Performance&#160;on&#160;linear&#160;<br/>
+separation<br/>
+EP&#160;Gaussian&#160;approximation&#160;to&#160;posterior<br/>
+<hr/>
+<a name=71></a><img src="./Minka_slides1-71_1.png"/><br/>
+<img src="./Minka_slides1-71_2.png"/><br/>
+Time&#160;vs.&#160;accuracy<br/>
+A&#160;typical&#160;run&#160;on&#160;the&#160;3-point&#160;problem<br/>
+Error&#160;=&#160;distance&#160;to&#160;true&#160;mean&#160;of&#160;w<br/>
+Billiard&#160;=&#160;Monte&#160;Carlo&#160;sampling<br/>(Herbrich&#160;et&#160;al,&#160;2001)<br/>
+Opper&amp;Winther’s&#160;algorithms:<br/>
+MF&#160;=&#160;mean-field&#160;theory<br/>
+TAP&#160;=&#160;cavity&#160;method&#160;(equiv&#160;to&#160;Gaussian&#160;EP&#160;for&#160;this&#160;problem)<br/>
+<hr/>
+<a name=72></a><img src="./Minka_slides1-72_1.png"/><br/>
+<img src="./Minka_slides1-72_2.png"/><br/>
+<img src="./Minka_slides1-72_3.png"/><br/>
+<img src="./Minka_slides1-72_4.png"/><br/>
+<img src="./Minka_slides1-72_5.png"/><br/>
+Gaussian&#160;kernels<br/>
+•&#160;Map&#160;data&#160;into&#160;high-dimensional&#160;space&#160;so&#160;<br/>
+that<br/>
+<hr/>
+<a name=73></a><img src="./Minka_slides1-73_1.png"/><br/>
+<img src="./Minka_slides1-73_2.png"/><br/>
+<img src="./Minka_slides1-73_3.png"/><br/>
+<img src="./Minka_slides1-73_4.png"/><br/>
+<img src="./Minka_slides1-73_5.png"/><br/>
+Bayesian&#160;model&#160;comparison<br/>
+•&#160;Multiple&#160;models&#160;M&#160;with&#160;prior&#160;probabilities&#160;<br/>
+i<br/>
+p(M&#160;)<br/>
+i<br/>
+•&#160;Posterior&#160;probabilities:<br/>
+•&#160;For&#160;equal&#160;priors,&#160;models&#160;are&#160;compared&#160;<br/>
+using&#160;model&#160;evidence:<br/>
+<hr/>
+<a name=74></a><img src="./Minka_slides1-74_1.png"/><br/>
+<img src="./Minka_slides1-74_2.png"/><br/>
+Highest-probability&#160;kernel<br/>
+<hr/>
+<a name=75></a><img src="./Minka_slides1-75_1.png"/><br/>
+<img src="./Minka_slides1-75_2.png"/><br/>
+Margin-maximizing&#160;kernel<br/>
+<hr/>
+<a name=76></a><img src="./Minka_slides1-76_1.png"/><br/>
+<img src="./Minka_slides1-76_2.png"/><br/>
+Bayesian&#160;feature&#160;selection<br/>
+Synthetic&#160;data&#160;where&#160;6 features&#160;are&#160;relevant&#160;(out&#160;of&#160;20)<br/>
+Bayes&#160;picks&#160;6<br/>
+Margin&#160;picks&#160;13<br/>
+<hr/>
+<a name=77></a>EP&#160;versus&#160;Monte&#160;Carlo<br/>
+•&#160;Monte&#160;Carlo&#160;is&#160;general&#160;but&#160;expensive<br/>
+–&#160;A&#160;sledgehammer<br/>
+•&#160;EP&#160;exploits&#160;underlying&#160;simplicity&#160;of&#160;the&#160;<br/>
+pr<br/>
+p&#160;ob<br/>
+o&#160;l<br/>
+b&#160;e<br/>
+l&#160;m<br/>
+e&#160;&#160;<br/>
+m&#160;(<br/>
+&#160;&#160;if<br/>
+i&#160;&#160;<br/>
+f&#160;i<br/>
+&#160;&#160;t<br/>
+i&#160;&#160;<br/>
+t&#160;ex<br/>
+e&#160;is<br/>
+i&#160;ts<br/>
+t&#160;)<br/>
+•&#160;Monte&#160;Carlo&#160;is&#160;still&#160;needed&#160;for&#160;complex&#160;<br/>
+problems&#160;(e.g.&#160;large&#160;isolated&#160;peaks)<br/>
+•&#160;Trick&#160;is&#160;to&#160;know&#160;what&#160;problem&#160;you&#160;have<br/>
+<hr/>
+<a name=78></a>Software&#160;for&#160;EP<br/>
+•&#160;Bayes&#160;Point&#160;Machine&#160;toolbox&#160;<br/>
+http://research.microsoft.com/~minka/papers/ep/bpm/<br/>
+•&#160;Sparse&#160;Online&#160;Gaussian&#160;Process&#160;toolbox<br/>
+http://www.kyb.tuebingen.mpg.de/bs/people/csatol/ogp/index.html<br/>
+•&#160;Infer.NET<br/>
+http://research.microsoft.com/infernet<br/>
+<hr/>
+<a name=79></a>Further&#160;reading<br/>
+•&#160;EP<br/>
+E&#160;&#160;<br/>
+P&#160;b<br/>
+&#160;&#160;i<br/>
+b&#160;b<br/>
+i&#160;l<br/>
+b&#160;ilo<br/>
+i&#160;g<br/>
+o&#160;r<br/>
+g&#160;ap<br/>
+a&#160;h<br/>
+p&#160;y<br/>
+h&#160;&#160;&#160;<br/>
+&#160;<br/>
+http://research.microsoft.com/~minka/papers/ep/roadmap.html<br/>
+•&#160;EP&#160;quick&#160;reference<br/>
+http://research.microsoft.com/~minka/papers/ep/minka-ep-<br/>quickref.pdf<br/>
+<hr/>
+<a name=80></a>Tomorrow<br/>
+•&#160;Variational&#160;Message&#160;Passing<br/>•&#160;Divergence&#160;measures<br/>•&#160;Comparisons&#160;to&#160;EP<br/>
+<hr/>
+</body>
+</html>

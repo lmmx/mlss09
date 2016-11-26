@@ -1,0 +1,440 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img src="./Bishop-MLSS-09-2-1_1.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-1_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-1_3.png"/><br/>
+<b>INTRODUCTION TO<br/>BAYESIAN&#160;INFERENCE&#160;–&#160;PART 2</b><br/>
+<b>CHRIS BISHOP</b><br/>
+<hr/>
+<a name=2></a><img src="./Bishop-MLSS-09-2-2_1.jpg"/><br/>
+<hr/>
+<a name=3></a><img src="./Bishop-MLSS-09-2-3_1.png"/><br/>
+Personal&#160;Healthcare&#160;Revolution<br/>
+Electronic&#160;health&#160;records&#160;(CFH)<br/>Personal&#160;genomics&#160;<br/>
+(DeCode,&#160;Navigenics, 23andMe)<br/>
+X-prize:&#160;first&#160;$10k&#160;human&#160;genome technology<br/>
+NIH:&#160;$1k by 2014<br/>
+Microsoft&#160;Research&#160;Cambridge:<br/>
+PhD Scholarships<br/>Internships:&#160;3&#160;months<br/>Postdoctoral&#160;Fellowships<br/>
+<hr/>
+<a name=4></a><img src="./Bishop-MLSS-09-2-4_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-4_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-4_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-4_4.png"/><br/>
+<img src="./Bishop-MLSS-09-2-4_5.png"/><br/>
+Why Probabilities?<br/>
+Image&#160;vector<br/>
+Class&#160;&#160; &#160;&#160; &#160;&#160;“cancer”&#160;or&#160;“normal”<br/>
+<hr/>
+<a name=5></a><img src="./Bishop-MLSS-09-2-5_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-5_2.png"/><br/>
+Decisions<br/>
+One-step&#160;solution<br/>
+train&#160;a&#160;function&#160;to decide&#160;the class<br/>
+Two-step&#160;solution<br/>
+<i>inference&#160;</i>:&#160;infer posterior&#160;probabilities<br/>
+<i>decision&#160;</i>: use&#160;probabilities&#160;to decide&#160;the class<br/>
+<hr/>
+<a name=6></a><img src="./Bishop-MLSS-09-2-6_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-6_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-6_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-6_4.png"/><br/>
+<img src="./Bishop-MLSS-09-2-6_5.png"/><br/>
+Minimum Misclassification&#160;Rate<br/>
+<hr/>
+<a name=7></a><img src="./Bishop-MLSS-09-2-7_1.png"/><br/>
+Why Separate&#160;Inference&#160;and Decision?<br/>
+•&#160;Minimizing&#160;risk&#160;(loss&#160;matrix&#160;may&#160;change over time)<br/>•&#160;Reject&#160;option<br/>•&#160;Unbalanced&#160;class&#160;priors<br/>•&#160;Combining&#160;models<br/>
+<hr/>
+<a name=8></a><img src="./Bishop-MLSS-09-2-8_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-8_2.png"/><br/>
+Loss Matrix<br/>
+Decision<br/>
+True&#160;class<br/>
+<hr/>
+<a name=9></a><img src="./Bishop-MLSS-09-2-9_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-9_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-9_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-9_4.png"/><br/>
+Minimum Expected&#160;Loss<br/>
+Regions&#160;&#160;&#160;&#160; &#160;&#160;are chosen,&#160;at each&#160;x, &#160;to&#160;minimize<br/>
+<hr/>
+<a name=10></a><img src="./Bishop-MLSS-09-2-10_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-10_2.jpg"/><br/>
+Reject&#160;Option<br/>
+<hr/>
+<a name=11></a><img src="./Bishop-MLSS-09-2-11_1.png"/><br/>
+Unbalanced&#160;class&#160;priors<br/>
+In screening&#160;application,&#160;cancer&#160;is&#160;very rare<br/>
+Use&#160;“balanced” data&#160;sets&#160;to&#160;train models, then&#160;<br/>
+use&#160;Bayes’ theorem&#160;to correct&#160;the&#160;posterior&#160;<br/>probabilities<br/>
+<hr/>
+<a name=12></a><img src="./Bishop-MLSS-09-2-12_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-12_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-12_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-12_4.png"/><br/>
+<img src="./Bishop-MLSS-09-2-12_5.png"/><br/>
+<img src="./Bishop-MLSS-09-2-12_6.png"/><br/>
+<img src="./Bishop-MLSS-09-2-12_7.png"/><br/>
+Combining models<br/>
+Image data and&#160;blood tests<br/>Assume independent&#160;for each&#160;class:<br/>
+<hr/>
+<a name=13></a><img src="./Bishop-MLSS-09-2-13_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-13_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-13_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-13_4.png"/><br/>
+Binary&#160;Variables&#160;(1)<br/>
+Coin flipping:&#160;heads=1,&#160;tails=0<br/>
+Bernoulli&#160;Distribution<br/>
+<hr/>
+<a name=14></a><img src="./Bishop-MLSS-09-2-14_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-14_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-14_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-14_4.png"/><br/>
+<img src="./Bishop-MLSS-09-2-14_5.png"/><br/>
+Expectation&#160;and Variance<br/>
+In general<br/>
+For&#160;Bernoulli<br/>
+<hr/>
+<a name=15></a><img src="./Bishop-MLSS-09-2-15_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-15_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-15_3.png"/><br/>
+Likelihood function<br/>
+Data set&#160;<br/>
+Likelihood function<br/>
+<hr/>
+<a name=16></a><img src="./Bishop-MLSS-09-2-16_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-16_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-16_3.png"/><br/>
+Prior Distribution<br/>
+Simplification&#160;if&#160;prior has&#160;same functional&#160;form&#160;<br/>
+as&#160;likelihood&#160;function<br/>
+Called&#160;<i>conjugate&#160;prior</i><br/>
+<hr/>
+<a name=17></a><img src="./Bishop-MLSS-09-2-17_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-17_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-17_3.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-17_4.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-17_5.jpg"/><br/>
+Beta&#160;Distribution<br/>
+<hr/>
+<a name=18></a><img src="./Bishop-MLSS-09-2-18_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-18_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-18_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-18_4.png"/><br/>
+Posterior Distribution<br/>
+<hr/>
+<a name=19></a><img src="./Bishop-MLSS-09-2-19_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-19_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-19_3.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-19_4.jpg"/><br/>
+Posterior Distribution<br/>
+<hr/>
+<a name=20></a><img src="./Bishop-MLSS-09-2-20_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-20_2.png"/><br/>
+Properties&#160;of the Posterior<br/>
+As the&#160;size&#160;N&#160;&#160; &#160; &#160; &#160;&#160;&#160;of the data&#160;set increases<br/>
+<hr/>
+<a name=21></a><img src="./Bishop-MLSS-09-2-21_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-21_2.png"/><br/>
+Predictive&#160;Distribution<br/>
+What is the probability&#160;that&#160;the next coin flip&#160;<br/>
+will&#160;be heads?&#160;<br/>
+<hr/>
+<a name=22></a><img src="./Bishop-MLSS-09-2-22_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-22_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-22_3.png"/><br/>
+The&#160;Exponential&#160;Family<br/>
+where&#160;´&#160;is the&#160;<i>natural&#160;parameter</i><br/>
+We can&#160;interpret&#160;g(´)&#160;as&#160;the normalization&#160;<br/>
+coefficient<br/>
+<hr/>
+<a name=23></a><img src="./Bishop-MLSS-09-2-23_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-23_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-23_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-23_4.png"/><br/>
+Likelihood Function<br/>
+Give a data set, &#160; &#160; &#160; &#160; &#160; &#160;&#160;&#160; &#160; &#160; &#160; &#160; &#160;&#160;&#160; &#160;<br/>
+Depends&#160;on data through&#160;<i>sufficient&#160;statistics</i><br/>
+<hr/>
+<a name=24></a><img src="./Bishop-MLSS-09-2-24_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-24_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-24_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-24_4.png"/><br/>
+<img src="./Bishop-MLSS-09-2-24_5.png"/><br/>
+<img src="./Bishop-MLSS-09-2-24_6.png"/><br/>
+Expected&#160;Sufficient Statistics<br/>
+<hr/>
+<a name=25></a><img src="./Bishop-MLSS-09-2-25_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-25_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-25_3.png"/><br/>
+Conjugate&#160;priors<br/>
+For&#160;the exponential family<br/>
+Combining&#160;with&#160;the likelihood&#160;function,&#160;we&#160;get<br/>
+Prior&#160;corresponds&#160;to&#160;º&#160;pseudo-observations&#160;with&#160;statistic&#160;Â<br/>
+<hr/>
+<a name=26></a><img src="./Bishop-MLSS-09-2-26_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-26_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-26_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-26_4.png"/><br/>
+Bernoulli revisited<br/>
+The Bernoulli distribution<br/>
+Comparing&#160;with&#160;the general&#160;form we&#160;see&#160;that<br/>
+and so<br/>
+Logistic&#160;sigmoid<br/>
+<hr/>
+<a name=27></a><img src="./Bishop-MLSS-09-2-27_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-27_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-27_3.png"/><br/>
+Bernoulli revisited<br/>
+The Bernoulli distribution&#160;in canonical&#160;form<br/>
+where<br/>
+<hr/>
+<a name=28></a><img src="./Bishop-MLSS-09-2-28_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-28_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-28_3.png"/><br/>
+The&#160;Gaussian Distribution<br/>
+<hr/>
+<a name=29></a><img src="./Bishop-MLSS-09-2-29_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-29_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-29_3.png"/><br/>
+Likelihood Function<br/>
+<hr/>
+<a name=30></a><img src="./Bishop-MLSS-09-2-30_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-30_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-30_3.png"/><br/>
+Bayesian&#160;Inference&#160;–&#160;unknown mean<br/>
+Assume&#160;¾2&#160;is&#160;known<br/>Data set<br/>
+Likelihood&#160;function&#160;for&#160;¹<br/>
+<hr/>
+<a name=31></a><img src="./Bishop-MLSS-09-2-31_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-31_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-31_3.png"/><br/>
+Bayesian&#160;Inference&#160;–&#160;unknown mean<br/>
+Conjugate prior is a Gaussian<br/>
+which gives a Gaussian&#160;posterior<br/>
+<hr/>
+<a name=32></a><img src="./Bishop-MLSS-09-2-32_1.png"/><br/>
+<hr/>
+<a name=33></a><img src="./Bishop-MLSS-09-2-33_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-33_2.png"/><br/>
+Bayesian&#160;Inference&#160;–&#160;unknown precision<br/>
+Now&#160;assume&#160;¹&#160;is&#160;known<br/>Likelihood function&#160;for precision&#160;¸&#160;&#160;= 1/¾2<br/>
+<hr/>
+<a name=34></a><img src="./Bishop-MLSS-09-2-34_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-34_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-34_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-34_4.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-34_5.jpg"/><br/>
+<img src="./Bishop-MLSS-09-2-34_6.jpg"/><br/>
+Conjugate&#160;prior<br/>
+Gamma distribution<br/>
+<hr/>
+<a name=35></a><img src="./Bishop-MLSS-09-2-35_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-35_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-35_3.png"/><br/>
+Unknown&#160;Mean and Precision<br/>
+Likelihood function<br/>
+Gaussian-gamma&#160;distribution<br/>
+<hr/>
+<a name=36></a><img src="./Bishop-MLSS-09-2-36_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-36_2.jpg"/><br/>
+Gaussian-gamma&#160;Distribution<br/>
+<hr/>
+<a name=37></a><img src="./Bishop-MLSS-09-2-37_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-37_2.png"/><br/>
+Linear&#160;Regression&#160;(1)<br/>
+Noisy sinusoidal&#160;data<br/>
+<hr/>
+<a name=38></a><img src="./Bishop-MLSS-09-2-38_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-38_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-38_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-38_4.png"/><br/>
+Linear&#160;Regression&#160;(2)<br/>
+Linear combination&#160;of basis&#160;functions<br/>
+Noise model<br/>
+Likelihood function<br/>
+<hr/>
+<a name=39></a><img src="./Bishop-MLSS-09-2-39_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-39_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-39_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-39_4.png"/><br/>
+Linear&#160;Regression&#160;(3)<br/>
+Polynomial&#160;basis functions<br/>
+<hr/>
+<a name=40></a><img src="./Bishop-MLSS-09-2-40_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-40_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-40_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-40_4.png"/><br/>
+<img src="./Bishop-MLSS-09-2-40_5.png"/><br/>
+Linear&#160;Regression&#160;(4)<br/>
+Define a&#160;conjugate prior&#160;over&#160;w<br/>
+Combining&#160;with&#160;likelihood&#160;function&#160;gives the&#160;posterior&#160;<br/>
+where&#160;<br/>
+<hr/>
+<a name=41></a><img src="./Bishop-MLSS-09-2-41_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-41_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-41_3.png"/><br/>
+Simple&#160;Example (1)<br/>
+Data from straight&#160;line with&#160;Gaussian&#160;noise<br/>
+First order&#160;polynomial&#160;model<br/>
+<hr/>
+<a name=42></a><img src="./Bishop-MLSS-09-2-42_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-42_2.jpg"/><br/>
+Simple&#160;Example (2)<br/>
+0 data&#160;points&#160;observed<br/>
+Prior<br/>
+Data Space<br/>
+<hr/>
+<a name=43></a><img src="./Bishop-MLSS-09-2-43_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-43_2.jpg"/><br/>
+Simple&#160;Example (3)<br/>
+1 data&#160;point&#160;observed<br/>
+Likelihood<br/>
+Posterior<br/>
+Data Space<br/>
+<hr/>
+<a name=44></a><img src="./Bishop-MLSS-09-2-44_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-44_2.png"/><br/>
+Simple&#160;Example (4)<br/>
+2 data&#160;points&#160;observed<br/>
+Likelihood<br/>
+Posterior<br/>
+Data Space<br/>
+<hr/>
+<a name=45></a><img src="./Bishop-MLSS-09-2-45_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-45_2.png"/><br/>
+Simple&#160;Example (5)<br/>
+20&#160;data&#160;points&#160;observed<br/>
+Likelihood<br/>
+Posterior<br/>
+Data Space<br/>
+<hr/>
+<a name=46></a><img src="./Bishop-MLSS-09-2-46_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-46_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-46_3.png"/><br/>
+Predictive&#160;Distribution (1)<br/>
+Predict&#160;t&#160;for&#160;new&#160;values of&#160;x&#160;by&#160;integrating over&#160;w:<br/>
+where<br/>
+<hr/>
+<a name=47></a><img src="./Bishop-MLSS-09-2-47_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-47_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-47_3.png"/><br/>
+Predictive&#160;Distribution (3)<br/>
+Example:&#160;Sinusoidal&#160;data,&#160;9 Gaussian&#160;basis&#160;functions,&#160;<br/>
+1 data point<br/>
+<hr/>
+<a name=48></a><img src="./Bishop-MLSS-09-2-48_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-48_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-48_3.png"/><br/>
+Predictive&#160;Distribution (4)<br/>
+Example:&#160;Sinusoidal&#160;data,&#160;9 Gaussian&#160;basis&#160;functions,&#160;<br/>
+2 data points<br/>
+<hr/>
+<a name=49></a><img src="./Bishop-MLSS-09-2-49_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-49_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-49_3.png"/><br/>
+Predictive&#160;Distribution (5)<br/>
+Example:&#160;Sinusoidal&#160;data,&#160;9 Gaussian&#160;basis&#160;functions,&#160;<br/>
+4 data points<br/>
+<hr/>
+<a name=50></a><img src="./Bishop-MLSS-09-2-50_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-50_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-50_3.png"/><br/>
+Predictive&#160;Distribution (6)<br/>
+Example:&#160;Sinusoidal&#160;data,&#160;9 Gaussian&#160;basis&#160;functions,&#160;<br/>
+25&#160;data points<br/>
+<hr/>
+<a name=51></a><img src="./Bishop-MLSS-09-2-51_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-51_2.png"/><br/>
+Bayesian&#160;Model Comparison&#160;(1)<br/>
+Alternative models&#160;Mi,&#160;i=1,&#160;…,L<br/>Predictive&#160;distribution&#160;is&#160;a mixture&#160;<br/>
+<i>Model&#160;selection</i>:&#160;keep&#160;only most&#160;probable model<br/>
+<hr/>
+<a name=52></a><img src="./Bishop-MLSS-09-2-52_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-52_2.png"/><br/>
+Bayesian&#160;Model Comparison&#160;(2)<br/>
+From Bayes’&#160;theorem<br/>
+posterior<br/>
+model&#160;evidence<br/>
+prior<br/>
+(marginal&#160;likelihood)<br/>
+For&#160;equal&#160;priors,&#160;models&#160;ranked&#160;by&#160;marginal&#160;likelihood<br/>
+<hr/>
+<a name=53></a><img src="./Bishop-MLSS-09-2-53_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-53_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-53_3.png"/><br/>
+Bayesian&#160;Model Comparison&#160;(4)<br/>
+For&#160;a model with parameters&#160;w<br/>
+Note&#160;that&#160;<br/>
+<hr/>
+<a name=54></a><img src="./Bishop-MLSS-09-2-54_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-54_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-54_3.png"/><br/>
+Bayesian&#160;Model Comparison&#160;(5)<br/>
+Consider&#160;model with&#160;a&#160;<br/>single&#160;parameter&#160;w<br/>
+<hr/>
+<a name=55></a><img src="./Bishop-MLSS-09-2-55_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-55_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-55_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-55_4.png"/><br/>
+Bayesian&#160;Model Comparison&#160;(6)<br/>
+Taking&#160;logarithms,&#160;we obtain<br/>
+Negative<br/>
+With&#160;M&#160;parameters, all&#160;assumed&#160;to have the&#160;same&#160;<br/>
+ratio&#160;&#160; &#160;&#160;&#160; &#160;&#160; &#160;&#160;&#160;&#160; &#160;&#160; &#160;&#160;&#160;&#160; &#160;&#160; &#160;&#160;&#160;&#160; &#160;&#160; &#160;,&#160;we get<br/>
+<hr/>
+<a name=56></a><img src="./Bishop-MLSS-09-2-56_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-56_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-56_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-56_4.png"/><br/>
+Linear&#160;Regression&#160;revisited<br/>
+Marginal&#160;likelihood<br/>
+<hr/>
+<a name=57></a><img src="./Bishop-MLSS-09-2-57_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-57_2.png"/><br/>
+Linear&#160;Regression&#160;revisited<br/>
+Noisy sinusoidal&#160;data<br/>
+<hr/>
+<a name=58></a><img src="./Bishop-MLSS-09-2-58_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-58_2.png"/><br/>
+<img src="./Bishop-MLSS-09-2-58_3.png"/><br/>
+<img src="./Bishop-MLSS-09-2-58_4.png"/><br/>
+Linear&#160;Regression&#160;revisited<br/>
+Polynomial&#160;of order&#160;M&#160;,&#160;<br/>
+<hr/>
+<a name=59></a><img src="./Bishop-MLSS-09-2-59_1.png"/><br/>
+<img src="./Bishop-MLSS-09-2-59_2.png"/><br/>
+Bayesian&#160;Model Comparison<br/>
+Matching&#160;data&#160;and&#160;model&#160;complexity<br/>
+<hr/>
+</body>
+</html>

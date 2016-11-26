@@ -1,0 +1,588 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img src="./mlss09-tenenbaum-lecture1-1_1.jpg"/><br/>
+Machine Learning and Cognitive&#160;<br/>
+Science<br/>
+Josh Tenenbaum<br/>
+MIT Department of Brain and Cognitive Sciences<br/>
+CSAIL<br/>
+MLSS 2009 –&#160;Cambridge, UK<br/>
+<hr/>
+<a name=2></a>Human learning and machine&#160;<br/>
+learning: a long-term relationship&#160;<br/>
+•&#160;&#160;Unsupervised learning<br/>
+–&#160;&#160;Factor analysis<br/>
+–&#160;&#160;Multidimensional scaling<br/>
+–&#160;&#160;Mixture models (finite and infinite) for classification<br/>
+–&#160;&#160;Spectral clustering<br/>
+–&#160;&#160;Topic modeling by factorizing document-word count matrices<br/>
+–&#160;&#160;“Collaborative filtering”&#160;with low-rank factorizations<br/>
+–&#160;&#160;Nonlinear manifold learning with graph-based approximations<br/>
+•&#160;&#160;Supervised learning<br/>
+–&#160;&#160;Perceptrons<br/>
+–&#160;&#160;Multi-layer perceptrons&#160;(“backpropagation”)<br/>
+–&#160;&#160;Kernel-based classification<br/>
+–&#160;&#160;Bayesian concept learning<br/>
+•&#160;&#160;Reinforcement&#160;learning<br/>
+–&#160;&#160;Temporal difference learning<br/>
+<hr/>
+<a name=3></a><img src="./mlss09-tenenbaum-lecture1-3_1.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_2.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_3.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_4.png"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_5.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_6.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_7.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_8.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_9.jpg"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-3_10.jpg"/><br/>
+Tom Griffiths<br/>
+Charles Kemp<br/>
+Amy Perfors<br/>
+Pat Shafto<br/>
+Vikash&#160;Mansinghka<br/>
+Dan Roy<br/>
+Tomer&#160;Ullman<br/>
+Steve Piantadosi<br/>
+Chris Baker<br/>
+Noah Goodman<br/>
+<hr/>
+<a name=4></a>The big question<br/>
+How does the mind get so much out of so&#160;<br/>
+little?<br/>
+Our minds build rich models of the world and make strong&#160;<br/>generalizations from input data that is sparse, noisy, and&#160;<br/>ambiguous – in many ways far too limited to support the&#160;<br/>inferences we make. &#160;&#160;<br/>
+How do we do it?<br/>
+<hr/>
+<a name=5></a><img src="./mlss09-tenenbaum-lecture1-5_1.png"/><br/>
+Learning words for objects<br/>
+<hr/>
+<a name=6></a><img src="./mlss09-tenenbaum-lecture1-6_1.png"/><br/>
+Learning words for objects<br/>
+“tufa”<br/>
+“tufa”<br/>
+“tufa”<br/>
+<hr/>
+<a name=7></a>The big question<br/>
+How does the mind get so much out of so&#160;<br/>
+little?<br/>
+–&#160;&#160;Perceiving the world from sense data<br/>
+–&#160;&#160;Learning about kinds of objects and their properties<br/>
+–&#160;&#160;Inferring causal relations<br/>
+–&#160;&#160;Learning the meanings of words, phrases, and sentences&#160;<br/>
+–&#160;&#160;Learning and using intuitive theories of physics,&#160;<br/>
+psychology, biology, …<br/>
+–&#160;&#160;Learning social structures, conventions, and rules<br/>
+The goal: A general-purpose computational&#160;<br/>
+framework for understanding how people make<br/>these inferences, and how&#160;they can be successful.<br/>
+<hr/>
+<a name=8></a>The big question<br/>
+How does the mind get so much out of so&#160;<br/>
+little?<br/>
+The “problem of induction”.<br/>
+The answer: abstract knowledge.&#160;<br/>
+(Constraints / Inductive bias / Priors)<br/>
+<hr/>
+<a name=9></a>The approach<br/>
+1. &#160;How does abstract knowledge guide learning and inference &#160; &#160;<br/>
+from sparse data?<br/>
+<i>P</i>(<i>d&#160;</i>|&#160;<i>h</i>)<i>P</i>(<i>h</i>)<br/>
+Bayesian inference in&#160;<br/>
+<i>P</i>(<i>h&#160;</i>|&#160;<i>d&#160;</i>)&#160;=&#160;∑<i>P</i>(<i>d&#160;</i>|<i>h&#160;</i>)<i>P</i>(<i>h&#160;</i>)<br/>
+probabilistic generative models.<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>h&#160;</i>∈<i>H</i><br/>
+<i>i</i><br/>
+2. &#160;What form does abstract knowledge take, across different&#160;<br/>
+domains and tasks?<br/>
+Probabilities defined over a range of structured representations:&#160;<br/>
+spaces, graphs, grammars, predicate logic, schemas, programs.&#160;<br/>
+3. &#160;How is abstract knowledge itself acquired –&#160;balancing complexity&#160;<br/>
+versus fit, constraint versus flexibility?&#160;<br/>
+Hierarchical models, with inference at multiple levels (“learning&#160;<br/>
+to learn”). &#160;Nonparametric (“infinite”) models, growing&#160;<br/>complexity and adapting their structure as the data require.&#160;<br/>
+<hr/>
+<a name=10></a>Outline for lectures<br/>
+•&#160;&#160;Introduction<br/>
+•&#160;&#160;Cognition as probabilistic inference<br/>
+•&#160;&#160;Learning concepts from examples&#160;<br/>
+•&#160;&#160;Learning and using intuitive theories (more&#160;<br/>
+structured systems of knowledge)<br/>
+<hr/>
+<a name=11></a>Cognition as probabilistic inference&#160;<br/>
+(circa 2007)<br/>
+Visual perception&#160;[Weiss, Simoncelli, Adelson, Richards, Freeman, Feldman,&#160;<br/>
+Kersten, Knill, Maloney, Olshausen, Jacobs, Pouget, ...]<br/>
+Language acquisition and processing&#160;[Brent, de Marken, Niyogi, Klein,&#160;<br/>
+Manning, Jurafsky, Keller, Levy, Hale, Johnson, Griffiths, Perfors, Tenenbaum, …]&#160;<br/>
+Motor learning and motor control&#160;[Ghahramani, Jordan, Wolpert, Kording,&#160;<br/>
+Kawato, Doya, Todorov, Shadmehr,&#160;…]<br/>
+Associative learning&#160;[Dayan, Daw, Kakade, Courville, Touretzky, &#160;Kruschke, …]<br/>
+Memory&#160;[Anderson, Schooler, Shiffrin, Steyvers, Griffiths, McClelland, …]<br/>
+Attention&#160;[Mozer, Huber, Torralba, Oliva, Geisler, Yu, Itti, Baldi, …]<br/>
+Categorization and concept learning&#160;[Anderson, Nosfosky, Rehder, Navarro,&#160;<br/>
+Griffiths, Feldman, Tenenbaum, Rosseel, Goodman, Kemp, Mansinghka, …]<br/>
+Reasoning&#160;[Chater, Oaksford, Sloman, McKenzie, Heit, Tenenbaum, Kemp, …]<br/>
+Causal inference&#160;[Waldmann, Sloman, Steyvers, Griffiths, Tenenbaum, Yuille, …]<br/>
+Decision making and theory of mind&#160;[Lee, Stankiewicz, Rao, Baker,&#160;<br/>
+Goodman, Tenenbaum, …]<br/>
+<hr/>
+<a name=12></a>Modeling basic cognitive capacities as&#160;<br/>
+intuitive Bayesian statistics<br/>
+•&#160;&#160;Similarity&#160;(Tenenbaum &amp; Griffiths,&#160;<i>BBS&#160;</i>2001; Kemp &amp; Tenenbaum,&#160;<br/>
+<i>Cog Sci&#160;</i>2005)<br/>
+•&#160;&#160;Representativeness and evidential support&#160;(Tenenbaum &amp;&#160;<br/>
+Griffiths,&#160;<i>Cog Sci&#160;</i>2001)<br/>
+•&#160;&#160;Causal judgment&#160;(Steyvers&#160;et al., 2003; Griffiths &amp; Tenenbaum,&#160;<br/>
+<i>Cog</i>.&#160;<i>Psych.&#160;</i>2005)<br/>
+•&#160;&#160;Coincidences and causal discovery&#160;(Griffiths &amp; Tenenbaum,&#160;<br/>
+<i>Cog Sci&#160;</i>2001;&#160;<i>Cognition&#160;</i>2007;&#160;<i>Psych. Review</i>, in press)<br/>
+•&#160;&#160;Diagnostic inference&#160;(Krynski&#160;&amp; Tenenbaum,&#160;<i>JEP: General&#160;</i><br/>
+2007)<br/>
+•&#160;&#160;Predicting the future&#160;(Griffiths &amp; Tenenbaum,&#160;<i>Psych. Science&#160;</i><br/>
+2006)<br/>
+<hr/>
+<a name=13></a>Learning causation from contingencies<br/>
+<i>C&#160;</i>present&#160;<i>C&#160;</i>absent<br/>
+(<i>c</i>+)<br/>
+(<i>c</i>-)<br/>
+e.g., “Does injecting<br/>
+<i>E&#160;</i>present (<i>e</i>+)<br/>
+<i>a</i><br/>
+<i>c</i><br/>
+this chemical cause<br/>mice to express a<br/>
+<i>E&#160;</i>absent (<i>e</i>-)<br/>
+<i>b</i><br/>
+<i>d</i><br/>
+certain gene?”<br/>
+Does&#160;<i>C&#160;</i>cause&#160;<i>E&#160;</i>?<br/>
+(rate on a scale from 0 to 100)<br/>
+<hr/>
+<a name=14></a>Learning with graphical models<br/>
+•&#160;&#160;<b>Strength:&#160;&#160;</b>how strong is the relationship?<br/>
+B<br/>
+C<br/>
+<i>w</i><br/>
+<i>w</i><br/>
+0<br/>
+1&#160;<br/>
+E<br/>
+•&#160;&#160;<b>Structure:&#160;&#160;</b>does a relationship exist?<br/>
+B<br/>
+C<br/>
+B<br/>
+C<br/>
+vs.<br/>
+<i>h</i><br/>
+<i>h</i><br/>
+1<br/>
+0<br/>
+E<br/>
+E<br/>
+<hr/>
+<a name=15></a>Learning causal strength&#160;<br/>
+(parameter learning)<br/>
+Assume this causal structure and estimate strength&#160;<i>w&#160;</i>:<br/>
+1&#160;<br/>
+B<br/>
+C<br/>
+<i>w</i>0<br/>
+<i>w</i>1<br/>
+E<br/>
+Δ<i>P&#160;</i>≡&#160;<i>P</i>(&#160;+<br/>
+<i>e&#160;</i>|&#160;+<br/>
+<i>c&#160;</i>)&#160;−&#160;<i>P</i>(&#160;+<br/>
+<i>e&#160;</i>|&#160;−<br/>
+<i>c&#160;</i>)<br/>
+Δ<br/>
+≡<br/>
+<i>P</i><br/>
+<i>p</i><br/>
+<i>Causal Power</i><br/>
+1&#160;<i>P</i>(&#160;+<br/>
+−&#160;<i>e&#160;</i>|&#160;−<br/>
+<i>c&#160;</i>)<br/>
+Both measures are maximum likelihood estimates of the strength&#160;<br/>
+parameter&#160;<i>w&#160;</i>, under different parameterizations for&#160;<i>P</i>(<i>E</i>|<i>B</i>,<i>C</i>): &#160; &#160; &#160; &#160; &#160; &#160;<br/>
+1&#160;<br/>
+linear&#160;→&#160;Δ<i>P, &#160;</i>Noisy-OR&#160;→&#160;Causal Power<br/>
+<hr/>
+<a name=16></a>Learning causal structure&#160;<br/>
+(Griffiths &amp; Tenenbaum, 2005)<br/>
+•&#160;&#160;Hypotheses:<br/>
+<i>h&#160;</i>:<br/>
+1&#160;<br/>
+B<br/>
+C<br/>
+<i>h&#160;</i>:<br/>
+0&#160;<br/>
+B<br/>
+C<br/>
+<i>w</i><br/>
+<i>w</i><br/>
+0<br/>
+<i>w</i>1<br/>
+0<br/>
+E<br/>
+E<br/>
+likelihood ratio&#160;<br/>
+<i>P</i>(<i>d&#160;</i>|&#160;<i>h&#160;</i>)<br/>
+•&#160;&#160;Bayesian&#160;<i>causal support</i>:&#160;log<br/>
+1<br/>
+(Bayes factor)&#160;<br/>
+<i>P</i>(<i>d&#160;</i>|&#160;<i>h&#160;</i>)<br/>
+0<br/>
+gives evidence&#160;<br/>
+1<br/>
+in favor of&#160;<i>h</i><br/>
+<i>P</i>(<i>d&#160;</i>|&#160;<i>h&#160;</i>)&#160;=&#160;∫&#160;<i>P</i>(<i>d&#160;</i>|&#160;<i>w&#160;</i>)&#160;<i>p</i>(<i>w&#160;</i>|&#160;<i>h&#160;</i>)&#160;<i>dw</i><br/>
+1<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+1<br/>
+1<br/>
+<i>P</i>(<i>d&#160;</i>|&#160;<i>h&#160;</i>)&#160;=&#160;∫&#160;∫&#160;<i>P</i>(<i>d&#160;</i>|&#160;<i>w&#160;</i>,<i>w&#160;</i>)&#160;<i>p</i>(<i>w&#160;</i>,<i>w&#160;</i>|&#160;<i>h&#160;</i>)&#160;<i>dw&#160;dw</i><br/>
+1<br/>
+0<br/>
+1<br/>
+0<br/>
+1<br/>
+1<br/>
+0<br/>
+0<br/>
+0<br/>
+1<br/>
+noisy-OR<br/>
+(assume uniform parameter priors, but see Yuille&#160;et al., Danks&#160;et al.)<br/>
+<hr/>
+<a name=17></a><img src="./mlss09-tenenbaum-lecture1-17_1.png"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-17_2.png"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-17_3.png"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-17_4.png"/><br/>
+Comparison with human judgments<br/>(Buehner &amp; Cheng, 1997; 2003)<br/>
+Δ<i>P&#160;</i>=&#160;0<br/>
+Δ<i>P&#160;</i>=&#160;0.25<br/>
+Δ<i>P&#160;</i>=&#160;0.5<br/>
+Δ<i>P&#160;</i>=&#160;0.75Δ<i>P&#160;</i>=&#160;1<br/>
+People&#160;<br/>
+Assume&#160;<br/>
+B<br/>
+C<br/>
+Δ<i>P</i><br/>
+structure:<br/>
+Estimate&#160;&#160;<i>w</i><br/>
+<i>w</i><br/>
+0<br/>
+1<br/>
+strength&#160;<i>w</i><br/>
+E<br/>
+1<br/>
+Causal Power<br/>
+Bayesian structure learning &#160;&#160;<br/>
+B<br/>
+C<br/>
+B<br/>
+C<br/>
+vs.<br/>
+<i>w</i><br/>
+<i>w</i><br/>
+<i>w</i><br/>
+0<br/>
+1<br/>
+0<br/>
+E<br/>
+E<br/>
+<hr/>
+<a name=18></a><img src="./mlss09-tenenbaum-lecture1-18_1.png"/><br/>
+Inferences about causal structure depend on&#160;<br/>
+the functional form of causal relations<br/>
+<hr/>
+<a name=19></a><img src="./mlss09-tenenbaum-lecture1-19_1.png"/><br/>
+Causes and coincidences:&#160;<br/>
+Mere randomness or a hidden cause?<br/>
+(Griffiths &amp; Tenenbaum,&#160;<i>Cognition&#160;</i>2007;&#160;<i>Psych. Review</i>, in press)<br/>
+<hr/>
+<a name=20></a><img src="./mlss09-tenenbaum-lecture1-20_1.png"/><br/>
+<i>P</i>(<i>d&#160;</i>|&#160;<i>latent</i>)<br/>
+Bayesian measure of evidence:&#160;log&#160;<i>P</i>(<i>d&#160;</i>|&#160;<i>random</i>)<br/>
+Random:<br/>
+Latent common cause:<br/>
+<i>C</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+<i>x</i><br/>
+uniform<br/>
+uniform<br/>
++<br/>
+regularity<br/>
+<hr/>
+<a name=21></a><img src="./mlss09-tenenbaum-lecture1-21_1.png"/><br/>
+Cancer clusters?&#160;<br/>
+Judging the probability of a hidden environmental cause<br/>
+<hr/>
+<a name=22></a>Everyday prediction problems&#160;<br/>
+(Griffiths &amp; Tenenbaum,&#160;<i>Psych. Science&#160;</i>2006)<br/>
+•&#160;&#160;You read about a movie that has made $60 million to date. &#160;<br/>
+How much money will it make in total?<br/>
+•&#160;&#160;You see that something has been baking in the oven for 34&#160;<br/>
+minutes. &#160;How long until it’s ready?<br/>
+•&#160;&#160;You meet someone who is 78 years old. &#160;How long will they&#160;<br/>
+live?<br/>
+•&#160;&#160;Your friend quotes to you from line 17 of his favorite poem. &#160;<br/>
+How long is the poem?<br/>
+•&#160;&#160;You meet a US congressman who has served for 11 years. &#160;<br/>
+How long will he serve in total?<br/>
+•&#160;&#160;You encounter a phenomenon or event with an unknown&#160;<br/>
+extent or duration,&#160;<i>t</i><br/>
+, at a random time or value of&#160;<i>t &lt;t</i><br/>
+.&#160;<br/>
+<i>total&#160;</i><br/>
+<i>total&#160;</i><br/>
+What is the total extent or duration&#160;<i>t</i><br/>
+?<br/>
+<i>total&#160;</i><br/>
+<hr/>
+<a name=23></a>Bayesian analysis<br/>
+<i>p</i>(<i>t</i><br/>
+|<i>t</i>) &#160;&#160;∝&#160;<i>p</i>(<i>t</i>|<i>t</i><br/>
+) &#160;<i>p</i>(<i>t</i><br/>
+)<br/>
+<i>total&#160;</i><br/>
+<i>total&#160;</i><br/>
+<i>total&#160;</i><br/>
+&#160;<br/>
+∝&#160;1/<i>t</i><br/>
+<i>p</i>(<i>t</i><br/>
+)<br/>
+<i>total &#160;</i><br/>
+<i>total&#160;</i><br/>
+&#160;<br/>
+Assume&#160;<br/>
+random<br/>
+sample&#160;<br/>
+(for 0 &lt;&#160;<i>t&#160;</i>&lt;&#160;<i>ttotal</i><br/>
+else = 0)<br/>
+Form of&#160;<i>p</i>(<i>t</i><br/>
+)?<br/>
+<i>total&#160;</i><br/>
+e.g., uninformative (Jeffreys) prior&#160;∝&#160;1/<i>ttotal</i><br/>
+&#160;<br/>
+<hr/>
+<a name=24></a>Bayesian analysis<br/>
+<i>p</i>(<i>t</i><br/>
+|<i>t</i>) &#160;&#160;∝&#160;<i>p</i>(<i>t</i>|<i>t</i><br/>
+) &#160;<i>p</i>(<i>t</i><br/>
+)<br/>
+<i>total&#160;</i><br/>
+<i>total&#160;</i><br/>
+<i>total&#160;</i><br/>
+&#160;<br/>
+<i>P</i>(<i>t</i><br/>
+|<i>t</i>)<br/>
+<i>total&#160;</i><br/>
+<i>ttotal</i><br/>
+<i>t</i><br/>
+Posterior median guess for&#160;<i>t</i><br/>
+: &#160;<br/>
+<i>total&#160;</i><br/>
+<i>t*&#160;</i>such that&#160;<i>P</i>(<i>t</i><br/>
+&gt;&#160;<i>t*</i>|<i>t</i>) = 0.5<br/>
+<i>total&#160;</i><br/>
+<hr/>
+<a name=25></a>Bayesian analysis<br/>
+<i>p</i>(<i>t</i><br/>
+|<i>t</i>) &#160;&#160;∝&#160;<i>p</i>(<i>t</i>|<i>t</i><br/>
+) &#160;<i>p</i>(<i>t</i><br/>
+)<br/>
+<i>total&#160;</i><br/>
+<i>total&#160;</i><br/>
+<i>total&#160;</i><br/>
+&#160;<br/>
+<i>P</i>(<i>t</i><br/>
+|<i>t</i>)<br/>
+<i>total&#160;</i><br/>
+<i>ttotal</i><br/>
+<i>t&#160;t*</i><br/>
+Posterior median guess for&#160;<i>t</i><br/>
+: &#160;<br/>
+<i>total&#160;</i><br/>
+<i>t*&#160;</i>such that&#160;<i>P</i>(<i>t</i><br/>
+&gt;&#160;<i>t*</i>|<i>t</i>) = 0.5<br/>
+<i>total&#160;</i><br/>
+<hr/>
+<a name=26></a><img src="./mlss09-tenenbaum-lecture1-26_1.png"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-26_2.png"/><br/>
+Priors&#160;<i>P</i>(<i>t</i><br/>
+) based on empirically measured durations or magnitudes&#160;<br/>
+<i>total&#160;</i><br/>
+for many real-world events in each class:<br/>
+Median human judgments of the total duration or magnitude&#160;<i>t</i><br/>
+of&#160;<br/>
+<i>total&#160;</i><br/>
+events&#160;in each class,&#160;given one&#160;random observation at a duration or&#160;<br/>magnitude&#160;<i>t</i>, versus&#160;Bayesian predictions (median of&#160;<i>P</i>(<i>t</i><br/>
+|<i>t</i>)). &#160;<br/>
+<i>total&#160;</i><br/>
+<hr/>
+<a name=27></a>Outline for lectures<br/>
+•&#160;&#160;Introduction<br/>
+•&#160;&#160;Cognition as probabilistic inference<br/>
+•&#160;&#160;Learning concepts from examples&#160;<br/>
+•&#160;&#160;Learning and using intuitive theories (more&#160;<br/>
+structured systems of knowledge)<br/>
+<hr/>
+<a name=28></a><img src="./mlss09-tenenbaum-lecture1-28_1.png"/><br/>
+“tufa”<br/>
+“tufa”<br/>
+“tufa”<br/>
+Learning from just one or a few examples, and mostly&#160;<br/>unlabeled examples (“semi-supervised learning”).&#160;<br/>
+<hr/>
+<a name=29></a>Simple model of concept learning<br/>
+“This is a blicket.”<br/>
+“Can you show me the<br/>
+other blickets?”<br/>
+<hr/>
+<a name=30></a>Simple model of concept learning<br/>
+“This is a blicket.”<br/>
+Other blickets.<br/>
+<hr/>
+<a name=31></a>Simple model of concept learning<br/>
+“This is a blicket.”<br/>
+Other blickets.<br/>
+Learning from just one positive example is possible if:<br/>
+–&#160;&#160;Assume concepts refer to clusters in the world.<br/>
+–&#160;&#160;Observe enough unlabeled data to identify clear clusters.<br/>
+(c.f. Learning with mixture models, Ghahramani &amp; Jordan,&#160;<br/>
+1994; Neal 2000)<br/>
+<hr/>
+<a name=32></a>Concept learning with mixture&#160;<br/>
+models in cognitive science<br/>
+•&#160;&#160;Fried &amp; Holyoak (1984)<br/>
+–&#160;Modeled unsupervised and &#160;<br/>
+semi-supervised categorization&#160;<br/>as EM in a Gaussian mixture.&#160;<br/>
+•&#160;&#160;Anderson (1990)<br/>
+–&#160;Modeled unsupervised and semi-supervised&#160;<br/>
+categorization as greedy sequential search in an&#160;<br/>Dirichlet&#160;Process mixture model.&#160;<br/>
+<hr/>
+<a name=33></a>A typical cognitive experiment<br/>
+<b>F1 &#160; &#160;F2 &#160; &#160;F3 &#160; &#160;F4 &#160; &#160; &#160; &#160;Label</b><br/>
+Training stimuli: &#160; &#160;<b>1 &#160; &#160;1 &#160; &#160;1 &#160; &#160;1&#160;</b><br/>
+<b>1</b><br/>
+<b>1 &#160; &#160;0 &#160; &#160;1 &#160; &#160;0&#160;</b><br/>
+<b>1</b><br/>
+<b>0 &#160; &#160;1 &#160; &#160;0 &#160; &#160;1&#160;</b><br/>
+<b>1</b><br/>
+<b>0 &#160; &#160;0 &#160; &#160;0 &#160; &#160;0&#160;</b><br/>
+<b>0</b><br/>
+<b>0 &#160; &#160;1 &#160; &#160;0 &#160; &#160;0&#160;</b><br/>
+<b>0</b><br/>
+<b>1 &#160; &#160;0 &#160; &#160;1 &#160; &#160;1&#160;</b><br/>
+<b>0</b><br/>
+Test stimuli: &#160;&#160;&#160;<b>0 &#160; &#160;1 &#160; &#160;1 &#160; &#160;1&#160;</b><br/>
+<b>?</b><br/>
+<b>1 &#160; &#160;1 &#160; &#160;0 &#160; &#160;1&#160;</b><br/>
+<b>?</b><br/>
+<b>1 &#160; &#160;1 &#160; &#160;1 &#160; &#160;0&#160;</b><br/>
+<b>?</b><br/>
+<b>1 &#160; &#160;0 &#160; &#160;0 &#160; &#160;0&#160;</b><br/>
+<b>?</b><br/>
+<b>0 &#160; &#160;0 &#160; &#160;1 &#160; &#160;0&#160;</b><br/>
+<b>?</b><br/>
+<b>0 &#160; &#160;0 &#160; &#160;0 &#160; &#160;1&#160;</b><br/>
+<b>?</b><br/>
+<hr/>
+<a name=34></a><img src="./mlss09-tenenbaum-lecture1-34_1.png"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-34_2.png"/><br/>
+Anderson (1990), “Rational&#160;<br/>model of categorization”:&#160;<br/>
+Greedy sequential search &#160;&#160;<br/>in an infinite mixture &#160; &#160;<br/>model.<br/>
+Sanborn, Griffiths, Navarro&#160;<br/>(2006), “More rational&#160;<br/>model of categorization”:<br/>
+Particle filter with a&#160;<br/>small # of particles<br/>
+<hr/>
+<a name=35></a><img src="./mlss09-tenenbaum-lecture1-35_1.png"/><br/>
+<img src="./mlss09-tenenbaum-lecture1-35_2.png"/><br/>
+From simple to complex category&#160;<br/>
+boundaries<br/>
+Category<br/>
+A<br/>B<br/>
+(Smith and Minda, 1998)<br/>
+(Griffiths, Sanborn, Canini, Navarro, 2008)<br/>
+<hr/>
+<a name="outline"></a><h1>Document Outline</h1>
+<ul>
+<li><a href="mlss09-tenenbaum-lecture1s.html#1">Slide Number 1</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#2">Human learning and machine learning: a long-term relationship&#160;</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#3">Slide Number 3</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#4">The big question</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#5">Learning words for objects</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#6">Learning words for objects</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#7">The big question</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#8">The big question</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#9">The approach</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#10">Outline for lectures</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#11">Cognition as probabilistic inference (circa 2007)</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#12">Modeling basic cognitive capacities as intuitive Bayesian statistics</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#13">Learning causation from contingencies</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#14">Learning with graphical models</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#15">Learning causal strength(parameter learning)</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#16">Learning causal structure(Griffiths &amp; Tenenbaum, 2005)</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#17">Comparison with human judgments</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#18">Inferences about causal structure depend on the functional form of causal relations</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#19">Causes and coincidences:Mere randomness or a hidden cause?</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#20">Bayesian measure of evidence:</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#21">Slide Number 22</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#22">Everyday prediction problems(Griffiths &amp; Tenenbaum, Psych. Science 2006)</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#23">Bayesian analysis</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#24">Bayesian analysis</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#25">Bayesian analysis</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#26">Slide Number 27</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#27">Outline for lectures</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#28">Slide Number 29</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#29">Simple model of concept learning</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#30">Simple model of concept learning</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#31">Simple model of concept learning</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#32">Concept learning with mixture models in cognitive science</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#33">A typical cognitive experiment</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#34">Slide Number 35</a></li>
+<li><a href="mlss09-tenenbaum-lecture1s.html#35">From simple to complex category boundaries</a></li>
+</ul>
+<hr/>
+</body>
+</html>

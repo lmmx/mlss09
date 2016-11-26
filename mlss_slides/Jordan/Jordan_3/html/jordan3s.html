@@ -1,0 +1,870 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Kernel-Based&#160;Contrast Functions&#160;<br/>
+for&#160;Sufficient Dimension&#160;Reduction<br/>
+K.&#160;Fukumizu,&#160;F. Bach, &amp; M.&#160;I.&#160;Jordan, &#160;(2009).&#160;&#160;<br/><i>Annals&#160;of&#160;Statistics,&#160;37</i>, 1871-1905.<br/>
+1<br/>
+<hr/>
+<a name=2></a>Outline<br/>
+&#160;Introduction<br/>
+–&#160;dimension&#160;reduction&#160;and&#160;conditional&#160;independence&#160;&#160;<br/>
+&#160;Conditional&#160;covariance&#160;operators on RKHS<br/>
+&#160;Kernel Dimensionality&#160;Reduction&#160;for regression<br/>
+&#160;Manifold&#160;KDR<br/>
+&#160;Summary<br/>
+2<br/>
+<hr/>
+<a name=3></a>Sufficient&#160;Dimension&#160;Reduction<br/>
+•&#160;Regression&#160;setting: &#160;observe&#160;<i>(X,Y)&#160;</i>pairs,&#160;where&#160;the&#160;<br/>
+covariate&#160;<i>X&#160;</i>is high-dimensional<br/>
+•&#160;Find a&#160;(hopefully&#160;small)&#160;subspace&#160;<i>S&#160;</i>of the&#160;covariate&#160;<br/>
+space&#160;that&#160;retains the information&#160;pertinent to&#160;the&#160;<br/>response&#160;<i>Y</i><br/>
+•&#160;<i>Semiparametric&#160;formulation</i>:&#160;treat&#160;the&#160;conditional&#160;<br/>
+distribution&#160;<i>p(Y | X)&#160;</i>nonparametrically,&#160;and&#160;estimate the&#160;<br/>parameter&#160;<i>S</i><br/>
+3<br/>
+<hr/>
+<a name=4></a>Perspectives<br/>
+•&#160;Classically&#160;the&#160;covariate&#160;vector&#160;<i>X&#160;</i>has been&#160;treated&#160;as&#160;<br/>
+ancillary&#160;in&#160;regression<br/>
+•&#160;The&#160;sufficient&#160;dimension&#160;reduction&#160;(SDR) literature&#160;has&#160;<br/>
+aimed at making&#160;use of the&#160;randomness&#160;in&#160;<i>X&#160;</i>(in settings&#160;<br/>where this is reasonable)<br/>
+•&#160;This&#160;has generally&#160;been&#160;achieved&#160;via&#160;inverse&#160;regression<br/>
+•&#160;at&#160;the&#160;cost&#160;of&#160;introducing&#160;strong&#160;assumptions&#160;on&#160;the&#160;distribution&#160;of&#160;<br/>
+the&#160;covariate&#160;<i>X</i><br/>
+•&#160;We’ll&#160;make&#160;use&#160;of&#160;the randomness&#160;in&#160;<i>X&#160;</i>without&#160;employing&#160;<br/>
+inverse regression<br/>
+4<br/>
+<hr/>
+<a name=5></a>Dimension&#160;Reduction&#160;for&#160;Regression<br/>
+•&#160;Regression:&#160;<i>p</i>(<i>Y&#160;</i>|&#160;<i>X&#160;</i>)<br/>
+<i>Y&#160;&#160;</i>:&#160;response&#160;variable,&#160;&#160;&#160;<br/><i>X&#160;</i>=&#160;(<i>X&#160;</i>,...,<i>X&#160;</i>):&#160;<i>m</i>-dimensional&#160;covariate<br/>
+1<br/>
+<i>m</i><br/>
+•&#160;Goal:&#160;Find&#160;the&#160;central&#160;subspace,&#160;which&#160;is&#160;defined&#160;via:<br/>
+~<br/>
+<i>p</i>(<i>Y&#160;</i>|&#160;<i>X&#160;</i>)&#160;&#160;<i>p</i>(<i>Y&#160;</i>|&#160;<i>bT&#160;X&#160;</i>,...,<i>bT&#160;X</i><br/>
+&#160;<i>p&#160;Y&#160;BT&#160;X</i><br/>
+1<br/>
+<i>d</i><br/>
+&#160;~<br/>
+)<br/>
+(&#160;|<br/>
+)&#160;<br/>
+5<br/>
+<hr/>
+<a name=6></a><img src="./jordan3-6_1.png"/><br/>
+<img src="./jordan3-6_2.png"/><br/>
+<i>Y</i><br/>
+<i>Y</i><br/>
+<i>X</i>1<br/>
+<i>X</i>2<br/>
+<i>X</i><br/>
+1.2<br/>
+1<br/>
+1<br/>
+1<br/>
+0.8<br/>
+<i>Y&#160;</i><br/>
+&#160;<i>N</i>(&#160;;<br/>
+0<br/>
+1<br/>
+.<br/>
+0&#160;2&#160;)<br/>
+0.6<br/>
+<i>Y</i><br/>
+1&#160;exp(&#160;<i>X&#160;</i>)<br/>
+1<br/>
+0.4<br/>
+0.2<br/>
+0<br/>
+central&#160;subspace&#160;&#160;=&#160;&#160;<i>X&#160;</i>axis<br/>
+-0.2<br/>
+-10<br/>
+-8<br/>
+-6<br/>
+-4<br/>
+-2<br/>
+0<br/>
+2<br/>
+4<br/>
+6<br/>
+8<br/>
+1&#160;<br/>
+<i>X&#160;</i>2<br/>
+6<br/>
+<hr/>
+<a name=7></a>Some&#160;Existing&#160;Methods<br/>
+&#160;Sliced&#160;Inverse Regression&#160;(SIR,&#160;Li&#160;1991)<br/>
+–&#160;PCA&#160;of&#160;E[<i>X</i>|<i>Y</i>]&#160;&#160;use&#160;slice&#160;of&#160;<i>Y<br/></i>–&#160;Elliptic assumption&#160;on&#160;the&#160;distribution&#160;of&#160;<i>X</i><br/>
+&#160;Principal&#160;Hessian&#160;Directions&#160;(pHd,&#160;Li&#160;1992)<br/>
+–&#160;Average Hessian&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+<i>E</i>&#160;&#160;&#160;<br/>
+[(&#160;&#160;&#160;&#160;<br/>
+<i>Y&#160;</i>&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+<i>Y&#160;</i>&#160;&#160;&#160;<br/>
+)(&#160;&#160;&#160;&#160;<br/>
+<i>X&#160;</i>&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;<br/>
+<i>X</i>&#160;&#160;&#160;&#160;<br/>
+)(&#160;&#160;&#160;&#160;<br/>
+<i>X&#160;</i>&#160;&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;&#160;<br/>
+<i>X&#160;</i>&#160;<br/>
+)&#160;&#160;&#160;<br/>
+<i>T&#160;</i>&#160;]&#160;is used<br/>
+<i>yxx</i><br/>
+–&#160;If&#160;<i>X&#160;</i>is Gaussian,&#160;eigenvectors&#160;gives the&#160;central&#160;subspace<br/>–&#160;Gaussian assumption&#160;on&#160;<i>X</i>. &#160;<i>Y&#160;</i>must be&#160;one-dimensional<br/>
+&#160;Projection&#160;pursuit&#160;approach&#160;(e.g.,&#160;Friedman&#160;et&#160;al. 1981)<br/>
+–&#160;Additive model&#160;<i>E</i>[<i>Y</i>|<i>X</i>]&#160;=&#160;<i>g&#160;</i>(<i>b&#160;TX</i>) +&#160;...&#160;+&#160;<i>g&#160;</i>(<i>b&#160;TX</i>)&#160;is used&#160;<br/>
+1<br/>
+1<br/>
+<i>d</i><br/>
+d<br/>
+&#160;Canonical&#160;Correlation&#160;Analysis&#160;(CCA)&#160;/ Partial&#160;Least Squares&#160;(PLS)<br/>
+–&#160;Linear assumption&#160;on&#160;the&#160;regression<br/>
+&#160;Contour Regression&#160;(Li,&#160;Zha&#160;&amp;&#160;Chiaromonte,&#160;2004)<br/>
+–&#160;Elliptic assumption&#160;on&#160;the&#160;distribution&#160;of&#160;<i>X</i><br/>
+7<br/>
+<hr/>
+<a name=8></a>Dimension&#160;Reduction&#160;and&#160;Conditional&#160;Independence<br/>
+•&#160;(<i>U</i>,&#160;<i>V</i>)=(<i>BTX</i>,&#160;<i>CTX</i>) &#160; &#160;&#160;<br/>
+where&#160;<i>C</i>:&#160;<i>m&#160;</i>x (<i>m-d</i>)&#160;&#160;with&#160;columns&#160;orthogonal&#160;to&#160;<i>B</i><br/>
+•&#160;<i>B&#160;</i>gives&#160;the&#160;projector&#160;onto&#160;the&#160;central&#160;subspace<br/>
+<i>Y</i><br/>
+&#160;<i>p</i><br/>
+(&#160;<i>y&#160;</i>|&#160;<i>x</i>)&#160;&#160;<i>p</i><br/>
+(&#160;<i>y&#160;</i>|&#160;<i>BT&#160;x</i>)<br/>
+<i>Y</i>|<i>X</i><br/>
+<i>Y</i>|<i>U</i><br/>
+&#160;<i>p</i><br/>
+(&#160;<i>y&#160;</i>|&#160;<i>u</i>,<i>v</i>)&#160;&#160;<i>p</i><br/>
+(&#160;<i>y&#160;</i>|&#160;<i>u</i>)<br/>
+for&#160;a<br/>
+&#160;&#160;l&#160;&#160;&#160;<br/>
+l&#160;<i>y</i>,<i>u</i>,<i>v</i><br/>
+<i>Y&#160;U</i><br/>
+|<br/>
+<i>V</i><br/>
+,<br/>
+<i>Y&#160;U</i><br/>
+|<br/>
+<i>X</i><br/>
+&#160;Conditional&#160;independence&#160;&#160;<i>Y&#160;V&#160;</i>|<i>U</i><br/>
+<i>U</i><br/>
+<i>V</i><br/>
+•&#160;Our&#160;approach:&#160;<i>Characterize&#160;conditional&#160;independence</i><br/>
+8<br/>
+<hr/>
+<a name=9></a>Outline<br/>
+&#160;Introduction<br/>
+–&#160;dimension&#160;reduction&#160;and&#160;conditional&#160;independence&#160;&#160;<br/>
+&#160;Conditional&#160;covariance&#160;operators on RKHS<br/>
+&#160;Kernel Dimensionality&#160;Reduction&#160;for regression<br/>
+&#160;Manifold&#160;KDR<br/>
+&#160;Summary<br/>
+9<br/>
+<hr/>
+<a name=10></a><img src="./jordan3-10_1.png"/><br/>
+<img src="./jordan3-10_2.png"/><br/>
+<img src="./jordan3-10_3.png"/><br/>
+<img src="./jordan3-10_4.png"/><br/>
+<img src="./jordan3-10_5.png"/><br/>
+<img src="./jordan3-10_6.png"/><br/>
+<img src="./jordan3-10_7.png"/><br/>
+<img src="./jordan3-10_8.png"/><br/>
+<img src="./jordan3-10_9.png"/><br/>
+<img src="./jordan3-10_10.png"/><br/>
+<img src="./jordan3-10_11.png"/><br/>
+<img src="./jordan3-10_12.png"/><br/>
+<img src="./jordan3-10_13.png"/><br/>
+<img src="./jordan3-10_14.png"/><br/>
+<img src="./jordan3-10_15.png"/><br/>
+<img src="./jordan3-10_16.png"/><br/>
+<img src="./jordan3-10_17.png"/><br/>
+<img src="./jordan3-10_18.png"/><br/>
+<img src="./jordan3-10_19.png"/><br/>
+<img src="./jordan3-10_20.png"/><br/>
+Reproducing&#160;Kernel Hilbert&#160;Spaces<br/>
+&#160;“Kernel methods”<br/>
+–&#160;RKHS’s&#160;have generally&#160;been&#160;used&#160;to&#160;provide&#160;basis&#160;expansions&#160;for&#160;<br/>
+regression&#160;and&#160;classification&#160;(<i>e.g</i>.,&#160;support&#160;vector&#160;machine)<br/>
+–&#160;<i>Kernelization</i>:&#160;&#160;map&#160;data&#160;into&#160;the&#160;RKHS&#160;and&#160;apply&#160;linear&#160;or&#160;second-<br/>
+order&#160;methods&#160;in the&#160;RKHS<br/>
+–&#160;But&#160;RKHS’s can&#160;also&#160;be&#160;used&#160;to&#160;characterize&#160;independence&#160;and&#160;<br/>
+conditional&#160;independence<br/>
+W<br/>
+feature&#160;map<br/>
+F&#160;(<i>X</i>)<br/>
+F&#160;(<i>Y</i>)<br/>
+feature&#160;map<br/>
+<i>X</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+W<i>Y</i><br/>
+F<br/>
+F<br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>H</i><br/>
+<i>H</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+RKHS<br/>
+RKHS<br/>
+10<br/>
+<hr/>
+<a name=11></a>Positive&#160;Definite&#160;Kernels&#160;and RKHS<br/>
+&#160;Positive definite&#160;kernel&#160;(p.d.&#160;kernel)<br/>
+<b>&#160;</b><i>k&#160;</i>:W&#160;&#160;W&#160;&#160;<b>R</b><br/>
+<i>k&#160;</i>is&#160;positive&#160;definite&#160;if &#160;<i>k</i>(<i>x</i>,<i>y</i>)&#160;=&#160;<i>k</i>(<i>y</i>,<i>x</i>)&#160;and&#160;for any<br/>
+<br/>
+<i>n&#160;</i><br/>
+,<i>x&#160;</i>W<br/>
+<b>&#160;</b><br/>
+<b>N</b><i>,&#160;x</i>1<br/>
+<i>n</i><br/>
+the&#160;matrix&#160;&#160; &#160; &#160;<br/>
+&#160;&#160;<i>k</i>(&#160;&#160;&#160;<i>x</i>&#160;&#160;&#160;,&#160;<i>x</i>&#160;&#160;&#160;)&#160;&#160;&#160;&#160;&#160;(Gram&#160;matrix)&#160;is positive&#160;semidefinite.&#160;&#160;<br/>
+<i>i</i><br/>
+<i>j</i><br/>
+<i>i</i>,&#160;<i>j</i><br/>
+–&#160;Example:&#160;Gaussian&#160;RBF&#160;kernel&#160;<i>k</i>(<i>x</i>,&#160;<i>y</i>)&#160;&#160;exp&#160;&#160;<i>x&#160;</i>&#160;<i>y&#160;</i>2&#160;&#160;2<br/>
+<br/>
+<br/>
+&#160;Reproducing&#160;kernel&#160;Hilbert&#160;space&#160;(RKHS)<br/>
+<i>k</i>:&#160;p.d. kernel&#160;on&#160;W<br/>
+<i>H&#160;</i>:&#160;&#160;reproducing&#160;kernel&#160;Hilbert&#160;space &#160;(RKHS)<br/>
+1)&#160;<i>k</i>(&#160;,&#160;<i>x</i>)&#160;<i>H&#160;</i>for&#160;all&#160;&#160;<i>x&#160;</i>&#160;.<br/>
+W<br/>
+2)&#160;&#160;&#160;&#160;&#160;<br/>
+S&#160;&#160;<br/>
+p&#160;&#160;a&#160;&#160;&#160;<br/>
+n&#160;&#160;&#160;&#160;<i>k</i><br/>
+&#160;&#160;&#160;&#160;(&#160;,&#160;&#160;&#160;<i>x</i>&#160;&#160;)&#160;|&#160;&#160;<i>x</i>&#160;&#160;&#160;&#160;&#160;&#160;&#160;W&#160;&#160;&#160;&#160;is dense&#160;in&#160;<i>H</i>.&#160;<br/>
+3)&#160;<i>k</i>(&#160;,&#160;<i>x</i>),&#160;<i>f</i><br/>
+&#160;<i>f&#160;</i>(<i>x</i>)<br/>
+<i>H</i><br/>
+(reproducing&#160;property)<br/>
+11<br/>
+<hr/>
+<a name=12></a>&#160;Functional&#160;data<br/>
+F&#160;:&#160;W&#160;&#160;<i>H</i>,&#160;<i>x&#160;</i>&#160;<i>k</i>(,&#160;<i>x</i>)<br/>
+.<br/>
+<i>i&#160;</i>.<br/>
+<i>e</i><br/>
+F(<i>x</i>)&#160;&#160;<i>k</i>(&#160;&#160;,&#160;<i>x</i>)<br/>
+Data:&#160;&#160;<i>X&#160;</i>,&#160;…,&#160;<i>X</i><br/>
+<br/>
+F&#160;(<i>X&#160;</i>),…,&#160;F&#160;(<i>X&#160;</i>)&#160;:&#160;functional&#160;data<br/>
+1<br/>
+<i>N</i><br/>
+<i>X</i><br/>
+1<br/>
+<i>X</i><br/>
+<i>N</i><br/>
+&#160;Why&#160;RKHS?<br/>
+–&#160;By&#160;the&#160;reproducing&#160;property,&#160;computing&#160;the&#160;inner&#160;product&#160;on&#160;RKHS&#160;<br/>
+is&#160;easy:<br/>
+F(<i>x</i>),F(<i>y</i>)&#160;&#160;<i>k</i>(<i>x</i>,&#160;<i>y</i>)<br/>
+<i>f&#160;</i>&#160;<i>N&#160;a&#160;</i>F(<i>x&#160;</i>)&#160;<br/>
+<i>a&#160;k</i><br/>
+<i>x</i><br/>
+<i>N</i><br/>
+<i>g&#160;</i>&#160;&#160;<i>b&#160;</i>F(<i>x&#160;</i>)&#160;&#160;&#160;<i>b&#160;k</i>(&#160;&#160;,&#160;<i>x&#160;</i>)<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<br/>
+(,<br/>
+,<br/>
+)<br/>
+1<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>j&#160;</i>1<br/>
+<br/>
+<i>j</i><br/>
+<i>j</i><br/>
+<i>j</i><br/>
+<i>j</i><br/>
+<i>j</i><br/>
+<i>f&#160;</i>,&#160;<i>g&#160;</i>&#160;&#160;<i>a&#160;b&#160;k</i>(<i>x&#160;</i>,&#160;<i>x&#160;</i>)<br/>
+<i>i</i>,&#160;<i>j</i><br/>
+<i>i</i><br/>
+<i>j</i><br/>
+<i>i</i><br/>
+<i>j</i><br/>
+–&#160;The&#160;computational&#160;cost&#160;essentially&#160;depends&#160;on&#160;the&#160;sample&#160;size.&#160;<br/>
+Advantageous&#160;for&#160;high-dimensional&#160;data&#160;of&#160;small&#160;sample&#160;size.&#160;<br/>
+12<br/>
+<hr/>
+<a name=13></a><img src="./jordan3-13_1.png"/><br/>
+<img src="./jordan3-13_2.png"/><br/>
+<img src="./jordan3-13_3.png"/><br/>
+<img src="./jordan3-13_4.png"/><br/>
+<img src="./jordan3-13_5.png"/><br/>
+<img src="./jordan3-13_6.png"/><br/>
+<img src="./jordan3-13_7.png"/><br/>
+<img src="./jordan3-13_8.png"/><br/>
+<img src="./jordan3-13_9.png"/><br/>
+<img src="./jordan3-13_10.png"/><br/>
+<img src="./jordan3-13_11.png"/><br/>
+<img src="./jordan3-13_12.png"/><br/>
+<img src="./jordan3-13_13.png"/><br/>
+<img src="./jordan3-13_14.png"/><br/>
+<img src="./jordan3-13_15.png"/><br/>
+Covariance&#160;Operators on&#160;RKHS<br/>
+•&#160;<i>X&#160;</i>,&#160;<i>Y&#160;</i>:&#160;random&#160;variables&#160;on&#160;W&#160;and&#160;W&#160;,&#160;resp.&#160;<br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+•&#160;Prepare&#160;RKHS (<i>H&#160;</i>,&#160;<i>k&#160;</i>)&#160;and&#160;(<i>H&#160;</i>,&#160;<i>k&#160;</i>)&#160;defined&#160;on&#160;W&#160;and&#160;W&#160;,&#160;resp.<br/>
+<i>X</i><br/>
+<i>X</i><br/>
+<i>Y&#160;</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+•&#160;Define&#160;random&#160;variables&#160;on&#160;the&#160;RKHS&#160;<i>H&#160;</i>and&#160;<i>H&#160;</i>by<br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+F&#160;(<i>X&#160;</i>)&#160;&#160;<i>k&#160;</i>(,&#160;<i>X&#160;</i>)<br/>
+F&#160;(<i>Y</i>)&#160;&#160;<i>k&#160;</i>(,<i>Y</i>)<br/>
+<i>X</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>Y</i><br/>
+•&#160;Define&#160;the&#160;covariance&#160;operator&#160;<i>YX</i><br/>
+&#160;&#160;<i>E</i>[F&#160;(<i>Y&#160;</i>)&#160;F&#160;(<i>X</i>),&#160;&#160;]&#160;<i>E</i>[F&#160;(<i>Y&#160;</i>)]<i>E</i>[&#160;F&#160;(<i>X</i>),&#160;&#160;]<br/>
+<i>YX</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+W<br/>
+F&#160;(<i>X</i>)<br/>
+F&#160;(<i>Y</i>)<br/>
+<i>X</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+W<i>Y</i><br/>
+<br/>
+F<br/>
+<i>YX</i><br/>
+F<br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>H</i><br/>
+<i>H</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+13<br/>
+<hr/>
+<a name=14></a>Covariance&#160;Operators on&#160;RKHS<br/>
+•&#160;Definition<br/>
+&#160;&#160;<i>E</i>[F&#160;(<i>Y&#160;</i>)&#160;F&#160;(<i>X</i>),&#160;&#160;]&#160;<i>E</i>[F&#160;(<i>Y&#160;</i>)]<i>E</i>[&#160;F&#160;(<i>X</i>),&#160;&#160;]<br/>
+<i>YX</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<br/>
+is&#160;an&#160;operator&#160;from&#160;<i>H&#160;</i>to&#160;<i>H&#160;</i>such&#160;that&#160;<br/>
+<i>YX</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>g</i>,&#160;&#160;<i>f&#160;</i>&#160;<i>E</i>[<i>g</i>(<i>Y&#160;</i>)&#160;<i>f&#160;</i>(<i>X</i>)]&#160;<i>E</i>[<i>g</i>(<i>Y&#160;</i>)]<i>E</i>[&#160;<i>f&#160;</i>(<i>X</i>)]&#160;(&#160;Cov[&#160;<i>f&#160;</i>(<i>X</i>),&#160;<i>g</i>(<i>Y&#160;</i>)])<br/>
+<i>YX</i><br/>
+for&#160;all&#160;&#160;<i>f&#160;</i>&#160;<i>H&#160;</i>,&#160;<i>g&#160;</i>&#160;<i>H</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+•&#160;<i>cf</i>.&#160;&#160;Euclidean&#160;case<br/>
+<i>V</i><br/>
+=&#160;E[<i>YXT</i>]&#160;–&#160;E[<i>Y</i>]E[<i>X</i>]<i>T&#160;</i>:&#160;covariance&#160;matrix<br/>
+<i>YX</i><br/>
+&#160;,<br/>
+<i>b&#160;V&#160;a</i>&#160;&#160;<i>Co&#160;</i>[(<br/>
+<i>v</i><br/>
+,<br/>
+<i>b&#160;Y&#160;</i>),&#160;(<i>a</i>,&#160;<i>X&#160;</i>)]<br/>
+<i>YX</i><br/>
+14<br/>
+<hr/>
+<a name=15></a>Characterization&#160;of Independence<br/>
+•&#160;Independence and&#160;cross-covariance operators<br/>
+If&#160;the&#160;RKHS’s are&#160;“rich&#160;enough”:<br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+&#160;&#160;&#160;<i>O</i><br/>
+<i>XY</i><br/>
+is&#160;always true&#160;&#160;&#160;&#160;&#160;&#160;<br/>
+Cov[&#160;<i>f&#160;</i>(<i>X</i>),&#160;<i>g</i>(<i>Y&#160;</i>)]&#160;&#160;0<br/>
+requires&#160;an&#160;assumption<br/>
+or<br/>
+on&#160;the&#160;kernel&#160;(universality)<br/>
+<i>E</i>[<i>g</i>(<i>Y&#160;</i>)&#160;<i>f&#160;</i>(<i>X</i>)]&#160;&#160;<i>E</i>[<i>g</i>(<i>Y&#160;</i>)]<i>E</i>[&#160;<i>f&#160;</i>(<i>X</i>)]<br/>
+e.g.,&#160;Gaussian&#160;RBF kernels&#160;are<br/>
+for&#160;all&#160;&#160;<i>f&#160;</i>&#160;<i>H&#160;</i>,&#160;<i>g&#160;</i>&#160;<i>H</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+universal&#160;<br/>
+<i>k</i>(<i>x</i>,&#160;<i>y</i>)&#160;&#160;exp&#160;&#160;<i>x&#160;</i>&#160;<i>y&#160;</i>2&#160;&#160;2<br/>
+<br/>
+<br/>
+–&#160;<i>cf</i>.&#160;for&#160;Gaussian&#160;variables,<br/>
+<i>X&#160;</i>and&#160;<i>Y&#160;</i>are&#160;independent&#160;<br/>
+<br/>
+<i>V</i><br/>
+&#160;<i>O</i><br/>
+i.e.&#160;uncorrelated<br/>
+<i>XY</i><br/>
+15<br/>
+<hr/>
+<a name=16></a>•&#160;Independence&#160;and&#160;characteristic functions<br/>
+Random variables&#160;<i>X&#160;</i>and&#160;<i>Y&#160;</i>are&#160;independent<br/>
+&#160;<i>E</i><br/>
+<i>ei</i><i>T&#160;Xei</i><i>TY</i><br/>
+<br/>
+<br/>
+<i>ei</i><i>T&#160;X</i><br/>
+<br/>
+<br/>
+<i>ei</i><i>TY</i><br/>
+<br/>
+<br/>
+<i>XY&#160;</i><br/>
+&#160;&#160;<i>EX&#160;</i><br/>
+&#160;<i>EY&#160;</i><br/>
+<br/>
+for&#160;all&#160;&#160;and&#160;<br/>
+I.e.,&#160;&#160;&#160;&#160;&#160;<i>T&#160;x</i><br/>
+<i>i</i><i>T&#160;y</i><br/>
+&#160;&#160;&#160;&#160;<br/>
+<i>ei&#160;</i>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<br/>
+a&#160;&#160;&#160;<br/>
+nd&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+<i>e&#160;</i>&#160;&#160;&#160;&#160;&#160;&#160;work&#160;as&#160;test&#160;functions<br/>
+•&#160;RKHS&#160;characterization<br/>
+Random variables&#160;&#160; &#160; &#160;<br/>
+<i>X&#160;</i>&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+W&#160;&#160;&#160;&#160;and&#160;&#160; &#160; &#160;<br/>
+<i>Y&#160;</i>&#160;&#160;<br/>
+&#160;&#160;&#160;&#160;<br/>
+W&#160;&#160;&#160;are&#160;independent<br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+&#160;<i>E&#160;</i>&#160;<i>f&#160;</i>(<i>X&#160;</i>)<i>g</i>(<i>Y</i>)&#160;<i>E&#160;</i>&#160;<i>f&#160;</i>(<i>X&#160;</i>)&#160;<i>E&#160;</i><i>g</i>(<i>Y</i>)<br/>
+for&#160;all&#160;&#160;<i>f&#160;</i>&#160;H&#160;,&#160;<i>g&#160;</i>&#160;H<br/>
+<i>XY</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+–&#160;RKHS&#160;approach&#160;is a generalization&#160;of the&#160;characteristic-function&#160;approach<br/>
+16<br/>
+<hr/>
+<a name=17></a>RKHS&#160;and&#160;Conditional&#160;Independence<br/>
+•&#160;Conditional&#160;covariance operator<br/>
+<i>X&#160;</i>and&#160;<i>Y&#160;</i>are&#160;random&#160;vectors.&#160;&#160;&#160;H&#160;,&#160;H&#160;:&#160;RKHS&#160;with&#160;kernel&#160;<i>k&#160;</i>,&#160;<i>k&#160;</i>,&#160;resp.<br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>Y</i><br/>
+1<br/>
+Def.<br/>
+<br/>
+&#160;&#160;&#160;&#160;<br/>
+<br/>
+<i>YY&#160;</i>|<i>X</i><br/>
+<i>YY</i><br/>
+<i>YX</i><br/>
+<i>XX</i><br/>
+<i>XY</i><br/>
+:&#160;&#160;conditional&#160;covariance&#160;operator<br/>
+–&#160;Under&#160;a universality&#160;assumption&#160;on&#160;the&#160;kernel<br/>
+<i>g</i>,&#160;<br/>
+<i>g&#160;</i>&#160;<i>E&#160;</i>V<br/>
+&#160;ar[<i>g</i>(<i>Y</i>)|&#160;<i>X</i>]<br/>
+<i>YY&#160;</i>|<i>X</i><br/>
+<i>cf.</i><br/>
+For&#160;Gaussian&#160;Var&#160;[<i>aTY&#160;</i>|&#160;<i>X&#160;</i>&#160;<i>x</i>]&#160;&#160;<i>aT&#160;V</i><br/>
+&#160;<i>V&#160;V&#160;</i>1<i>V&#160;</i><i>a</i><br/>
+<i>Y&#160;</i>|<i>X</i><br/>
+<i>YY</i><br/>
+<i>YX&#160;XX</i><br/>
+<i>XY</i><br/>
+–&#160;Monotonicity&#160;of&#160;conditional&#160;covariance&#160;operators<br/>
+<i>X&#160;</i>=&#160;(<i>U</i>,<i>V</i>)&#160;&#160;:&#160;random&#160;vectors<br/>
+<br/>
+&#160;<br/>
+&#160;:&#160;in the&#160;sense&#160;of&#160;<br/>
+<i>YY&#160;U</i><br/>
+|<br/>
+<i>YY</i>|<i>X</i><br/>
+self-adjoint&#160;operators<br/>
+17<br/>
+<hr/>
+<a name=18></a>•&#160;Conditional&#160;independence<br/>
+Theorem<br/>
+<i>X&#160;</i>=&#160;(<i>U</i>,<i>V</i>)&#160;and&#160;<i>Y&#160;</i>are&#160;random&#160;vectors.&#160;<br/>H&#160;,&#160;H&#160;,&#160;H&#160;:&#160;RKHS&#160;with&#160;Gaussian&#160;kernel&#160;<i>k&#160;</i>,&#160;<i>k&#160;</i>,&#160;<i>k&#160;</i>,&#160;resp.<br/>
+<i>X</i><br/>
+<i>U&#160;</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>U</i><br/>
+<i>Y</i><br/>
+<i>Y</i><br/>
+<i>V&#160;</i>|<i>U</i><br/>
+&#160;<br/>
+&#160;<br/>
+<i>YY&#160;U</i><br/>
+|<br/>
+<i>YY</i>|<i>X</i><br/>
+This&#160;theorem&#160;provides&#160;a&#160;new&#160;methodology&#160;for&#160;solving the&#160;<br/>
+sufficient&#160;dimension&#160;reduction&#160;problem<br/>
+18<br/>
+<hr/>
+<a name=19></a>Outline<br/>
+&#160;Introduction<br/>
+–&#160;dimension&#160;reduction&#160;and&#160;conditional&#160;independence&#160;&#160;<br/>
+&#160;Conditional&#160;covariance&#160;operators on RKHS<br/>
+&#160;Kernel Dimensionality&#160;Reduction&#160;for regression<br/>
+&#160;Manifold&#160;KDR<br/>
+&#160;Summary<br/>
+19<br/>
+<hr/>
+<a name=20></a>Kernel&#160;Dimension&#160;Reduction<br/>
+•&#160;Use&#160;a&#160;universal&#160;kernel&#160;for&#160;<i>BTX&#160;</i>and&#160;<i>Y</i><br/>
+(&#160;&#160;&#160;<br/>
+&#160;:&#160;the&#160;partial&#160;order&#160;of&#160;<br/>
+<br/>
+&#160;<br/>
+<i>YY&#160;</i>|<i>BT&#160;X</i><br/>
+<i>YY&#160;</i>|<i>X</i><br/>
+self-adjoint&#160;operators)<br/>
+&#160;<br/>
+<br/>
+&#160;<br/>
+<br/>
+<i>X</i><br/>
+<i>Y&#160;</i>|&#160;<i>BTX</i><br/>
+&#160;&#160;<i>YY</i>|<i>BT&#160;X</i><br/>
+<i>YY&#160;</i>|<i>X</i><br/>
+•&#160;KDR&#160;objective&#160;function:<br/>
+min&#160;Tr&#160;<br/>
+<br/>
+&#160;<i>YY</i>|<i>BT&#160;X&#160;</i><br/>
+&#160;<i>B</i>:&#160;<i>BT&#160;B</i><i>Id</i><br/>
+which&#160;is an&#160;optimization&#160;over&#160;the&#160;Stiefel manifold<br/>
+20<br/>
+<hr/>
+<a name=21></a>Estimator<br/>
+•&#160;Empirical&#160;cross-covariance&#160;operator<br/>
+<i>N</i><br/>
+ˆ(<i>N</i>)&#160;&#160;1&#160;&#160;<i>k</i><br/>
+&#160;(,<i>Y&#160;</i>)&#160;ˆ<i>m&#160;</i>&#160;<i>k</i><br/>
+&#160;(,<i>X&#160;</i>)&#160;ˆ<i>m&#160;</i><br/>
+<i>YX</i><br/>
+<i>N</i><br/>
+<i>Y</i><br/>
+<i>i</i><br/>
+<i>Y</i><br/>
+<i>X</i><br/>
+<i>i</i><br/>
+<i>X</i><br/>
+<i>i</i>1<br/>
+<i>N</i><br/>
+<i>N</i><br/>
+ˆ<br/>
+<i>m&#160;</i>&#160;1&#160;<i>k&#160;</i>(,&#160;<i>X&#160;</i>)<br/>
+ˆ<br/>
+<i>m&#160;</i>&#160;1&#160;<i>k&#160;</i>(,<i>Y&#160;</i>)<br/>
+<i>X</i><br/>
+<i>N</i><br/>
+<i>X</i><br/>
+<i>i</i><br/>
+<i>Y</i><br/>
+<i>N</i><br/>
+<i>Y</i><br/>
+<i>i</i><br/>
+<i>i</i>1<br/>
+<i>i</i>1<br/>
+ˆ(<i>N</i>)<br/>
+<i>YX</i><br/>
+gives the&#160;empirical&#160;covariance:<br/>
+<i>g</i>,&#160;ö<br/>
+(<i>N</i>)&#160;<i>f&#160;</i>&#160;1&#160;<i>N</i><br/>
+&#160;<i>f&#160;</i>(<i>X&#160;</i>)<i>g</i>(<i>Y&#160;</i>)&#160;&#160;1&#160;<i>N</i><br/>
+&#160;<i>f&#160;</i>(<i>X&#160;</i>)&#160;1&#160;<i>N</i><br/>
+&#160;<i>g</i>(<i>Y&#160;</i>)<br/>
+&#160;<br/>
+<i>YX</i><br/>
+<i>N</i><br/>
+<i>i</i>1<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>N</i><br/>
+<i>i</i>1<br/>
+<i>i</i><br/>
+<i>N</i><br/>
+<i>i</i>1<br/>
+<i>i</i><br/>
+•&#160;Empirical&#160;conditional&#160;covariance&#160;operator<br/>
+ˆ(<i>N</i>)&#160;&#160;ˆ(<i>N</i>)&#160;&#160;ˆ(<i>N</i>)&#160;ˆ(<i>N</i>)<br/>
+&#160;e&#160;<i>I</i>1&#160;ˆ(<i>N</i>)<br/>
+<i>YY&#160;</i>|<i>X</i><br/>
+<i>YY</i><br/>
+<i>YX</i><br/>
+<i>XX</i><br/>
+<i>N</i><br/>
+<i>XY</i><br/>
+e&#160;:&#160;regularization&#160;coefficient<br/>
+<i>N</i><br/>
+21<br/>
+<hr/>
+<a name=22></a>•&#160;Estimating&#160;function&#160;for&#160;KDR:<br/>
+Tr&#160;ˆ(<i>N</i>)<br/>
+<br/>
+&#160;(<i>N</i>)&#160;&#160;ˆ(<i>N</i>)&#160;ˆ(<i>N</i>)<br/>
+&#160;e&#160;<i>I</i>1&#160;ˆ(<i>N</i>)<br/>
+<i>YY&#160;</i>|<i>U</i><br/>
+<br/>
+&#160;&#160;Tr&#160;ˆ<i>YY</i><br/>
+<i>YU</i><br/>
+<i>UU</i><br/>
+<i>N</i><br/>
+<i>UY</i><br/>
+<i>U</i><br/>
+<i>BT</i><br/>
+<br/>
+<i>X</i><br/>
+<br/>
+<br/>
+&#160;Tr&#160;<i>G&#160;</i>&#160;<i>G&#160;G&#160;G</i><br/>
+&#160;&#160;<i>N</i>e&#160;<i>I&#160;</i>1<br/>
+<br/>
+<br/>
+<i>Y</i><br/>
+<i>Y</i><br/>
+<i>U</i><br/>
+<i>U</i><br/>
+<i>N&#160;N</i><br/>
+<br/>
+<br/>
+where<br/>
+<i>G&#160;</i>&#160;<i>I&#160;</i>&#160;1<br/>
+<i>T</i><br/>
+<br/>
+<i>K&#160;I&#160;</i>&#160;1&#160;<i>T</i><br/>
+<br/>
+<br/>
+<i>N&#160;</i><b>1</b><br/>
+<i>N&#160;</i><b>1</b><br/>
+:&#160;centered&#160;Gram&#160;matrix<br/>
+<b>&#160;&#160;</b><i>U</i><br/>
+<i>N</i><br/>
+<i>N</i><b>1</b><i>N</i><br/>
+<i>U</i><br/>
+<i>N</i><br/>
+<i>N</i><b>1</b><i>N</i><br/>
+<i>K&#160;</i>&#160;<i>k</i>(&#160;<i>T</i><br/>
+<i>B&#160;X&#160;</i>,&#160;<i>T</i><br/>
+<i>B&#160;X&#160;</i>)<br/>
+<i>U</i><br/>
+<i>i</i><br/>
+<i>j</i><br/>
+•&#160;Optimization&#160;problem:<br/>
+min&#160;Tr&#160;<i>G&#160;G</i><br/>
+&#160;&#160;<i>N</i>e&#160;<i>I&#160;</i>1<br/>
+<br/>
+<br/>
+<i>Y</i><br/>
+<i>N&#160;N</i><br/>
+<i>B</i>:<i>BT&#160;B</i><i>I</i><br/>
+<i>BT&#160;X</i><br/>
+<br/>
+<br/>
+<i>d</i><br/>
+22<br/>
+<hr/>
+<a name=23></a>Experiments&#160;with KDR<br/>
+&#160;Wine data<br/>
+20<br/>
+KDR<br/>
+Partial&#160;Least&#160;Square<br/>
+20<br/>
+Data&#160;<br/>
+15<br/>
+15<br/>
+13&#160;dim.&#160;178&#160;data.&#160;10<br/>
+10<br/>
+5<br/>
+5<br/>
+3&#160;classes<br/>
+0<br/>
+0<br/>
+2&#160;dim.&#160;projection<br/>
+-5<br/>
+-5<br/>
+-10<br/>
+-10<br/>
+-15<br/>
+-15<br/>
+-20<br/>
+<i>k</i>(<i>z&#160;</i>,&#160;<i>z&#160;</i>)<br/>
+1<br/>
+2<br/>
+-20<br/>
+-20<br/>
+-10<br/>
+0<br/>
+10<br/>
+20<br/>
+-20<br/>
+-10<br/>
+0<br/>
+10<br/>
+20<br/>
+<br/>
+2<br/>
+exp&#160;&#160;<i>z&#160;</i>&#160;<i>z</i><br/>
+&#160;2<br/>
+<br/>
+<br/>
+&#160;<br/>
+1<br/>
+2<br/>
+20<br/>
+20<br/>
+&#160;=&#160;30<br/>
+CCA<br/>
+Sliced&#160;Inverse&#160;Regression<br/>
+15<br/>
+15<br/>
+10<br/>
+10<br/>
+5<br/>
+5<br/>
+0<br/>
+0<br/>
+-5<br/>
+-5<br/>
+-10<br/>
+-10<br/>
+-15<br/>
+-15<br/>
+-20<br/>
+-20<br/>
+-20<br/>
+-10<br/>
+0<br/>
+10<br/>
+20<br/>
+-20<br/>
+-10<br/>
+0<br/>
+10<br/>
+20<br/>
+23<br/>
+<hr/>
+<a name=24></a>Consistency&#160;of KDR<br/>
+Theorem<br/>
+Suppose&#160;<i>k&#160;</i>is bounded&#160;and&#160;continuous,&#160;and&#160;&#160;<br/>
+<i>d</i><br/>
+e&#160;&#160;0,&#160;<i>N</i>1/2e&#160;&#160;&#160;(<i>N&#160;</i>&#160;).<br/>
+&#160;&#160;<i>N</i><br/>
+<i>N</i><br/>
+Let&#160;<i>S&#160;</i>be&#160;the&#160;set of&#160;optimal&#160;parameters:<br/>
+0<br/>
+<i>S&#160;</i>&#160;<i>B</i><br/>
+|<i>BTB</i>&#160;<i>I&#160;</i>,Tr&#160;<i>B</i><br/>
+<br/>
+<i>B&#160;</i>'<br/>
+<br/>
+<br/>
+&#160;&#160;minTr<br/>
+<br/>
+<br/>
+&#160;&#160;0<br/>
+<i>d</i><br/>
+<i>YY&#160;</i>|<i>X</i><br/>
+<i>YY&#160;</i>|<i>X</i><br/>
+<i>B&#160;</i>'<br/>
+Then, under&#160;some conditions,&#160;for&#160;any open&#160;set &#160;<i>U&#160;</i>&#160;<i>S</i>0<br/>
+Pr&#160;ö<br/>
+<i>B</i>(<i>N&#160;</i>)<br/>
+&#160;<i>U</i>1&#160;(<i>N&#160;</i>).<br/>
+&#160;<br/>
+24<br/>
+<hr/>
+<a name=25></a>Lemma&#160;<br/>
+Suppose&#160;<i>k&#160;</i>is bounded&#160;and&#160;continuous,&#160;and&#160;&#160;<br/>
+<i>d</i><br/>
+e&#160;&#160;0,&#160;<i>N</i>1/2e&#160;&#160;&#160;(<i>N&#160;</i>&#160;).<br/>
+&#160;&#160;<i>N</i><br/>
+<i>N</i><br/>
+Then, under&#160;some conditions,&#160;<br/>
+sup<br/>
+Tr&#160;ö<br/>
+<i>B</i>(<i>N</i>)<br/>
+<br/>
+<br/>
+<i>B</i><br/>
+<br/>
+<br/>
+&#160;<i>YY</i>|<i>X&#160;</i>&#160;&#160;Tr&#160;<br/>
+&#160;<i>YY</i>|<i>X&#160;</i>&#160;&#160;0&#160;(<i>N&#160;</i>&#160;)<br/>
+&#160;<i>B</i>:<i>BT&#160;B</i><i>Id</i><br/>
+in&#160;probability.&#160;<br/>
+25<br/>
+<hr/>
+<a name=26></a>Conclusions<br/>
+&#160;Are&#160;you a&#160;Bayesian&#160;or a&#160;frequentist?<br/>&#160;My&#160;own&#160;answer&#160;is “both,”&#160;but there&#160;are days where&#160;<br/>
+I'm&#160;much&#160;more clearly&#160;one&#160;than the&#160;other<br/>
+–&#160;and it&#160;is an&#160;ongoing&#160;intellectual&#160;challenge&#160;to try&#160;to understand&#160;the&#160;<br/>
+ramifications of&#160;this distinction<br/>
+&#160;I&#160;view&#160;them as&#160;complementary&#160;perspectives,&#160;but&#160;there&#160;<br/>
+is&#160;a wave/particle&#160;uncomfortableness&#160;at&#160;times<br/>
+&#160;A&#160;main conclusion:&#160;machine&#160;learning&#160;is a&#160;part of&#160;<br/>
+statistics;&#160;don't&#160;just read the machine&#160;learning&#160;<br/>literature---read, ponder&#160;and&#160;contribute&#160;to the&#160;broad&#160;<br/>statistical&#160;literature<br/>
+26<br/>
+<hr/>
+</body>
+</html>

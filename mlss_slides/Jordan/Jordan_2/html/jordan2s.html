@@ -1,0 +1,1124 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Composite&#160;Loss&#160;Functions&#160;and&#160;Multivariate<br/>
+Regression;&#160;Sparse&#160;PCA<br/>
+G.&#160;Obozinski,&#160;B.&#160;Taskar,&#160;and&#160;M.&#160;I.&#160;Jordan&#160;(2009).&#160;Joint&#160;covariate&#160;selection<br/>and&#160;joint&#160;subspace&#160;selection&#160;for&#160;multiple&#160;classification&#160;problems.&#160;Statistics&#160;and<br/>Computing,&#160;to&#160;appear.<br/>
+G.&#160;Obozinski,&#160;M.&#160;J.&#160;Wainwright,&#160;and&#160;M.&#160;I.&#160;Jordan&#160;(2009).&#160;Union&#160;support<br/>recovery&#160;in&#160;multivariate&#160;regression.&#160;Annals&#160;of&#160;Statistics,&#160;under&#160;review.<br/>
+A.&#160;Amini&#160;and&#160;M.&#160;J.&#160;Wainwright&#160;(2009).<br/>
+High-dimensional&#160;analysis&#160;of<br/>
+semidefinite&#160;relaxations&#160;for&#160;sparse&#160;PCA.&#160;Annals&#160;of&#160;Statistics,&#160;to&#160;appear.<br/>
+1<br/>
+<hr/>
+<a name=2></a>Introduction<br/>
+•&#160;classical&#160;asymptotic&#160;theory&#160;of&#160;statistical&#160;inference:<br/>
+–&#160;number&#160;of&#160;observations&#160;n&#160;→&#160;+∞<br/>–&#160;model&#160;dimension&#160;p&#160;stays&#160;fixed<br/>
+•&#160;not&#160;suitable&#160;for&#160;many&#160;modern&#160;applications:<br/>
+–&#160;{&#160;images,&#160;signals,&#160;systems,&#160;networks&#160;}&#160;frequently&#160;large&#160;(p&#160;≈&#160;103&#160;−&#160;108)...<br/>–&#160;interesting&#160;consequences:&#160;might&#160;have&#160;p&#160;=&#160;Θ(n)&#160;or&#160;even&#160;p&#160;≫&#160;n<br/>
+•&#160;curse&#160;of&#160;dimensionality:<br/>
+frequently&#160;impossible&#160;to&#160;obtain&#160;consistent<br/>
+procedures&#160;unless&#160;p/n&#160;→&#160;0<br/>
+•&#160;can&#160;be&#160;saved&#160;by&#160;a&#160;lower&#160;effective&#160;dimensionality,&#160;due&#160;to&#160;some&#160;form&#160;of<br/>
+complexity&#160;constraint<br/>
+2<br/>
+<hr/>
+<a name=3></a><img class="yflip" src="./jordan2-3_1.png"/><br/>
+Example:&#160;Sparse&#160;linear&#160;regression<br/>
+y<br/>
+X<br/>
+β∗<br/>
+w<br/>
+S<br/>
+n<br/>
+=<br/>
+n&#160;×&#160;p<br/>
++<br/>
+Sc<br/>
+•&#160;vector&#160;β∗&#160;∈&#160;Rp&#160;with&#160;at&#160;most&#160;k&#160;≪&#160;p&#160;non-zero&#160;entries<br/>
+noisy&#160;linear&#160;observations&#160;y&#160;=&#160;Xβ∗&#160;+&#160;w<br/>
+•&#160;observation&#160;model:<br/>
+X&#160;∈&#160;Rn×p&#160;:<br/>
+design&#160;matrix<br/>
+w&#160;∈&#160;Rn×1&#160;:<br/>
+noise&#160;vector<br/>
+•&#160;various&#160;applications&#160;(database&#160;sketching,&#160;imaging,&#160;genetic&#160;testing...)<br/>
+3<br/>
+<hr/>
+<a name=4></a>Example:&#160;Graphical&#160;model&#160;selection<br/>
+•&#160;consider&#160;m-dimensional&#160;random&#160;vector&#160;Z&#160;=&#160;(Z1,&#160;.&#160;.&#160;.&#160;,&#160;Zm):<br/>
+<br/>
+<br/>
+&#160;X<br/>
+<br/>
+P(Z1,&#160;.&#160;.&#160;.&#160;,&#160;Zm;&#160;β)&#160;∝&#160;exp<br/>
+β<br/>
+.<br/>
+<br/>
+ijZiZj<br/>
+(i,j)∈E<br/>
+•&#160;given&#160;n&#160;independent&#160;and&#160;identically&#160;distributed&#160;(i.i.d.)&#160;samples&#160;of&#160;~<br/>
+Z,&#160;identify<br/>
+underlying&#160;graph&#160;G&#160;=&#160;(V,&#160;E)<br/>
+<br/>
+•&#160;lower&#160;effective&#160;dimensionality:&#160;graphs&#160;with&#160;k&#160;≪&#160;p&#160;:=&#160;m&#160;edges<br/>
+2<br/>
+4<br/>
+<hr/>
+<a name=5></a><img class="yflip" src="./jordan2-5_1.png"/><br/>
+Example:&#160;Sparse&#160;principal&#160;components&#160;analysis<br/>
+0000<br/>
+1111<br/>
+00000<br/>
+11111<br/>
+0000<br/>
+1111<br/>
+00000<br/>
+11111<br/>
+0000<br/>
+1111<br/>
+00000<br/>
+11111<br/>
+0000<br/>
+1111<br/>
+00000<br/>
+11111<br/>
+=<br/>
++<br/>
+Σ<br/>
+ZZT<br/>
+D<br/>
+Set-up:&#160;Covariance&#160;matrix&#160;Σ&#160;=&#160;ZZT&#160;+&#160;D,&#160;where&#160;leading&#160;eigenspace&#160;Z<br/>
+has&#160;sparse&#160;columns.<br/>
+Goal:&#160;Produce&#160;an&#160;estimate&#160;b<br/>
+Z&#160;based&#160;on&#160;samples&#160;X(i)&#160;with&#160;covariance&#160;matrix<br/>
+Σ.<br/>
+5<br/>
+<hr/>
+<a name=6></a>Some&#160;issues&#160;in&#160;high-dimensional&#160;inference<br/>
+•&#160;Consider&#160;some&#160;fixed&#160;loss&#160;function,&#160;and&#160;a&#160;fixed&#160;level&#160;δ&#160;of&#160;error.<br/>
+•&#160;Given&#160;particular&#160;(polynomial-time)&#160;algorithms<br/>
+–&#160;for&#160;what&#160;sample&#160;sizes&#160;n&#160;do&#160;they&#160;succeed/fail&#160;to&#160;achieve&#160;error&#160;δ?<br/>–&#160;when&#160;does&#160;more&#160;computation&#160;reduce&#160;minimum&#160;#&#160;samples&#160;needed?<br/>
+6<br/>
+<hr/>
+<a name=7></a>Outline<br/>
+1.&#160;Multivariate&#160;regression&#160;in&#160;high&#160;dimensions<br/>
+(a)&#160;Practical&#160;limitations:&#160;scaling&#160;laws&#160;for&#160;second-order&#160;cone&#160;programs<br/>
+(b)&#160;SOCP&#160;vs.&#160;Lasso:&#160;when&#160;does&#160;more&#160;computation&#160;reduce&#160;statistical&#160;error?<br/>
+2.&#160;Sparse&#160;principal&#160;component&#160;analysis&#160;in&#160;high&#160;dimensions<br/>
+(a)&#160;Thresholding&#160;methods<br/>
+(b)&#160;Semidefinite&#160;programming<br/>
+7<br/>
+<hr/>
+<a name=8></a><img class="yflip" src="./jordan2-8_1.png"/><br/>
+<img class="yflip" src="./jordan2-8_2.png"/><br/>
+<img class="yflip" src="./jordan2-8_3.png"/><br/>
+<img class="yflip" src="./jordan2-8_4.png"/><br/>
+<img class="yflip" src="./jordan2-8_5.png"/><br/>
+<img class="yflip" src="./jordan2-8_6.png"/><br/>
+Optimization-based&#160;estimators&#160;in&#160;(sparse)&#160;regression<br/>
+y<br/>
+X<br/>
+β∗<br/>
+w<br/>
+S<br/>
+n<br/>
+=<br/>
+n&#160;×&#160;p<br/>
++<br/>
+Sc<br/>
+˘&#160;1<br/>
+¯<br/>
+Regularized&#160;QP:<br/>
+b<br/>
+β<br/>
+∈&#160;arg&#160;min<br/>
+ky&#160;−&#160;Xβk2&#160;+&#160;ρ<br/>
+.<br/>
+2<br/>
+n&#160;R(β)<br/>
+β∈Rp<br/>
+2n<br/>
+|<br/>
+{z<br/>
+}<br/>
+|&#160;{z&#160;}<br/>
+Data&#160;term<br/>
+Regularizer<br/>
+R(β)&#160;=&#160;kβk2<br/>
+Ridge&#160;regression<br/>
+(Tik43,&#160;HoeKen70)<br/>
+R(β)&#160;=&#160;kβk1<br/>
+convex&#160;ℓ1-constrained&#160;QP&#160;(CheDonSau96;&#160;Tibs96)<br/>
+R(β)&#160;=&#160;kβk0<br/>
+Subset&#160;selection:&#160;combinatorial,&#160;NP-hard&#160;(Nat95)<br/>
+R(β)&#160;=&#160;kβka,&#160;a&#160;∈&#160;(0,&#160;1)<br/>
+Non-convex&#160;ℓa&#160;regularization<br/>
+8<br/>
+<hr/>
+<a name=9></a>Different&#160;loss&#160;functions<br/>
+Given&#160;an&#160;estimate&#160;b<br/>
+β,&#160;how&#160;to&#160;assess&#160;its&#160;performance?<br/>
+1.&#160;Predictive&#160;loss:&#160;compute&#160;expected&#160;error&#160;E[ke<br/>
+y&#160;−&#160;X&#160;b<br/>
+βk22]<br/>
+•&#160;goal&#160;is&#160;to&#160;construct&#160;model&#160;with&#160;good&#160;predictive&#160;power<br/>•&#160;β∗&#160;itself&#160;of&#160;secondary&#160;interest&#160;(need&#160;not&#160;be&#160;uniquely&#160;determined)<br/>
+2.&#160;ℓ2-loss&#160;E[k&#160;b<br/>
+β&#160;−&#160;β∗k22]<br/>
+•&#160;appropriate&#160;when&#160;B∗&#160;is&#160;of&#160;primary&#160;interest&#160;(signal&#160;recovery,&#160;compressed&#160;sensing,&#160;denoising<br/>
+etc.)<br/>
+3.&#160;Support&#160;recovery&#160;criterion:&#160;define&#160;estimated&#160;support<br/>
+<br/>
+	<br/>
+S(&#160;b<br/>
+β)&#160;=<br/>
+i&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;p&#160;|&#160;b<br/>
+βi&#160;6=&#160;0&#160;,<br/>
+and&#160;measure&#160;probability&#160;P[S(&#160;b<br/>
+β)&#160;6=&#160;S(β∗)].<br/>
+•&#160;useful&#160;for&#160;feature&#160;selection,&#160;dimensionality&#160;reduction,&#160;model&#160;selection<br/>•&#160;can&#160;be&#160;used&#160;as&#160;a&#160;pre-processing&#160;step&#160;for&#160;estimation&#160;in&#160;ℓ2-norm<br/>
+9<br/>
+<hr/>
+<a name=10></a><img class="yflip" src="./jordan2-10_1.png"/><br/>
+§1.&#160;Multivariate&#160;regression&#160;in&#160;high&#160;dimensions<br/>
+Y<br/>
+X<br/>
+B∗<br/>
+W<br/>
+S<br/>
+n<br/>
+=<br/>
+n&#160;×&#160;p<br/>
++<br/>
+n<br/>
+p<br/>
+Sc<br/>
+r<br/>
+r<br/>
+r<br/>
+•&#160;signal&#160;B∗&#160;is&#160;a&#160;p&#160;×&#160;r&#160;matrix:&#160;partitioned&#160;into&#160;non-zero&#160;rows&#160;S&#160;and&#160;zero&#160;rows&#160;Sc<br/>•&#160;observe&#160;n&#160;noisy&#160;projections,&#160;defined&#160;via&#160;design&#160;matrix&#160;X&#160;∈&#160;Rn×p&#160;and&#160;noise&#160;matrix<br/>
+W&#160;∈&#160;Rn×r<br/>
+•&#160;matrix&#160;Y&#160;∈&#160;Rn×r&#160;of&#160;observations<br/>•&#160;high-dimensional&#160;scaling:&#160;allow&#160;parameters&#160;(n,&#160;p,&#160;r,&#160;|S|)&#160;to&#160;scale<br/>
+10<br/>
+<hr/>
+<a name=11></a><img class="yflip" src="./jordan2-11_1.png"/><br/>
+<img class="yflip" src="./jordan2-11_2.png"/><br/>
+<img class="yflip" src="./jordan2-11_3.png"/><br/>
+<img class="yflip" src="./jordan2-11_4.png"/><br/>
+<img class="yflip" src="./jordan2-11_5.png"/><br/>
+<img class="yflip" src="./jordan2-11_6.png"/><br/>
+Block&#160;regularization&#160;and&#160;second-order&#160;cone&#160;programs<br/>
+(Obozinski,&#160;Taskar&#160;&amp;&#160;Jordan,&#160;2009)<br/>
+•&#160;for&#160;fixed&#160;parameter&#160;q&#160;∈&#160;[1,&#160;∞],&#160;estimate&#160;B∗&#160;via:<br/>
+<br/>
+ﬀ<br/>
+b<br/>
+1<br/>
+B<br/>
+∈&#160;arg&#160;min<br/>
+kY&#160;−&#160;XBk2<br/>
++<br/>
+ρ<br/>
+.<br/>
+F<br/>
+n&#160;||B||1,q<br/>
+B∈Rp×r<br/>
+2n<br/>
+|<br/>
+{z<br/>
+}<br/>
+|&#160;{z&#160;}<br/>
+n<br/>
+P&#160;r<br/>
+P&#160;ˆ<br/>
+˜<br/>
+p<br/>
+2<br/>
+P<br/>
+Data&#160;term<br/>
+Yjℓ&#160;−&#160;(XB)jℓ<br/>
+k(Bi1,&#160;.&#160;.&#160;.&#160;,&#160;Bir)kq<br/>
+j=1&#160;ℓ=1<br/>
+i=1<br/>
+•&#160;regularization&#160;constant&#160;ρn&#160;&gt;&#160;0&#160;to&#160;be&#160;chosen&#160;by&#160;user<br/>
+q&#160;=&#160;1:<br/>
+elementwise&#160;ℓ1&#160;norm&#160;(constrained&#160;QP)<br/>
+•&#160;different&#160;cases:<br/>
+q&#160;=&#160;2:<br/>
+second-order&#160;cone&#160;program&#160;(SOCP)<br/>
+q&#160;=&#160;∞:<br/>
+block&#160;ℓ1/ℓ∞&#160;max-norm&#160;(constrained&#160;QP)<br/>
+•&#160;in&#160;all&#160;cases,&#160;efficiently&#160;solvable&#160;(e.g.,&#160;by&#160;interior&#160;point&#160;methods)<br/>•&#160;generalization&#160;of&#160;the&#160;Lasso&#160;(Tibshirani,&#160;1996;&#160;Chen&#160;et&#160;al.,&#160;1998),<br/>•&#160;special&#160;case&#160;of&#160;the&#160;CAP&#160;family&#160;(Zhao,&#160;Rocha,&#160;&amp;&#160;Yu,&#160;2006);&#160;see&#160;also&#160;(Turlach&#160;et&#160;al.,&#160;2005;&#160;Yuan&#160;&amp;&#160;Lin,<br/>
+2006,&#160;Nardi&#160;&amp;&#160;Rinaldo,&#160;2008)<br/>
+11<br/>
+<hr/>
+<a name=12></a><img class="yflip" src="./jordan2-12_1.png"/><br/>
+<img class="yflip" src="./jordan2-12_2.png"/><br/>
+Two&#160;strategies<br/>
+Goal:&#160;Model&#160;selection&#160;consistency:&#160;recover&#160;union&#160;of&#160;supports<br/>
+S(B∗)<br/>
+:=<br/>
+{i&#160;∈&#160;{1,&#160;2,&#160;.&#160;.&#160;.&#160;,&#160;p}&#160;|&#160;kB∗&#160;,&#160;.&#160;.&#160;.&#160;,&#160;B∗<br/>
+i1<br/>
+irk2&#160;6=&#160;0}.<br/>
+Different&#160;methods:<br/>
+•&#160;Lasso-based&#160;recovery:<br/>
+1.&#160;Solve&#160;a&#160;separate&#160;Lasso&#160;(ℓ1-constrained&#160;QP)&#160;for&#160;each&#160;column&#160;ℓ&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;r,&#160;yielding<br/>
+column&#160;vector&#160;b<br/>
+βℓ&#160;∈&#160;Rp.<br/>
+˘<br/>
+¯<br/>
+2.&#160;Estimate&#160;row&#160;support&#160;b<br/>
+SLasso&#160;=&#160;i&#160;∈&#160;{1,&#160;2,&#160;.&#160;.&#160;.&#160;,&#160;p}&#160;|&#160;b<br/>
+βiℓ&#160;6=&#160;0&#160;for&#160;some&#160;ℓ&#160;.<br/>
+•&#160;SOCP-based&#160;recovery:<br/>
+1.&#160;Solve&#160;a&#160;single&#160;SOCP,&#160;obtaining&#160;matrix&#160;estimate&#160;b<br/>
+B&#160;∈&#160;p&#160;×&#160;r.<br/>
+˘<br/>
+¯<br/>
+2.&#160;Estimate&#160;support&#160;b<br/>
+SSOCP&#160;=&#160;i&#160;∈&#160;{1,&#160;.&#160;.&#160;.&#160;,&#160;p}&#160;|&#160;k(&#160;b<br/>
+Bi1,&#160;.&#160;.&#160;.&#160;,&#160;b<br/>
+Birk2&#160;6=&#160;0&#160;.<br/>
+Trade-offs:<br/>
+•&#160;Lasso&#160;(QP)&#160;cheap&#160;to&#160;solve,&#160;but&#160;method&#160;ignores&#160;coupling&#160;among&#160;columns<br/>•&#160;SOCP&#160;more&#160;expensive,&#160;but&#160;block-regularizer&#160;better&#160;tailored&#160;to&#160;matrix&#160;structure<br/>
+12<br/>
+<hr/>
+<a name=13></a><img class="yflip" src="./jordan2-13_1.png"/><br/>
+<img class="yflip" src="./jordan2-13_2.png"/><br/>
+<img class="yflip" src="./jordan2-13_3.png"/><br/>
+<img class="yflip" src="./jordan2-13_4.png"/><br/>
+<img class="yflip" src="./jordan2-13_5.png"/><br/>
+<img class="yflip" src="./jordan2-13_6.png"/><br/>
+<img class="yflip" src="./jordan2-13_7.png"/><br/>
+<img class="yflip" src="./jordan2-13_8.png"/><br/>
+Scaling&#160;law&#160;for&#160;high-dimensional&#160;SOCP&#160;recovery<br/>
+(Obozinski,&#160;Wainwright&#160;&amp;&#160;Jordan,&#160;2009)<br/>
+˘<br/>
+¯<br/>
+•&#160;SOCP&#160;method:&#160;b<br/>
+B&#160;∈&#160;arg&#160;min<br/>
+1<br/>
++&#160;ρ<br/>
+.<br/>
+2n&#160;kY&#160;−&#160;X&#160;Bk2<br/>
+F<br/>
+n||B||1,2<br/>
+B∈Rp×r<br/>
+•&#160;Parameters:&#160;Problem&#160;dimension&#160;p;&#160;number&#160;of&#160;non-zero&#160;rows&#160;k<br/>•&#160;Design&#160;matrix&#160;X:&#160;i.i.d.&#160;rows&#160;from&#160;sub-Gaussian&#160;distribution,&#160;with&#160;“suitable”&#160;covariance&#160;Σ<br/>
+Theorem:&#160;If&#160;the&#160;rescaled&#160;sample&#160;size<br/>
+n<br/>
+θSOCP(n,&#160;p,&#160;k,&#160;B∗)&#160;:=&#160;Ψ(B∗;&#160;Σ<br/>
+S<br/>
+SS&#160;)&#160;log(p&#160;−&#160;k)<br/>
+is&#160;greater&#160;than&#160;a&#160;critical&#160;threshold&#160;θℓ(Σ;&#160;σ2),&#160;then&#160;for&#160;suitable&#160;ρn&#160;we&#160;have<br/>with&#160;probability&#160;greater&#160;than&#160;1&#160;−&#160;2&#160;exp(c2&#160;log&#160;k):<br/>
+(a)&#160;the&#160;SOCP&#160;has&#160;a&#160;unique&#160;solution&#160;b<br/>
+B&#160;s.t.&#160;b<br/>
+S(&#160;b<br/>
+B)&#160;⊆&#160;S(B∗),&#160;and<br/>
+q<br/>
+(b)&#160;It&#160;includes&#160;all&#160;rows&#160;i&#160;with&#160;kB∗<br/>
+max{k,log(p−k)}.<br/>
+i&#160;k2&#160;≥&#160;c3<br/>
+n<br/>
+13<br/>
+<hr/>
+<a name=14></a><img class="yflip" src="./jordan2-14_1.png"/><br/>
+Assumptions&#160;on&#160;design&#160;covariance<br/>
+ΣSS<br/>
+ΣScSc<br/>
+•&#160;support&#160;set&#160;S&#160;=&#160;{i&#160;|&#160;β∗i&#160;6=&#160;0}<br/>
+Σ<br/>
+•&#160;complement&#160;Sc&#160;:=&#160;{1,&#160;.&#160;.&#160;.&#160;p}\S.<br/>
+ScS<br/>
+ΣSSc<br/>
+•&#160;random&#160;design&#160;matrix&#160;X&#160;∈&#160;Rn×p<br/>•&#160;rows&#160;drawn&#160;i.i.d.,&#160;cov.&#160;Σ,&#160;sub-Gaussian<br/>
+1.&#160;Bounded&#160;eigenspectrum:&#160;λ(ΣSS)&#160;∈&#160;[Cmin,&#160;Cmax].<br/>2.&#160;Mutual&#160;incoherence/irrepresentability:&#160;There&#160;exists&#160;an&#160;ν&#160;∈&#160;(0,&#160;1]&#160;such&#160;that<br/>
+||ΣScS(ΣSS)−1||∞,∞&#160;≤&#160;1&#160;−&#160;ν.<br/>
+P<br/>
+Example:&#160;if&#160;ΣSS&#160;=&#160;I,&#160;then&#160;require&#160;max<br/>
+|Σji|&#160;≤&#160;1&#160;−&#160;ν.<br/>
+j∈Sc&#160;i∈S<br/>
+14<br/>
+<hr/>
+<a name=15></a><img src="./jordan2-15_1.png"/><br/>
+<img class="yflip" src="./jordan2-15_2.png"/><br/>
+Order&#160;parameter&#160;captures&#160;threshold&#160;(Angle&#160;0◦)<br/>
+Prob.&#160;success&#160;versus&#160;rescaled&#160;sample&#160;size<br/>
+n<br/>
+θSOCP(n,&#160;p,&#160;k,&#160;B∗)&#160;=<br/>
+.<br/>
+Ψ(B∗;&#160;Σ<br/>
+S<br/>
+SS&#160;)&#160;log(p&#160;−&#160;k)<br/>
+15<br/>
+<hr/>
+<a name=16></a><img src="./jordan2-16_1.png"/><br/>
+<img class="yflip" src="./jordan2-16_2.png"/><br/>
+Order&#160;parameter&#160;captures&#160;threshold&#160;(Angle&#160;60◦)<br/>
+Prob.&#160;success&#160;versus&#160;rescaled&#160;sample&#160;size<br/>
+n<br/>
+θSOCP(n,&#160;p,&#160;k,&#160;B∗)&#160;=<br/>
+.<br/>
+Ψ(B∗;&#160;Σ<br/>
+S<br/>
+SS&#160;)&#160;log(p&#160;−&#160;k)<br/>
+16<br/>
+<hr/>
+<a name=17></a>Sparsity&#160;overlap&#160;function&#160;Ψ<br/>
+˛<br/>
+•&#160;form&#160;gradient&#160;matrix&#160;Z(B∗)&#160;:=<br/>
+˛<br/>
+S<br/>
+∇||BS||1,2˛<br/>
+∈&#160;Rk×r<br/>
+BS=B∗S<br/>
+•&#160;equivalent&#160;to&#160;renormalizing&#160;B∗&#160;to&#160;have&#160;unit&#160;ℓ<br/>
+S<br/>
+2-norm&#160;rows<br/>
+•&#160;form&#160;r&#160;×&#160;r&#160;Gram&#160;matrix:<br/>
+G<br/>
+=<br/>
+ZT&#160;(ΣSS)−1Z<br/>
+with&#160;Ga,b&#160;=&#160;hhZa,&#160;Zbii(ΣSS)−1<br/>
+•&#160;sparsity&#160;overlap&#160;function&#160;is&#160;max.&#160;eigenvalue&#160;of&#160;G:<br/>
+Ψ(B∗;&#160;Σ<br/>
+S<br/>
+SS&#160;)<br/>
+=<br/>
+||G||2.<br/>
+•&#160;measures&#160;relative&#160;alignments&#160;of&#160;the&#160;renormalized&#160;columns&#160;of&#160;B∗<br/>•&#160;Special&#160;case:&#160;Univariate&#160;regression&#160;(r&#160;=&#160;1):&#160;Z(β∗)&#160;=&#160;k&#160;for&#160;any&#160;vector&#160;β∗<br/>
+S<br/>
+S<br/>
+17<br/>
+<hr/>
+<a name=18></a><img class="yflip" src="./jordan2-18_1.png"/><br/>
+<img class="yflip" src="./jordan2-18_2.png"/><br/>
+<img class="yflip" src="./jordan2-18_3.png"/><br/>
+<img class="yflip" src="./jordan2-18_4.png"/><br/>
+<img class="yflip" src="./jordan2-18_5.png"/><br/>
+<img class="yflip" src="./jordan2-18_6.png"/><br/>
+<img class="yflip" src="./jordan2-18_7.png"/><br/>
+<img class="yflip" src="./jordan2-18_8.png"/><br/>
+<img class="yflip" src="./jordan2-18_9.png"/><br/>
+<img class="yflip" src="./jordan2-18_10.png"/><br/>
+<img class="yflip" src="./jordan2-18_11.png"/><br/>
+<img class="yflip" src="./jordan2-18_12.png"/><br/>
+<img class="yflip" src="./jordan2-18_13.png"/><br/>
+<img class="yflip" src="./jordan2-18_14.png"/><br/>
+<img class="yflip" src="./jordan2-18_15.png"/><br/>
+<img class="yflip" src="./jordan2-18_16.png"/><br/>
+<img class="yflip" src="./jordan2-18_17.png"/><br/>
+<img class="yflip" src="./jordan2-18_18.png"/><br/>
+<img class="yflip" src="./jordan2-18_19.png"/><br/>
+<img class="yflip" src="./jordan2-18_20.png"/><br/>
+<img class="yflip" src="./jordan2-18_21.png"/><br/>
+<img class="yflip" src="./jordan2-18_22.png"/><br/>
+<img class="yflip" src="./jordan2-18_23.png"/><br/>
+<img class="yflip" src="./jordan2-18_24.png"/><br/>
+<img class="yflip" src="./jordan2-18_25.png"/><br/>
+<img class="yflip" src="./jordan2-18_26.png"/><br/>
+<img class="yflip" src="./jordan2-18_27.png"/><br/>
+<img class="yflip" src="./jordan2-18_28.png"/><br/>
+<img class="yflip" src="./jordan2-18_29.png"/><br/>
+<img class="yflip" src="./jordan2-18_30.png"/><br/>
+<img class="yflip" src="./jordan2-18_31.png"/><br/>
+<img class="yflip" src="./jordan2-18_32.png"/><br/>
+Concrete&#160;examples&#160;(k&#160;=&#160;4,&#160;r&#160;=&#160;2)<br/>
+Aligned&#160;columns<br/>
+Orthogonal&#160;columns<br/>
+B∗<br/>
+Z(B∗&#160;)<br/>
+B∗<br/>
+Z(B∗&#160;)<br/>
+S<br/>
+S<br/>
+2<br/>
+3<br/>
+S<br/>
+S<br/>
+2<br/>
+3<br/>
+2<br/>
+3<br/>
+1<br/>
+1<br/>
+2<br/>
+3<br/>
+1<br/>
+1<br/>
+2<br/>
+2<br/>
+√<br/>
+√<br/>
+√<br/>
+√<br/>
+6&#160;2<br/>
+27<br/>
+2<br/>
+2<br/>
+6&#160;2<br/>
+2&#160;7<br/>
+6<br/>
+7<br/>
+6&#160;1<br/>
+√<br/>
+1<br/>
+√&#160;7<br/>
+6<br/>
+7<br/>
+6&#160;1<br/>
+√<br/>
+1<br/>
+√<br/>
+7<br/>
+610<br/>
+107<br/>
+6<br/>
+10<br/>
+10<br/>
+2<br/>
+27<br/>
+6<br/>
+7<br/>
+6&#160;2<br/>
+2&#160;7<br/>
+4&#160;1<br/>
+1&#160;5<br/>
+6&#160;1<br/>
+1&#160;7<br/>
+4<br/>
+5<br/>
+6&#160;1<br/>
+7<br/>
+4√<br/>
+√<br/>
+1<br/>
+−1<br/>
+√<br/>
+−&#160;1<br/>
+√<br/>
+2<br/>
+25<br/>
+4&#160;2<br/>
+25<br/>
+7<br/>
+7<br/>
+1<br/>
+√<br/>
+1<br/>
+√<br/>
+7<br/>
+−7<br/>
+1<br/>
+√<br/>
+−&#160;1<br/>
+√<br/>
+2<br/>
+2<br/>
+2<br/>
+2<br/>
+»<br/>
+–<br/>
+»<br/>
+–<br/>
+2<br/>
+2<br/>
+2<br/>
+0<br/>
+G&#160;=<br/>
+||G||<br/>
+G&#160;=<br/>
+||G||<br/>
+2<br/>
+2<br/>
+2&#160;=&#160;4<br/>
+0<br/>
+2<br/>
+2&#160;=&#160;2<br/>
+18<br/>
+<hr/>
+<a name=19></a><img src="./jordan2-19_1.png"/><br/>
+Empirical&#160;illustration&#160;of&#160;sparsity-overlap&#160;Ψ<br/>
+•&#160;Orthogonal&#160;regression:&#160;Columns&#160;Z1&#160;⊥&#160;Z2<br/>•&#160;Intermediate&#160;angle:&#160;Columns&#160;at&#160;60◦<br/>•&#160;Aligned&#160;regression:&#160;Columns&#160;parallel<br/>•&#160;Ordinary&#160;Lasso:&#160;solve&#160;problems&#160;separately.<br/>
+19<br/>
+<hr/>
+<a name=20></a><img class="yflip" src="./jordan2-20_1.png"/><br/>
+<img class="yflip" src="./jordan2-20_2.png"/><br/>
+<img class="yflip" src="./jordan2-20_3.png"/><br/>
+<img class="yflip" src="./jordan2-20_4.png"/><br/>
+<img class="yflip" src="./jordan2-20_5.png"/><br/>
+<img class="yflip" src="./jordan2-20_6.png"/><br/>
+<img class="yflip" src="./jordan2-20_7.png"/><br/>
+SOCP&#160;versus&#160;ordinary&#160;QP<br/>
+Corollary:&#160;If&#160;ΣSS&#160;=&#160;Ik×k,&#160;SOCP&#160;always&#160;dominates&#160;ordinary&#160;QP,&#160;with&#160;relative<br/>statistical&#160;efficiency:<br/>
+max&#160;kℓ&#160;log(p&#160;−&#160;kℓ)<br/>
+ℓ=1,...r<br/>
+1&#160;≤<br/>
+≤&#160;r<br/>
+Ψ(B∗;&#160;I)&#160;log(p<br/>
+S<br/>
+−&#160;k)<br/>
+|<br/>
+{z<br/>
+}<br/>
+(QP&#160;sample&#160;size)/(SOCP&#160;sample&#160;size)<br/>
+•&#160;increased&#160;statistical&#160;efficiency&#160;of&#160;SOCP:&#160;dependent&#160;on&#160;orthogonality&#160;properties&#160;of&#160;rescaled<br/>
+columns&#160;B∗S<br/>
+•&#160;up&#160;to&#160;a&#160;factor&#160;1/r&#160;reduction&#160;in&#160;number&#160;of&#160;samples&#160;required<br/>•&#160;most&#160;pessimistic&#160;case:&#160;no&#160;gain&#160;for&#160;disjoint&#160;supports,&#160;SOCP&#160;can&#160;be&#160;worse&#160;in&#160;some&#160;cases&#160;(if<br/>
+ΣSS&#160;6=&#160;I)<br/>
+20<br/>
+<hr/>
+<a name=21></a><img class="yflip" src="./jordan2-21_1.png"/><br/>
+<img class="yflip" src="./jordan2-21_2.png"/><br/>
+<img class="yflip" src="./jordan2-21_3.png"/><br/>
+<img class="yflip" src="./jordan2-21_4.png"/><br/>
+Proof&#160;sketch&#160;of&#160;sufficient&#160;conditions<br/>
+Direct&#160;analysis&#160;:<br/>
+Given&#160;n&#160;observations&#160;of&#160;β∗&#160;∈&#160;Rp&#160;with&#160;|S(β∗)|&#160;=&#160;k,&#160;oracle&#160;decoder&#160;performs&#160;following&#160;two<br/>
+1.&#160;For&#160;each&#160;subset&#160;S&#160;of&#160;size&#160;k,&#160;solve&#160;the&#160;quadratic&#160;program:<br/>
+f&#160;(S)<br/>
+=<br/>
+min&#160;kY&#160;−&#160;XSβSk2.<br/>
+2<br/>
+steps:<br/>
+βS∈Rk<br/>
+2.&#160;Output&#160;the&#160;subset&#160;b<br/>
+S&#160;=&#160;arg&#160;min&#160;f&#160;(S).<br/>
+|S|=k<br/>
+•&#160;by&#160;symmetry&#160;of&#160;ensemble,&#160;may&#160;assume&#160;that&#160;fixed&#160;subset&#160;S&#160;is&#160;chosen<br/>•&#160;for&#160;sets&#160;U&#160;different&#160;from&#160;true&#160;set&#160;S,&#160;consider&#160;range&#160;of&#160;non-overlaps&#160;t&#160;:=&#160;|U\S|&#160;∈<br/>
+{1,&#160;.&#160;.&#160;.&#160;,&#160;k}<br/>
+`<br/>
+´&#160;`<br/>
+´<br/>
+•&#160;number&#160;of&#160;subsets&#160;with&#160;non-overlap&#160;t&#160;given&#160;by&#160;N(t)&#160;=<br/>
+k<br/>
+p−k<br/>
+t−k<br/>
+t<br/>
+21<br/>
+<hr/>
+<a name=22></a><img class="yflip" src="./jordan2-22_1.png"/><br/>
+<img class="yflip" src="./jordan2-22_2.png"/><br/>
+<img class="yflip" src="./jordan2-22_3.png"/><br/>
+<img class="yflip" src="./jordan2-22_4.png"/><br/>
+Error&#160;exponents&#160;for&#160;random&#160;projections<br/>
+•&#160;union&#160;bound&#160;yields&#160;upper&#160;bound&#160;on&#160;error&#160;probability&#160;P[error&#160;|&#160;S&#160;true]:<br/>
+k<br/>
+X&#160;“&#160;k&#160;”&#160;“p&#160;−&#160;k”&#160;P[error&#160;on&#160;subset&#160;with&#160;non-overlap&#160;t]<br/>
+k&#160;−&#160;t<br/>
+t<br/>
+t=1<br/>
+ˆ<br/>
+˜−1<br/>
+•&#160;orthogonal&#160;projection&#160;Π⊥&#160;:=&#160;I<br/>
+XT&#160;X<br/>
+XT<br/>
+U<br/>
+n×n&#160;−&#160;XU<br/>
+U<br/>
+U<br/>
+U<br/>
+•&#160;optimal&#160;decoder&#160;chooses&#160;U&#160;incorrectly&#160;over&#160;S&#160;if&#160;and&#160;only&#160;if<br/>
+‚<br/>
+“<br/>
+”‚2<br/>
+‚<br/>
+‚2<br/>
+∆(U&#160;)<br/>
+=<br/>
+‚<br/>
+‚<br/>
+‚<br/>
+‚<br/>
+‚Π⊥&#160;X<br/>
++&#160;W<br/>
+W<br/>
+&lt;&#160;0<br/>
+U<br/>
+S\U&#160;β∗<br/>
+S\U<br/>
+‚&#160;−&#160;‚Π⊥<br/>
+S<br/>
+‚<br/>
+|<br/>
+{z<br/>
+}<br/>
+|<br/>
+{z<br/>
+}<br/>
+effective&#160;noise&#160;in&#160;U&#160;⊥<br/>
+effective&#160;noise&#160;in&#160;S⊥<br/>
+•&#160;use&#160;large&#160;deviations&#160;to&#160;establish&#160;that<br/>
+“<br/>
+”<br/>
+P[∆(U)&#160;&lt;&#160;0]<br/>
+≤<br/>
+exp&#160;−n&#160;F&#160;(kβ∗<br/>
+.<br/>
+S\U&#160;k2;&#160;t)<br/>
+22<br/>
+<hr/>
+<a name=23></a><img class="yflip" src="./jordan2-23_1.png"/><br/>
+<img class="yflip" src="./jordan2-23_2.png"/><br/>
+<img class="yflip" src="./jordan2-23_3.png"/><br/>
+Proof&#160;sketch&#160;of&#160;necessary&#160;conditions<br/>
+•&#160;Fano’s&#160;inequality&#160;applied&#160;to&#160;a&#160;restricted&#160;ensemble,&#160;assuming&#160;fixed&#160;choice&#160;of&#160;β∗:<br/>
+(β<br/>
+β∗[U&#160;]<br/>
+=<br/>
+min<br/>
+if&#160;i&#160;∈&#160;U<br/>
+i<br/>
+0<br/>
+otherwise.<br/>
+•&#160;by&#160;Fano’s&#160;inequality,&#160;probability&#160;of&#160;success&#160;upper&#160;bounded&#160;as<br/>
+I(Y&#160;;&#160;β∗)<br/>
+1&#160;−&#160;P[error]&#160;≤<br/>
+−&#160;o(1),<br/>
+log(M&#160;−&#160;1)<br/>
+where<br/>
+–&#160;I(Y&#160;;&#160;β∗):&#160;mutual&#160;information&#160;between&#160;β∗&#160;and&#160;observation&#160;vector&#160;Y<br/>
+`&#160;´<br/>
+–&#160;M&#160;=&#160;p&#160;:&#160;number&#160;of&#160;competing&#160;models<br/>
+k<br/>
+•&#160;some&#160;work&#160;to&#160;establish&#160;the&#160;upper&#160;bound&#160;holds&#160;w.h.p.&#160;for&#160;X:<br/>
+»<br/>
+–<br/>
+n<br/>
+k<br/>
+I(Y,&#160;β∗&#160;|&#160;X)<br/>
+≤<br/>
+log&#160;1&#160;+&#160;(1&#160;−&#160;)kβ2<br/>
+2<br/>
+p<br/>
+min<br/>
+23<br/>
+<hr/>
+<a name=24></a>§2.&#160;High-dimensional&#160;analysis&#160;of&#160;sparse&#160;PCA<br/>
+•&#160;principal&#160;components&#160;analysis&#160;(PCA):&#160;classical&#160;method&#160;for&#160;dimensionality&#160;reduction<br/>
+•&#160;high-dimensional&#160;version:&#160;eigenvectors&#160;from&#160;sample&#160;covariance&#160;b<br/>
+Σ&#160;based&#160;on&#160;n&#160;samples&#160;in&#160;p<br/>
+dimensions<br/>
+•&#160;in&#160;general,&#160;high-dimensional&#160;PCA&#160;inconsistent&#160;unless&#160;p/n&#160;→&#160;0<br/>
+(Joh01,&#160;JohLu04)<br/>
+•&#160;natural&#160;to&#160;investigate&#160;more&#160;structured&#160;ensembles&#160;for&#160;which&#160;consistency&#160;still&#160;possible&#160;even<br/>
+with&#160;p/n&#160;→&#160;+∞:<br/>
+–&#160;sparse&#160;eigenvector&#160;recovery<br/>
+(JolEtal03,&#160;JohLu04,&#160;ZouEtAl06)<br/>
+–&#160;sparse&#160;covariance&#160;matrices<br/>
+(LevBic06,ElKar07)<br/>
+24<br/>
+<hr/>
+<a name=25></a>Spiked&#160;covariance&#160;ensembles<br/>
+•&#160;sequences&#160;{Σp}&#160;of&#160;spiked&#160;population&#160;covariance&#160;matrices:<br/>
+M<br/>
+X<br/>
+Σp&#160;=<br/>
+αiβiβT&#160;+&#160;Γ<br/>
+i<br/>
+p,<br/>
+with&#160;leading&#160;eigenvectors&#160;(βi,&#160;i&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;M).<br/>
+i=1<br/>
+•&#160;past&#160;work&#160;on&#160;identity&#160;spiked&#160;ensembles&#160;(Γp&#160;=&#160;Ip)<br/>
+(Joh01;&#160;JohLu04)<br/>
+•&#160;different&#160;sparsity&#160;models:<br/>
+–&#160;hard&#160;sparsity&#160;model:&#160;β&#160;has&#160;exactly&#160;k&#160;non-zero&#160;coefficients<br/>–&#160;weak&#160;ℓq-sparsity:&#160;β&#160;belongs&#160;to&#160;the&#160;ℓq-“ball”:<br/>
+˘<br/>
+p<br/>
+X<br/>
+¯<br/>
+Bq(Rq)<br/>
+=<br/>
+z&#160;∈&#160;Rp&#160;|<br/>
+|zi|q&#160;≤&#160;Rq&#160;.<br/>
+i=1<br/>
+•&#160;given&#160;n&#160;i.i.d.&#160;samples&#160;{Xi}n<br/>
+with<br/>
+i=1<br/>
+E[Xi]&#160;=&#160;0&#160;and&#160;cov(Xi)&#160;=&#160;Σp<br/>
+25<br/>
+<hr/>
+<a name=26></a>SDP&#160;relaxation&#160;of&#160;sparse&#160;PCA<br/>
+(D’Aspr´emont,&#160;El&#160;Ghaoui,&#160;Jordan&#160;&amp;&#160;Lanckriet,&#160;2006)<br/>
+•&#160;Courant-Fischer&#160;variational&#160;principle&#160;for&#160;maximum&#160;eigenvalue/vector&#160;(PCA):<br/>
+λmax(Q)<br/>
+=<br/>
+max&#160;zT&#160;Qz.<br/>
+kzk2=1<br/>
+•&#160;equivalent/exact&#160;semidefinite&#160;program&#160;(SDP)&#160;of&#160;max.&#160;eigenvector:<br/>
+`<br/>
+´<br/>
+λmax(Q)<br/>
+=<br/>
+max<br/>
+trace&#160;Z&#160;Q&#160;.<br/>
+Z0,trace(Z)=1<br/>
+•&#160;SDP&#160;relaxation&#160;of&#160;sparse&#160;PCA:<br/>
+8<br/>
+9<br/>
+&lt;<br/>
+=<br/>
+b<br/>
+`<br/>
+´<br/>
+`&#160;X<br/>
+´<br/>
+Z<br/>
+=<br/>
+arg<br/>
+max<br/>
+trace&#160;Z&#160;Q&#160;−&#160;ρn<br/>
+|Zij|<br/>
+,<br/>
+Z0,trace(Z)=1&#160;:<br/>
+;<br/>
+i,j<br/>
+with&#160;regularization&#160;parameter&#160;ρn&#160;&gt;&#160;0&#160;chosen&#160;by&#160;user.<br/>
+26<br/>
+<hr/>
+<a name=27></a><img class="yflip" src="./jordan2-27_1.png"/><br/>
+<img class="yflip" src="./jordan2-27_2.png"/><br/>
+<img class="yflip" src="./jordan2-27_3.png"/><br/>
+<img class="yflip" src="./jordan2-27_4.png"/><br/>
+<img class="yflip" src="./jordan2-27_5.png"/><br/>
+<img class="yflip" src="./jordan2-27_6.png"/><br/>
+<img class="yflip" src="./jordan2-27_7.png"/><br/>
+<img class="yflip" src="./jordan2-27_8.png"/><br/>
+<img class="yflip" src="./jordan2-27_9.png"/><br/>
+<img class="yflip" src="./jordan2-27_10.png"/><br/>
+Rates&#160;in&#160;spectral&#160;norm<br/>
+•&#160;given&#160;n&#160;samples&#160;from&#160;spiked&#160;identity&#160;model&#160;Σp&#160;=&#160;αzzT&#160;+&#160;σ2Ip<br/>•&#160;eigenvector&#160;z&#160;in&#160;weak&#160;ℓq-ball&#160;Bq(Rq)<br/>
+˘<br/>
+P<br/>
+¯<br/>
+•&#160;SDP&#160;relaxation:&#160;b<br/>
+Z&#160;∈&#160;arg<br/>
+min<br/>
+−&#160;trace(Z&#160;b<br/>
+Σ)&#160;+&#160;ρn<br/>
+.<br/>
+i,j&#160;|Zij|<br/>
+Z0,trace(Z)=1<br/>
+Theorem:&#160;(AmiWai08b)&#160;Suppose&#160;that&#160;we&#160;apply&#160;the&#160;SDP&#160;to&#160;the&#160;sample&#160;covariance&#160;b<br/>
+Σ<br/>
+q<br/>
+with&#160;regularization&#160;parameter&#160;ρ<br/>
+log&#160;p<br/>
+n&#160;=&#160;f&#160;(α,&#160;σ2)<br/>
+.&#160;Then&#160;with&#160;probability&#160;greater&#160;than<br/>
+n<br/>
+1&#160;−&#160;c1&#160;exp(−c2&#160;log&#160;p)&#160;→&#160;0,&#160;we&#160;have:<br/>
+`log&#160;p´&#160;1<br/>
+||&#160;b<br/>
+Z&#160;−&#160;zzT&#160;||<br/>
+2(1+q)<br/>
+2&#160;≤&#160;C&#160;Rq<br/>
+.<br/>
+n<br/>
+Example&#160;(Hard&#160;sparsity):&#160;q&#160;=&#160;0,&#160;and&#160;radius&#160;Rq&#160;=&#160;k&#160;(#&#160;non-zeros)<br/>
+s<br/>
+k2&#160;log&#160;p<br/>
+||&#160;b<br/>
+Z&#160;−&#160;zzT&#160;||2<br/>
+≤<br/>
+C<br/>
+.<br/>
+n<br/>
+27<br/>
+<hr/>
+<a name=28></a><img class="yflip" src="./jordan2-28_1.png"/><br/>
+<img class="yflip" src="./jordan2-28_2.png"/><br/>
+<img class="yflip" src="./jordan2-28_3.png"/><br/>
+<img class="yflip" src="./jordan2-28_4.png"/><br/>
+Comparison&#160;to&#160;some&#160;known&#160;results<br/>
+•&#160;Estimating&#160;sparse&#160;covariance&#160;matrices<br/>
+(BicLev07)<br/>
+–&#160;Thresholding&#160;estimator&#160;Tλn(b<br/>
+Σ)&#160;achieves&#160;rate:<br/>
+`log&#160;p´1−q<br/>
+||T<br/>
+2<br/>
+λn(&#160;b<br/>
+Σ)&#160;−&#160;Σ||2<br/>
+≤<br/>
+CRq<br/>
+.<br/>
+n<br/>
+–&#160;by&#160;matrix&#160;perturbation&#160;results,&#160;for&#160;“well-separated”&#160;eigenvalues,&#160;same&#160;rate&#160;applies&#160;to<br/>
+leading&#160;eigenvector<br/>
+–&#160;agrees&#160;with&#160;SDP&#160;result&#160;for&#160;q&#160;=&#160;0,&#160;but&#160;slower&#160;rate&#160;for&#160;q&#160;&gt;&#160;0<br/>
+•&#160;Minimax&#160;rates&#160;for&#160;q&#160;∈&#160;(0,&#160;2):<br/>
+(PauJoh08)<br/>
+–&#160;with&#160;signhb<br/>
+z,&#160;zi&#160;=&#160;1:<br/>
+`log&#160;p´&#160;q<br/>
+1<br/>
+min&#160;max<br/>
+−<br/>
+E[kb<br/>
+z&#160;−&#160;zk2]<br/>
+2&#160;.<br/>
+2<br/>
+≥<br/>
+C&#160;Rq<br/>
+b<br/>
+z<br/>
+z∈Bq(Rq)<br/>
+n<br/>
+–&#160;same&#160;rate&#160;as&#160;normal&#160;sequence&#160;model<br/>
+(DonJoh94)<br/>
+–&#160;SDP&#160;rate&#160;is&#160;slower,&#160;but&#160;approaches&#160;minimax&#160;rate&#160;as&#160;q&#160;→&#160;0<br/>
+28<br/>
+<hr/>
+<a name=29></a><img class="yflip" src="./jordan2-29_1.png"/><br/>
+<img class="yflip" src="./jordan2-29_2.png"/><br/>
+<img class="yflip" src="./jordan2-29_3.png"/><br/>
+<img class="yflip" src="./jordan2-29_4.png"/><br/>
+<img class="yflip" src="./jordan2-29_5.png"/><br/>
+<img class="yflip" src="./jordan2-29_6.png"/><br/>
+Model&#160;selection&#160;consistency&#160;for&#160;hard&#160;sparsity&#160;(q&#160;=&#160;0)<br/>
+Goal:&#160;Given&#160;spiked&#160;model&#160;with&#160;k-sparse&#160;eigenvector&#160;(zi&#160;=&#160;±&#160;1<br/>
+√&#160;),&#160;recover&#160;support&#160;set<br/>
+k<br/>
+˘<br/>
+S(z)&#160;=<br/>
+i&#160;∈&#160;{1,&#160;2,&#160;.&#160;.&#160;.&#160;,&#160;p}&#160;|&#160;zi&#160;6=&#160;0}&#160;exactly.<br/>
+Methods:<br/>
+1.&#160;Diagonal&#160;thresholding:&#160;Complexity&#160;O(np&#160;+&#160;p&#160;log&#160;p)<br/>
+(JohLu04)<br/>
+P<br/>
+(a)&#160;Form&#160;sample&#160;covariance&#160;b<br/>
+Σ&#160;=&#160;1<br/>
+n<br/>
+X<br/>
+.<br/>
+n<br/>
+i=1<br/>
+iX&#160;T<br/>
+i<br/>
+(b)&#160;Extract&#160;top&#160;k&#160;order&#160;statistics&#160;b<br/>
+Σ(11),&#160;.&#160;.&#160;.&#160;,&#160;b<br/>
+Σ(kk),&#160;and&#160;estimate&#160;support&#160;b<br/>
+S(D)&#160;by&#160;rank<br/>
+indices.<br/>
+2.&#160;SDP-based&#160;recovery:&#160;Complexity&#160;O(np&#160;+&#160;p4&#160;log&#160;p)<br/>
+(AspLanGhaJor08)<br/>
+(a)&#160;Solve&#160;SDP&#160;with&#160;ρn&#160;=&#160;α/(2σ2k).<br/>
+(b)&#160;Given&#160;solution&#160;b<br/>
+Z,&#160;estimate&#160;support<br/>
+b<br/>
+˘<br/>
+¯<br/>
+S<br/>
+:=<br/>
+i&#160;∈&#160;{1,&#160;.&#160;.&#160;.&#160;,&#160;p}&#160;|&#160;b<br/>
+Zij&#160;6=&#160;0&#160;for&#160;some&#160;j&#160;.<br/>
+29<br/>
+<hr/>
+<a name=30></a><img class="yflip" src="./jordan2-30_1.png"/><br/>
+<img class="yflip" src="./jordan2-30_2.png"/><br/>
+<img class="yflip" src="./jordan2-30_3.png"/><br/>
+<img class="yflip" src="./jordan2-30_4.png"/><br/>
+<img class="yflip" src="./jordan2-30_5.png"/><br/>
+Sharp&#160;threshold&#160;for&#160;diagonal&#160;thresholding<br/>
+Model:<br/>
+Σp&#160;=&#160;αzzT&#160;+&#160;σ2Ip<br/>
+Parameters:<br/>
+•<br/>
+p&#160;≡&#160;model&#160;dimension<br/>
+•<br/>
+k&#160;≡&#160;number&#160;of&#160;non-zeroes&#160;in&#160;spiked&#160;eigenvector<br/>
+Proposition:&#160;(AmiWai08a)&#160;If&#160;k&#160;=&#160;O(p1−δ)&#160;for&#160;any&#160;δ&#160;∈&#160;(0,&#160;1),&#160;diagonal&#160;thresholding&#160;for<br/>support&#160;recovery&#160;controlled&#160;by&#160;rescaled&#160;sample&#160;size<br/>
+n<br/>
+θthr(n,&#160;p,&#160;k)<br/>
+:=<br/>
+.<br/>
+k2&#160;log(p&#160;−&#160;k)<br/>
+I.e.,&#160;there&#160;are&#160;constants&#160;0&#160;&lt;&#160;τ&#160;∗(α,&#160;σ2)<br/>
+(α,&#160;σ2)&#160;&lt;<br/>
+ℓ<br/>
+≤&#160;τ&#160;∗u<br/>
+∞&#160;such&#160;that<br/>
+(a)&#160;Success:&#160;If&#160;n&#160;&gt;&#160;τ&#160;∗k2&#160;log(p<br/>
+u<br/>
+−&#160;k),&#160;then<br/>
+`<br/>
+´<br/>
+P[&#160;b<br/>
+S(D)&#160;=&#160;S(β)]&#160;≥&#160;1&#160;−&#160;c1&#160;exp&#160;−&#160;c2k2&#160;log(p&#160;−&#160;k))<br/>
+→&#160;1.<br/>
+(b)&#160;Failure:&#160;If&#160;n&#160;≤&#160;τ&#160;∗&#160;k2&#160;log(p<br/>
+ℓ<br/>
+−&#160;k),&#160;then<br/>
+P[&#160;b<br/>
+S(D)&#160;=&#160;S(β)]&#160;≤&#160;c1&#160;exp&#160;(−c2(log(p&#160;−&#160;k)))&#160;→&#160;0.<br/>
+30<br/>
+<hr/>
+<a name=31></a><img class="yflip" src="./jordan2-31_1.png"/><br/>
+Performance&#160;of&#160;diagonal&#160;thresholding<br/>
+Diagonal thresholding: k = O(log(p))<br/>
+Diagonal thresholding (k = O(sqrt(p))<br/>
+1<br/>
+&#160;<br/>
+1<br/>
+&#160;<br/>
+0.8<br/>
+0.8<br/>
+0.6<br/>
+0.6<br/>
+0.4<br/>
+0.4<br/>
+Prob. success<br/>
+p = 100<br/>
+Prob. success<br/>
+p = 100<br/>
+p = 200<br/>
+p = 200<br/>
+0.2<br/>
+p = 300<br/>
+0.2<br/>
+p = 300<br/>
+p = 600<br/>
+p = 600<br/>
+p = 1200<br/>
+p = 1200<br/>
+0&#160;<br/>
+0&#160;<br/>
+0<br/>
+5<br/>
+10<br/>
+15<br/>
+0<br/>
+5<br/>
+10<br/>
+15<br/>
+Control parameter<br/>
+Control parameter<br/>
+(a)&#160;Log.&#160;sparsity<br/>
+(b)&#160;Square-root&#160;sparsity<br/>
+Probability&#160;of&#160;success&#160;P[S(D)&#160;=&#160;S(β∗)]&#160;versus&#160;rescaled&#160;sample&#160;size<br/>
+n<br/>
+θthr(n,&#160;p,&#160;k)&#160;=&#160;k2&#160;log(p&#160;−&#160;k)<br/>
+31<br/>
+<hr/>
+<a name=32></a><img class="yflip" src="./jordan2-32_1.png"/><br/>
+<img class="yflip" src="./jordan2-32_2.png"/><br/>
+<img class="yflip" src="./jordan2-32_3.png"/><br/>
+<img class="yflip" src="./jordan2-32_4.png"/><br/>
+<img class="yflip" src="./jordan2-32_5.png"/><br/>
+<img class="yflip" src="./jordan2-32_6.png"/><br/>
+Eigenvector&#160;support&#160;recovery&#160;via&#160;SDP&#160;relaxation<br/>
+•&#160;spiked&#160;identity&#160;model&#160;Σp&#160;=&#160;αzzT&#160;+&#160;σ2Ip&#160;with&#160;k-sparse&#160;eigenvector&#160;z<br/>
+˘<br/>
+P<br/>
+¯<br/>
+•&#160;SDP&#160;relaxation:&#160;b<br/>
+Z&#160;∈&#160;arg<br/>
+min<br/>
+−&#160;trace(Z&#160;b<br/>
+Σ)&#160;+&#160;ρn<br/>
+.<br/>
+i,j&#160;|Zij|<br/>
+Z0,trace(Z)=1<br/>
+Theorem:&#160;(AmiWai08a)&#160;Suppose&#160;that&#160;we&#160;solve&#160;the&#160;SDP&#160;with&#160;ρn&#160;=&#160;α/(2σ2k).&#160;Then&#160;there<br/>are&#160;constants&#160;θwr&#160;and&#160;θcrit&#160;such&#160;that<br/>
+(a)&#160;For&#160;sample&#160;sizes&#160;such&#160;that&#160;θthr(n,&#160;p,&#160;k)&#160;=<br/>
+n<br/>
+&gt;&#160;θ<br/>
+k2&#160;log(p−k)<br/>
+wr,&#160;the&#160;SDP&#160;has&#160;a&#160;rank&#160;one<br/>
+solution&#160;w.h.p.,&#160;and<br/>
+(b)&#160;For&#160;problem&#160;sequences&#160;such&#160;that&#160;k&#160;=&#160;O(log&#160;p),&#160;and<br/>
+n<br/>
+θsdp(n,&#160;p,&#160;k)<br/>
+:=<br/>
+&gt;&#160;θcrit,<br/>
+k&#160;log(p&#160;−&#160;k)<br/>
+a&#160;rank&#160;one&#160;solution&#160;(when&#160;it&#160;exists)&#160;specifies&#160;correct&#160;support&#160;w.h.p.<br/>
+Remarks:<br/>
+•&#160;technical&#160;condition&#160;k&#160;=&#160;O(log&#160;p):&#160;likely&#160;an&#160;artifact<br/>
+32<br/>
+<hr/>
+<a name=33></a><img class="yflip" src="./jordan2-33_1.png"/><br/>
+Performance&#160;of&#160;SDP&#160;relaxation<br/>
+SDP relaxation (k = O(log p))<br/>
+SDP relaxation (k = 0.1 p)<br/>
+1<br/>
+&#160;<br/>
+1<br/>
+&#160;<br/>
+0.8<br/>
+0.8<br/>
+0.6<br/>
+0.6<br/>
+0.4<br/>
+0.4<br/>
+Prob. success<br/>
+Prob. success<br/>
+p = 100<br/>
+p = 100<br/>
+p = 200<br/>
+0.2<br/>
+0.2<br/>
+p = 200<br/>
+p = 300<br/>
+p = 300<br/>
+0&#160;<br/>
+0&#160;<br/>
+0<br/>
+5<br/>
+10<br/>
+15<br/>
+0<br/>
+5<br/>
+10<br/>
+15<br/>
+Control parameter<br/>
+Control parameter<br/>
+(a)&#160;Log.&#160;sparsity<br/>
+(b)&#160;Linear&#160;sparsity<br/>
+Probability&#160;of&#160;success&#160;P[S(&#160;b<br/>
+β)&#160;=&#160;S(β∗)]&#160;versus&#160;rescaled&#160;sample&#160;size<br/>
+n<br/>
+θsdp(n,&#160;p,&#160;k)&#160;=<br/>
+.<br/>
+k&#160;log(p&#160;−&#160;k)<br/>
+33<br/>
+<hr/>
+<a name=34></a>Summary&#160;and&#160;open&#160;directions<br/>
+1.&#160;When&#160;does&#160;more&#160;computation&#160;yield&#160;greater&#160;statistical&#160;accuracy?<br/>
+•&#160;Multivariate&#160;regression:&#160;second-order&#160;cone&#160;programming&#160;versus&#160;quadratic&#160;programming<br/>
+(Lasso)<br/>
+•&#160;Sparse&#160;PCA:&#160;diagonal&#160;thresholding&#160;versus&#160;SDP&#160;relaxation<br/>
+2.&#160;When&#160;are&#160;polynomial-time&#160;algorithms&#160;as&#160;good&#160;as&#160;“optimal”&#160;algorithms?<br/>
+•&#160;Multivariate&#160;regression:&#160;Lasso/SOCP&#160;order-optimal&#160;for&#160;k&#160;=&#160;o(p)<br/>•&#160;Sparse&#160;PCA:&#160;SDP&#160;relaxation&#160;order-optimal&#160;for&#160;k&#160;=&#160;O(log&#160;p)<br/>
+34<br/>
+<hr/>
+</body>
+</html>

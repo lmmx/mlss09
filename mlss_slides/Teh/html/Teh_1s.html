@@ -1,0 +1,2105 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img src="./Teh_1-1_1.png"/><br/>
+An&#160;Introduction&#160;to<br/>
+Bayesian&#160;Nonparametric&#160;Modelling<br/>
+Yee&#160;Whye&#160;Teh<br/>
+Gatsby&#160;Computational&#160;Neuroscience&#160;Unit<br/>
+University&#160;College&#160;London<br/>
+September,&#160;2009&#160;/&#160;MLSS&#160;Cambridge<br/>
+<hr/>
+<a name=2></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=3></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=4></a>Regression&#160;with&#160;Basis&#160;Functions<br/>
+I&#160;Supervised&#160;learning&#160;of&#160;a&#160;function&#160;f&#160;∗&#160;:&#160;X&#160;→&#160;Y&#160;from&#160;training&#160;data<br/>
+{xi,&#160;yi}n&#160;.<br/>
+i=1<br/>
+*<br/>
+*<br/>
+*<br/>
+*<br/>
+*<br/>
+*<br/>
+*<br/>
+*<br/>
+<hr/>
+<a name=5></a>Regression&#160;with&#160;Basis&#160;Functions<br/>
+I&#160;Assume&#160;a&#160;set&#160;of&#160;basis&#160;functions&#160;φ1,&#160;.&#160;.&#160;.&#160;,&#160;φK&#160;and&#160;parametrize&#160;a&#160;function:<br/>
+K<br/>
+X<br/>
+f&#160;(x&#160;;&#160;<b>w</b>)&#160;=<br/>
+wk&#160;φk&#160;(x)<br/>
+k&#160;=1<br/>
+Parameters&#160;<b>w&#160;</b>=&#160;{w1,&#160;.&#160;.&#160;.&#160;,&#160;wK&#160;}.<br/>
+I&#160;Find&#160;optimal&#160;parameters<br/>
+n<br/>
+<br/>
+2<br/>
+n<br/>
+<br/>
+2<br/>
+X<br/>
+X<br/>
+argmin<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+yi&#160;−&#160;f&#160;(xi&#160;;&#160;<b>w</b>)<br/>
+=&#160;argmin<br/>
+yi&#160;−&#160;PK<br/>
+w<br/>
+k&#160;=1<br/>
+k&#160;φk&#160;(xi&#160;)<br/>
+<b>w</b><br/>
+<br/>
+<br/>
+<b>w</b><br/>
+<br/>
+<br/>
+i=1<br/>
+i=1<br/>
+I&#160;We&#160;will&#160;be&#160;Bayesian&#160;in&#160;this&#160;lecture,&#160;so&#160;we&#160;need&#160;to&#160;rephrase&#160;using<br/>
+probabilistic&#160;model&#160;with&#160;priors&#160;on&#160;parameters:<br/>
+yi&#160;|xi&#160;,&#160;<b>w&#160;</b>=&#160;f&#160;(xi&#160;;&#160;<b>w</b>)&#160;+&#160;i<br/>
+i&#160;∼&#160;N&#160;(0,&#160;σ2)<br/>
+wk&#160;∼&#160;N&#160;(0,&#160;τ&#160;2)<br/>
+I&#160;Computer&#160;posterior&#160;p(<b>w</b>|{xi&#160;,&#160;yi&#160;}).<br/>
+<hr/>
+<a name=6></a>Regression&#160;with&#160;Basis&#160;Functions<br/>
+K<br/>
+X<br/>
+f&#160;(x&#160;;&#160;<b>w</b>)&#160;=<br/>
+wk&#160;φk&#160;(x)<br/>
+k&#160;=1<br/>
+I&#160;What&#160;basis&#160;functions&#160;to&#160;use?<br/>
+I&#160;How&#160;many&#160;basis&#160;functions&#160;to&#160;use?<br/>
+I&#160;Do&#160;we&#160;really&#160;believe&#160;that&#160;the&#160;true&#160;f&#160;∗(x&#160;)&#160;can&#160;be&#160;expressed&#160;as<br/>
+f&#160;∗(x&#160;)&#160;=&#160;f&#160;(x&#160;;&#160;<b>w</b>∗)&#160;for&#160;some&#160;<b>w</b>∗?<br/>
+i&#160;∼&#160;N&#160;(0,&#160;σ2)<br/>
+I&#160;Do&#160;we&#160;believe&#160;the&#160;noise&#160;process&#160;is&#160;Gaussian?<br/>
+<hr/>
+<a name=7></a>Density&#160;Estimation&#160;with&#160;Mixture&#160;Models<br/>
+I&#160;Unsupervised&#160;learning&#160;of&#160;a&#160;density&#160;f&#160;∗(x&#160;)&#160;from&#160;training&#160;samples&#160;{xi&#160;}.<br/>
+*&#160;*<br/>
+*&#160;*<br/>
+*<br/>
+*<br/>
+***&#160;*&#160;*&#160;*&#160;*<br/>
+*&#160;*<br/>
+*<br/>
+I&#160;Perhaps&#160;use&#160;an&#160;exponential&#160;family&#160;distribution,&#160;e.g.&#160;Gaussian?<br/>
+N&#160;(x;&#160;µ,&#160;Σ)&#160;=&#160;|2πΣ|−12&#160;exp&#160;−1(x&#160;−&#160;µ)&gt;Σ−1(x&#160;−&#160;µ)<br/>
+2<br/>
+Unimodal,&#160;restrictive&#160;shape,&#160;light&#160;tail...<br/>
+I&#160;Use&#160;a&#160;mixture&#160;model&#160;instead,<br/>
+K<br/>
+X<br/>
+f&#160;(x&#160;)&#160;=<br/>
+πkN&#160;(x;&#160;µk,&#160;Σk)<br/>
+k&#160;=1<br/>
+I&#160;Do&#160;we&#160;believe&#160;that&#160;the&#160;true&#160;density&#160;is&#160;a&#160;mixture&#160;of&#160;K&#160;components?<br/>
+I&#160;How&#160;many&#160;mixture&#160;components&#160;to&#160;use?<br/>
+<hr/>
+<a name=8></a>Latent&#160;Variable&#160;Modelling<br/>
+I&#160;Say&#160;we&#160;have&#160;n&#160;vector&#160;observations&#160;x1,&#160;.&#160;.&#160;.&#160;,&#160;xn.<br/>
+I&#160;Model&#160;each&#160;observation&#160;as&#160;a&#160;linear&#160;combination&#160;of&#160;K&#160;latent&#160;sources:<br/>
+K<br/>
+X<br/>
+xi&#160;=<br/>
+Λk&#160;yik&#160;+&#160;i<br/>
+k&#160;=1<br/>
+yik&#160;:&#160;activity&#160;of&#160;source&#160;k&#160;in&#160;datum&#160;i.<br/>Λk&#160;:&#160;basis&#160;vector&#160;describing&#160;effect&#160;of&#160;source&#160;k&#160;.<br/>
+I&#160;Examples&#160;include&#160;principle&#160;components&#160;analysis,&#160;factor&#160;analysis,<br/>
+independent&#160;components&#160;analysis.<br/>
+I&#160;How&#160;many&#160;sources&#160;are&#160;there?<br/>
+I&#160;Do&#160;we&#160;believe&#160;that&#160;K&#160;sources&#160;is&#160;sufficient&#160;to&#160;explain&#160;all&#160;our&#160;data?<br/>
+I&#160;What&#160;prior&#160;distribution&#160;should&#160;we&#160;use&#160;for&#160;sources?<br/>
+<hr/>
+<a name=9></a>Topic&#160;Modelling&#160;with&#160;Latent&#160;Dirichlet&#160;Allocation<br/>
+I&#160;Infer&#160;topics&#160;from&#160;a&#160;document&#160;corpus,&#160;topics<br/>
+being&#160;sets&#160;of&#160;words&#160;that&#160;tend&#160;to&#160;co-occur<br/>together.<br/>
+πj<br/>
+I&#160;Using&#160;(Bayesian)&#160;latent&#160;Dirichlet&#160;allocation:<br/>
+πj&#160;∼&#160;Dirichlet(&#160;α&#160;,&#160;.&#160;.&#160;.&#160;,&#160;α&#160;)<br/>
+K<br/>
+K<br/>
+θ<br/>
+zji<br/>
+k&#160;∼&#160;Dirichlet(&#160;β&#160;,&#160;.&#160;.&#160;.&#160;,&#160;β&#160;)<br/>
+W<br/>
+W<br/>
+zji&#160;|πj&#160;∼&#160;Multinomial(πj&#160;)<br/>
+xji&#160;|zji&#160;,&#160;θz&#160;∼&#160;Multinomial(θ&#160;)<br/>
+ji<br/>
+zji<br/>
+xji<br/>
+θk<br/>
+words i=1...nd<br/>
+topics k=1...K<br/>
+I&#160;How&#160;many&#160;topics&#160;can&#160;we&#160;find&#160;from&#160;the<br/>
+document j=1...D<br/>
+corpus?<br/>
+<hr/>
+<a name=10></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=11></a>Modelling&#160;Data<br/>
+I&#160;Models&#160;are&#160;almost&#160;never&#160;correct&#160;for&#160;real&#160;world&#160;data.<br/>
+I&#160;How&#160;do&#160;we&#160;deal&#160;with&#160;model&#160;misfit?<br/>
+I&#160;Quantify&#160;closeness&#160;to&#160;true&#160;model,&#160;and&#160;optimality&#160;of&#160;fitted&#160;model;<br/>
+I&#160;Model&#160;selection&#160;or&#160;averaging;<br/>
+I&#160;Increase&#160;the&#160;flexibility&#160;of&#160;your&#160;model&#160;class.<br/>
+I&#160;Bayesian&#160;nonparametrics&#160;are&#160;good&#160;solutions&#160;from&#160;the&#160;second&#160;and&#160;third<br/>
+perspectives.<br/>
+<hr/>
+<a name=12></a>Model&#160;Selection&#160;and&#160;Model&#160;Averaging<br/>
+I&#160;Data&#160;<b>x&#160;</b>=&#160;{x1,&#160;x2,&#160;.&#160;.&#160;.&#160;,&#160;xn}.<br/>
+I&#160;Model&#160;Mk&#160;parametrized&#160;by&#160;θk&#160;,&#160;for&#160;k&#160;=&#160;1,&#160;2,&#160;.&#160;.&#160;..<br/>
+I&#160;Marginal&#160;likelihood:<br/>
+Z<br/>
+p(<b>x</b>|Mk&#160;)&#160;=<br/>
+p(<b>x</b>|θk&#160;,&#160;Mk&#160;)p(θk&#160;,&#160;Mk&#160;)dθk<br/>
+I&#160;Model&#160;selection&#160;and&#160;averaging:<br/>
+p(k&#160;)p(θ<br/>
+M<br/>
+k&#160;|Mk&#160;)p(<b>x</b>|θk&#160;,&#160;Mk&#160;)<br/>
+=&#160;argmax&#160;p(<b>x</b>|Mk&#160;)&#160;or&#160;p(k,&#160;θk&#160;|<b>x</b>)&#160;=&#160;P<br/>
+Mk<br/>
+k&#160;0&#160;p(k&#160;0)p(θk&#160;0&#160;|Mk&#160;0&#160;)p(<b>x</b>|θk&#160;0&#160;,&#160;Mk&#160;0&#160;)<br/>
+I&#160;Model&#160;selection&#160;and&#160;averaging&#160;is&#160;to&#160;prevent&#160;overfitting&#160;and&#160;underfitting,<br/>
+and&#160;are&#160;usually&#160;expense&#160;to&#160;compute.<br/>
+I&#160;But&#160;reasonable&#160;and&#160;proper&#160;Bayesian&#160;methods&#160;should&#160;not&#160;overfit&#160;anyway<br/>
+<a href="Teh_1s.html#94">[Rasmussen&#160;and&#160;Ghahramani&#160;2001].</a><br/>
+<hr/>
+<a name=13></a>Nonparametric&#160;Modelling<br/>
+I&#160;What&#160;is&#160;a&#160;nonparametric&#160;model?<br/>
+I&#160;A&#160;parametric&#160;model&#160;where&#160;the&#160;number&#160;of&#160;parameters&#160;increases<br/>
+with&#160;data;<br/>
+I&#160;A&#160;really&#160;large&#160;parametric&#160;model;<br/>
+I&#160;A&#160;model&#160;over&#160;infinite&#160;dimensional&#160;function&#160;or&#160;measure&#160;spaces.<br/>
+I&#160;A&#160;family&#160;of&#160;distributions&#160;that&#160;is&#160;dense&#160;in&#160;some&#160;large&#160;space.<br/>
+I&#160;Why&#160;nonparametric&#160;models&#160;in&#160;Bayesian&#160;theory&#160;of&#160;learning?<br/>
+I&#160;broad&#160;class&#160;of&#160;priors&#160;that&#160;allows&#160;data&#160;to&#160;“speak&#160;for&#160;itself”;<br/>
+I&#160;side-step&#160;model&#160;selection&#160;and&#160;averaging.<br/>
+I&#160;How&#160;do&#160;we&#160;deal&#160;with&#160;the&#160;very&#160;large&#160;parameter&#160;spaces?<br/>
+I&#160;Marginalize&#160;out&#160;all&#160;but&#160;a&#160;finite&#160;number&#160;of&#160;parameters;<br/>
+I&#160;Define&#160;infinite&#160;space&#160;implicitly&#160;(akin&#160;to&#160;the&#160;kernel&#160;trick)&#160;using&#160;either<br/>
+Kolmogorov&#160;Consistency&#160;Theorem&#160;or&#160;de&#160;Finetti’s&#160;Theorem.<br/>
+<hr/>
+<a name=14></a>Gaussian&#160;Processes<br/>
+I&#160;A&#160;Gaussian&#160;process&#160;(GP)&#160;is&#160;a&#160;random&#160;function&#160;f&#160;:&#160;X&#160;→&#160;R&#160;such&#160;that&#160;for<br/>
+any&#160;finite&#160;set&#160;of&#160;input&#160;points&#160;x1,&#160;.&#160;.&#160;.&#160;,&#160;xn,<br/>
+f&#160;(x&#160;<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+1)<br/>
+m(x1)<br/>
+c(x1,&#160;x1)&#160;.&#160;.&#160;.&#160;c(x1,&#160;xn)<br/>
+.<br/>
+.<br/>
+.<br/>
+.<br/>
+.<br/>
+<br/>
+.<br/>
+&#160;∼&#160;N&#160;<br/>
+.<br/>
+&#160;,&#160;<br/>
+.<br/>
+.&#160;.<br/>
+.<br/>
+<br/>
+<br/>
+.<br/>
+<br/>
+<br/>
+.<br/>
+<br/>
+<br/>
+.<br/>
+.<br/>
+<br/>
+f&#160;(xn)<br/>
+m(xn)<br/>
+c(xn,&#160;x1)&#160;.&#160;.&#160;.&#160;c(xn,&#160;xn)<br/>
+where&#160;the&#160;parameters&#160;are&#160;the&#160;mean&#160;function&#160;m(x&#160;)&#160;and&#160;covariance<br/>kernel&#160;c(x&#160;,&#160;y).<br/>
+I&#160;Note:&#160;a&#160;random&#160;function&#160;f&#160;is&#160;a&#160;stochastic&#160;process.&#160;It&#160;is&#160;a&#160;collection&#160;of<br/>
+random&#160;variables&#160;{f&#160;(x)}x∈&#160;one&#160;for&#160;each&#160;possible&#160;input&#160;value&#160;x.<br/>
+X<br/>
+I&#160;Can&#160;also&#160;be&#160;expressed&#160;as<br/>
+K<br/>
+X<br/>
+f&#160;(x&#160;)&#160;=<br/>
+wk&#160;φk&#160;(x)&#160;as&#160;K&#160;→&#160;∞.<br/>
+k&#160;=1<br/>
+<a href="Teh_1s.html#94">[Rasmussen&#160;and&#160;Williams&#160;2006]</a><br/>
+<hr/>
+<a name=15></a>Posterior&#160;and&#160;Predictive&#160;Distributions<br/>
+I&#160;How&#160;do&#160;we&#160;compute&#160;the&#160;posterior&#160;and&#160;predictive&#160;distributions?<br/>
+I&#160;Training&#160;set&#160;(x1,&#160;y1),&#160;(x2,&#160;y2),&#160;.&#160;.&#160;.&#160;,&#160;(xn,&#160;yn)&#160;and&#160;test&#160;input&#160;xn+1.<br/>
+I&#160;Out&#160;of&#160;the&#160;(uncountably&#160;infinitely)&#160;many&#160;random&#160;variables&#160;{f&#160;(x)}x∈X<br/>
+making&#160;up&#160;the&#160;GP&#160;only&#160;n&#160;+&#160;1&#160;has&#160;to&#160;do&#160;with&#160;the&#160;data:<br/>
+f&#160;(x1),&#160;f&#160;(x2),&#160;.&#160;.&#160;.&#160;,&#160;f&#160;(xn+1)<br/>
+I&#160;Training&#160;data&#160;gives&#160;observations&#160;f&#160;(x1)&#160;=&#160;y1,&#160;.&#160;.&#160;.&#160;,&#160;f&#160;(xn)&#160;=&#160;yn.&#160;The<br/>
+predictive&#160;distribution&#160;of&#160;f&#160;(xn+1)&#160;is&#160;simply<br/>
+p(f&#160;(xn+1)|f&#160;(x1)&#160;=&#160;y1,&#160;.&#160;.&#160;.&#160;,&#160;f&#160;(xn)&#160;=&#160;yn)<br/>
+which&#160;is&#160;easy&#160;to&#160;compute&#160;since&#160;f&#160;(x1),&#160;.&#160;.&#160;.&#160;,&#160;f&#160;(xn+1)&#160;is&#160;Gaussian.<br/>
+I&#160;This&#160;can&#160;be&#160;generalized&#160;to&#160;noisy&#160;observations&#160;yi&#160;=&#160;f&#160;(xi&#160;)&#160;+&#160;i&#160;or&#160;non-linear<br/>
+effects&#160;yi&#160;∼&#160;D(f&#160;(xi&#160;))&#160;where&#160;D(θ)&#160;is&#160;a&#160;distribution&#160;parametrized&#160;by&#160;θ.<br/>
+<hr/>
+<a name=16></a>Consistency&#160;and&#160;Existence<br/>
+I&#160;The&#160;definition&#160;of&#160;Gaussian&#160;processes&#160;only&#160;give&#160;finite&#160;dimensional<br/>
+marginal&#160;distributions&#160;of&#160;the&#160;stochastic&#160;process.<br/>
+I&#160;Fortunately&#160;these&#160;marginal&#160;distributions&#160;are&#160;consistent&#160;.<br/>
+I&#160;For&#160;every&#160;finite&#160;set&#160;<b>x&#160;</b>⊂&#160;X&#160;we&#160;have&#160;a&#160;distinct&#160;distribution<br/>
+p<b>x</b>([f&#160;(x)]x∈<b>x</b>).&#160;These&#160;distributions&#160;are&#160;said&#160;to&#160;be&#160;consistent&#160;if<br/>
+Z<br/>
+p<b>x</b>([f&#160;(x)]x∈<b>x</b>)&#160;=<br/>
+p<b>x</b>∪<b>y</b>([f&#160;(x)]x∈<b>x</b>∪<b>y</b>)d[f&#160;(x)]x∈<b>y</b><br/>
+for&#160;disjoint&#160;and&#160;finite&#160;<b>x</b>,&#160;<b>y&#160;</b>⊂&#160;X.<br/>
+I&#160;The&#160;marginal&#160;distributions&#160;for&#160;the&#160;GP&#160;are&#160;consistent&#160;because<br/>
+Gaussians&#160;are&#160;closed&#160;under&#160;marginalization.<br/>
+I&#160;The&#160;Kolmogorov&#160;Consistency&#160;Theorem&#160;guarantees&#160;existence&#160;of&#160;GPs,<br/>
+i.e.&#160;the&#160;whole&#160;stochastic&#160;process&#160;{f&#160;(x)}x∈&#160;.<br/>
+X<br/>
+I&#160;Further&#160;information&#160;in&#160;Peter&#160;Orbanz’&#160;lectures.<br/>
+<hr/>
+<a name=17></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=18></a>Bayesian&#160;Mixture&#160;Models<br/>
+I&#160;Let’s&#160;be&#160;Bayesian&#160;about&#160;mixture&#160;models,&#160;and&#160;place<br/>
+priors&#160;over&#160;our&#160;parameters&#160;(and&#160;to&#160;compute<br/>posteriors).<br/>
+α<br/>
+I&#160;First,&#160;introduce&#160;variable&#160;zi&#160;indicator&#160;which<br/>
+component&#160;xi&#160;belongs&#160;to.<br/>
+z<br/>
+π<br/>
+H<br/>
+i&#160;|π&#160;∼&#160;Multinomial(π)<br/>
+xi&#160;|zi&#160;=&#160;k,&#160;µ,&#160;Σ&#160;∼&#160;N&#160;(µk&#160;,&#160;Σk&#160;)<br/>
+zi<br/>
+θ∗k<br/>
+I&#160;Second,&#160;introduce&#160;conjugate&#160;priors&#160;for&#160;parameters:<br/>
+k&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;K<br/>
+xi<br/>
+π&#160;∼&#160;Dirichlet(&#160;α&#160;,&#160;.&#160;.&#160;.&#160;,&#160;α&#160;)<br/>
+K<br/>
+K<br/>
+i&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;n<br/>
+µk,&#160;Σk&#160;∼&#160;H&#160;=&#160;N&#160;-IW(0,&#160;s,&#160;d,&#160;Φ)<br/>
+<a href="Teh_1s.html#94">[Rasmussen&#160;2000]</a><br/>
+<hr/>
+<a name=19></a>Gibbs&#160;Sampling&#160;for&#160;Bayesian&#160;Mixture&#160;Models<br/>
+I&#160;All&#160;conditional&#160;distributions&#160;are&#160;simple&#160;to&#160;compute:<br/>
+p(zi&#160;=&#160;k|others)&#160;∝&#160;πk&#160;N&#160;(xi&#160;;&#160;µk&#160;,&#160;Σk&#160;)<br/>
+π|<b>z&#160;</b>∼&#160;Dirichlet(&#160;α&#160;+&#160;n<br/>
++&#160;n<br/>
+α<br/>
+K<br/>
+1(<b>z</b>),&#160;.&#160;.&#160;.&#160;,&#160;α<br/>
+K<br/>
+K&#160;(<b>z</b>))<br/>
+µk,&#160;Σk|others&#160;∼&#160;N&#160;-IW(ν0,&#160;s0,&#160;d0,&#160;Φ0)<br/>
+π<br/>
+H<br/>
+I&#160;Not&#160;as&#160;efficient&#160;as&#160;collapsed&#160;Gibbs&#160;sampling&#160;which<br/>
+integrates&#160;out&#160;π,&#160;µ,&#160;Σ:<br/>
+zi<br/>
+θ∗k<br/>
+α&#160;+&#160;n<br/>
+k&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;K<br/>
+k&#160;(<b>z</b>−i&#160;)<br/>
+p(z<br/>
+K<br/>
+i&#160;=&#160;k&#160;|others)&#160;∝<br/>
+×<br/>
+α&#160;+&#160;n&#160;−&#160;1<br/>
+xi<br/>
+p(xi&#160;|{xi0&#160;:&#160;i0&#160;6=&#160;i,&#160;zi0&#160;=&#160;k})<br/>
+i&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;n<br/>
+I&#160;Demo:&#160;fm_demointeractive.<br/>
+<hr/>
+<a name=20></a>Infinite&#160;Bayesian&#160;Mixture&#160;Models<br/>
+I&#160;We&#160;will&#160;take&#160;K&#160;→&#160;∞.<br/>
+I&#160;Imagine&#160;a&#160;very&#160;large&#160;value&#160;of&#160;K&#160;.<br/>
+α<br/>
+I&#160;There&#160;are&#160;at&#160;most&#160;n&#160;&lt;&#160;K&#160;occupied&#160;components,&#160;so<br/>
+most&#160;components&#160;are&#160;empty.&#160;We&#160;can&#160;lump&#160;these<br/>empty&#160;components&#160;together:<br/>
+π<br/>
+H<br/>
+Occupied&#160;clusters:<br/>
+α&#160;+nk(<b>z</b>−i)<br/>
+p(z<br/>
+K<br/>
+i&#160;=&#160;k&#160;|others)&#160;∝<br/>
+)<br/>
+z<br/>
+θ∗<br/>
+n&#160;−&#160;1&#160;+&#160;α&#160;p(xi&#160;|<b>x</b>−i<br/>
+k<br/>
+i<br/>
+k<br/>
+k&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;K<br/>
+Empty&#160;clusters:<br/>
+xi<br/>
+αK−K∗<br/>
+p(z<br/>
+K<br/>
+i&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;n<br/>
+i&#160;=&#160;kempty|<b>z</b>−i&#160;)&#160;∝&#160;n&#160;−&#160;1&#160;+&#160;αp(xi|{})<br/>
+I&#160;Demo:&#160;dpm_demointeractive.<br/>
+<hr/>
+<a name=21></a>Infinite&#160;Bayesian&#160;Mixture&#160;Models<br/>
+I&#160;We&#160;will&#160;take&#160;K&#160;→&#160;∞.<br/>
+I&#160;Imagine&#160;a&#160;very&#160;large&#160;value&#160;of&#160;K&#160;.<br/>
+α<br/>
+I&#160;There&#160;are&#160;at&#160;most&#160;n&#160;&lt;&#160;K&#160;occupied&#160;components,&#160;so<br/>
+most&#160;components&#160;are&#160;empty.&#160;We&#160;can&#160;lump&#160;these<br/>empty&#160;components&#160;together:<br/>
+π<br/>
+H<br/>
+Occupied&#160;clusters:<br/>
+α&#160;+nk(<b>z</b>−i)<br/>
+p(z<br/>
+K<br/>
+i&#160;=&#160;k&#160;|others)&#160;∝<br/>
+)<br/>
+z<br/>
+θ∗<br/>
+n&#160;−&#160;1&#160;+&#160;α&#160;p(xi&#160;|<b>x</b>−i<br/>
+k<br/>
+i<br/>
+k<br/>
+k&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;K<br/>
+Empty&#160;clusters:<br/>
+xi<br/>
+αK−K∗<br/>
+p(z<br/>
+K<br/>
+i&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;n<br/>
+i&#160;=&#160;kempty|<b>z</b>−i&#160;)&#160;∝&#160;n&#160;−&#160;1&#160;+&#160;αp(xi|{})<br/>
+I&#160;Demo:&#160;dpm_demointeractive.<br/>
+<hr/>
+<a name=22></a>Infinite&#160;Bayesian&#160;Mixture&#160;Models<br/>
+I&#160;The&#160;actual&#160;infinite&#160;limit&#160;of&#160;finite&#160;mixture&#160;models&#160;does&#160;not&#160;make&#160;sense:<br/>
+any&#160;particular&#160;component&#160;will&#160;get&#160;a&#160;mixing&#160;proportion&#160;of&#160;0.<br/>
+I&#160;In&#160;the&#160;Gibbs&#160;sampler&#160;we&#160;bypassed&#160;this&#160;by&#160;lumping&#160;empty&#160;clusters<br/>
+together.<br/>
+I&#160;Other&#160;better&#160;ways&#160;of&#160;making&#160;this&#160;infinite&#160;limit&#160;precise:<br/>
+I&#160;Look&#160;at&#160;the&#160;prior&#160;clustering&#160;structure&#160;induced&#160;by&#160;the&#160;Dirichlet&#160;prior<br/>
+over&#160;mixing&#160;proportions—Chinese&#160;restaurant&#160;process.<br/>
+I&#160;Re-order&#160;components&#160;so&#160;that&#160;those&#160;with&#160;larger&#160;mixing&#160;proportions<br/>
+tend&#160;to&#160;occur&#160;first,&#160;before&#160;taking&#160;the&#160;infinite&#160;limit—stick-breaking<br/>construction.<br/>
+I&#160;Both&#160;are&#160;different&#160;views&#160;of&#160;the&#160;Dirichlet&#160;process&#160;(DP).<br/>
+I&#160;DPs&#160;can&#160;be&#160;thought&#160;of&#160;as&#160;infinite&#160;dimensional&#160;Dirichlet&#160;distributions.<br/>
+I&#160;The&#160;K&#160;→&#160;∞&#160;Gibbs&#160;sampler&#160;is&#160;for&#160;DP&#160;mixture&#160;models.<br/>
+<hr/>
+<a name=23></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#24">Measure&#160;Theoretic&#160;Probability&#160;Theory<br/></a><a href="Teh_1s.html#32">Representations&#160;of&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=24></a>A&#160;Tiny&#160;Bit&#160;of&#160;Measure&#160;Theoretic&#160;Probability&#160;Theory<br/>
+I&#160;A&#160;σ-algebra&#160;Σ&#160;is&#160;a&#160;family&#160;of&#160;subsets&#160;of&#160;a&#160;set&#160;Θ&#160;such&#160;that<br/>
+I&#160;Σ&#160;is&#160;not&#160;empty;<br/>
+I&#160;If&#160;A&#160;∈&#160;Σ&#160;then&#160;Θ\A&#160;∈&#160;Σ;<br/>I&#160;If&#160;A1,&#160;A2,&#160;.&#160;.&#160;.&#160;∈&#160;Σ&#160;then&#160;∪∞&#160;A<br/>
+i=1<br/>
+i&#160;∈&#160;Σ.<br/>
+I&#160;(Θ,&#160;Σ)&#160;is&#160;a&#160;measure&#160;space&#160;and&#160;A&#160;∈&#160;Σ&#160;are&#160;the&#160;measurable&#160;sets.<br/>
+I&#160;A&#160;measure&#160;µ&#160;over&#160;(Θ,&#160;Σ)&#160;is&#160;a&#160;function&#160;µ&#160;:&#160;Σ&#160;→&#160;[0,&#160;∞]&#160;such&#160;that<br/>
+I&#160;µ(∅)&#160;=&#160;0;<br/>I&#160;If&#160;A1,&#160;A2,&#160;.&#160;.&#160;.&#160;∈&#160;Σ&#160;are&#160;disjoint&#160;then&#160;µ(∪∞&#160;A<br/>
+µ(A<br/>
+i=1<br/>
+i&#160;)&#160;=&#160;P∞<br/>
+i=1<br/>
+i&#160;).<br/>
+I&#160;Everything&#160;we&#160;consider&#160;here&#160;will&#160;be&#160;measurable.<br/>
+I&#160;A&#160;probability&#160;measure&#160;is&#160;one&#160;where&#160;µ(Θ)&#160;=&#160;1.<br/>
+I&#160;Given&#160;two&#160;measure&#160;spaces&#160;(Θ,&#160;Σ)&#160;and&#160;(∆,&#160;Φ),&#160;a&#160;function&#160;f&#160;:&#160;Θ&#160;→&#160;∆&#160;is<br/>
+measurable&#160;if&#160;f&#160;−1(A)&#160;∈&#160;Σ&#160;for&#160;every&#160;A&#160;∈&#160;Φ.<br/>
+<hr/>
+<a name=25></a>A&#160;Tiny&#160;Bit&#160;of&#160;Measure&#160;Theoretic&#160;Probability&#160;Theory<br/>
+I&#160;If&#160;p&#160;is&#160;a&#160;probability&#160;measure&#160;on&#160;(Θ,&#160;Σ),&#160;a&#160;random&#160;variable&#160;X&#160;taking<br/>
+values&#160;in&#160;∆&#160;is&#160;simply&#160;a&#160;measurable&#160;function&#160;X&#160;:&#160;Θ&#160;→&#160;∆.<br/>
+I&#160;Think&#160;of&#160;the&#160;probability&#160;space&#160;(Θ,&#160;Σ,&#160;p)&#160;as&#160;a&#160;black-box&#160;random<br/>
+number&#160;generator,&#160;and&#160;X&#160;as&#160;a&#160;function&#160;taking&#160;random&#160;samples&#160;in&#160;Θ<br/>and&#160;producing&#160;random&#160;samples&#160;in&#160;∆.<br/>
+I&#160;The&#160;probability&#160;of&#160;an&#160;event&#160;A&#160;∈&#160;Φ&#160;is&#160;p(X&#160;∈&#160;A)&#160;=&#160;p(X&#160;−1(A)).<br/>
+I&#160;A&#160;stochastic&#160;process&#160;is&#160;simply&#160;a&#160;collection&#160;of&#160;random&#160;variables&#160;{Xi&#160;}i∈I<br/>
+over&#160;the&#160;same&#160;measure&#160;space&#160;(Θ,&#160;Σ),&#160;where&#160;I&#160;is&#160;an&#160;index&#160;set.<br/>
+I&#160;What&#160;distinguishes&#160;a&#160;stochastic&#160;process&#160;from,&#160;say,&#160;a&#160;graphical<br/>
+model&#160;is&#160;that&#160;I&#160;can&#160;be&#160;infinite,&#160;even&#160;uncountably&#160;so.<br/>
+I&#160;This&#160;raises&#160;issues&#160;of&#160;how&#160;do&#160;you&#160;even&#160;define&#160;them&#160;and&#160;how&#160;do&#160;you<br/>
+ensure&#160;that&#160;they&#160;can&#160;even&#160;existence&#160;(mathematically&#160;speaking).<br/>
+I&#160;Stochastic&#160;processes&#160;form&#160;the&#160;core&#160;of&#160;many&#160;Bayesian&#160;nonparametric<br/>
+models.<br/>
+I&#160;Gaussian&#160;processes,&#160;Poisson&#160;processes,&#160;gamma&#160;processes,<br/>
+Dirichlet&#160;processes,&#160;beta&#160;processes...<br/>
+<hr/>
+<a name=26></a>Dirichlet&#160;Distributions<br/>
+I&#160;A&#160;Dirichlet&#160;distribution&#160;is&#160;a&#160;distribution&#160;over&#160;the&#160;K&#160;-dimensional&#160;probability<br/>
+simplex:<br/>
+∆K&#160;=&#160;(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)&#160;:&#160;πk&#160;≥&#160;0,&#160;P&#160;π<br/>
+k<br/>
+k&#160;=&#160;1	<br/>
+I&#160;We&#160;say&#160;(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)&#160;is&#160;Dirichlet&#160;distributed,<br/>
+(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)&#160;∼&#160;Dirichlet(λ1,&#160;.&#160;.&#160;.&#160;,&#160;λK&#160;)<br/>
+with&#160;parameters&#160;(λ1,&#160;.&#160;.&#160;.&#160;,&#160;λK&#160;),&#160;if<br/>
+n<br/>
+Γ(P&#160;λ<br/>
+Y<br/>
+p<br/>
+k&#160;)<br/>
+(π<br/>
+k<br/>
+1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)&#160;=<br/>
+πλk−1<br/>
+Q<br/>
+Γ(λ<br/>
+k<br/>
+k<br/>
+k&#160;)&#160;k=1<br/>
+I&#160;Equivalent&#160;to&#160;normalizing&#160;a&#160;set&#160;of&#160;independent&#160;gamma&#160;variables:<br/>
+(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)&#160;=<br/>
+1<br/>
+(γ<br/>
+P<br/>
+γ<br/>
+1,&#160;.&#160;.&#160;.&#160;,&#160;γK&#160;)<br/>
+k<br/>
+k<br/>
+γk&#160;∼&#160;Gamma(λk)<br/>
+for&#160;k&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;K<br/>
+<hr/>
+<a name=27></a><img src="./Teh_1-27_1.png"/><br/>
+<img src="./Teh_1-27_2.png"/><br/>
+<img src="./Teh_1-27_3.png"/><br/>
+<img src="./Teh_1-27_4.png"/><br/>
+<img src="./Teh_1-27_5.png"/><br/>
+<img src="./Teh_1-27_6.png"/><br/>
+<img src="./Teh_1-27_7.png"/><br/>
+<img src="./Teh_1-27_8.png"/><br/>
+<img src="./Teh_1-27_9.png"/><br/>
+<img src="./Teh_1-27_10.png"/><br/>
+<img src="./Teh_1-27_11.png"/><br/>
+<img src="./Teh_1-27_12.png"/><br/>
+Dirichlet&#160;Distributions<br/>
+<hr/>
+<a name=28></a>Dirichlet&#160;Processes<br/>
+I&#160;A&#160;Dirichlet&#160;Process&#160;(DP)&#160;is&#160;a&#160;random&#160;probability&#160;measure&#160;G&#160;over&#160;(Θ,&#160;Σ)<br/>
+such&#160;that&#160;for&#160;any&#160;finite&#160;set&#160;of&#160;measurable&#160;partitions&#160;A&#160;˙<br/>
+1∪&#160;.&#160;.&#160;.&#160;˙<br/>
+∪AK&#160;=&#160;Θ,<br/>
+(G(A1),&#160;.&#160;.&#160;.&#160;,&#160;G(AK&#160;))&#160;∼&#160;Dirichlet(λ(A1),&#160;.&#160;.&#160;.&#160;,&#160;λ(AK&#160;))<br/>
+where&#160;λ&#160;is&#160;a&#160;base&#160;measure.<br/>
+A4<br/>
+A1<br/>
+6<br/>
+A<br/>
+A3<br/>
+A5<br/>
+A2<br/>
+I&#160;The&#160;above&#160;family&#160;of&#160;distributions&#160;is&#160;consistent&#160;(next&#160;slide),&#160;and<br/>
+Kolmogorov&#160;Consistency&#160;Theorem&#160;can&#160;be&#160;applied&#160;to&#160;show&#160;existence&#160;(but<br/>there&#160;are&#160;technical&#160;conditions&#160;restricting&#160;the&#160;generality&#160;of&#160;the&#160;definition).<br/>
+<a href="Teh_1s.html#87">[Ferguson&#160;1973,&#160;</a><a href="Teh_1s.html#86">Blackwell&#160;and&#160;MacQueen&#160;1973]</a><br/>
+<hr/>
+<a name=29></a>Consistency&#160;of&#160;Dirichlet&#160;Marginals<br/>
+I&#160;If&#160;we&#160;have&#160;two&#160;partitions&#160;(A1,&#160;.&#160;.&#160;.&#160;,&#160;AK&#160;)&#160;and&#160;(B1,&#160;.&#160;.&#160;.&#160;,&#160;BJ&#160;)&#160;of&#160;Θ,&#160;how&#160;do&#160;we<br/>
+see&#160;if&#160;the&#160;two&#160;Dirichlets&#160;are&#160;consistent?<br/>
+I&#160;Because&#160;Dirichlet&#160;variables&#160;are&#160;normalized&#160;gamma&#160;variables&#160;and&#160;sums<br/>
+of&#160;gammas&#160;are&#160;gammas,&#160;if&#160;(I1,&#160;.&#160;.&#160;.&#160;,&#160;Ij&#160;)&#160;is&#160;a&#160;partition&#160;of&#160;(1,&#160;.&#160;.&#160;.&#160;,&#160;K&#160;),<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+P<br/>
+π<br/>
+π&#160;∼&#160;Dirichlet&#160;P<br/>
+λ<br/>
+λ<br/>
+i∈I<br/>
+i&#160;,&#160;.&#160;.&#160;.&#160;,&#160;P<br/>
+i<br/>
+i&#160;,&#160;.&#160;.&#160;.&#160;,&#160;P<br/>
+i<br/>
+1<br/>
+i∈Ij<br/>
+i∈I1<br/>
+i∈Ij<br/>
+<hr/>
+<a name=30></a>Consistency&#160;of&#160;Dirichlet&#160;Marginals<br/>
+I&#160;Form&#160;the&#160;common&#160;refinement&#160;(C1,&#160;.&#160;.&#160;.&#160;,&#160;CL)&#160;where&#160;each&#160;C`&#160;is&#160;the<br/>
+intersection&#160;of&#160;some&#160;Ak&#160;with&#160;some&#160;Bj&#160;.&#160;Then:<br/>
+By&#160;definition,&#160;(G(C1),&#160;.&#160;.&#160;.&#160;,&#160;G(CL))&#160;∼&#160;Dirichlet(λ(C1),&#160;.&#160;.&#160;.&#160;,&#160;λ(CL))<br/>
+(G(A1),&#160;.&#160;.&#160;.&#160;,&#160;G(AK&#160;))&#160;=&#160;P<br/>
+G(C<br/>
+G(C<br/>
+C<br/>
+`),&#160;.&#160;.&#160;.&#160;,&#160;P<br/>
+`)<br/>
+`&#160;⊂A1<br/>
+C`⊂AK<br/>
+∼&#160;Dirichlet(λ(A1),&#160;.&#160;.&#160;.&#160;,&#160;λ(AK&#160;))<br/>
+Similarly,&#160;(G(B1),&#160;.&#160;.&#160;.&#160;,&#160;G(BJ&#160;))&#160;∼&#160;Dirichlet(λ(B1),&#160;.&#160;.&#160;.&#160;,&#160;λ(BJ&#160;))<br/>
+so&#160;the&#160;distributions&#160;of&#160;(G(A1),&#160;.&#160;.&#160;.&#160;,&#160;G(AK&#160;))&#160;and&#160;(G(B1),&#160;.&#160;.&#160;.&#160;,&#160;G(BJ&#160;))&#160;are<br/>consistent.<br/>
+I&#160;Demonstration:&#160;DPgenerate.<br/>
+<hr/>
+<a name=31></a>Parameters&#160;of&#160;Dirichlet&#160;Processes<br/>
+I&#160;Usually&#160;we&#160;split&#160;the&#160;λ&#160;base&#160;measure&#160;into&#160;two&#160;parameters&#160;λ&#160;=&#160;αH:<br/>
+I&#160;Base&#160;distribution&#160;H&#160;,&#160;which&#160;is&#160;like&#160;the&#160;mean&#160;of&#160;the&#160;DP.<br/>
+I&#160;Strength&#160;parameter&#160;α,&#160;which&#160;is&#160;like&#160;an&#160;inverse-variance&#160;of&#160;the&#160;DP.<br/>
+I&#160;We&#160;write:<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+if&#160;for&#160;any&#160;partition&#160;(A1,&#160;.&#160;.&#160;.&#160;,&#160;AK&#160;)&#160;of&#160;Θ:<br/>
+(G(A1),&#160;.&#160;.&#160;.&#160;,&#160;G(AK&#160;))&#160;∼&#160;Dirichlet(αH(A1),&#160;.&#160;.&#160;.&#160;,&#160;αH(AK&#160;))<br/>
+I&#160;The&#160;first&#160;and&#160;second&#160;moments&#160;of&#160;the&#160;DP:<br/>
+Expectation:<br/>
+E[G(A)]&#160;=&#160;H(A)<br/>
+H(A)(1&#160;−&#160;H(A))<br/>
+Variance:<br/>
+V[G(A)]&#160;=<br/>
+α&#160;+&#160;1<br/>
+where&#160;A&#160;is&#160;any&#160;measurable&#160;subset&#160;of&#160;Θ.<br/>
+<hr/>
+<a name=32></a>Representations&#160;of&#160;Dirichlet&#160;Processes<br/>
+I&#160;Draws&#160;from&#160;Dirichlet&#160;processes&#160;will&#160;always&#160;place&#160;all&#160;their&#160;mass&#160;on&#160;a<br/>
+countable&#160;set&#160;of&#160;points:<br/>
+∞<br/>
+X<br/>
+G&#160;=<br/>
+πkδθ∗k<br/>
+k&#160;=1<br/>
+where&#160;P&#160;π<br/>
+∈&#160;Θ.<br/>
+k<br/>
+k&#160;=&#160;1&#160;and&#160;θ∗<br/>
+k<br/>
+I&#160;What&#160;is&#160;the&#160;joint&#160;distribution&#160;over&#160;π1,&#160;π2,&#160;.&#160;.&#160;.&#160;and&#160;θ∗,&#160;θ∗,&#160;.&#160;.&#160;.?<br/>
+1<br/>
+2<br/>
+I&#160;Since&#160;G&#160;is&#160;a&#160;(random)&#160;probability&#160;measure&#160;over&#160;Θ,&#160;we&#160;can&#160;treat&#160;it&#160;as&#160;a<br/>
+distribution&#160;and&#160;draw&#160;samples&#160;from&#160;it.&#160;Let<br/>
+θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;∼&#160;G<br/>
+be&#160;random&#160;variables&#160;with&#160;distribution&#160;G.<br/>
+I&#160;What&#160;is&#160;the&#160;marginal&#160;distribution&#160;of&#160;θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;with&#160;G&#160;integrated&#160;out?<br/>I&#160;There&#160;is&#160;positive&#160;probability&#160;that&#160;sets&#160;of&#160;θi&#160;’s&#160;can&#160;take&#160;on&#160;the&#160;same<br/>
+value&#160;θ∗&#160;for&#160;some&#160;k,&#160;i.e.&#160;the&#160;θ<br/>
+k<br/>
+i&#160;’s&#160;cluster&#160;together.&#160;How&#160;do&#160;these<br/>
+clusters&#160;look&#160;like?<br/>
+I&#160;For&#160;practical&#160;modelling&#160;purposes&#160;this&#160;is&#160;sufficient.&#160;But&#160;is&#160;this<br/>
+sufficient&#160;to&#160;tell&#160;us&#160;all&#160;about&#160;G?<br/>
+<hr/>
+<a name=33></a>Stick-breaking&#160;Construction<br/>
+∞<br/>
+X<br/>
+G&#160;=<br/>
+πkδθ∗k<br/>
+k&#160;=1<br/>
+I&#160;There&#160;is&#160;a&#160;simple&#160;construction&#160;giving&#160;the&#160;joint&#160;distribution&#160;of&#160;π1,&#160;π2,&#160;.&#160;.&#160;.<br/>
+and&#160;θ∗,&#160;θ∗,&#160;.&#160;.&#160;.&#160;called&#160;the&#160;stick-breaking&#160;construction.<br/>
+1<br/>
+2<br/>
+θ∗&#160;∼<br/>
+k<br/>
+H<br/>
+k&#160;−1<br/>
+π(1)<br/>
+π<br/>
+Y<br/>
+k&#160;=&#160;vk<br/>
+(1&#160;−&#160;vi&#160;)<br/>
+(2)<br/>
+π<br/>
+(3)<br/>
+π<br/>
+i=1<br/>
+(4)<br/>
+π<br/>
+vk&#160;∼&#160;Beta(1,&#160;α)<br/>
+(5)<br/>
+π<br/>
+(6)<br/>
+π<br/>
+I&#160;Also&#160;known&#160;as&#160;the&#160;GEM&#160;distribution,&#160;write&#160;π&#160;∼&#160;GEM(α).<br/>
+<a href="Teh_1s.html#95">[Sethuraman&#160;1994]</a><br/>
+<hr/>
+<a name=34></a>Pólya&#160;Urn&#160;Scheme<br/>
+θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;∼&#160;G<br/>
+I&#160;The&#160;marginal&#160;distribution&#160;of&#160;θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;has&#160;a&#160;simple&#160;generative&#160;process<br/>
+called&#160;the&#160;Pólya&#160;urn&#160;scheme.<br/>
+α<br/>
+δ<br/>
+θ<br/>
+H&#160;+&#160;Pn−1<br/>
+i=1<br/>
+θi<br/>
+n|θ1:n−1&#160;∼<br/>
+α&#160;+&#160;n&#160;−&#160;1<br/>
+I&#160;Picking&#160;balls&#160;of&#160;different&#160;colors&#160;from&#160;an&#160;urn:<br/>
+I&#160;Start&#160;with&#160;no&#160;balls&#160;in&#160;the&#160;urn.<br/>
+I&#160;with&#160;probability&#160;∝&#160;α,&#160;draw&#160;θn&#160;∼&#160;H,&#160;and&#160;add&#160;a&#160;ball&#160;of&#160;color&#160;θn&#160;into&#160;urn.<br/>I&#160;With&#160;probability&#160;∝&#160;n&#160;−&#160;1,&#160;pick&#160;a&#160;ball&#160;at&#160;random&#160;from&#160;the&#160;urn,&#160;record<br/>
+θn&#160;to&#160;be&#160;its&#160;color&#160;and&#160;return&#160;two&#160;balls&#160;of&#160;color&#160;θn&#160;into&#160;urn.<br/>
+I&#160;Pólya&#160;urn&#160;scheme&#160;is&#160;like&#160;a&#160;“representer”&#160;for&#160;the&#160;DP—a&#160;finite&#160;projection&#160;of<br/>
+an&#160;infinite&#160;object&#160;G.<br/>
+I&#160;Also&#160;known&#160;as&#160;the&#160;Blackwell-MacQueen&#160;urn&#160;scheme.<br/>
+<a href="Teh_1s.html#86">[Blackwell&#160;and&#160;MacQueen&#160;1973]</a><br/>
+<hr/>
+<a name=35></a>Chinese&#160;Restaurant&#160;Process<br/>
+I&#160;θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn&#160;take&#160;on&#160;K&#160;&lt;&#160;n&#160;distinct&#160;values,&#160;say&#160;θ∗,&#160;.&#160;.&#160;.&#160;,&#160;θ∗&#160;.<br/>
+1<br/>
+K<br/>
+I&#160;This&#160;defines&#160;a&#160;partition&#160;of&#160;(1,&#160;.&#160;.&#160;.&#160;,&#160;n)&#160;into&#160;K&#160;clusters,&#160;such&#160;that&#160;if&#160;i&#160;is&#160;in<br/>
+cluster&#160;k&#160;,&#160;then&#160;θi&#160;=&#160;θ∗.<br/>
+k<br/>
+I&#160;The&#160;distribution&#160;over&#160;partitions&#160;is&#160;a&#160;Chinese&#160;restaurant&#160;process&#160;(CRP).<br/>
+I&#160;Generating&#160;from&#160;the&#160;CRP:<br/>
+I&#160;First&#160;customer&#160;sits&#160;at&#160;the&#160;first&#160;table.<br/>I&#160;Customer&#160;n&#160;sits&#160;at:<br/>
+I&#160;Table&#160;k&#160;with&#160;probability<br/>
+nk<br/>
+where&#160;n<br/>
+α+n−1<br/>
+k&#160;is&#160;the&#160;number&#160;of&#160;customers<br/>
+at&#160;table&#160;k&#160;.<br/>
+I&#160;A&#160;new&#160;table&#160;K&#160;+&#160;1&#160;with&#160;probability<br/>
+α<br/>
+.<br/>
+α+n−1<br/>
+I&#160;Customers&#160;⇔&#160;integers,&#160;tables&#160;⇔&#160;clusters.<br/>
+2<br/>
+4<br/>
+5<br/>
+8<br/>
+3<br/>
+9<br/>
+6<br/>
+7<br/>
+1<br/>
+<hr/>
+<a name=36></a>Chinese&#160;Restaurant&#160;Process<br/>
+!=30, d=0<br/>
+200<br/>
+150<br/>
+100<br/>
+table<br/>
+50<br/>
+00<br/>
+2000<br/>
+4000<br/>
+6000<br/>
+8000<br/>
+10000<br/>
+customer<br/>
+I&#160;The&#160;CRP&#160;exhibits&#160;the&#160;clustering&#160;property&#160;of&#160;the&#160;DP.<br/>
+I&#160;Rich-gets-richer&#160;effect&#160;implies&#160;small&#160;number&#160;of&#160;large&#160;clusters.<br/>
+I&#160;Expected&#160;number&#160;of&#160;clusters&#160;is&#160;K&#160;=&#160;O(α&#160;log&#160;n).<br/>
+<hr/>
+<a name=37></a>Posterior&#160;of&#160;Dirichlet&#160;Processes<br/>
+I&#160;Since&#160;G&#160;is&#160;a&#160;probability&#160;measure,&#160;we&#160;can&#160;draw&#160;samples&#160;from&#160;it,<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn|G&#160;∼&#160;G<br/>
+What&#160;is&#160;the&#160;posterior&#160;of&#160;G&#160;given&#160;observations&#160;of&#160;θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn?<br/>
+I&#160;The&#160;usual&#160;Dirichlet-multinomial&#160;conjugacy&#160;carries&#160;over&#160;to&#160;the<br/>
+nonparametric&#160;DP&#160;as&#160;well:<br/>
+δ<br/>
+G|θ<br/>
+θi<br/>
+1,&#160;.&#160;.&#160;.&#160;,&#160;θn&#160;∼&#160;DP(α&#160;+&#160;n,&#160;αH+Pni=1<br/>
+α<br/>
+)<br/>
++n<br/>
+<hr/>
+<a name=38></a>Exchangeability<br/>
+I&#160;Instead&#160;of&#160;deriving&#160;the&#160;Pólya&#160;urn&#160;scheme&#160;by&#160;marginalizing&#160;out&#160;a&#160;DP,<br/>
+consider&#160;starting&#160;directly&#160;from&#160;the&#160;conditional&#160;distributions:<br/>
+α<br/>
+δ<br/>
+θ<br/>
+H&#160;+&#160;Pn−1<br/>
+i=1<br/>
+θi<br/>
+n|θ1:n−1&#160;∼<br/>
+α&#160;+&#160;n&#160;−&#160;1<br/>
+I&#160;For&#160;any&#160;n,&#160;the&#160;joint&#160;distribution&#160;of&#160;θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn&#160;is:<br/>
+αK&#160;QK&#160;h(θ∗)(m<br/>
+p<br/>
+nk&#160;−&#160;1)!<br/>
+(θ<br/>
+k&#160;=1<br/>
+k<br/>
+1,&#160;.&#160;.&#160;.&#160;,&#160;θn)&#160;=<br/>
+Qn<br/>
+i&#160;−&#160;1&#160;+&#160;α<br/>
+i=1<br/>
+where&#160;h(θ)&#160;is&#160;density&#160;of&#160;θ&#160;under&#160;H,&#160;θ∗,&#160;.&#160;.&#160;.&#160;,&#160;θ∗&#160;are&#160;the&#160;unique&#160;values,&#160;and<br/>
+1<br/>
+K<br/>
+θ∗&#160;occurred&#160;m<br/>
+k<br/>
+nk&#160;times&#160;among&#160;θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn.<br/>
+I&#160;The&#160;joint&#160;distribution&#160;is&#160;exchangeable&#160;wrt&#160;permutations&#160;of&#160;θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn.<br/>
+I&#160;De&#160;Finetti’s&#160;Theorem&#160;says&#160;that&#160;there&#160;must&#160;be&#160;a&#160;random&#160;probability<br/>
+measure&#160;G&#160;making&#160;θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;iid.&#160;This&#160;is&#160;the&#160;DP.<br/>
+<hr/>
+<a name=39></a>De&#160;Finetti’s&#160;Theorem<br/>
+Let&#160;θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;be&#160;an&#160;infinite&#160;sequence&#160;of&#160;random&#160;variables&#160;with&#160;joint<br/>distribution&#160;p.&#160;If&#160;for&#160;all&#160;n&#160;≥&#160;1,&#160;and&#160;all&#160;permutations&#160;σ&#160;∈&#160;Σn&#160;on&#160;n&#160;objects,<br/>
+p(θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn)&#160;=&#160;p(θσ(1),&#160;.&#160;.&#160;.&#160;,&#160;θσ(n))<br/>
+That&#160;is,&#160;the&#160;sequence&#160;is&#160;infinitely&#160;exchangeable.&#160;Then&#160;there&#160;exists&#160;a&#160;latent<br/>random&#160;parameter&#160;G&#160;such&#160;that:<br/>
+n<br/>
+Z<br/>
+Y<br/>
+p(θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn)&#160;=<br/>
+p(G)<br/>
+p(θi&#160;|G)dG<br/>
+i=1<br/>
+where&#160;ρ&#160;is&#160;a&#160;joint&#160;distribution&#160;over&#160;G&#160;and&#160;θi&#160;’s.<br/>
+I&#160;θi&#160;’s&#160;are&#160;independent&#160;given&#160;G.<br/>
+I&#160;Sufficient&#160;to&#160;define&#160;G&#160;through&#160;the&#160;conditionals&#160;p(θn|θ1,&#160;.&#160;.&#160;.&#160;,&#160;θn−1).<br/>
+I&#160;G&#160;can&#160;be&#160;infinite&#160;dimensional&#160;(indeed&#160;it&#160;is&#160;often&#160;a&#160;random&#160;measure).<br/>
+I&#160;The&#160;set&#160;of&#160;infinitely&#160;exchangeable&#160;sequences&#160;is&#160;convex&#160;and&#160;it&#160;is&#160;an<br/>
+important&#160;theoretical&#160;topic&#160;to&#160;study&#160;the&#160;set&#160;of&#160;extremal&#160;points.<br/>
+I&#160;Partial&#160;exchangeability:&#160;Markov,&#160;group,&#160;arrays,...<br/>
+<hr/>
+<a name=40></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=41></a>Binary&#160;Latent&#160;Variable&#160;Models<br/>
+I&#160;Consider&#160;a&#160;latent&#160;variable&#160;model&#160;with&#160;binary&#160;sources/features,<br/>
+(1&#160;with&#160;probability&#160;µ<br/>
+z<br/>
+k&#160;;<br/>
+ik&#160;=<br/>
+0<br/>
+with&#160;probability&#160;1&#160;−&#160;µk&#160;.<br/>
+I&#160;Example:&#160;Data&#160;items&#160;could&#160;be&#160;movies&#160;like&#160;“Terminator&#160;2”,&#160;“Shrek”&#160;and<br/>
+“Lord&#160;of&#160;the&#160;Rings”,&#160;and&#160;features&#160;could&#160;be&#160;“science&#160;fiction”,&#160;“fantasy”,<br/>“action”&#160;and&#160;“Arnold&#160;Schwarzenegger”.<br/>
+I&#160;Place&#160;beta&#160;prior&#160;over&#160;the&#160;probabilities&#160;of&#160;features:<br/>
+µk&#160;∼&#160;Beta(&#160;α&#160;,&#160;1)<br/>
+K<br/>
+I&#160;We&#160;will&#160;again&#160;take&#160;K&#160;→&#160;∞.<br/>
+<hr/>
+<a name=42></a>Indian&#160;Buffet&#160;Processes<br/>
+I&#160;The&#160;Indian&#160;Buffet&#160;Process&#160;(IBP)&#160;is&#160;akin&#160;to&#160;the&#160;Chinese&#160;restaurant<br/>
+process&#160;but&#160;describes&#160;each&#160;customer&#160;with&#160;a&#160;binary&#160;vector&#160;instead&#160;of<br/>cluster.<br/>
+I&#160;Generating&#160;from&#160;an&#160;IBP:<br/>
+I&#160;Parameter&#160;α.<br/>I&#160;First&#160;customer&#160;picks&#160;Poisson(α)&#160;dishes&#160;to&#160;eat.<br/>I&#160;Subsequent&#160;customer&#160;i&#160;picks&#160;dish&#160;k&#160;with&#160;probability&#160;mk&#160;;&#160;and&#160;picks<br/>
+i<br/>
+Poisson(&#160;α&#160;)&#160;new&#160;dishes.<br/>
+i<br/>
+Tables<br/>
+Dishes<br/>
+Customers<br/>
+Customers<br/>
+<hr/>
+<a name=43></a>Indian&#160;Buffet&#160;Processes&#160;and&#160;Exchangeability<br/>
+I&#160;The&#160;IBP&#160;is&#160;infinitely&#160;exchangeable.&#160;For&#160;this&#160;to&#160;make&#160;sense,&#160;we&#160;need&#160;to<br/>
+“forget”&#160;the&#160;ordering&#160;of&#160;the&#160;dishes.<br/>
+I&#160;“Name”&#160;each&#160;dish&#160;k&#160;with&#160;a&#160;Λ∗&#160;drawn&#160;iid&#160;from&#160;H&#160;.<br/>
+k<br/>
+I&#160;Each&#160;customer&#160;now&#160;eats&#160;a&#160;set&#160;of&#160;dishes:&#160;Ψi&#160;=&#160;{Λk&#160;:&#160;zik&#160;=&#160;1}.<br/>I&#160;The&#160;joint&#160;probability&#160;of&#160;Ψ1,&#160;.&#160;.&#160;.&#160;,&#160;Ψn&#160;can&#160;be&#160;calculated:<br/>
+&#160;<br/>
+n<br/>
+!<br/>
+K<br/>
+X&#160;1<br/>
+Y&#160;(m<br/>
+p<br/>
+k&#160;−&#160;1)!(n&#160;−&#160;mk&#160;)!<br/>
+(Ψ1,&#160;.&#160;.&#160;.&#160;,&#160;Ψn)&#160;=&#160;exp&#160;−α<br/>
+αK<br/>
+h(Λ∗<br/>
+i<br/>
+n!<br/>
+k&#160;)<br/>
+i=1<br/>
+k&#160;=1<br/>
+K&#160;:&#160;total&#160;number&#160;of&#160;dishes&#160;tried&#160;by&#160;n&#160;customers.<br/>Λ∗:&#160;Name&#160;of&#160;k&#160;th&#160;dish&#160;tried.<br/>
+k<br/>
+mk&#160;:&#160;number&#160;of&#160;customers&#160;who&#160;tried&#160;dish&#160;Λ∗.<br/>
+k<br/>
+I&#160;De&#160;Finetti’s&#160;Theorem&#160;again&#160;states&#160;that&#160;there&#160;is&#160;some&#160;random&#160;measure<br/>
+underlying&#160;the&#160;IBP.<br/>
+I&#160;This&#160;random&#160;measure&#160;is&#160;the&#160;beta&#160;process.<br/>
+<a href="Teh_1s.html#89">[Griffiths&#160;and&#160;Ghahramani&#160;2006,&#160;</a><a href="Teh_1s.html#97">Thibaux&#160;and&#160;Jordan&#160;2007]</a><br/>
+<hr/>
+<a name=44></a>Beta&#160;Processes<br/>
+I&#160;A&#160;beta&#160;process&#160;B&#160;∼&#160;BP(c,&#160;αH)&#160;is&#160;a&#160;random&#160;discrete&#160;measure&#160;with&#160;form:<br/>
+∞<br/>
+X<br/>
+B&#160;=<br/>
+µkδθ∗k<br/>
+k&#160;=1<br/>
+where&#160;the&#160;points&#160;P&#160;=&#160;{(θ∗,&#160;µ<br/>
+,&#160;µ<br/>
+1<br/>
+1),&#160;(θ∗<br/>
+2<br/>
+2),&#160;.&#160;.&#160;.}&#160;are&#160;spikes&#160;in&#160;a&#160;2D&#160;Poisson<br/>
+process&#160;with&#160;rate&#160;measure:<br/>
+cµ−1(1&#160;−&#160;µ)c−1dµαH(dθ)<br/>
+I&#160;The&#160;beta&#160;process&#160;with&#160;c&#160;=&#160;1&#160;is&#160;the&#160;de&#160;Finetti&#160;measure&#160;for&#160;the&#160;IBP.&#160;When<br/>
+c&#160;6=&#160;1&#160;we&#160;have&#160;a&#160;two&#160;parameter&#160;generalization&#160;of&#160;the&#160;IBP.<br/>
+I&#160;This&#160;is&#160;an&#160;example&#160;of&#160;a&#160;completely&#160;random&#160;measure.<br/>
+I&#160;A&#160;beta&#160;process&#160;does&#160;not&#160;have&#160;Beta&#160;distributed&#160;marginals.<br/>
+<a href="Teh_1s.html#90">[Hjort&#160;1990,&#160;</a><a href="Teh_1s.html#88">Ghahramani&#160;et&#160;al.&#160;2007]</a><br/>
+<hr/>
+<a name=45></a>Stick-breaking&#160;Construction&#160;for&#160;Beta&#160;Processes<br/>
+I&#160;When&#160;c&#160;=&#160;1&#160;it&#160;was&#160;shown&#160;that&#160;the&#160;following&#160;generates&#160;a&#160;draw&#160;of&#160;B:<br/>
+k&#160;−1<br/>
+Y<br/>
+vk&#160;∼&#160;Beta(1,&#160;α)<br/>
+µk&#160;=&#160;(1&#160;−&#160;vk)<br/>
+(1&#160;−&#160;vi&#160;)<br/>
+θ∗&#160;∼<br/>
+k<br/>
+H<br/>
+i=1<br/>
+∞<br/>
+X<br/>
+B&#160;=<br/>
+µkδθ∗k<br/>
+k&#160;=1<br/>
+I&#160;The&#160;above&#160;is&#160;the&#160;complement&#160;of&#160;the&#160;stick-breaking&#160;construction&#160;for&#160;DPs!<br/>
+(1)<br/>
+µ<br/>
+π(1)<br/>
+(2)<br/>
+µ<br/>
+(2)<br/>
+π<br/>
+(3)<br/>
+µ<br/>
+(3)<br/>
+π<br/>
+(4)<br/>
+µ<br/>
+(4)<br/>
+π<br/>
+(5)<br/>
+µ<br/>
+(5)<br/>
+π<br/>
+(6)<br/>
+µ<br/>
+(6)<br/>
+π<br/>
+<a href="Teh_1s.html#96">[Teh&#160;et&#160;al.&#160;2007]</a><br/>
+<hr/>
+<a name=46></a>Applications&#160;of&#160;Indian&#160;Buffet&#160;Processes<br/>
+I&#160;The&#160;IBP&#160;can&#160;be&#160;used&#160;in&#160;concert&#160;with&#160;different&#160;likelihood&#160;models&#160;in&#160;a<br/>
+variety&#160;of&#160;applications.<br/>
+Z&#160;∼&#160;IBP(α)<br/>
+X&#160;∼&#160;F&#160;(Z&#160;,&#160;Y&#160;)<br/>
+p(Z&#160;,&#160;Y&#160;)p(X&#160;|Z&#160;,&#160;Y&#160;)<br/>
+Y&#160;∼&#160;H<br/>
+p(Z&#160;,&#160;Y&#160;|X&#160;)&#160;=<br/>
+p(X&#160;)<br/>
+I&#160;Latent&#160;factor&#160;models&#160;for&#160;distributed&#160;representation&#160;[Griffiths&#160;and<br/>
+Ghahramani&#160;2005].<br/>
+I&#160;Matrix&#160;factorization&#160;for&#160;collaborative&#160;filtering&#160;[Meeds&#160;et&#160;al&#160;2007].<br/>
+I&#160;Latent&#160;causal&#160;discovery&#160;for&#160;medical&#160;diagnostics&#160;[Wood&#160;et&#160;al&#160;2006].<br/>
+I&#160;Protein&#160;complex&#160;discovery&#160;[Chu&#160;et&#160;al&#160;2006].<br/>
+I&#160;Psychological&#160;choice&#160;behaviour&#160;[Görür&#160;and&#160;Rasmussen&#160;2006].<br/>
+I&#160;Independent&#160;Components&#160;Analysis&#160;<a href="Teh_1s.html#91">[Knowles&#160;and&#160;Ghahramani&#160;2007].</a><br/>
+<hr/>
+<a name=47></a>Infinite&#160;Independent&#160;Components&#160;Analysis<br/>
+I&#160;Each&#160;image&#160;Xi&#160;is&#160;a&#160;linear&#160;combination&#160;of&#160;sparse&#160;features:<br/>
+X<br/>
+Xi&#160;=<br/>
+Λk&#160;yik<br/>
+k<br/>
+where&#160;yik&#160;is&#160;activity&#160;of&#160;feature&#160;k&#160;with&#160;sparse&#160;prior.&#160;One&#160;possibility&#160;is&#160;a<br/>mixture&#160;of&#160;a&#160;Gaussian&#160;and&#160;a&#160;point&#160;mass&#160;at&#160;0:<br/>
+yik&#160;=&#160;zik&#160;aik<br/>
+aik&#160;∼&#160;N&#160;(0,&#160;1)<br/>
+Z&#160;∼&#160;IBP(α)<br/>
+I&#160;An&#160;ICA&#160;model&#160;with&#160;infinite&#160;number&#160;of&#160;features.<br/>
+<a href="Teh_1s.html#91">[Knowles&#160;and&#160;Ghahramani&#160;2007]</a><br/>
+<hr/>
+<a name=48></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=49></a>Topic&#160;Modelling&#160;with&#160;Latent&#160;Dirichlet&#160;Allocation<br/>
+I&#160;Infer&#160;topics&#160;from&#160;a&#160;document&#160;corpus,&#160;topics<br/>
+being&#160;sets&#160;of&#160;words&#160;that&#160;tend&#160;to&#160;co-occur<br/>
+π<br/>
+together.<br/>
+j<br/>
+I&#160;Using&#160;(Bayesian)&#160;latent&#160;Dirichlet&#160;allocation:<br/>
+πj&#160;∼&#160;Dirichlet(&#160;α&#160;,&#160;.&#160;.&#160;.&#160;,&#160;α&#160;)<br/>
+K<br/>
+K<br/>
+zji<br/>
+θk&#160;∼&#160;Dirichlet(&#160;β&#160;,&#160;.&#160;.&#160;.&#160;,&#160;β&#160;)<br/>
+W<br/>
+W<br/>
+zji&#160;|πj&#160;∼&#160;Multinomial(πj&#160;)<br/>
+xji&#160;|zji&#160;,&#160;θz&#160;∼&#160;Multinomial(θ&#160;)<br/>
+ji<br/>
+zji<br/>
+xji<br/>
+θk<br/>
+words i=1...nd<br/>
+topics k=1...K<br/>
+I&#160;Can&#160;we&#160;take&#160;K&#160;→&#160;∞?<br/>
+document j=1...D<br/>
+<hr/>
+<a name=50></a>Hierarchical&#160;Dirichlet&#160;Processes<br/>
+<hr/>
+<a name=51></a><img src="./Teh_1-51_1.png"/><br/>
+Hierarchical&#160;Dirichlet&#160;Processes<br/>
+I&#160;Use&#160;a&#160;DP&#160;mixture&#160;for&#160;each&#160;group.<br/>
+H<br/>
+G<br/>
+G<br/>
+1<br/>
+2<br/>
+I&#160;Unfortunately&#160;there&#160;is&#160;no&#160;sharing&#160;of&#160;clusters<br/>
+across&#160;different&#160;groups&#160;because&#160;H&#160;is&#160;smooth.<br/>
+θ<br/>
+θ<br/>
+1i<br/>
+2i<br/>
+I&#160;Solution:&#160;make&#160;the&#160;base&#160;distribution&#160;H&#160;discrete.<br/>
+I&#160;Put&#160;a&#160;DP&#160;prior&#160;on&#160;the&#160;common&#160;base&#160;distribution.<br/>
+1i<br/>
+x<br/>
+x2i<br/>
+<a href="Teh_1s.html#96">[Teh&#160;et&#160;al.&#160;2006]</a><br/>
+<hr/>
+<a name=52></a>Hierarchical&#160;Dirichlet&#160;Processes<br/>
+H<br/>
+I&#160;A&#160;hierarchical&#160;Dirichlet&#160;process:<br/>
+G0<br/>
+G0&#160;∼&#160;DP(α0,&#160;H)<br/>
+G1,&#160;G2|G0&#160;∼&#160;DP(α,&#160;G0)&#160;iid<br/>
+G<br/>
+G<br/>
+1<br/>
+2<br/>
+I&#160;Extension&#160;to&#160;larger&#160;hierarchies&#160;is&#160;straightforward.<br/>
+θ<br/>
+θ<br/>
+1i<br/>
+2i<br/>
+1i<br/>
+x<br/>
+x2i<br/>
+<hr/>
+<a name=53></a><img src="./Teh_1-53_1.png"/><br/>
+Hierarchical&#160;Dirichlet&#160;Processes<br/>
+I&#160;Making&#160;G0&#160;discrete&#160;forces&#160;shared&#160;cluster&#160;between&#160;G1&#160;and&#160;G2.<br/>
+<hr/>
+<a name=54></a>Hierarchical&#160;Dirichlet&#160;Processes<br/>
+I&#160;Document&#160;topic&#160;modelling:<br/>
+I&#160;Allows&#160;documents&#160;to&#160;be&#160;modelled&#160;with&#160;DP&#160;mixtures&#160;of&#160;topics,&#160;with<br/>
+topics&#160;shared&#160;across&#160;corpora.<br/>
+I&#160;Infinite&#160;hidden&#160;Markov&#160;modelling:<br/>
+I&#160;Allows&#160;HMMs&#160;with&#160;an&#160;infinite&#160;number&#160;of&#160;states,&#160;with&#160;transitions&#160;from<br/>
+each&#160;allowable&#160;state&#160;to&#160;every&#160;other&#160;allowable&#160;state.<br/>
+I&#160;Learning&#160;discrete&#160;structures&#160;from&#160;data:<br/>
+I&#160;Determining&#160;number&#160;of&#160;objects,&#160;nonterminals,&#160;states&#160;etc.<br/>
+<hr/>
+<a name=55></a>Infinite&#160;Hidden&#160;Markov&#160;Models<br/>
+β<br/>
+πk<br/>
+z0<br/>
+z1<br/>
+z2<br/>
+zτ<br/>
+θ∗<br/>
+x1<br/>
+x2<br/>
+xτ<br/>
+k<br/>
+∞<br/>
+β&#160;∼&#160;GEM(γ)<br/>
+πk|β&#160;∼&#160;DP(α,&#160;β)<br/>
+zi&#160;|zi−1,&#160;πz<br/>
+∼&#160;Multinomial(π<br/>
+)<br/>
+i−1<br/>
+zi−1<br/>
+θ∗&#160;∼<br/>
+∼<br/>
+k<br/>
+H<br/>
+xi&#160;|zi&#160;,&#160;θ∗z<br/>
+F&#160;(θ∗&#160;)<br/>
+i<br/>
+zi<br/>
+I&#160;Hidden&#160;Markov&#160;models&#160;with&#160;an&#160;infinite&#160;number&#160;of&#160;states.<br/>
+I&#160;Hierarchical&#160;DPs&#160;used&#160;to&#160;share&#160;information&#160;among&#160;transition&#160;probability<br/>
+vectors&#160;prevents&#160;“run-away”&#160;states.<br/>
+<a href="Teh_1s.html#86">[Beal&#160;et&#160;al.&#160;2002,&#160;</a><a href="Teh_1s.html#96">Teh&#160;et&#160;al.&#160;2006]</a><br/>
+<hr/>
+<a name=56></a>Hierarchical&#160;Modelling<br/>
+φ1<br/>
+φ2<br/>
+φ3<br/>
+x1i<br/>
+x2i<br/>
+x3i<br/>
+i=1...n1<br/>
+i=1...n2<br/>
+i=1...n3<br/>
+I&#160;Better&#160;estimation&#160;of&#160;parameters.<br/>
+I&#160;Multitask&#160;learning,&#160;learning&#160;to&#160;learn:&#160;generalizing&#160;across&#160;related&#160;tasks.<br/>
+<hr/>
+<a name=57></a>Hierarchical&#160;Modelling<br/>
+φ0<br/>
+φ1<br/>
+φ2<br/>
+φ3<br/>
+x1i<br/>
+x2i<br/>
+x3i<br/>
+i=1...n1<br/>
+i=1...n2<br/>
+i=1...n3<br/>
+I&#160;Better&#160;estimation&#160;of&#160;parameters.<br/>
+I&#160;Multitask&#160;learning,&#160;learning&#160;to&#160;learn:&#160;generalizing&#160;across&#160;related&#160;tasks.<br/>
+<hr/>
+<a name=58></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=59></a>Pitman-Yor&#160;Processes<br/>
+I&#160;Two-parameter&#160;generalization&#160;of&#160;the&#160;Chinese&#160;restaurant&#160;process:<br/>
+(<br/>
+nk&#160;−β<br/>
+p(customer&#160;n&#160;sat&#160;at&#160;table&#160;k&#160;|past)&#160;=<br/>
+n−1+α<br/>
+if&#160;occupied&#160;table<br/>
+α+βK<br/>
+n−1+α<br/>
+if&#160;new&#160;table<br/>
+I&#160;Associating&#160;each&#160;cluster&#160;k&#160;with&#160;a&#160;unique&#160;draw&#160;θ∗&#160;∼&#160;H,&#160;the<br/>
+k<br/>
+corresponding&#160;Pólya&#160;urn&#160;scheme&#160;is&#160;also&#160;exchangeable.<br/>
+I&#160;De&#160;Finetti’s&#160;Theorem&#160;states&#160;that&#160;there&#160;is&#160;a&#160;random&#160;measure&#160;underlying<br/>
+this&#160;two-parameter&#160;generalization.<br/>
+I&#160;This&#160;is&#160;the&#160;Pitman-Yor&#160;process.<br/>
+I&#160;The&#160;Pitman-Yor&#160;process&#160;also&#160;has&#160;a&#160;stick-breaking&#160;construction:<br/>
+k&#160;−1<br/>
+∞<br/>
+π<br/>
+Y<br/>
+X<br/>
+k&#160;=&#160;vk<br/>
+(1&#160;−&#160;vi&#160;)&#160;βk&#160;∼&#160;Beta(1&#160;−&#160;β,&#160;α&#160;+&#160;βk)&#160;θ∗&#160;∼<br/>
+π<br/>
+k<br/>
+H<br/>
+G&#160;=<br/>
+k&#160;δθ∗<br/>
+k<br/>
+i=1<br/>
+k&#160;=1<br/>
+<a href="Teh_1s.html#93">[Pitman&#160;and&#160;Yor&#160;1997,&#160;Perman&#160;et&#160;al.&#160;1992]</a><br/>
+<hr/>
+<a name=60></a>Pitman-Yor&#160;Processes<br/>
+I&#160;Two&#160;salient&#160;features&#160;of&#160;the&#160;Pitman-Yor&#160;process:<br/>
+I&#160;With&#160;more&#160;occupied&#160;tables,&#160;the&#160;chance&#160;of&#160;even&#160;more&#160;tables<br/>
+becomes&#160;higher.<br/>
+I&#160;Tables&#160;with&#160;smaller&#160;occupancy&#160;numbers&#160;tend&#160;to&#160;have&#160;lower&#160;chance<br/>
+of&#160;getting&#160;new&#160;customers.<br/>
+I&#160;The&#160;above&#160;means&#160;that&#160;Pitman-Yor&#160;processes&#160;produce&#160;Zipf’s&#160;Law&#160;type<br/>
+behaviour,&#160;with&#160;K&#160;=&#160;O(αnβ).<br/>
+!=10, d=[.9 .5 0]<br/>
+!=10, d=[.9 .5 0]<br/>
+!=10, d=[.9 .5 0]<br/>
+6<br/>
+6<br/>
+10<br/>
+10<br/>
+1<br/>
+5<br/>
+5<br/>
+10<br/>
+10<br/>
+0.8<br/>
+4<br/>
+4<br/>
+10<br/>
+10<br/>
+0.6<br/>
+3<br/>
+3<br/>
+10<br/>
+10<br/>
+# tables<br/>
+0.4<br/>
+2<br/>
+2<br/>
+10<br/>
+10<br/>
+1<br/>
+# tables with 1 customer<br/>
+1<br/>
+0.2<br/>
+10<br/>
+10<br/>
+proportion of tables with 1 customer<br/>
+0<br/>
+0<br/>
+10<br/>
+10<br/>
+0<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+6<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+6<br/>
+0<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+6<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+# customers<br/>
+# customers<br/>
+# customers<br/>
+<hr/>
+<a name=61></a>Pitman-Yor&#160;Processes<br/>
+Draw&#160;from&#160;a&#160;Pitman-Yor&#160;process<br/>
+!=1, d=.5<br/>
+!=1, d=.5<br/>
+!=1, d=.5<br/>
+5<br/>
+5<br/>
+10<br/>
+10<br/>
+250<br/>
+4<br/>
+4<br/>
+10<br/>
+200<br/>
+10<br/>
+3<br/>
+3<br/>
+10<br/>
+150<br/>
+10<br/>
+table<br/>
+2<br/>
+2<br/>
+100<br/>
+10<br/>
+10<br/>
+# customers per table<br/>
+# customers per table<br/>
+1<br/>
+1<br/>
+50<br/>
+10<br/>
+10<br/>
+0<br/>
+0<br/>
+0<br/>
+10<br/>
+10&#160;0<br/>
+1<br/>
+2<br/>
+3<br/>
+0<br/>
+2000<br/>
+4000<br/>
+6000<br/>
+8000<br/>
+10000<br/>
+0<br/>
+200<br/>
+400<br/>
+600<br/>
+800<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+customer<br/>
+# tables<br/>
+# tables<br/>
+Draw&#160;from&#160;a&#160;Dirichlet&#160;process<br/>
+!=30, d=0<br/>
+!=30, d=0<br/>
+!=30, d=0<br/>
+5<br/>
+5<br/>
+10<br/>
+10<br/>
+200<br/>
+4<br/>
+4<br/>
+10<br/>
+10<br/>
+150<br/>
+3<br/>
+3<br/>
+10<br/>
+10<br/>
+100<br/>
+table<br/>
+2<br/>
+2<br/>
+10<br/>
+10<br/>
+50<br/>
+# customers per table<br/>
+# customers per table<br/>
+1<br/>
+1<br/>
+10<br/>
+10<br/>
+0<br/>
+0<br/>
+0<br/>
+10<br/>
+10&#160;0<br/>
+1<br/>
+2<br/>
+3<br/>
+0<br/>
+2000<br/>
+4000<br/>
+6000<br/>
+8000<br/>
+10000<br/>
+0<br/>
+50<br/>
+100<br/>
+150<br/>
+200<br/>
+250<br/>
+10<br/>
+10<br/>
+10<br/>
+10<br/>
+customer<br/>
+# tables<br/>
+# tables<br/>
+<hr/>
+<a name=62></a>Hierarchical&#160;Pitman-Yor&#160;Language&#160;Models<br/>
+I&#160;Pitman-Yor&#160;processes&#160;can&#160;be&#160;suitable&#160;models&#160;for&#160;many&#160;natural<br/>
+phenomena&#160;with&#160;power-law&#160;statistics.<br/>
+I&#160;Language&#160;modelling&#160;with&#160;Markov&#160;assumption:<br/>
+p(Mary&#160;has&#160;a&#160;little&#160;lamb)<br/>
+≈p(Mary)p(has|Mary)p(a|Mary&#160;has)p(little|has&#160;a)p(lamb|a&#160;little)<br/>
+I&#160;Parameterize&#160;with&#160;p(w3|w1,&#160;w2)&#160;=&#160;Gw<br/>
+[w<br/>
+1&#160;,w2<br/>
+3]&#160;and&#160;use&#160;a&#160;hierarchical<br/>
+Pitman-Yor&#160;process&#160;prior:<br/>
+Gw<br/>
+|G&#160;∼&#160;PY(α<br/>
+)<br/>
+1&#160;,w2<br/>
+w2<br/>
+2,&#160;β2,&#160;Gw2<br/>
+Gw&#160;|G<br/>
+2<br/>
+∅&#160;∼&#160;PY(α1,&#160;β1,&#160;G∅)<br/>
+G∅|U&#160;∼&#160;PY(α0,&#160;β0,&#160;U)<br/>
+I&#160;State-of-the-art&#160;results,&#160;connection&#160;to&#160;Kneser-Ney&#160;smoothing.<br/>
+<a href="Teh_1s.html#88">[Goldwater&#160;et&#160;al.&#160;2006a,&#160;</a><a href="Teh_1s.html#96">Teh&#160;2006b]</a><br/>
+<hr/>
+<a name=63></a><img src="./Teh_1-63_1.png"/><br/>
+Image&#160;Segmentation&#160;with&#160;Pitman-Yor&#160;Processes<br/>
+I&#160;Human&#160;segmentations&#160;of&#160;images&#160;also&#160;seem&#160;to&#160;follow&#160;power-law.<br/>
+I&#160;An&#160;unsupervised&#160;image&#160;segmentation&#160;model&#160;based&#160;on&#160;dependent<br/>
+hierarchical&#160;Pitman-Yor&#160;processes&#160;achieves&#160;state-of-the-art&#160;results.<br/>
+<a href="Teh_1s.html#95">[Sudderth&#160;and&#160;Jordan&#160;2009]</a><br/>
+<hr/>
+<a name=64></a>Outline<br/>
+<a href="Teh_1s.html#3">Some&#160;Examples&#160;of&#160;Parametric&#160;Models</a><br/>
+<a href="Teh_1s.html#10">Bayesian&#160;Nonparametric&#160;Modelling</a><br/>
+<a href="Teh_1s.html#17">Infinite&#160;Mixture&#160;Models</a><br/>
+<a href="Teh_1s.html#23">Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#40">Indian&#160;Buffet&#160;and&#160;Beta&#160;Processes</a><br/>
+<a href="Teh_1s.html#48">Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#58">Pitman-Yor&#160;Processes</a><br/>
+<a href="Teh_1s.html#64">Summary</a><br/>
+<hr/>
+<a name=65></a>Summary<br/>
+I&#160;Motivation&#160;for&#160;Bayesian&#160;nonparametrics:<br/>
+I&#160;Allows&#160;practitioners&#160;to&#160;define&#160;and&#160;work&#160;with&#160;models&#160;with&#160;large<br/>
+support,&#160;sidesteps&#160;model&#160;selection.<br/>
+I&#160;New&#160;models&#160;with&#160;useful&#160;properties.<br/>
+I&#160;Large&#160;variety&#160;of&#160;applications.<br/>
+I&#160;Various&#160;standard&#160;Bayesian&#160;nonparametric&#160;models:<br/>
+I&#160;Dirichlet&#160;processes<br/>
+I&#160;Hierarchical&#160;Dirichlet&#160;processes<br/>
+I&#160;Infinite&#160;hidden&#160;Markov&#160;models<br/>
+I&#160;Indian&#160;buffet&#160;and&#160;beta&#160;processes<br/>
+I&#160;Pitman-Yor&#160;processes<br/>
+I&#160;Touched&#160;upon&#160;two&#160;important&#160;theoretical&#160;tools:<br/>
+I&#160;Consistency&#160;and&#160;Kolmogorov’s&#160;Consistency&#160;Theorem<br/>
+I&#160;Exchangeability&#160;and&#160;de&#160;Finetti’s&#160;Theorem<br/>
+I&#160;Described&#160;a&#160;number&#160;of&#160;applications&#160;of&#160;Bayesian&#160;nonparametrics.<br/>
+I&#160;Missing:&#160;Inference&#160;methods&#160;based&#160;on&#160;MCMC,&#160;variational&#160;etc,<br/>
+consistency&#160;and&#160;convergence.<br/>
+<hr/>
+<a name=66></a>Other&#160;Introductions&#160;to&#160;Bayesian&#160;Nonparametrics<br/>
+I&#160;Zoubin&#160;Gharamani,&#160;UAI&#160;2005&#160;Tutorial.<br/>
+I&#160;Michael&#160;Jordan,&#160;NIPS&#160;2005&#160;Tutorial.<br/>
+I&#160;Volker&#160;Tresp,&#160;ICML&#160;nonparametric&#160;Bayes&#160;workshop&#160;2006.<br/>
+I&#160;Peter&#160;Orbanz,&#160;Foundations&#160;of&#160;Nonparametric&#160;Bayesian&#160;Methods,&#160;2009.<br/>
+I&#160;I&#160;have&#160;given&#160;a&#160;number&#160;myself&#160;(check&#160;webpage).<br/>
+I&#160;I&#160;have&#160;an&#160;introduction&#160;to&#160;Dirichlet&#160;processes&#160;<a href="Teh_1s.html#96">[Teh&#160;2007],&#160;</a>and&#160;another&#160;to<br/>
+hierarchical&#160;Bayesian&#160;nonparametric&#160;models&#160;<a href="Teh_1s.html#96">[Teh&#160;and&#160;Jordan&#160;2009].</a><br/>
+<hr/>
+<a name=67></a>Bayesian&#160;Nonparametric&#160;Software<br/>
+I&#160;Hierarchical&#160;Bayesian&#160;Compiler&#160;(HBC).&#160;Hal&#160;Daume&#160;III.<br/>
+http://www.cs.utah.edu/&#160;hal/HBC/<br/>
+I&#160;DPpackage.&#160;Alejandro&#160;Jara.<br/>
+http://cran.r-project.org/web/packages/DPpackage/index.html<br/>
+I&#160;Hierarchical&#160;Pitman&#160;Yor&#160;Language&#160;Model.&#160;Songfang&#160;Huang.<br/>
+http://homepages.inf.ed.ac.uk/s0562315/progs/index.html<br/>
+I&#160;Nonparametric&#160;Bayesian&#160;Mixture&#160;Models.&#160;Yee&#160;Whye&#160;Teh.<br/>
+http://www.gatsby.ucl.ac.uk/&#160;ywteh/research/software.html<br/>
+I&#160;Others...<br/>
+<hr/>
+<a name=68></a>Outline<br/>
+<a href="Teh_1s.html#68">Relating&#160;Different&#160;Representations&#160;of&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#78">Representations&#160;of&#160;Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#83">Extended&#160;Bibliography</a><br/>
+<hr/>
+<a name=69></a>Representations&#160;of&#160;Dirichlet&#160;Processes<br/>
+I&#160;Posterior&#160;Dirichlet&#160;process:<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+θ&#160;∼&#160;H<br/>
+⇐⇒<br/>
+θ|<br/>
+<br/>
+<br/>
+G&#160;∼&#160;G<br/>
+G|θ&#160;∼&#160;DP&#160;α&#160;+&#160;1,&#160;αH+δθ<br/>
+α+1<br/>
+I&#160;Pólya&#160;urn&#160;scheme:<br/>
+α<br/>
+δ<br/>
+θ<br/>
+H&#160;+&#160;Pn−1<br/>
+i=1<br/>
+θi<br/>
+n|θ1:n−1&#160;∼<br/>
+α&#160;+&#160;n&#160;−&#160;1<br/>
+I&#160;Chinese&#160;restaurant&#160;process:<br/>
+(<br/>
+nk<br/>
+p(customer&#160;n&#160;sat&#160;at&#160;table&#160;k&#160;|past)&#160;=<br/>
+n−1+α<br/>
+if&#160;occupied&#160;table<br/>
+α<br/>
+n−1+α<br/>
+if&#160;new&#160;table<br/>
+I&#160;Stick-breaking&#160;construction:<br/>
+k&#160;−1<br/>
+∞<br/>
+π<br/>
+Y<br/>
+X<br/>
+k&#160;=&#160;βk<br/>
+(1&#160;−&#160;βi&#160;)<br/>
+βk&#160;∼&#160;Beta(1,&#160;α)<br/>
+θ∗&#160;∼<br/>
+π<br/>
+k<br/>
+H<br/>
+G&#160;=<br/>
+k&#160;δθ∗<br/>
+k<br/>
+i=1<br/>
+k&#160;=1<br/>
+<hr/>
+<a name=70></a>Posterior&#160;Dirichlet&#160;Processes<br/>
+I&#160;Suppose&#160;G&#160;is&#160;DP&#160;distributed,&#160;and&#160;θ&#160;is&#160;G&#160;distributed:<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+θ|G&#160;∼&#160;G<br/>
+I&#160;We&#160;are&#160;interested&#160;in:<br/>
+I&#160;The&#160;marginal&#160;distribution&#160;of&#160;θ&#160;with&#160;G&#160;integrated&#160;out.<br/>I&#160;The&#160;posterior&#160;distribution&#160;of&#160;G&#160;conditioning&#160;on&#160;θ.<br/>
+<hr/>
+<a name=71></a>Posterior&#160;Dirichlet&#160;Processes<br/>
+Conjugacy&#160;between&#160;Dirichlet&#160;Distribution&#160;and&#160;Multinomial.<br/>
+I&#160;Consider:<br/>
+(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)&#160;∼&#160;Dirichlet(α1,&#160;.&#160;.&#160;.&#160;,&#160;αK&#160;)<br/>
+z|(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)&#160;∼&#160;Discrete(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)<br/>
+z&#160;is&#160;a&#160;multinomial&#160;variate,&#160;taking&#160;on&#160;value&#160;i&#160;∈&#160;{1,&#160;.&#160;.&#160;.&#160;,&#160;n}&#160;with&#160;probability<br/>
+πi.<br/>
+I&#160;Then:<br/>
+<br/>
+<br/>
+z&#160;∼&#160;Discrete<br/>
+α1&#160;,&#160;.&#160;.&#160;.&#160;,&#160;αK<br/>
+P<br/>
+α<br/>
+P<br/>
+α<br/>
+i<br/>
+i<br/>
+i<br/>
+i<br/>
+(π1,&#160;.&#160;.&#160;.&#160;,&#160;πK&#160;)|z&#160;∼&#160;Dirichlet(α1&#160;+&#160;δ1(z),&#160;.&#160;.&#160;.&#160;,&#160;αK&#160;+&#160;δK&#160;(z))<br/>
+where&#160;δi&#160;(z)&#160;=&#160;1&#160;if&#160;z&#160;takes&#160;on&#160;value&#160;i,&#160;0&#160;otherwise.<br/>
+I&#160;Converse&#160;also&#160;true.<br/>
+<hr/>
+<a name=72></a>Posterior&#160;Dirichlet&#160;Processes<br/>
+I&#160;Fix&#160;a&#160;partition&#160;(A1,&#160;.&#160;.&#160;.&#160;,&#160;AK&#160;)&#160;of&#160;Θ.&#160;Then<br/>
+(G(A1),&#160;.&#160;.&#160;.&#160;,&#160;G(AK&#160;))&#160;∼&#160;Dirichlet(αH(A1),&#160;.&#160;.&#160;.&#160;,&#160;αH(AK&#160;))<br/>
+P(θ&#160;∈&#160;Ai&#160;|G)&#160;=&#160;G(Ai&#160;)<br/>
+I&#160;Using&#160;Dirichlet-multinomial&#160;conjugacy,<br/>
+P(θ&#160;∈&#160;Ai&#160;)&#160;=&#160;H(Ai&#160;)<br/>
+(G(A1),&#160;.&#160;.&#160;.&#160;,&#160;G(AK&#160;))|θ&#160;∼&#160;Dirichlet(αH(A1)+δθ(A1),&#160;.&#160;.&#160;.&#160;,&#160;αH(AK&#160;)+δθ(AK&#160;))<br/>
+I&#160;The&#160;above&#160;is&#160;true&#160;for&#160;every&#160;finite&#160;partition&#160;of&#160;Θ.&#160;In&#160;particular,&#160;taking&#160;a<br/>
+really&#160;fine&#160;partition,<br/>
+p(d&#160;θ)&#160;=&#160;H(dθ)<br/>
+i.e.&#160;θ&#160;∼&#160;H&#160;with&#160;G&#160;integrated&#160;out.<br/>
+I&#160;Also,&#160;the&#160;posterior&#160;G|θ&#160;is&#160;also&#160;a&#160;Dirichlet&#160;process:<br/>
+<br/>
+αH&#160;+&#160;δ&#160;<br/>
+θ<br/>
+G|θ&#160;∼&#160;DP&#160;α&#160;+&#160;1,&#160;α&#160;+&#160;1<br/>
+<hr/>
+<a name=73></a>Posterior&#160;Dirichlet&#160;Processes<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+θ&#160;∼&#160;H<br/>
+⇐⇒<br/>
+θ|<br/>
+<br/>
+<br/>
+G&#160;∼&#160;G<br/>
+G|θ&#160;∼&#160;DP&#160;α&#160;+&#160;1,&#160;αH+δθ<br/>
+α+1<br/>
+<hr/>
+<a name=74></a>Pólya&#160;Urn&#160;Scheme<br/>
+I&#160;First&#160;sample:<br/>
+θ1|G&#160;∼&#160;G<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+⇐⇒<br/>
+θ1&#160;∼&#160;H<br/>
+G|θ1&#160;∼&#160;DP(α&#160;+&#160;1,&#160;αH+δθ1<br/>
+α<br/>
+)<br/>
++1<br/>
+I&#160;Second&#160;sample:<br/>
+θ2|θ1,&#160;G&#160;∼&#160;G<br/>
+G|θ1&#160;∼&#160;DP(α&#160;+&#160;1,&#160;αH+δθ1<br/>
+α<br/>
+)<br/>
++1<br/>
+⇐⇒<br/>
+θ<br/>
++δθ2<br/>
+2|θ1&#160;∼&#160;αH+δθ1<br/>
+α<br/>
+G|θ<br/>
+)<br/>
++1<br/>
+1,&#160;θ2&#160;∼&#160;DP(α&#160;+&#160;2,&#160;αH+δθ1<br/>
+α+2<br/>
+I&#160;nth&#160;sample<br/>
+θ<br/>
+δθi<br/>
+n|θ1:n−1,&#160;G&#160;∼&#160;G<br/>
+G|θ1:n−1&#160;∼&#160;DP(α&#160;+&#160;n&#160;−&#160;1,&#160;αH+Pn−1<br/>
+i=1<br/>
+α<br/>
+)<br/>
++n−1<br/>
+⇐⇒<br/>
+θ<br/>
+δθ<br/>
+δ<br/>
+i<br/>
+θi<br/>
+n|θ1:n−1&#160;∼&#160;αH+Pn−1<br/>
+i=1<br/>
+α<br/>
+G|θ<br/>
+)<br/>
++n−1<br/>
+1:n&#160;∼&#160;DP(α&#160;+&#160;n,&#160;αH+Pni=1<br/>
+α+n<br/>
+<hr/>
+<a name=75></a>Stick-breaking&#160;Construction<br/>
+I&#160;Returning&#160;to&#160;the&#160;posterior&#160;process:<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+θ&#160;∼&#160;H<br/>
+⇔<br/>
+θ|G&#160;∼&#160;G<br/>
+G|θ&#160;∼&#160;DP(α&#160;+&#160;1,&#160;αH+δθ<br/>
+α<br/>
+)<br/>
++1<br/>
+I&#160;Consider&#160;a&#160;partition&#160;(θ,&#160;Θ\θ)&#160;of&#160;Θ.&#160;We&#160;have:<br/>
+(G(θ),&#160;G(Θ\θ))|θ&#160;∼&#160;Dirichlet((α&#160;+&#160;1)&#160;αH+δθ<br/>
+α<br/>
+(θ),&#160;(α&#160;+&#160;1)&#160;αH+δθ&#160;(Θ\θ))<br/>
++1<br/>
+α+1<br/>
+=&#160;Dirichlet(1,&#160;α)<br/>
+I&#160;G&#160;has&#160;a&#160;point&#160;mass&#160;located&#160;at&#160;θ:<br/>
+G&#160;=&#160;βδθ&#160;+&#160;(1&#160;−&#160;β)G0<br/>
+with<br/>
+β&#160;∼&#160;Beta(1,&#160;α)<br/>
+and&#160;G0&#160;is&#160;the&#160;(renormalized)&#160;probability&#160;measure&#160;with&#160;the&#160;point&#160;mass<br/>removed.<br/>
+I&#160;What&#160;is&#160;G0?<br/>
+<hr/>
+<a name=76></a>Stick-breaking&#160;Construction<br/>
+I&#160;Currently,&#160;we&#160;have:<br/>
+θ&#160;∼&#160;H<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>
+G|θ&#160;∼&#160;DP(α&#160;+&#160;1,&#160;αH+δθ&#160;)<br/>
+⇒<br/>
+α+1<br/>
+θ&#160;∼&#160;G<br/>
+G&#160;=&#160;βδθ&#160;+&#160;(1&#160;−&#160;β)G0<br/>
+β&#160;∼&#160;Beta(1,&#160;α)<br/>
+I&#160;Consider&#160;a&#160;further&#160;partition&#160;(θ,&#160;A1,&#160;.&#160;.&#160;.&#160;,&#160;AK&#160;)&#160;of&#160;Θ:<br/>
+(G(θ),&#160;G(A1),&#160;.&#160;.&#160;.&#160;,&#160;G(AK&#160;))<br/>
+=(β,&#160;(1&#160;−&#160;β)G0(A1),&#160;.&#160;.&#160;.&#160;,&#160;(1&#160;−&#160;β)G0(AK&#160;))<br/>∼&#160;Dirichlet(1,&#160;αH(A1),&#160;.&#160;.&#160;.&#160;,&#160;αH(AK&#160;))<br/>
+I&#160;The&#160;agglomerative/decimative&#160;property&#160;of&#160;Dirichlet&#160;implies:<br/>
+(G0(A1),&#160;.&#160;.&#160;.&#160;,&#160;G0(AK&#160;))|θ&#160;∼&#160;Dirichlet(αH(A1),&#160;.&#160;.&#160;.&#160;,&#160;αH(AK&#160;))<br/>
+G0&#160;∼&#160;DP(α,&#160;H)<br/>
+<hr/>
+<a name=77></a>Stick-breaking&#160;Construction<br/>
+I&#160;We&#160;have:<br/>
+G&#160;∼&#160;DP(α,&#160;H)<br/>G&#160;=&#160;β1δθ∗&#160;+&#160;(1&#160;−&#160;β1)G1<br/>
+1<br/>
+G&#160;=&#160;β1δθ∗&#160;+&#160;(1&#160;−&#160;β1)(β2δθ∗&#160;+&#160;(1&#160;−&#160;β2)G2)<br/>
+1<br/>
+2<br/>
+...<br/>
+∞<br/>
+X<br/>
+G&#160;=<br/>
+πkδθ∗k<br/>
+k&#160;=1<br/>
+where<br/>
+π<br/>
+Qk&#160;−1<br/>
+k&#160;=&#160;βk<br/>
+(1&#160;−&#160;β<br/>
+∼&#160;H<br/>
+i=1<br/>
+i&#160;)<br/>
+βk&#160;∼&#160;Beta(1,&#160;α)<br/>
+θ∗k<br/>
+π(1)<br/>
+(2)<br/>
+π<br/>
+(3)<br/>
+π<br/>
+(4)<br/>
+π<br/>
+(5)<br/>
+π<br/>
+(6)<br/>
+π<br/>
+<hr/>
+<a name=78></a>Outline<br/>
+<a href="Teh_1s.html#68">Relating&#160;Different&#160;Representations&#160;of&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#78">Representations&#160;of&#160;Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#83">Extended&#160;Bibliography</a><br/>
+<hr/>
+<a name=79></a>Stick-breaking&#160;Construction<br/>
+I&#160;We&#160;shall&#160;assume&#160;the&#160;following&#160;HDP&#160;hierarchy:<br/>
+G0&#160;∼&#160;DP(γ,&#160;H)<br/>
+Gj&#160;|G0&#160;∼&#160;DP(α,&#160;G0)&#160;for&#160;j&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;J<br/>
+I&#160;The&#160;stick-breaking&#160;construction&#160;for&#160;the&#160;HDP&#160;is:<br/>
+G0&#160;=&#160;P∞&#160;π<br/>
+θ∗&#160;∼&#160;H<br/>
+k&#160;=1<br/>
+0k&#160;δθ∗<br/>
+k<br/>
+k<br/>
+π<br/>
+Qk&#160;−1<br/>
+0k&#160;=&#160;β0k<br/>
+(1&#160;−&#160;β<br/>
+l=1<br/>
+0l&#160;)<br/>
+β0k&#160;∼&#160;Beta&#160;1,&#160;γ<br/>
+Gj&#160;=&#160;P∞&#160;π<br/>
+k&#160;=1<br/>
+jk&#160;δθ∗<br/>
+k<br/>
+π<br/>
+Qk&#160;−1<br/>
+jk&#160;=&#160;βjk<br/>
+(1&#160;−&#160;β<br/>
+β<br/>
+l=1<br/>
+jl&#160;)<br/>
+βjk&#160;∼&#160;Beta&#160;αβ0k,&#160;α(1&#160;−&#160;Pkl=1&#160;0l)<br/>
+<hr/>
+<a name=80></a>Hierarchical&#160;Pòlya&#160;Urn&#160;Scheme<br/>
+I&#160;Let&#160;G&#160;∼&#160;DP(α,&#160;H).<br/>
+I&#160;We&#160;can&#160;visualize&#160;the&#160;Pòlya&#160;urn&#160;scheme&#160;as&#160;follows:<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+1<br/>
+θ∗<br/>
+. . . . .<br/>
+6<br/>
+θ<br/>
+. . . . .<br/>
+1<br/>
+θ<br/>
+2<br/>
+θ3&#160;θ4&#160;θ5&#160;θ6&#160;θ7<br/>
+where&#160;the&#160;arrows&#160;denote&#160;to&#160;which&#160;θ∗&#160;each&#160;θ<br/>
+k<br/>
+i&#160;was&#160;assigned&#160;and<br/>
+θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;∼&#160;G&#160;i.i.d.<br/>
+θ∗,&#160;θ∗,&#160;.&#160;.&#160;.&#160;∼<br/>
+1<br/>
+2<br/>
+H&#160;i.i.d.<br/>
+(but&#160;θ1,&#160;θ2,&#160;.&#160;.&#160;.&#160;are&#160;not&#160;independent&#160;of&#160;θ∗,&#160;θ∗,&#160;.&#160;.&#160;.).<br/>
+1<br/>
+2<br/>
+<hr/>
+<a name=81></a>Hierarchical&#160;Pòlya&#160;Urn&#160;Scheme<br/>
+I&#160;Let&#160;G0&#160;∼&#160;DP(γ,&#160;H)&#160;and&#160;G1,&#160;G2|G0&#160;∼&#160;DP(α,&#160;G0).<br/>
+I&#160;The&#160;hierarchical&#160;Pòlya&#160;urn&#160;scheme&#160;to&#160;generate&#160;draws&#160;from&#160;G1,&#160;G2:<br/>
+04<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+. . . . .<br/>
+01<br/>
+02<br/>
+03<br/>
+05<br/>
+06<br/>
+11<br/>
+12<br/>
+13<br/>
+14<br/>
+15&#160;θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+. . . . .<br/>
+16<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+θ∗<br/>
+. . . . .<br/>
+21<br/>
+22<br/>
+23<br/>
+24<br/>
+25<br/>
+26<br/>
+θ11&#160;θ12&#160;θ13&#160;θ14&#160;θ15&#160;θ16&#160;θ&#160;. . . . .<br/>
+17<br/>
+21<br/>
+θ&#160;θ22&#160;θ23&#160;θ24&#160;θ25&#160;θ26&#160;θ&#160;. . . . .<br/>
+27<br/>
+<hr/>
+<a name=82></a>Chinese&#160;Restaurant&#160;Franchise<br/>
+I&#160;Let&#160;G0&#160;∼&#160;DP(γ,&#160;H)&#160;and&#160;G1,&#160;G2|G0&#160;∼&#160;DP(α,&#160;G0).<br/>
+I&#160;The&#160;Chinese&#160;restaurant&#160;franchise&#160;describes&#160;the&#160;clustering&#160;of&#160;data&#160;items<br/>
+in&#160;the&#160;hierarchy:<br/>
+A<br/>
+ED<br/>
+B<br/>
+. . .<br/>
+C<br/>
+FG<br/>
+1<br/>
+1<br/>
+6<br/>
+7<br/>
+. . .<br/>
+2<br/>
+4<br/>
+. . .<br/>
+A<br/>
+B<br/>
+C<br/>
+D<br/>
+G<br/>
+3<br/>
+5<br/>
+3&#160;E<br/>
+F<br/>
+6<br/>
+4<br/>
+25<br/>
+7<br/>
+<hr/>
+<a name=83></a>Outline<br/>
+<a href="Teh_1s.html#68">Relating&#160;Different&#160;Representations&#160;of&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#78">Representations&#160;of&#160;Hierarchical&#160;Dirichlet&#160;Processes</a><br/>
+<a href="Teh_1s.html#83">Extended&#160;Bibliography</a><br/>
+<hr/>
+<a name=84></a>Bibliography&#160;I<br/>Dirichlet&#160;Processes&#160;and&#160;Beyond&#160;in&#160;Machine&#160;Learning<br/>
+<b>Dirichlet&#160;Processes&#160;</b>were&#160;first&#160;introduced&#160;by&#160;<a href="Teh_1s.html#87">[Ferguson&#160;1973],&#160;</a>while&#160;<a href="Teh_1s.html#86">[Antoniak&#160;1974]&#160;</a>further&#160;developed&#160;DPs&#160;as&#160;well&#160;as&#160;introduce<br/>the&#160;mixture&#160;of&#160;DPs.&#160;<a href="Teh_1s.html#86">[Blackwell&#160;and&#160;MacQueen&#160;1973]&#160;</a>showed&#160;that&#160;the&#160;Pólya&#160;urn&#160;scheme&#160;is&#160;exchangeable&#160;with&#160;the&#160;DP&#160;being&#160;its&#160;de<br/>Finetti&#160;measure.&#160;Further&#160;information&#160;on&#160;the&#160;Chinese&#160;restaurant&#160;process&#160;can&#160;be&#160;obtained&#160;at&#160;<a href="Teh_1s.html#86">[Aldous&#160;1985,&#160;</a><a href="Teh_1s.html#93">Pitman&#160;2002].&#160;</a>The&#160;DP<br/>is&#160;also&#160;related&#160;to&#160;Ewens’&#160;Sampling&#160;Formula&#160;<a href="Teh_1s.html#87">[Ewens&#160;1972].&#160;</a><a href="Teh_1s.html#95">[Sethuraman&#160;1994]&#160;</a>gave&#160;a&#160;constructive&#160;definition&#160;of&#160;the&#160;DP&#160;via&#160;a<br/>stick-breaking&#160;construction.&#160;DPs&#160;were&#160;rediscovered&#160;in&#160;the&#160;machine&#160;learning&#160;community&#160;by&#160;<a href="Teh_1s.html#93">[Neal&#160;1992,&#160;</a><a href="Teh_1s.html#94">Rasmussen&#160;2000].</a><br/>
+<b>Hierarchical&#160;Dirichlet&#160;Processes&#160;</b>(HDPs)&#160;were&#160;first&#160;developed&#160;by&#160;<a href="Teh_1s.html#96">[Teh&#160;et&#160;al.&#160;2006],&#160;</a>although&#160;an&#160;aspect&#160;of&#160;the&#160;model&#160;was&#160;first<br/>discussed&#160;in&#160;the&#160;context&#160;of&#160;infinite&#160;hidden&#160;Markov&#160;models&#160;<a href="Teh_1s.html#86">[Beal&#160;et&#160;al.&#160;2002].&#160;</a>HDPs&#160;and&#160;generalizations&#160;have&#160;been&#160;applied&#160;across<br/>a&#160;wide&#160;variety&#160;of&#160;fields.<br/><b>Dependent&#160;Dirichlet&#160;Processes&#160;</b>are&#160;sets&#160;of&#160;coupled&#160;distributions&#160;over&#160;probability&#160;measures,&#160;each&#160;of&#160;which&#160;is&#160;marginally&#160;DP<br/><a href="Teh_1s.html#92">[MacEachern&#160;et&#160;al.&#160;2001].&#160;</a>A&#160;variety&#160;of&#160;dependent&#160;DPs&#160;have&#160;been&#160;proposed&#160;in&#160;the&#160;literature&#160;since&#160;then<br/><a href="Teh_1s.html#95">[Srebro&#160;and&#160;Roweis&#160;2005,&#160;</a><a href="Teh_1s.html#89">Griffin&#160;2007,&#160;</a><a href="Teh_1s.html#86">Caron&#160;et&#160;al.&#160;2007].&#160;</a>The&#160;infinite&#160;mixture&#160;of&#160;Gaussian&#160;processes&#160;of<br/><a href="Teh_1s.html#94">[Rasmussen&#160;and&#160;Ghahramani&#160;2002]&#160;</a>can&#160;also&#160;be&#160;interpreted&#160;as&#160;a&#160;dependent&#160;DP.<br/><b>Indian&#160;Buffet&#160;Processes&#160;</b>(IBPs)&#160;were&#160;first&#160;proposed&#160;in&#160;<a href="Teh_1s.html#89">[Griffiths&#160;and&#160;Ghahramani&#160;2006],&#160;</a>and&#160;extended&#160;to&#160;a&#160;two-parameter&#160;family<br/>in&#160;<a href="Teh_1s.html#88">[Ghahramani&#160;et&#160;al.&#160;2007].&#160;</a><a href="Teh_1s.html#97">[Thibaux&#160;and&#160;Jordan&#160;2007]&#160;</a>showed&#160;that&#160;the&#160;de&#160;Finetti&#160;measure&#160;for&#160;the&#160;IBP&#160;is&#160;the&#160;beta&#160;process&#160;of<br/><a href="Teh_1s.html#90">[Hjort&#160;1990],&#160;</a>while&#160;<a href="Teh_1s.html#96">[Teh&#160;et&#160;al.&#160;2007]&#160;</a>gave&#160;a&#160;stick-breaking&#160;construction&#160;and&#160;developed&#160;efficient&#160;slice&#160;sampling&#160;inference&#160;algorithms<br/>for&#160;the&#160;IBP.<br/><b>Nonparametric&#160;Tree&#160;Models&#160;</b>are&#160;models&#160;that&#160;use&#160;distributions&#160;over&#160;trees&#160;that&#160;are&#160;consistent&#160;and&#160;exchangeable.&#160;<a href="Teh_1s.html#86">[Blei&#160;et&#160;al.&#160;2004]<br/></a>used&#160;a&#160;nested&#160;CRP&#160;to&#160;define&#160;distributions&#160;over&#160;trees&#160;with&#160;a&#160;finite&#160;number&#160;of&#160;levels.&#160;<a href="Teh_1s.html#93">[Neal&#160;2001,&#160;Neal&#160;2003]&#160;</a>defined&#160;Dirichlet<br/>diffusion&#160;trees,&#160;which&#160;are&#160;binary&#160;trees&#160;produced&#160;by&#160;a&#160;fragmentation&#160;process.&#160;<a href="Teh_1s.html#96">[Teh&#160;et&#160;al.&#160;2008]&#160;</a>used&#160;Kingman’s&#160;coalescent<br/><a href="Teh_1s.html#91">[Kingman&#160;1982b,&#160;Kingman&#160;1982a]&#160;</a>to&#160;produce&#160;random&#160;binary&#160;trees&#160;using&#160;a&#160;coalescent&#160;process.&#160;<a href="Teh_1s.html#94">[Roy&#160;et&#160;al.&#160;2007]&#160;</a>proposed<br/>annotated&#160;hierarchies,&#160;using&#160;tree-consistent&#160;partitions&#160;first&#160;defined&#160;in&#160;<a href="Teh_1s.html#89">[Heller&#160;and&#160;Ghahramani&#160;2005]&#160;</a>to&#160;model&#160;both&#160;relational&#160;and<br/>featural&#160;data.<br/>
+<b>Markov&#160;chain&#160;Monte&#160;Carlo&#160;Inference&#160;</b>algorithms&#160;are&#160;the&#160;dominant&#160;approaches&#160;to&#160;inference&#160;in&#160;DP&#160;mixtures.&#160;<a href="Teh_1s.html#93">[Neal&#160;2000]&#160;</a>is&#160;a<br/>good&#160;review&#160;of&#160;algorithms&#160;based&#160;on&#160;Gibbs&#160;sampling&#160;in&#160;the&#160;CRP&#160;representation.&#160;Algorithm&#160;8&#160;in&#160;<a href="Teh_1s.html#93">[Neal&#160;2000]&#160;</a>is&#160;still&#160;one&#160;of&#160;the&#160;best<br/>algorithms&#160;based&#160;on&#160;simple&#160;local&#160;moves.&#160;<a href="Teh_1s.html#90">[Ishwaran&#160;and&#160;James&#160;2001]&#160;</a>proposed&#160;blocked&#160;Gibbs&#160;sampling&#160;in&#160;the&#160;stick-breaking<br/>representation&#160;instead&#160;due&#160;to&#160;the&#160;simplicity&#160;in&#160;implementation.&#160;This&#160;has&#160;been&#160;further&#160;explored&#160;in&#160;<a href="Teh_1s.html#94">[Porteous&#160;et&#160;al.&#160;2006].&#160;</a>Since<br/>then&#160;there&#160;has&#160;been&#160;proposals&#160;for&#160;better&#160;MCMC&#160;samplers&#160;based&#160;on&#160;proposing&#160;larger&#160;moves&#160;in&#160;a&#160;Metropolis-Hastings&#160;framework<br/><a href="Teh_1s.html#90">[Jain&#160;and&#160;Neal&#160;2004,&#160;</a><a href="Teh_1s.html#92">Liang&#160;et&#160;al.&#160;2007a],&#160;</a>as&#160;well&#160;as&#160;sequential&#160;Monte&#160;Carlo&#160;<a href="Teh_1s.html#87">[Fearnhead&#160;2004,&#160;</a><a href="Teh_1s.html#92">Mansingkha&#160;et&#160;al.&#160;2007].<br/></a><b>Other&#160;Approximate&#160;Inference&#160;Methods&#160;</b>have&#160;also&#160;been&#160;proposed&#160;for&#160;DP&#160;mixture&#160;models.&#160;<a href="Teh_1s.html#86">[Blei&#160;and&#160;Jordan&#160;2006]&#160;</a>is&#160;the&#160;first<br/>variational&#160;Bayesian&#160;approximation,&#160;and&#160;is&#160;based&#160;on&#160;a&#160;truncated&#160;stick-breaking&#160;representation.&#160;<a href="Teh_1s.html#91">[Kurihara&#160;et&#160;al.&#160;2007]&#160;</a>proposed&#160;an<br/>
+<hr/>
+<a name=85></a>Bibliography&#160;II<br/>Dirichlet&#160;Processes&#160;and&#160;Beyond&#160;in&#160;Machine&#160;Learning<br/>
+improved&#160;VB&#160;approximation&#160;based&#160;on&#160;a&#160;better&#160;truncation&#160;technique,&#160;and&#160;using&#160;KD-trees&#160;for&#160;extremely&#160;efficient&#160;inference&#160;in&#160;large<br/>scale&#160;applications.&#160;<a href="Teh_1s.html#91">[Kurihara&#160;et&#160;al.&#160;2007]&#160;</a>studied&#160;improved&#160;VB&#160;approximations&#160;based&#160;on&#160;integrating&#160;out&#160;the&#160;stick-breaking<br/>weights.&#160;<a href="Teh_1s.html#92">[Minka&#160;and&#160;Ghahramani&#160;2003]&#160;</a>derived&#160;an&#160;expectation&#160;propagation&#160;based&#160;algorithm.&#160;<a href="Teh_1s.html#89">[Heller&#160;and&#160;Ghahramani&#160;2005]<br/></a>derived&#160;tree-based&#160;approximation&#160;which&#160;can&#160;be&#160;seen&#160;as&#160;a&#160;Bayesian&#160;hierarchical&#160;clustering&#160;algorithm.&#160;<a href="Teh_1s.html#87">[Daume&#160;III&#160;2007]&#160;</a>developed<br/>admissible&#160;search&#160;heuristics&#160;to&#160;find&#160;MAP&#160;clusterings&#160;in&#160;a&#160;DP&#160;mixture&#160;model.<br/>
+<b>Computer&#160;Vision&#160;and&#160;Image&#160;Processing</b>.&#160;HDPs&#160;have&#160;been&#160;used&#160;in&#160;object&#160;tracking<br/><a href="Teh_1s.html#88">[Fox&#160;et&#160;al.&#160;2006,&#160;Fox&#160;et&#160;al.&#160;2007b,&#160;Fox&#160;et&#160;al.&#160;2007a].&#160;</a>An&#160;extension&#160;called&#160;the&#160;transformed&#160;Dirichlet&#160;process&#160;has&#160;been&#160;used&#160;in<br/>scene&#160;analysis&#160;<a href="Teh_1s.html#95">[Sudderth&#160;et&#160;al.&#160;2006b,&#160;Sudderth&#160;et&#160;al.&#160;2006a,&#160;Sudderth&#160;et&#160;al.&#160;2008],&#160;</a>a&#160;related&#160;extension&#160;has&#160;been&#160;used&#160;in&#160;fMRI<br/>image&#160;analysis&#160;<a href="Teh_1s.html#91">[Kim&#160;and&#160;Smyth&#160;2007,&#160;</a><a href="Teh_1s.html#90">Kim&#160;2007].&#160;</a>An&#160;extension&#160;of&#160;the&#160;infinite&#160;hidden&#160;Markov&#160;model&#160;called&#160;the&#160;nonparametric<br/>hidden&#160;Markov&#160;tree&#160;has&#160;been&#160;introduced&#160;and&#160;applied&#160;to&#160;image&#160;denoising&#160;<a href="Teh_1s.html#91">[Kivinen&#160;et&#160;al.&#160;2007a,&#160;Kivinen&#160;et&#160;al.&#160;2007b].<br/></a><b>Natural&#160;Language&#160;Processing</b>.&#160;HDPs&#160;are&#160;essential&#160;ingredients&#160;in&#160;defining&#160;nonparametric&#160;context&#160;free&#160;grammars<br/><a href="Teh_1s.html#92">[Liang&#160;et&#160;al.&#160;2007b,&#160;</a><a href="Teh_1s.html#87">Finkel&#160;et&#160;al.&#160;2007].&#160;</a><a href="Teh_1s.html#90">[Johnson&#160;et&#160;al.&#160;2007]&#160;</a>defined&#160;adaptor&#160;grammars,&#160;which&#160;is&#160;a&#160;framework&#160;generalizing&#160;both<br/>probabilistic&#160;context&#160;free&#160;grammars&#160;as&#160;well&#160;as&#160;a&#160;variety&#160;of&#160;nonparametric&#160;models&#160;including&#160;DPs&#160;and&#160;HDPs.&#160;DPs&#160;and&#160;HDPs&#160;have<br/>been&#160;used&#160;in&#160;information&#160;retrieval&#160;<a href="Teh_1s.html#87">[Cowans&#160;2004],&#160;</a>word&#160;segmentation&#160;<a href="Teh_1s.html#88">[Goldwater&#160;et&#160;al.&#160;2006b],&#160;</a>word&#160;morphology&#160;modelling<br/><a href="Teh_1s.html#88">[Goldwater&#160;et&#160;al.&#160;2006a],&#160;</a>coreference&#160;resolution&#160;<a href="Teh_1s.html#89">[Haghighi&#160;and&#160;Klein&#160;2007],&#160;</a>topic&#160;modelling<br/><a href="Teh_1s.html#86">[Blei&#160;et&#160;al.&#160;2004,&#160;</a><a href="Teh_1s.html#96">Teh&#160;et&#160;al.&#160;2006,&#160;</a><a href="Teh_1s.html#92">Li&#160;et&#160;al.&#160;2007].&#160;</a>An&#160;extension&#160;of&#160;the&#160;HDP&#160;called&#160;the&#160;hierarchical&#160;Pitman-Yor&#160;process&#160;has&#160;been<br/>applied&#160;to&#160;language&#160;modelling&#160;<a href="Teh_1s.html#96">[Teh&#160;2006a,&#160;Teh&#160;2006b,&#160;</a><a href="Teh_1s.html#88">Goldwater&#160;et&#160;al.&#160;2006a].[</a><a href="Teh_1s.html#94">Savova&#160;et&#160;al.&#160;2007]&#160;</a>used&#160;annotated&#160;hierarchies&#160;to<br/>construct&#160;syntactic&#160;hierarchies.&#160;Theses&#160;on&#160;nonparametric&#160;methods&#160;in&#160;NLP&#160;include&#160;<a href="Teh_1s.html#87">[Cowans&#160;2006,&#160;</a><a href="Teh_1s.html#88">Goldwater&#160;2006].<br/></a><b>Other&#160;Applications</b>.&#160;Applications&#160;of&#160;DPs,&#160;HDPs&#160;and&#160;infinite&#160;HMMs&#160;in&#160;bioinformatics&#160;include<br/><a href="Teh_1s.html#97">[Xing&#160;et&#160;al.&#160;2004,&#160;Xing&#160;et&#160;al.&#160;2007,&#160;</a><a href="Teh_1s.html#98">Xing&#160;et&#160;al.&#160;2006,&#160;</a><a href="Teh_1s.html#97">Xing&#160;and&#160;Sohn&#160;2007a,&#160;</a><a href="Teh_1s.html#98">Xing&#160;and&#160;Sohn&#160;2007b].&#160;</a>DPs&#160;have&#160;been&#160;applied&#160;in<br/>relational&#160;learning&#160;<a href="Teh_1s.html#95">[Shafto&#160;et&#160;al.&#160;2006,&#160;</a><a href="Teh_1s.html#90">Kemp&#160;et&#160;al.&#160;2006,&#160;</a><a href="Teh_1s.html#98">Xu&#160;et&#160;al.&#160;2006],&#160;</a>spike&#160;sorting&#160;<a href="Teh_1s.html#97">[Wood&#160;et&#160;al.&#160;2006a,&#160;</a><a href="Teh_1s.html#89">Görür&#160;2007].&#160;</a>The&#160;HDP<br/>has&#160;been&#160;used&#160;in&#160;a&#160;cognitive&#160;model&#160;of&#160;categorization&#160;<a href="Teh_1s.html#89">[Griffiths&#160;et&#160;al.&#160;2007].&#160;</a>IBPs&#160;have&#160;been&#160;applied&#160;to&#160;infer&#160;hidden&#160;causes<br/><a href="Teh_1s.html#97">[Wood&#160;et&#160;al.&#160;2006b],&#160;</a>in&#160;a&#160;choice&#160;model&#160;<a href="Teh_1s.html#89">[Görür&#160;et&#160;al.&#160;2006],&#160;</a>to&#160;modelling&#160;dyadic&#160;data&#160;<a href="Teh_1s.html#92">[Meeds&#160;et&#160;al.&#160;2007],&#160;</a>to&#160;overlapping&#160;clustering<br/><a href="Teh_1s.html#90">[Heller&#160;and&#160;Ghahramani&#160;2007],&#160;</a>and&#160;to&#160;matrix&#160;factorization&#160;<a href="Teh_1s.html#97">[Wood&#160;and&#160;Griffiths&#160;2006].</a><br/>
+<hr/>
+<a name=86></a>References&#160;I<br/>
+Aldous,&#160;D.&#160;(1985).<br/>
+Exchangeability&#160;and&#160;related&#160;topics.<br/>In&#160;École&#160;d’Été&#160;de&#160;Probabilités&#160;de&#160;Saint-Flour&#160;XIII–1983,&#160;pages&#160;1–198.&#160;Springer,&#160;Berlin.<br/>
+Antoniak,&#160;C.&#160;E.&#160;(1974).<br/>
+Mixtures&#160;of&#160;Dirichlet&#160;processes&#160;with&#160;applications&#160;to&#160;Bayesian&#160;nonparametric&#160;problems.<br/>Annals&#160;of&#160;Statistics,&#160;2(6):1152–1174.<br/>
+Beal,&#160;M.&#160;J.,&#160;Ghahramani,&#160;Z.,&#160;and&#160;Rasmussen,&#160;C.&#160;E.&#160;(2002).<br/>
+The&#160;infinite&#160;hidden&#160;Markov&#160;model.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;14.<br/>
+Blackwell,&#160;D.&#160;and&#160;MacQueen,&#160;J.&#160;B.&#160;(1973).<br/>
+Ferguson&#160;distributions&#160;via&#160;Pólya&#160;urn&#160;schemes.<br/>Annals&#160;of&#160;Statistics,&#160;1:353–355.<br/>
+Blei,&#160;D.&#160;M.,&#160;Griffiths,&#160;T.&#160;L.,&#160;Jordan,&#160;M.&#160;I.,&#160;and&#160;Tenenbaum,&#160;J.&#160;B.&#160;(2004).<br/>
+Hierarchical&#160;topic&#160;models&#160;and&#160;the&#160;nested&#160;Chinese&#160;restaurant&#160;process.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;16.<br/>
+Blei,&#160;D.&#160;M.&#160;and&#160;Jordan,&#160;M.&#160;I.&#160;(2006).<br/>
+Variational&#160;inference&#160;for&#160;Dirichlet&#160;process&#160;mixtures.<br/>Bayesian&#160;Analysis,&#160;1(1):121–144.<br/>
+Caron,&#160;F.,&#160;Davy,&#160;M.,&#160;and&#160;Doucet,&#160;A.&#160;(2007).<br/>
+Generalized&#160;Polya&#160;urn&#160;for&#160;time-varying&#160;Dirichlet&#160;process&#160;mixtures.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Conference&#160;on&#160;Uncertainty&#160;in&#160;Artificial&#160;Intelligence,&#160;volume&#160;23.<br/>
+<hr/>
+<a name=87></a>References&#160;II<br/>
+Cowans,&#160;P.&#160;(2004).<br/>
+Information&#160;retrieval&#160;using&#160;hierarchical&#160;Dirichlet&#160;processes.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Annual&#160;International&#160;Conference&#160;on&#160;Research&#160;and&#160;Development&#160;in&#160;Information&#160;Retrieval,<br/>volume&#160;27,&#160;pages&#160;564–565.<br/>
+Cowans,&#160;P.&#160;(2006).<br/>
+Probabilistic&#160;Document&#160;Modelling.<br/>PhD&#160;thesis,&#160;University&#160;of&#160;Cambridge.<br/>
+Daume&#160;III,&#160;H.&#160;(2007).<br/>
+Fast&#160;search&#160;for&#160;Dirichlet&#160;process&#160;mixture&#160;models.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Workshop&#160;on&#160;Artificial&#160;Intelligence&#160;and&#160;Statistics,&#160;volume&#160;11.<br/>
+Ewens,&#160;W.&#160;J.&#160;(1972).<br/>
+The&#160;sampling&#160;theory&#160;of&#160;selectively&#160;neutral&#160;alleles.<br/>Theoretical&#160;Population&#160;Biology,&#160;3:87–112.<br/>
+Fearnhead,&#160;P.&#160;(2004).<br/>
+Particle&#160;filters&#160;for&#160;mixture&#160;models&#160;with&#160;an&#160;unknown&#160;number&#160;of&#160;components.<br/>Statistics&#160;and&#160;Computing,&#160;14:11–21.<br/>
+Ferguson,&#160;T.&#160;S.&#160;(1973).<br/>
+A&#160;Bayesian&#160;analysis&#160;of&#160;some&#160;nonparametric&#160;problems.<br/>Annals&#160;of&#160;Statistics,&#160;1(2):209–230.<br/>
+Finkel,&#160;J.&#160;R.,&#160;Grenager,&#160;T.,&#160;and&#160;Manning,&#160;C.&#160;D.&#160;(2007).<br/>
+The&#160;infinite&#160;tree.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Annual&#160;Meeting&#160;of&#160;the&#160;Association&#160;for&#160;Computational&#160;Linguistics.<br/>
+<hr/>
+<a name=88></a>References&#160;III<br/>
+Fox,&#160;E.&#160;B.,&#160;Choi,&#160;D.&#160;S.,&#160;and&#160;Willsky,&#160;A.&#160;S.&#160;(2006).<br/>
+Nonparametric&#160;Bayesian&#160;methods&#160;for&#160;large&#160;scale&#160;multi-target&#160;tracking.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Asilomar&#160;Conference&#160;on&#160;Signals,&#160;Systems,&#160;and&#160;Computers,&#160;volume&#160;40.<br/>
+Fox,&#160;E.&#160;B.,&#160;Sudderth,&#160;E.&#160;B.,&#160;Choi,&#160;D.&#160;S.,&#160;and&#160;Willsky,&#160;A.&#160;S.&#160;(2007a).<br/>
+Tracking&#160;a&#160;non-cooperative&#160;maneuvering&#160;target&#160;using&#160;hierarchical&#160;Dirichlet&#160;processes.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Adaptive&#160;Sensor&#160;Array&#160;Processing&#160;Conference.<br/>
+Fox,&#160;E.&#160;B.,&#160;Sudderth,&#160;E.&#160;B.,&#160;and&#160;Willsky,&#160;A.&#160;S.&#160;(2007b).<br/>
+Hierarchical&#160;Dirichlet&#160;processes&#160;for&#160;tracking&#160;maneuvering&#160;targets.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Conference&#160;on&#160;Information&#160;Fusion.<br/>
+Ghahramani,&#160;Z.,&#160;Griffiths,&#160;T.&#160;L.,&#160;and&#160;Sollich,&#160;P.&#160;(2007).<br/>
+Bayesian&#160;nonparametric&#160;latent&#160;feature&#160;models&#160;(with&#160;discussion&#160;and&#160;rejoinder).<br/>In&#160;Bayesian&#160;Statistics,&#160;volume&#160;8.<br/>
+Goldwater,&#160;S.&#160;(2006).<br/>
+Nonparametric&#160;Bayesian&#160;Models&#160;of&#160;Lexical&#160;Acquisition.<br/>PhD&#160;thesis,&#160;Brown&#160;University.<br/>
+Goldwater,&#160;S.,&#160;Griffiths,&#160;T.,&#160;and&#160;Johnson,&#160;M.&#160;(2006a).<br/>
+Interpolating&#160;between&#160;types&#160;and&#160;tokens&#160;by&#160;estimating&#160;power-law&#160;generators.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;18.<br/>
+Goldwater,&#160;S.,&#160;Griffiths,&#160;T.&#160;L.,&#160;and&#160;Johnson,&#160;M.&#160;(2006b).<br/>
+Contextual&#160;dependencies&#160;in&#160;unsupervised&#160;word&#160;segmentation.<br/>In&#160;Proceedings&#160;of&#160;the&#160;21st&#160;International&#160;Conference&#160;on&#160;Computational&#160;Linguistics&#160;and&#160;44th&#160;Annual&#160;Meeting&#160;of&#160;the<br/>Association&#160;for&#160;Computational&#160;Linguistics.<br/>
+<hr/>
+<a name=89></a>References&#160;IV<br/>
+Görür,&#160;D.&#160;(2007).<br/>
+Nonparametric&#160;Bayesian&#160;Discrete&#160;Latent&#160;Variable&#160;Models&#160;for&#160;Unsupervised&#160;Learning.<br/>PhD&#160;thesis,&#160;Technischen&#160;Universität&#160;Berlin.<br/>
+Görür,&#160;D.,&#160;Jäkel,&#160;F.,&#160;and&#160;Rasmussen,&#160;C.&#160;E.&#160;(2006).<br/>
+A&#160;choice&#160;model&#160;with&#160;infinitely&#160;many&#160;latent&#160;features.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Conference&#160;on&#160;Machine&#160;Learning,&#160;volume&#160;23.<br/>
+Griffin,&#160;J.&#160;E.&#160;(2007).<br/>
+The&#160;Ornstein-Uhlenbeck&#160;Dirichlet&#160;process&#160;and&#160;other&#160;time-varying&#160;processes&#160;for&#160;Bayesian&#160;nonparametric&#160;inference.<br/>Technical&#160;report,&#160;Department&#160;of&#160;Statistics,&#160;University&#160;of&#160;Warwick.<br/>
+Griffiths,&#160;T.&#160;L.,&#160;Canini,&#160;K.&#160;R.,&#160;Sanborn,&#160;A.&#160;N.,&#160;and&#160;Navarro,&#160;D.&#160;J.&#160;(2007).<br/>
+Unifying&#160;rational&#160;models&#160;of&#160;categorization&#160;via&#160;the&#160;hierarchical&#160;Dirichlet&#160;process.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Annual&#160;Conference&#160;of&#160;the&#160;Cognitive&#160;Science&#160;Society,&#160;volume&#160;29.<br/>
+Griffiths,&#160;T.&#160;L.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2006).<br/>
+Infinite&#160;latent&#160;feature&#160;models&#160;and&#160;the&#160;Indian&#160;buffet&#160;process.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;18.<br/>
+Haghighi,&#160;A.&#160;and&#160;Klein,&#160;D.&#160;(2007).<br/>
+Unsupervised&#160;coreference&#160;resolution&#160;in&#160;a&#160;nonparametric&#160;Bayesian&#160;model.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Annual&#160;Meeting&#160;of&#160;the&#160;Association&#160;for&#160;Computational&#160;Linguistics.<br/>
+Heller,&#160;K.&#160;A.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2005).<br/>
+Bayesian&#160;hierarchical&#160;clustering.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Conference&#160;on&#160;Machine&#160;Learning,&#160;volume&#160;22.<br/>
+<hr/>
+<a name=90></a>References&#160;V<br/>
+Heller,&#160;K.&#160;A.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2007).<br/>
+A&#160;nonparametric&#160;Bayesian&#160;approach&#160;to&#160;modeling&#160;overlapping&#160;clusters.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Workshop&#160;on&#160;Artificial&#160;Intelligence&#160;and&#160;Statistics,&#160;volume&#160;11.<br/>
+Hjort,&#160;N.&#160;L.&#160;(1990).<br/>
+Nonparametric&#160;Bayes&#160;estimators&#160;based&#160;on&#160;beta&#160;processes&#160;in&#160;models&#160;for&#160;life&#160;history&#160;data.<br/>Annals&#160;of&#160;Statistics,&#160;18(3):1259–1294.<br/>
+Ishwaran,&#160;H.&#160;and&#160;James,&#160;L.&#160;F.&#160;(2001).<br/>
+Gibbs&#160;sampling&#160;methods&#160;for&#160;stick-breaking&#160;priors.<br/>Journal&#160;of&#160;the&#160;American&#160;Statistical&#160;Association,&#160;96(453):161–173.<br/>
+Jain,&#160;S.&#160;and&#160;Neal,&#160;R.&#160;M.&#160;(2004).<br/>
+A&#160;split-merge&#160;Markov&#160;chain&#160;Monte&#160;Carlo&#160;procedure&#160;for&#160;the&#160;Dirichlet&#160;process&#160;mixture&#160;model.<br/>Technical&#160;report,&#160;Department&#160;of&#160;Statistics,&#160;University&#160;of&#160;Toronto.<br/>
+Johnson,&#160;M.,&#160;Griffiths,&#160;T.&#160;L.,&#160;and&#160;Goldwater,&#160;S.&#160;(2007).<br/>
+Adaptor&#160;grammars:&#160;A&#160;framework&#160;for&#160;specifying&#160;compositional&#160;nonparametric&#160;Bayesian&#160;models.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;19.<br/>
+Kemp,&#160;C.,&#160;Tenenbaum,&#160;J.&#160;B.,&#160;Griffiths,&#160;T.&#160;L.,&#160;Yamada,&#160;T.,&#160;and&#160;Ueda,&#160;N.&#160;(2006).<br/>
+Learning&#160;systems&#160;of&#160;concepts&#160;with&#160;an&#160;infinite&#160;relational&#160;model.<br/>In&#160;Proceedings&#160;of&#160;the&#160;AAAI&#160;Conference&#160;on&#160;Artificial&#160;Intelligence,&#160;volume&#160;21.<br/>
+Kim,&#160;S.&#160;(2007).<br/>
+Learning&#160;Hierarchical&#160;Probabilistic&#160;Models&#160;with&#160;Random&#160;Effects&#160;with&#160;Applications&#160;to&#160;Time-series&#160;and&#160;Image&#160;Data.<br/>PhD&#160;thesis,&#160;Information&#160;and&#160;Computer&#160;Science,&#160;University&#160;of&#160;California&#160;at&#160;Irvine.<br/>
+<hr/>
+<a name=91></a>References&#160;VI<br/>
+Kim,&#160;S.&#160;and&#160;Smyth,&#160;P.&#160;(2007).<br/>
+Hierarchical&#160;dirichlet&#160;processes&#160;with&#160;random&#160;effects.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;19.<br/>
+Kingman,&#160;J.&#160;F.&#160;C.&#160;(1982a).<br/>
+The&#160;coalescent.<br/>Stochastic&#160;Processes&#160;and&#160;their&#160;Applications,&#160;13:235–248.<br/>
+Kingman,&#160;J.&#160;F.&#160;C.&#160;(1982b).<br/>
+On&#160;the&#160;genealogy&#160;of&#160;large&#160;populations.<br/>Journal&#160;of&#160;Applied&#160;Probability,&#160;19:27–43.<br/>Essays&#160;in&#160;Statistical&#160;Science.<br/>
+Kivinen,&#160;J.,&#160;Sudderth,&#160;E.,&#160;and&#160;Jordan,&#160;M.&#160;I.&#160;(2007a).<br/>
+Image&#160;denoising&#160;with&#160;nonparametric&#160;hidden&#160;Markov&#160;trees.<br/>In&#160;IEEE&#160;International&#160;Conference&#160;on&#160;Image&#160;Processing&#160;(ICIP),&#160;San&#160;Antonio,&#160;TX.<br/>
+Kivinen,&#160;J.,&#160;Sudderth,&#160;E.,&#160;and&#160;Jordan,&#160;M.&#160;I.&#160;(2007b).<br/>
+Learning&#160;multiscale&#160;representations&#160;of&#160;natural&#160;scenes&#160;using&#160;Dirichlet&#160;processes.<br/>In&#160;IEEE&#160;International&#160;Conference&#160;on&#160;Computer&#160;Vision&#160;(ICCV),&#160;Rio&#160;de&#160;Janeiro,&#160;Brazil.<br/>
+Knowles,&#160;D.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2007).<br/>
+Infinite&#160;sparse&#160;factor&#160;analysis&#160;and&#160;infinite&#160;independent&#160;components&#160;analysis.<br/>In&#160;International&#160;Conference&#160;on&#160;Independent&#160;Component&#160;Analysis&#160;and&#160;Signal&#160;Separation,&#160;volume&#160;7&#160;of&#160;Lecture&#160;Notes&#160;in<br/>Computer&#160;Science.&#160;Springer.<br/>
+Kurihara,&#160;K.,&#160;Welling,&#160;M.,&#160;and&#160;Vlassis,&#160;N.&#160;(2007).<br/>
+Accelerated&#160;variational&#160;DP&#160;mixture&#160;models.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;19.<br/>
+<hr/>
+<a name=92></a>References&#160;VII<br/>
+Li,&#160;W.,&#160;Blei,&#160;D.&#160;M.,&#160;and&#160;McCallum,&#160;A.&#160;(2007).<br/>
+Nonparametric&#160;Bayes&#160;pachinko&#160;allocation.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Conference&#160;on&#160;Uncertainty&#160;in&#160;Artificial&#160;Intelligence.<br/>
+Liang,&#160;P.,&#160;Jordan,&#160;M.&#160;I.,&#160;and&#160;Taskar,&#160;B.&#160;(2007a).<br/>
+A&#160;permutation-augmented&#160;sampler&#160;for&#160;Dirichlet&#160;process&#160;mixture&#160;models.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Conference&#160;on&#160;Machine&#160;Learning.<br/>
+Liang,&#160;P.,&#160;Petrov,&#160;S.,&#160;Jordan,&#160;M.&#160;I.,&#160;and&#160;Klein,&#160;D.&#160;(2007b).<br/>
+The&#160;infinite&#160;PCFG&#160;using&#160;hierarchical&#160;Dirichlet&#160;processes.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Conference&#160;on&#160;Empirical&#160;Methods&#160;in&#160;Natural&#160;Language&#160;Processing.<br/>
+MacEachern,&#160;S.,&#160;Kottas,&#160;A.,&#160;and&#160;Gelfand,&#160;A.&#160;(2001).<br/>
+Spatial&#160;nonparametric&#160;Bayesian&#160;models.<br/>Technical&#160;Report&#160;01-10,&#160;Institute&#160;of&#160;Statistics&#160;and&#160;Decision&#160;Sciences,&#160;Duke&#160;University.<br/>http://ftp.isds.duke.edu/WorkingPapers/01-10.html.<br/>
+Mansingkha,&#160;V.&#160;K.,&#160;Roy,&#160;D.&#160;M.,&#160;Rifkin,&#160;R.,&#160;and&#160;Tenenbaum,&#160;J.&#160;B.&#160;(2007).<br/>
+AClass:&#160;An&#160;online&#160;algorithm&#160;for&#160;generative&#160;classification.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Workshop&#160;on&#160;Artificial&#160;Intelligence&#160;and&#160;Statistics,&#160;volume&#160;11.<br/>
+Meeds,&#160;E.,&#160;Ghahramani,&#160;Z.,&#160;Neal,&#160;R.&#160;M.,&#160;and&#160;Roweis,&#160;S.&#160;T.&#160;(2007).<br/>
+Modeling&#160;dyadic&#160;data&#160;with&#160;binary&#160;latent&#160;factors.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;19.<br/>
+Minka,&#160;T.&#160;P.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2003).<br/>
+Expectation&#160;propagation&#160;for&#160;infinite&#160;mixtures.<br/>Presented&#160;at&#160;NIPS2003&#160;Workshop&#160;on&#160;Nonparametric&#160;Bayesian&#160;Methods&#160;and&#160;Infinite&#160;Models.<br/>
+<hr/>
+<a name=93></a>References&#160;VIII<br/>
+Neal,&#160;R.&#160;M.&#160;(1992).<br/>
+Bayesian&#160;mixture&#160;modeling.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Workshop&#160;on&#160;Maximum&#160;Entropy&#160;and&#160;Bayesian&#160;Methods&#160;of&#160;Statistical&#160;Analysis,&#160;volume&#160;11,&#160;pages<br/>197–211.<br/>
+Neal,&#160;R.&#160;M.&#160;(2000).<br/>
+Markov&#160;chain&#160;sampling&#160;methods&#160;for&#160;Dirichlet&#160;process&#160;mixture&#160;models.<br/>Journal&#160;of&#160;Computational&#160;and&#160;Graphical&#160;Statistics,&#160;9:249–265.<br/>
+Neal,&#160;R.&#160;M.&#160;(2001).<br/>
+Defining&#160;priors&#160;for&#160;distributions&#160;using&#160;Dirichlet&#160;diffusion&#160;trees.<br/>Technical&#160;Report&#160;0104,&#160;Department&#160;of&#160;Statistics,&#160;University&#160;of&#160;Toronto.<br/>
+Neal,&#160;R.&#160;M.&#160;(2003).<br/>
+Density&#160;modeling&#160;and&#160;clustering&#160;using&#160;Dirichlet&#160;diffusion&#160;trees.<br/>In&#160;Bayesian&#160;Statistics,&#160;volume&#160;7,&#160;pages&#160;619–629.<br/>
+Perman,&#160;M.,&#160;Pitman,&#160;J.,&#160;and&#160;Yor,&#160;M.&#160;(1992).<br/>
+Size-biased&#160;sampling&#160;of&#160;Poisson&#160;point&#160;processes&#160;and&#160;excursions.<br/>Probability&#160;Theory&#160;and&#160;Related&#160;Fields,&#160;92(1):21–39.<br/>
+Pitman,&#160;J.&#160;(2002).<br/>
+Combinatorial&#160;stochastic&#160;processes.<br/>Technical&#160;Report&#160;621,&#160;Department&#160;of&#160;Statistics,&#160;University&#160;of&#160;California&#160;at&#160;Berkeley.<br/>Lecture&#160;notes&#160;for&#160;St.&#160;Flour&#160;Summer&#160;School.<br/>
+Pitman,&#160;J.&#160;and&#160;Yor,&#160;M.&#160;(1997).<br/>
+The&#160;two-parameter&#160;Poisson-Dirichlet&#160;distribution&#160;derived&#160;from&#160;a&#160;stable&#160;subordinator.<br/>Annals&#160;of&#160;Probability,&#160;25:855–900.<br/>
+<hr/>
+<a name=94></a>References&#160;IX<br/>
+Porteous,&#160;I.,&#160;Ihler,&#160;A.,&#160;Smyth,&#160;P.,&#160;and&#160;Welling,&#160;M.&#160;(2006).<br/>
+Gibbs&#160;sampling&#160;for&#160;(Coupled)&#160;infinite&#160;mixture&#160;models&#160;in&#160;the&#160;stick-breaking&#160;representation.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Conference&#160;on&#160;Uncertainty&#160;in&#160;Artificial&#160;Intelligence,&#160;volume&#160;22.<br/>
+Rasmussen,&#160;C.&#160;E.&#160;(2000).<br/>
+The&#160;infinite&#160;Gaussian&#160;mixture&#160;model.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;12.<br/>
+Rasmussen,&#160;C.&#160;E.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2001).<br/>
+Occam’s&#160;razor.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;13.<br/>
+Rasmussen,&#160;C.&#160;E.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2002).<br/>
+Infinite&#160;mixtures&#160;of&#160;Gaussian&#160;process&#160;experts.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;14.<br/>
+Rasmussen,&#160;C.&#160;E.&#160;and&#160;Williams,&#160;C.&#160;K.&#160;I.&#160;(2006).<br/>
+Gaussian&#160;Processes&#160;for&#160;Machine&#160;Learning.<br/>MIT&#160;Press.<br/>
+Roy,&#160;D.&#160;M.,&#160;Kemp,&#160;C.,&#160;Mansinghka,&#160;V.,&#160;and&#160;Tenenbaum,&#160;J.&#160;B.&#160;(2007).<br/>
+Learning&#160;annotated&#160;hierarchies&#160;from&#160;relational&#160;data.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;19.<br/>
+Savova,&#160;V.,&#160;Roy,&#160;D.&#160;M.,&#160;Schmidt,&#160;L.,&#160;and&#160;Tenenbaum,&#160;J.&#160;B.&#160;(2007).<br/>
+Discovering&#160;syntactic&#160;hierarchies.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Annual&#160;Conference&#160;of&#160;the&#160;Cognitive&#160;Science&#160;Society,&#160;volume&#160;29.<br/>
+<hr/>
+<a name=95></a>References&#160;X<br/>
+Sethuraman,&#160;J.&#160;(1994).<br/>
+A&#160;constructive&#160;definition&#160;of&#160;Dirichlet&#160;priors.<br/>Statistica&#160;Sinica,&#160;4:639–650.<br/>
+Shafto,&#160;P.,&#160;Kemp,&#160;C.,&#160;Mansinghka,&#160;V.,&#160;Gordon,&#160;M.,&#160;and&#160;Tenenbaum,&#160;J.&#160;B.&#160;(2006).<br/>
+Learning&#160;cross-cutting&#160;systems&#160;of&#160;categories.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Annual&#160;Conference&#160;of&#160;the&#160;Cognitive&#160;Science&#160;Society,&#160;volume&#160;28.<br/>
+Srebro,&#160;N.&#160;and&#160;Roweis,&#160;S.&#160;(2005).<br/>
+Time-varying&#160;topic&#160;models&#160;using&#160;dependent&#160;Dirichlet&#160;processes.<br/>Technical&#160;Report&#160;UTML-TR-2005-003,&#160;Department&#160;of&#160;Computer&#160;Science,&#160;University&#160;of&#160;Toronto.<br/>
+Sudderth,&#160;E.&#160;and&#160;Jordan,&#160;M.&#160;I.&#160;(2009).<br/>
+Shared&#160;segmentation&#160;of&#160;natural&#160;scenes&#160;using&#160;dependent&#160;Pitman-Yor&#160;processes.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;21.<br/>
+Sudderth,&#160;E.,&#160;Torralba,&#160;A.,&#160;Freeman,&#160;W.,&#160;and&#160;Willsky,&#160;A.&#160;(2006a).<br/>
+Depth&#160;from&#160;familiar&#160;objects:&#160;A&#160;hierarchical&#160;model&#160;for&#160;3D&#160;scenes.<br/>In&#160;Proceedings&#160;of&#160;the&#160;IEEE&#160;Conference&#160;on&#160;Computer&#160;Vision&#160;and&#160;Pattern&#160;Recognition.<br/>
+Sudderth,&#160;E.,&#160;Torralba,&#160;A.,&#160;Freeman,&#160;W.,&#160;and&#160;Willsky,&#160;A.&#160;(2006b).<br/>
+Describing&#160;visual&#160;scenes&#160;using&#160;transformed&#160;Dirichlet&#160;processes.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;18.<br/>
+Sudderth,&#160;E.,&#160;Torralba,&#160;A.,&#160;Freeman,&#160;W.,&#160;and&#160;Willsky,&#160;A.&#160;(2008).<br/>
+Describing&#160;visual&#160;scenes&#160;using&#160;transformed&#160;objects&#160;and&#160;parts.<br/>International&#160;Journal&#160;of&#160;Computer&#160;Vision,&#160;77.<br/>
+<hr/>
+<a name=96></a>References&#160;XI<br/>
+Teh,&#160;Y.&#160;W.&#160;(2006a).<br/>
+A&#160;Bayesian&#160;interpretation&#160;of&#160;interpolated&#160;Kneser-Ney.<br/>Technical&#160;Report&#160;TRA2/06,&#160;School&#160;of&#160;Computing,&#160;National&#160;University&#160;of&#160;Singapore.<br/>
+Teh,&#160;Y.&#160;W.&#160;(2006b).<br/>
+A&#160;hierarchical&#160;Bayesian&#160;language&#160;model&#160;based&#160;on&#160;Pitman-Yor&#160;processes.<br/>In&#160;Proceedings&#160;of&#160;the&#160;21st&#160;International&#160;Conference&#160;on&#160;Computational&#160;Linguistics&#160;and&#160;44th&#160;Annual&#160;Meeting&#160;of&#160;the<br/>Association&#160;for&#160;Computational&#160;Linguistics,&#160;pages&#160;985–992.<br/>
+Teh,&#160;Y.&#160;W.&#160;(2007).<br/>
+Dirichlet&#160;processes.<br/>Submitted&#160;to&#160;Encyclopedia&#160;of&#160;Machine&#160;Learning.<br/>
+Teh,&#160;Y.&#160;W.,&#160;Daume&#160;III,&#160;H.,&#160;and&#160;Roy,&#160;D.&#160;M.&#160;(2008).<br/>
+Bayesian&#160;agglomerative&#160;clustering&#160;with&#160;coalescents.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;20.<br/>
+Teh,&#160;Y.&#160;W.,&#160;Görür,&#160;D.,&#160;and&#160;Ghahramani,&#160;Z.&#160;(2007).<br/>
+Stick-breaking&#160;construction&#160;for&#160;the&#160;Indian&#160;buffet&#160;process.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Conference&#160;on&#160;Artificial&#160;Intelligence&#160;and&#160;Statistics,&#160;volume&#160;11.<br/>
+Teh,&#160;Y.&#160;W.&#160;and&#160;Jordan,&#160;M.&#160;I.&#160;(2009).<br/>
+Hierarchical&#160;Bayesian&#160;nonparametric&#160;models&#160;with&#160;applications.<br/>In&#160;Hjort,&#160;N.,&#160;Holmes,&#160;C.,&#160;Müller,&#160;P.,&#160;and&#160;Walker,&#160;S.,&#160;editors,&#160;To&#160;appear&#160;in&#160;Bayesian&#160;Nonparametrics:&#160;Principles&#160;and<br/>Practice.&#160;Cambridge&#160;University&#160;Press.<br/>
+Teh,&#160;Y.&#160;W.,&#160;Jordan,&#160;M.&#160;I.,&#160;Beal,&#160;M.&#160;J.,&#160;and&#160;Blei,&#160;D.&#160;M.&#160;(2006).<br/>
+Hierarchical&#160;Dirichlet&#160;processes.<br/>Journal&#160;of&#160;the&#160;American&#160;Statistical&#160;Association,&#160;101(476):1566–1581.<br/>
+<hr/>
+<a name=97></a>References&#160;XII<br/>
+Thibaux,&#160;R.&#160;and&#160;Jordan,&#160;M.&#160;I.&#160;(2007).<br/>
+Hierarchical&#160;beta&#160;processes&#160;and&#160;the&#160;Indian&#160;buffet&#160;process.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Workshop&#160;on&#160;Artificial&#160;Intelligence&#160;and&#160;Statistics,&#160;volume&#160;11.<br/>
+Wood,&#160;F.,&#160;Goldwater,&#160;S.,&#160;and&#160;Black,&#160;M.&#160;J.&#160;(2006a).<br/>
+A&#160;non-parametric&#160;Bayesian&#160;approach&#160;to&#160;spike&#160;sorting.<br/>In&#160;Proceedings&#160;of&#160;the&#160;IEEE&#160;Conference&#160;on&#160;Engineering&#160;in&#160;Medicine&#160;and&#160;Biologicial&#160;Systems,&#160;volume&#160;28.<br/>
+Wood,&#160;F.&#160;and&#160;Griffiths,&#160;T.&#160;L.&#160;(2006).<br/>
+Particle&#160;filtering&#160;for&#160;nonparametric&#160;Bayesian&#160;matrix&#160;factorization.<br/>In&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems,&#160;volume&#160;18.<br/>
+Wood,&#160;F.,&#160;Griffiths,&#160;T.&#160;L.,&#160;and&#160;Ghahramani,&#160;Z.&#160;(2006b).<br/>
+A&#160;non-parametric&#160;Bayesian&#160;method&#160;for&#160;inferring&#160;hidden&#160;causes.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Conference&#160;on&#160;Uncertainty&#160;in&#160;Artificial&#160;Intelligence,&#160;volume&#160;22.<br/>
+Xing,&#160;E.,&#160;Sharan,&#160;R.,&#160;and&#160;Jordan,&#160;M.&#160;(2004).<br/>
+Bayesian&#160;haplotype&#160;inference&#160;via&#160;the&#160;dirichlet&#160;process.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Conference&#160;on&#160;Machine&#160;Learning,&#160;volume&#160;21.<br/>
+Xing,&#160;E.&#160;P.,&#160;Jordan,&#160;M.&#160;I.,&#160;and&#160;Sharan,&#160;R.&#160;(2007).<br/>
+Bayesian&#160;haplotype&#160;inference&#160;via&#160;the&#160;Dirichlet&#160;process.<br/>Journal&#160;of&#160;Computational&#160;Biology,&#160;14:267–284.<br/>
+Xing,&#160;E.&#160;P.&#160;and&#160;Sohn,&#160;K.&#160;(2007a).<br/>
+Hidden&#160;Markov&#160;Dirichlet&#160;process:&#160;Modeling&#160;genetic&#160;recombination&#160;in&#160;open&#160;ancestral&#160;space.<br/>Bayesian&#160;Analysis,&#160;2(2).<br/>
+<hr/>
+<a name=98></a>References&#160;XIII<br/>
+Xing,&#160;E.&#160;P.&#160;and&#160;Sohn,&#160;K.&#160;(2007b).<br/>
+A&#160;nonparametric&#160;Bayesian&#160;approach&#160;for&#160;haplotype&#160;reconstruction&#160;from&#160;single&#160;and&#160;multi-population&#160;data.<br/>Technical&#160;Report&#160;CMU-MLD&#160;07-107,&#160;Carnegie&#160;Mellow&#160;University.<br/>
+Xing,&#160;E.&#160;P.,&#160;Sohn,&#160;K.,&#160;Jordan,&#160;M.&#160;I.,&#160;and&#160;Teh,&#160;Y.&#160;W.&#160;(2006).<br/>
+Bayesian&#160;multi-population&#160;haplotype&#160;inference&#160;via&#160;a&#160;hierarchical&#160;Dirichlet&#160;process&#160;mixture.<br/>In&#160;Proceedings&#160;of&#160;the&#160;International&#160;Conference&#160;on&#160;Machine&#160;Learning,&#160;volume&#160;23.<br/>
+Xu,&#160;Z.,&#160;Tresp,&#160;V.,&#160;Yu,&#160;K.,&#160;and&#160;Kriegel,&#160;H.-P.&#160;(2006).<br/>
+Infinite&#160;hidden&#160;relational&#160;models.<br/>In&#160;Proceedings&#160;of&#160;the&#160;Conference&#160;on&#160;Uncertainty&#160;in&#160;Artificial&#160;Intelligence,&#160;volume&#160;22.<br/>
+<hr/>
+<a name="outline"></a><h1>Document Outline</h1>
+<ul>
+<li><a href="Teh_1s.html#3">Some Examples of Parametric Models</a></li>
+<li><a href="Teh_1s.html#10">Bayesian Nonparametric Modelling</a></li>
+<li><a href="Teh_1s.html#17">Infinite Mixture Models</a></li>
+<li><a href="Teh_1s.html#23">Dirichlet Processes</a>
+<ul>
+<li><a href="Teh_1s.html#24">Measure Theoretic Probability Theory</a></li>
+<li><a href="Teh_1s.html#32">Representations of Dirichlet Processes</a></li>
+</ul>
+</li>
+<li><a href="Teh_1s.html#40">Indian Buffet and Beta Processes</a></li>
+<li><a href="Teh_1s.html#48">Hierarchical Dirichlet Processes</a></li>
+<li><a href="Teh_1s.html#58">Pitman-Yor Processes</a></li>
+<li><a href="Teh_1s.html#64">Summary</a></li>
+<li><a href="Teh_1s.html#68">Appendix</a>
+<ul>
+<li><a href="Teh_1s.html#68">Relating Different Representations of Dirichlet Processes</a></li>
+<li><a href="Teh_1s.html#78">Representations of Hierarchical Dirichlet Processes</a></li>
+<li><a href="Teh_1s.html#83">Extended Bibliography</a></li>
+</ul>
+</li>
+</ul>
+<hr/>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img class="yflip" src="./Ghahramani_4-1_1.png"/><br/>
+Learning&#160;the&#160;structure&#160;of<br/>
+deep&#160;sparse&#160;directed&#160;graphical&#160;models<br/>
+Ryan&#160;P.&#160;Adams1,&#160;Hanna&#160;M.&#160;Wallach2,&#160;and&#160;Zoubin&#160;Ghahramani3<br/>
+1University&#160;of&#160;Toronto<br/>
+2University&#160;of&#160;Massachusetts&#160;at&#160;Amherst<br/>
+3University&#160;of&#160;Cambridge<br/>
+Machine&#160;Learning&#160;Summer&#160;School<br/>
+August&#160;2009<br/>
+<hr/>
+<a name=2></a><img class="yflip" src="./Ghahramani_4-2_1.png"/><br/>
+Motivation<br/>
+◮&#160;Present&#160;some&#160;recent&#160;research&#160;on&#160;graphical&#160;model&#160;structure<br/>
+learning...<br/>
+◮&#160;...related&#160;to&#160;deep&#160;belief&#160;networks...<br/>
+◮&#160;...which&#160;uses&#160;Markov&#160;chain&#160;Monte&#160;Carlo&#160;inference...<br/>
+◮&#160;...in&#160;a&#160;non-parametric&#160;Bayesian&#160;model.<br/>
+<hr/>
+<a name=3></a><img class="yflip" src="./Ghahramani_4-3_1.png"/><br/>
+Deep&#160;networks<br/>
+There&#160;is&#160;a&#160;great&#160;deal&#160;of&#160;interest&#160;on&#160;“deep&#160;belief&#160;networks”.<br/>
+Deep&#160;belief&#160;nets&#160;are&#160;probabilistic&#160;generative&#160;models&#160;that&#160;are<br/>composed&#160;of&#160;multiple&#160;layers&#160;of&#160;stochastic,&#160;latent&#160;variables.&#160;The<br/>latent&#160;variables&#160;typically&#160;have&#160;binary&#160;values&#160;and&#160;are&#160;often&#160;called<br/>hidden&#160;units&#160;or&#160;feature&#160;detectors.&#160;The&#160;top&#160;two&#160;layers&#160;have<br/>undirected,&#160;symmetric&#160;connections&#160;between&#160;them&#160;and&#160;form&#160;an<br/>associative&#160;memory.&#160;The&#160;lower&#160;layers&#160;receive&#160;top-down,&#160;directed<br/>connections&#160;from&#160;the&#160;layer&#160;above.&#160;The&#160;states&#160;of&#160;the&#160;units&#160;in&#160;the<br/>lowest&#160;layer&#160;represent&#160;a&#160;data&#160;vector.<br/>
+Geoffrey&#160;E.&#160;Hinton&#160;(2009)&#160;Scholarpedia.<br/>
+<hr/>
+<a name=4></a><img class="yflip" src="./Ghahramani_4-4_1.png"/><br/>
+Deep&#160;networks<br/>
+Questions:<br/>
+◮&#160;How&#160;many&#160;layers&#160;should&#160;there&#160;be?<br/>
+◮&#160;How&#160;wide&#160;should&#160;each&#160;layer&#160;be?<br/>
+◮&#160;What&#160;sorts&#160;of&#160;units?<br/>
+Goal:&#160;To&#160;learn&#160;the&#160;structure&#160;of&#160;a&#160;deep&#160;network.<br/>
+Approach:&#160;A&#160;nonparametric&#160;Bayesian&#160;method&#160;that&#160;learns&#160;the<br/>structure&#160;of&#160;a&#160;layered&#160;directed&#160;deep&#160;belief&#160;network.<br/>
+<hr/>
+<a name=5></a><img class="yflip" src="./Ghahramani_4-5_1.png"/><br/>
+Layered&#160;directed&#160;deep&#160;networks<br/>
+K<br/>
+Y<br/>
+p(x)&#160;=<br/>
+p(xi&#160;|x&#160;)<br/>
+πi<br/>
+i&#160;=1<br/>
+Where&#160;x&#160;=&#160;(x1,&#160;.&#160;.&#160;.&#160;,&#160;xK&#160;)&#160;and&#160;πi&#160;are&#160;the&#160;parents&#160;of&#160;node&#160;i.<br/>
+aka&#160;Bayesian&#160;networks,&#160;probabilistic&#160;directed&#160;graphical&#160;models.<br/>
+Assume&#160;a&#160;layered&#160;graph&#160;structure.<br/>
+How&#160;many&#160;layers?&#160;How&#160;wide&#160;should&#160;each&#160;layer&#160;be?<br/>
+<hr/>
+<a name=6></a><img class="yflip" src="./Ghahramani_4-6_1.png"/><br/>
+Priors&#160;over&#160;graph&#160;structures<br/>
+Let&#160;(m)<br/>
+z<br/>
+=&#160;1&#160;mean&#160;that&#160;j&#160;∈&#160;π<br/>
+ij<br/>
+i&#160;,&#160;that&#160;is,&#160;node&#160;j&#160;is&#160;a&#160;parent&#160;of&#160;node&#160;i<br/>
+in&#160;layer&#160;m.<br/>
+If&#160;we&#160;specify&#160;a&#160;sequence&#160;of&#160;matrices&#160;Z&#160;(0),&#160;Z&#160;(1),&#160;Z&#160;(2),&#160;.&#160;.&#160;.&#160;we&#160;have<br/>defined&#160;the&#160;layered&#160;graph&#160;structure.<br/>
+<hr/>
+<a name=7></a><img class="yflip" src="./Ghahramani_4-7_1.png"/><br/>
+<img src="./Ghahramani_4-7_2.png"/><br/>
+Previous&#160;work<br/>
+A&#160;Non-Parametric&#160;Bayesian&#160;Method&#160;for&#160;Inferring&#160;Hidden&#160;Causes<br/>
+(Wood,&#160;Griffiths,&#160;Ghahramani,&#160;2006)<br/>
+Inferring&#160;stroke&#160;localization&#160;from&#160;patient&#160;symptoms:<br/>
+Y&#160;-&#160;binary&#160;latent&#160;factors&#160;(diseases,&#160;k)<br/>Z&#160;-&#160;graph&#160;structure&#160;(∼&#160;Indian&#160;Buffet&#160;Process&#160;(IBP))<br/>X&#160;-&#160;observed&#160;binary&#160;features&#160;(56&#160;symptoms,&#160;s)<br/>
+P<br/>
+Noisy-or:&#160;P(x<br/>
+zsk&#160;ykp<br/>
+sp&#160;=&#160;1|Z&#160;,&#160;Y&#160;,&#160;λ,&#160;ǫ)&#160;=&#160;1&#160;−&#160;(1&#160;−&#160;λ)<br/>
+k<br/>
+(1&#160;−&#160;ǫ)<br/>
+The&#160;IBP&#160;defines&#160;a&#160;distribution&#160;on&#160;sparse&#160;binary&#160;matrices&#160;with&#160;a<br/>countably&#160;infinite&#160;number&#160;of&#160;columns.<br/>
+Graphical&#160;models&#160;with&#160;an&#160;unbounded&#160;number&#160;of&#160;hidden&#160;units<br/>
+<hr/>
+<a name=8></a><img class="yflip" src="./Ghahramani_4-8_1.png"/><br/>
+<img src="./Ghahramani_4-8_2.png"/><br/>
+<img class="yflip" src="./Ghahramani_4-8_3.png"/><br/>
+Preview&#160;of&#160;the&#160;Indian&#160;buffet&#160;process<br/>From&#160;finite&#160;to&#160;infinite&#160;matrices<br/>
+zik&#160;=&#160;1&#160;means&#160;object&#160;i&#160;has&#160;feature&#160;k:<br/>
+zik&#160;∼&#160;Bernoulli(θk&#160;)<br/>
+θk&#160;∼&#160;Beta(α/K&#160;,&#160;1)<br/>
+◮&#160;Note&#160;that&#160;P&#160;(zik&#160;=&#160;1|α)&#160;=&#160;E&#160;(θk&#160;)&#160;=<br/>
+α/K&#160;,&#160;so<br/>
+α/K&#160;+1<br/>
+as&#160;K&#160;grows&#160;larger&#160;the&#160;matrix&#160;gets&#160;sparser.<br/>
+◮&#160;So&#160;if&#160;Z&#160;is&#160;N&#160;×&#160;K&#160;,&#160;the&#160;expected&#160;number&#160;of<br/>
+nonzero&#160;entries&#160;is&#160;Nα/(1&#160;+&#160;α/K&#160;)&#160;&lt;&#160;Nα.<br/>
+◮&#160;Even&#160;in&#160;the&#160;K&#160;→&#160;∞&#160;limit,&#160;the&#160;matrix&#160;is<br/>
+expected&#160;to&#160;have&#160;a&#160;finite&#160;number&#160;of&#160;non-zero<br/>entries.<br/>
+◮&#160;Two&#160;parameter&#160;extension&#160;θk&#160;∼&#160;Beta(αβ/K&#160;,&#160;β)<br/>
+<hr/>
+<a name=9></a><img class="yflip" src="./Ghahramani_4-9_1.png"/><br/>
+<img src="./Ghahramani_4-9_2.png"/><br/>
+<img src="./Ghahramani_4-9_3.png"/><br/>
+<img src="./Ghahramani_4-9_4.png"/><br/>
+<img src="./Ghahramani_4-9_5.png"/><br/>
+<img src="./Ghahramani_4-9_6.png"/><br/>
+<img src="./Ghahramani_4-9_7.png"/><br/>
+<img src="./Ghahramani_4-9_8.png"/><br/>
+<img src="./Ghahramani_4-9_9.png"/><br/>
+<img src="./Ghahramani_4-9_10.png"/><br/>
+<img src="./Ghahramani_4-9_11.png"/><br/>
+<img src="./Ghahramani_4-9_12.png"/><br/>
+<img src="./Ghahramani_4-9_13.png"/><br/>
+<img src="./Ghahramani_4-9_14.png"/><br/>
+<img src="./Ghahramani_4-9_15.png"/><br/>
+<img src="./Ghahramani_4-9_16.png"/><br/>
+<img src="./Ghahramani_4-9_17.png"/><br/>
+<img src="./Ghahramani_4-9_18.png"/><br/>
+<img src="./Ghahramani_4-9_19.png"/><br/>
+<img src="./Ghahramani_4-9_20.png"/><br/>
+<img src="./Ghahramani_4-9_21.png"/><br/>
+Indian&#160;buffet&#160;process<br/>
+Dishes<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+6<br/>
+7<br/>
+8<br/>
+9<br/>
+10<br/>
+Customers&#160;11<br/>
+12<br/>
+13<br/>
+14<br/>
+15<br/>
+16<br/>
+17<br/>
+18<br/>
+19<br/>
+20<br/>
+◮&#160;First&#160;customer&#160;starts&#160;at&#160;the&#160;left&#160;of&#160;the&#160;buffet,&#160;and&#160;takes&#160;a&#160;serving<br/>
+from&#160;each&#160;dish,&#160;stopping&#160;after&#160;a&#160;Poisson(α)&#160;number&#160;of&#160;dishes&#160;as&#160;his<br/>plate&#160;becomes&#160;overburdened.<br/>
+◮&#160;The&#160;nth&#160;customer&#160;moves&#160;along&#160;the&#160;buffet,&#160;sampling&#160;dishes&#160;in<br/>
+proportion&#160;to&#160;their&#160;popularity,&#160;serving&#160;himself&#160;dish&#160;k&#160;with&#160;probability<br/>mk&#160;/n,&#160;and&#160;trying&#160;Poisson(α/n)&#160;new&#160;dishes.<br/>
+◮&#160;The&#160;customer-dish&#160;matrix&#160;is&#160;the&#160;feature&#160;matrix,&#160;Z&#160;.<br/>
+<hr/>
+<a name=10></a><img class="yflip" src="./Ghahramani_4-10_1.png"/><br/>
+Cascading&#160;Indian&#160;buffet&#160;process<br/>
+Start&#160;with&#160;K&#160;(0)&#160;rows&#160;(visible&#160;units)<br/>
+◮&#160;Z&#160;(0)&#160;∼&#160;IBP&#160;(α,&#160;β)&#160;with&#160;K&#160;(0)&#160;rows&#160;and&#160;K&#160;(1)&#160;non-zero&#160;columns<br/>
+◮&#160;Z&#160;(1)&#160;∼&#160;IBP&#160;(α,&#160;β)&#160;with&#160;K&#160;(1)&#160;rows&#160;and&#160;K&#160;(2)&#160;non-zero&#160;columns<br/>
+◮&#160;Z&#160;(2)&#160;∼&#160;IBP&#160;(α,&#160;β)&#160;with&#160;K&#160;(2)&#160;rows&#160;and&#160;K&#160;(3)&#160;non-zero&#160;columns<br/>
+◮&#160;.&#160;.&#160;.<br/>
+This&#160;defines&#160;a&#160;sequences&#160;of&#160;infinite&#160;sparse&#160;binary&#160;matrices.<br/>
+<hr/>
+<a name=11></a><img class="yflip" src="./Ghahramani_4-11_1.png"/><br/>
+<img class="yflip" src="./Ghahramani_4-11_2.png"/><br/>
+Properties&#160;of&#160;the&#160;Cascading&#160;IBP<br/>
+Z&#160;(m)&#160;∼&#160;IBP(α,&#160;β)<br/>
+for&#160;m&#160;=&#160;0,&#160;1,&#160;2,&#160;.&#160;.&#160;.<br/>
+◮&#160;The&#160;expected&#160;in-degree&#160;of&#160;each&#160;unit&#160;(number&#160;of&#160;parents)&#160;is&#160;α.<br/>
+◮&#160;The&#160;expected&#160;out-degree&#160;of&#160;each&#160;unit&#160;in&#160;m&#160;(number&#160;of&#160;children)&#160;is<br/>
+K&#160;(m−1)&#160;−&#160;1<br/>
+c(β,&#160;m)&#160;=&#160;1&#160;+<br/>
+1&#160;+&#160;β<br/>
+Note&#160;that&#160;limβ<br/>
+c(β,&#160;m)&#160;=&#160;1.<br/>
+→0&#160;c&#160;(β&#160;,&#160;m)&#160;=&#160;K&#160;(m−1)&#160;and&#160;limβ→∞<br/>
+◮&#160;Hidden&#160;units&#160;are&#160;exchangeable&#160;at&#160;each&#160;layer.<br/>
+◮&#160;Theorem:&#160;For&#160;K&#160;(m)&#160;∈&#160;N,&#160;0&#160;&lt;&#160;α&#160;&lt;&#160;∞,&#160;0&#160;&lt;&#160;β&#160;&lt;&#160;∞,&#160;the&#160;sequence&#160;of<br/>
+K&#160;(m)&#160;defined&#160;by&#160;the&#160;CIBP&#160;reaches&#160;the&#160;absorption&#160;state&#160;0,&#160;with<br/>probability&#160;one,&#160;i.e.&#160;lim&#160;p(K&#160;(m)&#160;=&#160;0)&#160;=&#160;1.<br/>
+m→∞<br/>
+<hr/>
+<a name=12></a><img class="yflip" src="./Ghahramani_4-12_1.png"/><br/>
+<img class="yflip" src="./Ghahramani_4-12_2.png"/><br/>
+<img class="yflip" src="./Ghahramani_4-12_3.png"/><br/>
+<img class="yflip" src="./Ghahramani_4-12_4.png"/><br/>
+Samples&#160;from&#160;the&#160;prior&#160;over&#160;structures<br/>
+α&#160;=&#160;1,&#160;β&#160;=&#160;1<br/>
+α&#160;=&#160;1,&#160;β&#160;=&#160;12<br/>
+α&#160;=&#160;1&#160;,&#160;β&#160;=&#160;1<br/>
+2<br/>
+α&#160;=&#160;1,&#160;β&#160;=&#160;2<br/>
+α&#160;=&#160;3&#160;,&#160;β&#160;=&#160;1<br/>
+2<br/>
+Samples&#160;from&#160;the&#160;CIBP&#160;prior&#160;starting&#160;from&#160;five&#160;visible&#160;units.<br/>
+<hr/>
+<a name=13></a><img class="yflip" src="./Ghahramani_4-13_1.png"/><br/>
+<img class="yflip" src="./Ghahramani_4-13_2.png"/><br/>
+What&#160;kinds&#160;of&#160;units?<br/>
+We&#160;want&#160;a&#160;model&#160;that&#160;is&#160;flexible&#160;enough&#160;to&#160;learn&#160;what&#160;types&#160;of<br/>unit&#160;it&#160;needs,&#160;ranging&#160;from&#160;binary&#160;to&#160;linear-Gaussian.<br/>
+This&#160;idea&#160;was&#160;explored&#160;in&#160;Nonlinear&#160;Gaussian&#160;belief&#160;networks&#160;(NLGBNs)<br/>by&#160;(Frey&#160;and&#160;Hinton,&#160;1999).<br/>
+Let&#160;u(m)&#160;be&#160;the&#160;activity&#160;of&#160;units&#160;in&#160;layer&#160;m.<br/>
+y(m)&#160;=&#160;(W&#160;(m+1)&#160;⊙&#160;Z&#160;(m+1))u(m+1)&#160;+&#160;(m)<br/>
+γ<br/>
+where&#160;W&#160;is&#160;a&#160;weight&#160;matrix,&#160;γ&#160;is&#160;a&#160;bias&#160;vector&#160;and&#160;⊙&#160;is&#160;Hadamard<br/>(elementwise)&#160;product.<br/>
+u(m)&#160;=&#160;σ(y&#160;(m)&#160;+&#160;ǫ(m))<br/>
+k<br/>
+k<br/>
+k<br/>
+σ&#160;is&#160;a&#160;sigmoid&#160;function&#160;and&#160;noise&#160;ǫ(m)&#160;∼&#160;N&#160;(0,&#160;1&#160;)&#160;has&#160;precision&#160;ν(m).<br/>
+k<br/>
+ν(m)<br/>
+k<br/>
+k<br/>
+<hr/>
+<a name=14></a><img class="yflip" src="./Ghahramani_4-14_1.png"/><br/>
+<img class="yflip" src="./Ghahramani_4-14_2.png"/><br/>
+NLGBN&#160;units<br/>
+−1<br/>
+−0.5<br/>
+0<br/>
+0.5<br/>
+1<br/>
+−1<br/>
+−0.5<br/>
+0<br/>
+0.5<br/>
+1<br/>
+−1<br/>
+−0.5<br/>
+0<br/>
+0.5<br/>
+1<br/>
+(a)&#160;ν&#160;=&#160;1<br/>
+(b)&#160;ν&#160;=&#160;5<br/>
+(c)&#160;ν&#160;=&#160;1000<br/>
+2<br/>
+Three&#160;modes&#160;of&#160;operation&#160;for&#160;the&#160;NLGBN&#160;unit.&#160;The&#160;black&#160;solid&#160;line<br/>shows&#160;the&#160;zero&#160;mean&#160;distribution,&#160;the&#160;red&#160;dashed&#160;line&#160;shows&#160;a&#160;pre-sigmoid<br/>mean&#160;of&#160;+1&#160;and&#160;the&#160;blue&#160;dash-dot&#160;line&#160;shows&#160;a&#160;pre-sigmoid&#160;mean&#160;of&#160;−1.<br/>
+(a)&#160;Binary&#160;behavior&#160;from&#160;small&#160;precision.<br/>
+(b)&#160;Roughly&#160;Gaussian&#160;behavior&#160;from&#160;medium&#160;precision.<br/>
+(c)&#160;Deterministic&#160;behavior&#160;from&#160;large&#160;precision.<br/>
+<hr/>
+<a name=15></a><img class="yflip" src="./Ghahramani_4-15_1.png"/><br/>
+Inference<br/>using&#160;Markov&#160;chain&#160;Monte&#160;Carlo<br/>
+W&#160;∼&#160;N<br/>
+γ&#160;∼&#160;N<br/>
+α&#160;∼&#160;G<br/>
+β&#160;∼&#160;G<br/>
+ν&#160;∼&#160;G<br/>
+We&#160;design&#160;an&#160;MCMC&#160;scheme&#160;to&#160;sample&#160;from&#160;the&#160;posterior:<br/>
+p({Z&#160;(m),&#160;W&#160;(m)}∞<br/>
+(m)<br/>
+(m)}∞<br/>
+m=1,&#160;{γ<br/>
+,&#160;ν<br/>
+m=0,&#160;{{u(m)<br/>
+n<br/>
+}∞<br/>
+m=1}N<br/>
+n=1|{xn&#160;}N<br/>
+n=1)<br/>
+◮&#160;u&#160;-&#160;slice&#160;sample<br/>
+◮&#160;W&#160;and&#160;γ&#160;-&#160;Gibbs<br/>
+◮&#160;ν&#160;-&#160;Gibbs<br/>
+◮&#160;Z&#160;-&#160;Gibbs&#160;(cf&#160;Algorithm&#160;8&#160;of&#160;CRPs)<br/>
+<hr/>
+<a name=16></a><img class="yflip" src="./Ghahramani_4-16_1.png"/><br/>
+<img src="./Ghahramani_4-16_2.png"/><br/>
+<img src="./Ghahramani_4-16_3.png"/><br/>
+<img src="./Ghahramani_4-16_4.png"/><br/>
+<img src="./Ghahramani_4-16_5.png"/><br/>
+<img src="./Ghahramani_4-16_6.png"/><br/>
+<img src="./Ghahramani_4-16_7.png"/><br/>
+<img src="./Ghahramani_4-16_8.png"/><br/>
+<img src="./Ghahramani_4-16_9.png"/><br/>
+<img src="./Ghahramani_4-16_10.png"/><br/>
+<img src="./Ghahramani_4-16_11.png"/><br/>
+<img src="./Ghahramani_4-16_12.png"/><br/>
+<img src="./Ghahramani_4-16_13.png"/><br/>
+<img src="./Ghahramani_4-16_14.png"/><br/>
+<img src="./Ghahramani_4-16_15.png"/><br/>
+<img src="./Ghahramani_4-16_16.png"/><br/>
+<img src="./Ghahramani_4-16_17.png"/><br/>
+<img src="./Ghahramani_4-16_18.png"/><br/>
+<img src="./Ghahramani_4-16_19.png"/><br/>
+<img src="./Ghahramani_4-16_20.png"/><br/>
+<img src="./Ghahramani_4-16_21.png"/><br/>
+<img src="./Ghahramani_4-16_22.png"/><br/>
+<img src="./Ghahramani_4-16_23.png"/><br/>
+<img src="./Ghahramani_4-16_24.png"/><br/>
+<img src="./Ghahramani_4-16_25.png"/><br/>
+<img src="./Ghahramani_4-16_26.png"/><br/>
+<img src="./Ghahramani_4-16_27.png"/><br/>
+<img src="./Ghahramani_4-16_28.png"/><br/>
+<img src="./Ghahramani_4-16_29.png"/><br/>
+<img src="./Ghahramani_4-16_30.png"/><br/>
+<img src="./Ghahramani_4-16_31.png"/><br/>
+<img src="./Ghahramani_4-16_32.png"/><br/>
+<img src="./Ghahramani_4-16_33.png"/><br/>
+<img src="./Ghahramani_4-16_34.png"/><br/>
+<img src="./Ghahramani_4-16_35.png"/><br/>
+<img src="./Ghahramani_4-16_36.png"/><br/>
+<img src="./Ghahramani_4-16_37.png"/><br/>
+<img src="./Ghahramani_4-16_38.png"/><br/>
+<img src="./Ghahramani_4-16_39.png"/><br/>
+<img src="./Ghahramani_4-16_40.png"/><br/>
+<img src="./Ghahramani_4-16_41.png"/><br/>
+<img src="./Ghahramani_4-16_42.png"/><br/>
+<img src="./Ghahramani_4-16_43.png"/><br/>
+<img src="./Ghahramani_4-16_44.png"/><br/>
+<img src="./Ghahramani_4-16_45.png"/><br/>
+<img src="./Ghahramani_4-16_46.png"/><br/>
+<img src="./Ghahramani_4-16_47.png"/><br/>
+<img src="./Ghahramani_4-16_48.png"/><br/>
+<img src="./Ghahramani_4-16_49.png"/><br/>
+<img src="./Ghahramani_4-16_50.png"/><br/>
+<img src="./Ghahramani_4-16_51.png"/><br/>
+<img src="./Ghahramani_4-16_52.png"/><br/>
+<img src="./Ghahramani_4-16_53.png"/><br/>
+<img src="./Ghahramani_4-16_54.png"/><br/>
+<img src="./Ghahramani_4-16_55.png"/><br/>
+<img src="./Ghahramani_4-16_56.png"/><br/>
+<img src="./Ghahramani_4-16_57.png"/><br/>
+<img src="./Ghahramani_4-16_58.png"/><br/>
+<img src="./Ghahramani_4-16_59.png"/><br/>
+<img src="./Ghahramani_4-16_60.png"/><br/>
+<img src="./Ghahramani_4-16_61.png"/><br/>
+<img src="./Ghahramani_4-16_62.png"/><br/>
+<img src="./Ghahramani_4-16_63.png"/><br/>
+<img src="./Ghahramani_4-16_64.png"/><br/>
+<img src="./Ghahramani_4-16_65.png"/><br/>
+<img src="./Ghahramani_4-16_66.png"/><br/>
+<img src="./Ghahramani_4-16_67.png"/><br/>
+<img src="./Ghahramani_4-16_68.png"/><br/>
+<img src="./Ghahramani_4-16_69.png"/><br/>
+<img src="./Ghahramani_4-16_70.png"/><br/>
+<img src="./Ghahramani_4-16_71.png"/><br/>
+<img src="./Ghahramani_4-16_72.png"/><br/>
+<img src="./Ghahramani_4-16_73.png"/><br/>
+<img src="./Ghahramani_4-16_74.png"/><br/>
+<img src="./Ghahramani_4-16_75.png"/><br/>
+<img src="./Ghahramani_4-16_76.png"/><br/>
+<img src="./Ghahramani_4-16_77.png"/><br/>
+<img src="./Ghahramani_4-16_78.png"/><br/>
+<img src="./Ghahramani_4-16_79.png"/><br/>
+<img src="./Ghahramani_4-16_80.png"/><br/>
+<img src="./Ghahramani_4-16_81.png"/><br/>
+<img src="./Ghahramani_4-16_82.png"/><br/>
+<img src="./Ghahramani_4-16_83.png"/><br/>
+<img src="./Ghahramani_4-16_84.png"/><br/>
+<img src="./Ghahramani_4-16_85.png"/><br/>
+<img src="./Ghahramani_4-16_86.png"/><br/>
+<img src="./Ghahramani_4-16_87.png"/><br/>
+<img src="./Ghahramani_4-16_88.png"/><br/>
+<img src="./Ghahramani_4-16_89.png"/><br/>
+<img src="./Ghahramani_4-16_90.png"/><br/>
+<img src="./Ghahramani_4-16_91.png"/><br/>
+<img src="./Ghahramani_4-16_92.png"/><br/>
+<img src="./Ghahramani_4-16_93.png"/><br/>
+<img src="./Ghahramani_4-16_94.png"/><br/>
+<img src="./Ghahramani_4-16_95.png"/><br/>
+<img src="./Ghahramani_4-16_96.png"/><br/>
+<img src="./Ghahramani_4-16_97.png"/><br/>
+<img src="./Ghahramani_4-16_98.png"/><br/>
+<img src="./Ghahramani_4-16_99.png"/><br/>
+<img src="./Ghahramani_4-16_100.png"/><br/>
+<img src="./Ghahramani_4-16_101.png"/><br/>
+Experiments&#160;on&#160;MNIST&#160;data<br/>
+Small&#160;subset<br/>28&#160;×&#160;28&#160;pixels<br/>100&#160;images&#160;(10&#160;from&#160;each&#160;class)<br/>
+<hr/>
+<a name=17></a><img class="yflip" src="./Ghahramani_4-17_1.png"/><br/>
+Samples&#160;from&#160;Posterior&#160;over&#160;Structures<br/>
+2<br/>
+1<br/>
+2<br/>
+2<br/>
+1<br/>
+1<br/>
+2<br/>
+19<br/>
+25<br/>
+14<br/>
+16<br/>
+22<br/>
+20<br/>
+140<br/>
+148<br/>
+154<br/>
+145<br/>
+155<br/>
+150<br/>
+784<br/>
+784<br/>
+784<br/>
+784<br/>
+784<br/>
+784<br/>
+<hr/>
+<a name=18></a><img class="yflip" src="./Ghahramani_4-18_1.png"/><br/>
+<img src="./Ghahramani_4-18_2.png"/><br/>
+<img src="./Ghahramani_4-18_3.png"/><br/>
+<img src="./Ghahramani_4-18_4.png"/><br/>
+<img src="./Ghahramani_4-18_5.png"/><br/>
+<img src="./Ghahramani_4-18_6.png"/><br/>
+<img src="./Ghahramani_4-18_7.png"/><br/>
+<img src="./Ghahramani_4-18_8.png"/><br/>
+<img src="./Ghahramani_4-18_9.png"/><br/>
+<img src="./Ghahramani_4-18_10.png"/><br/>
+<img src="./Ghahramani_4-18_11.png"/><br/>
+<img src="./Ghahramani_4-18_12.png"/><br/>
+<img src="./Ghahramani_4-18_13.png"/><br/>
+<img src="./Ghahramani_4-18_14.png"/><br/>
+<img src="./Ghahramani_4-18_15.png"/><br/>
+<img src="./Ghahramani_4-18_16.png"/><br/>
+<img src="./Ghahramani_4-18_17.png"/><br/>
+<img src="./Ghahramani_4-18_18.png"/><br/>
+<img src="./Ghahramani_4-18_19.png"/><br/>
+<img src="./Ghahramani_4-18_20.png"/><br/>
+<img src="./Ghahramani_4-18_21.png"/><br/>
+<img src="./Ghahramani_4-18_22.png"/><br/>
+<img src="./Ghahramani_4-18_23.png"/><br/>
+<img src="./Ghahramani_4-18_24.png"/><br/>
+<img src="./Ghahramani_4-18_25.png"/><br/>
+<img src="./Ghahramani_4-18_26.png"/><br/>
+<img src="./Ghahramani_4-18_27.png"/><br/>
+<img src="./Ghahramani_4-18_28.png"/><br/>
+<img src="./Ghahramani_4-18_29.png"/><br/>
+<img src="./Ghahramani_4-18_30.png"/><br/>
+<img src="./Ghahramani_4-18_31.png"/><br/>
+<img src="./Ghahramani_4-18_32.png"/><br/>
+<img src="./Ghahramani_4-18_33.png"/><br/>
+<img src="./Ghahramani_4-18_34.png"/><br/>
+<img src="./Ghahramani_4-18_35.png"/><br/>
+<img src="./Ghahramani_4-18_36.png"/><br/>
+<img src="./Ghahramani_4-18_37.png"/><br/>
+<img src="./Ghahramani_4-18_38.png"/><br/>
+<img src="./Ghahramani_4-18_39.png"/><br/>
+<img src="./Ghahramani_4-18_40.png"/><br/>
+<img src="./Ghahramani_4-18_41.png"/><br/>
+<img src="./Ghahramani_4-18_42.png"/><br/>
+<img src="./Ghahramani_4-18_43.png"/><br/>
+<img src="./Ghahramani_4-18_44.png"/><br/>
+<img src="./Ghahramani_4-18_45.png"/><br/>
+<img src="./Ghahramani_4-18_46.png"/><br/>
+<img src="./Ghahramani_4-18_47.png"/><br/>
+<img src="./Ghahramani_4-18_48.png"/><br/>
+<img src="./Ghahramani_4-18_49.png"/><br/>
+<img src="./Ghahramani_4-18_50.png"/><br/>
+<img src="./Ghahramani_4-18_51.png"/><br/>
+<img src="./Ghahramani_4-18_52.png"/><br/>
+<img src="./Ghahramani_4-18_53.png"/><br/>
+<img src="./Ghahramani_4-18_54.png"/><br/>
+<img src="./Ghahramani_4-18_55.png"/><br/>
+<img src="./Ghahramani_4-18_56.png"/><br/>
+<img src="./Ghahramani_4-18_57.png"/><br/>
+<img src="./Ghahramani_4-18_58.png"/><br/>
+<img src="./Ghahramani_4-18_59.png"/><br/>
+<img src="./Ghahramani_4-18_60.png"/><br/>
+<img src="./Ghahramani_4-18_61.png"/><br/>
+<img src="./Ghahramani_4-18_62.png"/><br/>
+<img src="./Ghahramani_4-18_63.png"/><br/>
+<img src="./Ghahramani_4-18_64.png"/><br/>
+<img src="./Ghahramani_4-18_65.png"/><br/>
+<img src="./Ghahramani_4-18_66.png"/><br/>
+<img src="./Ghahramani_4-18_67.png"/><br/>
+<img src="./Ghahramani_4-18_68.png"/><br/>
+<img src="./Ghahramani_4-18_69.png"/><br/>
+<img src="./Ghahramani_4-18_70.png"/><br/>
+<img src="./Ghahramani_4-18_71.png"/><br/>
+<img src="./Ghahramani_4-18_72.png"/><br/>
+<img src="./Ghahramani_4-18_73.png"/><br/>
+<img src="./Ghahramani_4-18_74.png"/><br/>
+<img src="./Ghahramani_4-18_75.png"/><br/>
+<img src="./Ghahramani_4-18_76.png"/><br/>
+<img src="./Ghahramani_4-18_77.png"/><br/>
+<img src="./Ghahramani_4-18_78.png"/><br/>
+<img src="./Ghahramani_4-18_79.png"/><br/>
+<img src="./Ghahramani_4-18_80.png"/><br/>
+<img src="./Ghahramani_4-18_81.png"/><br/>
+<img src="./Ghahramani_4-18_82.png"/><br/>
+<img src="./Ghahramani_4-18_83.png"/><br/>
+<img src="./Ghahramani_4-18_84.png"/><br/>
+<img src="./Ghahramani_4-18_85.png"/><br/>
+<img src="./Ghahramani_4-18_86.png"/><br/>
+<img src="./Ghahramani_4-18_87.png"/><br/>
+<img src="./Ghahramani_4-18_88.png"/><br/>
+<img src="./Ghahramani_4-18_89.png"/><br/>
+<img src="./Ghahramani_4-18_90.png"/><br/>
+<img src="./Ghahramani_4-18_91.png"/><br/>
+<img src="./Ghahramani_4-18_92.png"/><br/>
+<img src="./Ghahramani_4-18_93.png"/><br/>
+<img src="./Ghahramani_4-18_94.png"/><br/>
+<img src="./Ghahramani_4-18_95.png"/><br/>
+<img src="./Ghahramani_4-18_96.png"/><br/>
+<img src="./Ghahramani_4-18_97.png"/><br/>
+<img src="./Ghahramani_4-18_98.png"/><br/>
+<img src="./Ghahramani_4-18_99.png"/><br/>
+<img src="./Ghahramani_4-18_100.png"/><br/>
+<img src="./Ghahramani_4-18_101.png"/><br/>
+First-Layer&#160;Features<br/>
+<hr/>
+<a name=19></a><img class="yflip" src="./Ghahramani_4-19_1.png"/><br/>
+<img src="./Ghahramani_4-19_2.png"/><br/>
+<img src="./Ghahramani_4-19_3.png"/><br/>
+Visible&#160;Unit&#160;Precisions<br/>
+&#160;<br/>
+80<br/>
+60<br/>
+40<br/>
+20<br/>
+&#160;<br/>
+0<br/>
+<hr/>
+<a name=20></a><img class="yflip" src="./Ghahramani_4-20_1.png"/><br/>
+Summary<br/>
+This&#160;work&#160;provides&#160;an&#160;initial&#160;attempt&#160;at&#160;addressing&#160;three&#160;issues<br/>with&#160;layered&#160;belief&#160;networks.<br/>
+◮&#160;It&#160;provides&#160;a&#160;way&#160;to&#160;learn&#160;belief&#160;networks&#160;that&#160;contain&#160;an<br/>
+arbitrary&#160;number&#160;of&#160;hidden&#160;units&#160;with&#160;nontrivial&#160;joint<br/>distributions&#160;due&#160;to&#160;a&#160;deep&#160;structure.<br/>
+◮&#160;It&#160;allows&#160;the&#160;units&#160;to&#160;have&#160;different&#160;operating&#160;regimes&#160;and<br/>
+infer&#160;appropriate&#160;local&#160;representations&#160;ranging&#160;from&#160;discrete<br/>binary&#160;to&#160;nonlinear&#160;continuous&#160;behavior.<br/>
+◮&#160;It&#160;provides&#160;a&#160;way&#160;to&#160;infer&#160;the&#160;appropriate&#160;directed&#160;graph<br/>
+structure&#160;of&#160;a&#160;layered&#160;network.<br/>
+Initial&#160;work...&#160;many&#160;open&#160;questions!<br/>
+Ryan&#160;P.&#160;Adams&#160;and&#160;Hanna&#160;M.&#160;Wallach<br/>
+<hr/>
+<a name=21></a><img class="yflip" src="./Ghahramani_4-21_1.png"/><br/>
+Overall&#160;Summary<br/>
+◮&#160;Graphical&#160;models&#160;provide&#160;a&#160;powerful&#160;and&#160;intuitive&#160;framework<br/>
+for&#160;modelling&#160;and&#160;inference.<br/>
+◮&#160;Directed,&#160;undirected&#160;and&#160;factor&#160;graphs.<br/>
+◮&#160;Inference&#160;by&#160;message&#160;passing.<br/>
+◮&#160;Parameter&#160;and&#160;structure&#160;learning.<br/>
+◮&#160;A&#160;recent&#160;bit&#160;of&#160;research&#160;on&#160;structure&#160;learning.<br/>
+Thanks!<br/>
+<hr/>
+<a name=22></a><img class="yflip" src="./Ghahramani_4-22_1.png"/><br/>
+Questions<br/>
+<hr/>
+</body>
+</html>

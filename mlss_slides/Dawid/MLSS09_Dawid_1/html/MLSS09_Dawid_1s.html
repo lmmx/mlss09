@@ -1,0 +1,475 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Statistical&#160;Causality<br/>
+Philip&#160;Dawid<br/>
+Statistical&#160;Laboratory<br/>
+University of&#160;Cambridge<br/>
+<hr/>
+<a name=2></a>Statistical Causality<br/>
+1.&#160;The Problems&#160;of&#160;Causal&#160;Inference<br/>
+2.&#160;Formal&#160;Frameworks&#160;for&#160;Statistical&#160;Causality<br/>
+3.&#160;Graphical&#160;Representations&#160;and&#160;Applications<br/>
+4.&#160;Causal&#160;Discovery<br/>
+<hr/>
+<a name=3></a>1. The&#160;Problems of&#160;Causal&#160;Inference<br/>
+<hr/>
+<a name=4></a>Conceptions&#160;of&#160;Causality<br/>
+•&#160;Constant&#160;conjunction<br/>
+–&#160;Deterministic<br/>
+•&#160;Mechanisms<br/>
+–&#160;“Physical”&#160;causality<br/>
+&#160;Agency<br/>
+–&#160;Effects&#160;of actions/interventions<br/>
+&#160;Contrast<br/>
+–&#160;Variation&#160;of effect&#160;with changes&#160;to cause<br/>
+<hr/>
+<a name=5></a>Causal&#160;Queries<br/>
+•&#160;If&#160;I&#160;had&#160;taken&#160;aspirin&#160;half&#160;an&#160;hour&#160;ago,&#160;<br/>
+would my&#160;headache would&#160;have&#160;gone&#160;by&#160;<br/>now? &#160;<br/>
+–&#160;“Causes&#160;of&#160;Effects”,&#160;CoE<br/>–&#160;<i>Counterfactual<br/></i>–&#160;LAW<br/>
+•&#160;If&#160;I&#160;take&#160;aspirin&#160;now,&#160;will&#160;my&#160;headache&#160;be&#160;<br/>
+gone&#160;within&#160;half&#160;an&#160;hour?<br/>
+–&#160;“Effects&#160;of&#160;Causes”,&#160;EoC<br/>–&#160;<i>Hypothetical<br/></i>–&#160;<b>SCIENCE,&#160;STATISTICS</b><br/>
+<hr/>
+<a name=6></a>Causal&#160;Enquiry<br/>
+•&#160;Experimentation&#160;(“doing”)<br/>
+–&#160;To&#160;find out&#160;what&#160;happens to a&#160;system&#160;when&#160;you&#160;<br/>
+interfere&#160;with it&#160;you have&#160;to&#160;interfere&#160;with it&#160;<br/>(not&#160;just&#160;passively observe&#160;it)&#160;–&#160;George&#160;Box<br/>
+•&#160;Observation&#160;(“seeing”)<br/>
+–&#160;Cost<br/>
+–&#160;Ethics<br/>
+–&#160;Practicality<br/>
+•&#160;No&#160;necessary connexion!<br/>
+<hr/>
+<a name=7></a>Problems&#160;of&#160;observational studies<br/>
+An&#160;observed&#160;association between a&#160;“cause”&#160;<br/>
+and an&#160;“effect” may&#160;be&#160;spurious:<br/>
+–&#160;Reverse causation<br/>–&#160;Regression to&#160;mean<br/>–&#160;Confounding<br/>
+•&#160;common cause<br/>•&#160;differential selection<br/>
+–&#160;<b>…</b><br/>
+<hr/>
+<a name=8></a>Problems&#160;of&#160;observational studies<br/>
+<b>The&#160;facts&#160;about&#160;fuel&#160;(</b>Which?,&#160;August&#160;2007)<br/>
+Mr&#160;Holloway&#160;said that&#160;a colleague&#160;of&#160;his&#160;used&#160;to&#160;<br/>drive&#160;from&#160;London&#160;to&#160;Leeds&#160;and&#160;back,&#160;using&#160;<br/>Shell&#160;petrol&#160;to&#160;go&#160;up&#160;there&#160;and&#160;BP&#160;fuel&#160;to&#160;drive&#160;<br/>back.&#160;He&#160;was&#160;convinced&#160;the BP&#160;petrol&#160;gave&#160;<br/>better&#160;fuel&#160;economy,&#160;but&#160;Ray&#160;had&#160;another&#160;<br/>explanation:&#160;‘I&#160;pointed&#160;out&#160;that&#160;Leeds&#160;is&#160;at&#160;a&#160;<br/>higher&#160;altitude&#160;that&#160;London:&#160;he&#160;was&#160;going&#160;uphill&#160;<br/>one&#160;way and&#160;downhill&#160;the other!’<br/>
+<hr/>
+<a name=9></a>Problems&#160;of&#160;observational studies<br/>
+<b>HRT&#160;and&#160;coronary artery&#160;disease</b><br/>
+Observational&#160;research on&#160;women taking&#160;<br/>post-menopausal&#160;hormone therapy&#160;<br/>suggested a&#160;40–50%&#160;reduction in&#160;coronary&#160;<br/>heart&#160;disease.&#160;&#160;<br/>
+A&#160;large&#160;clinical&#160;trial&#160;found&#160;an&#160;elevated&#160;<br/>incidence.&#160;&#160;&#160;<br/>
+Hazard&#160;ratio estimates&#160;in the observational&#160;<br/>study&#160;were&#160;up&#160;to&#160;48%&#160;lower&#160;than&#160;in&#160;the&#160;<br/>clinical trial.<br/>
+<hr/>
+<a name=10></a>Problems&#160;of&#160;observational studies<br/>
+<b>Vitamin supplements&#160;and&#160;mortality</b><br/>
+Many&#160;observational&#160;studies&#160;appeared to&#160;<br/>indicate that&#160;antioxidant&#160;supplements&#160;<br/>(vitamins&#160;A&#160;and&#160;E,&#160;β-carotene)&#160;reduce&#160;the&#160;<br/>risk&#160;of&#160;disease.&#160;&#160;<br/>
+Randomized&#160;controlled trials&#160;showed&#160;that&#160;<br/>they increase&#160;mortality.<br/>
+<hr/>
+<a name=11></a>Problems&#160;of&#160;observational studies<br/>
+<b>Calcium&#160;channel&#160;blockers</b><br/>
+Non-experimental&#160;studies&#160;suggested&#160;an&#160;<br/>increased risk&#160;of&#160;myocardial&#160;infarction&#160;<br/>associated with&#160;the&#160;short-acting calcium&#160;<br/>channel&#160;blocker&#160;(CCB)&#160;nifedapine.&#160;<br/>
+It&#160;took&#160;almost&#160;a&#160;decade&#160;to&#160;obtain&#160;RCT&#160;<br/>evidence,&#160;which&#160;showed&#160;that&#160;long-acting&#160;<br/>nifedapine is&#160;safe.<br/>
+<hr/>
+<a name=12></a><img src="./MLSS09_Dawid_1-12_1.png"/><br/>
+Simpson’s&#160;Paradox<br/>
+<hr/>
+<a name=13></a>Causal&#160;Inference<br/>
+•&#160;Association is&#160;not&#160;causation!<br/>
+•&#160;Traditionally,&#160;Statistics&#160;dealt with&#160;association&#160;<br/>
+–&#160;Theory of&#160;<i>Statistical&#160;Experimental&#160;Design and&#160;</i><br/>
+<i>Analysis&#160;</i>does&#160;address&#160;causal issues<br/>
+•&#160;but&#160;of&#160;&#160;no real&#160;use&#160;for&#160;observational&#160;studies<br/>
+•&#160;How&#160;to&#160;make&#160;inferences&#160;about&#160;causation?<br/>
+–&#160;“bold&#160;induction”,&#160;to a&#160;novel&#160;context&#160;<br/>
+•&#160;<i>Do&#160;we&#160;need&#160;a&#160;new&#160;formal&#160;framework?</i><br/>
+<hr/>
+<a name=14></a>2.&#160;Formal&#160;Frameworks&#160;for&#160;<br/>
+Statistical Causality<br/>
+<hr/>
+<a name=15></a>Some Formal&#160;Frameworks<br/>
+Probability&#160;distributions<br/>•&#160;Potential&#160;responses<br/>
+•&#160;Functional&#160;relationships<br/>Extended&#160;conditional&#160;independence<br/>•&#160;…<br/>
+•&#160;Structural&#160;equations<br/>•&#160;Path&#160;diagrams<br/>Directed acyclic&#160;graphs<br/>•&#160;…<br/>
+<hr/>
+<a name=16></a>A SIMPLE&#160;(??)&#160;PROBLEM<br/>
+•&#160;<b>Randomised&#160;experiment</b><br/>
+•&#160;Binary (0/1)&#160;treatment&#160;decision variable<br/>
+<i>T</i><br/>
+•&#160;Response variable&#160;<br/>
+<i>Y</i><br/>
+Define/measure&#160;<i>“the effect&#160;of&#160;treatment”</i><br/>
+<hr/>
+<a name=17></a>Probability&#160;Model&#160;<i>(Fisher)</i><br/>
+•&#160;Specify/estimate&#160;<i>conditional distributions</i><br/>
+<i>P&#160;</i>for&#160;&#160;<i>Y&#160;given&#160;T&#160;</i>=&#160;<i>t &#160;&#160;</i>(<i>t&#160;</i>=&#160;0,&#160;1)&#160;<br/>
+<i>t &#160;&#160;</i><br/>
+[<i>e.g.&#160;N</i>(µ&#160;,&#160;σ2) ]<br/>
+<i>t</i><br/>
+•&#160;Measure&#160;effect&#160;of&#160;treatment&#160;by&#160;change&#160;in&#160;the&#160;distribution<br/>
+of&#160;<i>Y</i>:&#160;compare&#160;<i>P&#160;</i>and&#160;<i>P</i><br/>
+0<br/>
+1<br/>
+–&#160;<i>e.g.&#160;</i>by&#160;change&#160;in&#160;expected&#160;response:<br/>
+δ&#160;=&#160;µ&#160;−&#160;µ<br/>
+(<i>average&#160;causal&#160;effect,&#160;ACE)</i><br/>
+1&#160;<br/>
+0&#160;<br/>
+•&#160;Probability&#160;model&#160;all&#160;we&#160;need for&#160;decision theory<br/>
+–&#160;choose&#160;<i>t&#160;</i>to&#160;minimise&#160;expected&#160;loss &#160;E<br/>
+{<i>L</i>(<i>Y</i>)}<br/>
+<i>Y&#160;</i>»&#160;<i>Pt</i><br/>
+<hr/>
+<a name=18></a>Decision&#160;Tree<br/>
+<i>Y</i><br/>
+<i>Y~P</i><br/>
+<i>y</i><br/>
+0<br/>
+0<br/>
+<i>L</i>(<i>y</i>)<br/>
+<i>T</i><br/>
+1<br/>
+<i>Y</i><br/>
+<i>y</i><br/>
+<i>L</i>(<i>y</i>)<br/>
+<i>Y~P</i>1<br/>
+Influence&#160;Diagram<br/>
+<i>T</i><br/>
+<i>Y</i><br/>
+<i>L</i><br/>
+<i>t</i><br/>
+<i>Y&#160;</i>|&#160;<i>T=t&#160; ~ P</i><br/>
+<i>L</i>(<i>y</i>)<br/>
+<i>t</i><br/>
+<hr/>
+<a name=19></a>Structural&#160;Model<br/>
+<i>Y&#160;</i>=&#160;µ&#160;+&#160;<i>E</i><br/>
+<i>T</i><br/>
+[e.g.,&#160;<i>E&#160;</i>»&#160;<i>N</i>(0,&#160;σ2)]<br/>
+(<i>E&#160;</i>=&#160;“error”,&#160;“effect&#160;of omitted variables”,…)<br/>
+•&#160;Deterministic&#160;relationship<br/>
+•&#160;Value&#160;of&#160;<i>E&#160;</i>for any unit&#160;supposed the&#160;<br/>
+same&#160;if we&#160;were&#160;to&#160;change&#160;<i>T&#160;</i>from&#160;0 to 1<br/>
+•&#160;Then&#160;value&#160;of&#160;<i>Y&#160;</i>would change&#160;by&#160;<br/>
+<i>exactly&#160;</i>δ&#160;=&#160;µ&#160;−&#160;µ<br/>
+1<br/>
+0<br/>
+–&#160;<i>individual&#160;causal&#160;effect&#160;(ICE)</i><br/>
+<hr/>
+<a name=20></a>Potential&#160;Response&#160;Model&#160;(Rubin)<br/>
+•&#160;Split&#160;<i>Y&#160;</i>in&#160;two:<br/>
+<i>Y&#160;</i>:&#160;&#160;potential&#160;response to&#160;<i>T&#160;</i>=&#160;0<br/>
+0&#160;<br/>
+<i>Y&#160;</i>:&#160;&#160;potential&#160;response to&#160;<i>T&#160;</i>=&#160;1<br/>
+1&#160;<br/>
+•&#160;Consider&#160;(for&#160;any&#160;unit)&#160;the&#160;<i>pair&#160;</i><b>Y&#160;</b>=&#160;(<i>Y&#160;</i>,&#160;<i>Y&#160;</i>)<br/>
+0&#160;<br/>
+1<br/>
+–&#160;<i>with&#160;simultaneous&#160;existence&#160;and&#160;joint distribution</i><br/>
+•&#160;Treatment&#160;“uncovers” pre-existing response:<br/>
+<i>Y =&#160;Y&#160;</i>(determined&#160;by&#160;<b>Y&#160;</b>and&#160;<i>T</i>)<br/>
+<i>T</i><br/>
+–&#160;other PR&#160;unobservable,&#160;“counterfactual”<br/>
+•&#160;Unit-level&#160;(individual)&#160;[random]&#160;causal&#160;effect<br/>
+<i>Y&#160;</i>−&#160;<i>Y</i><br/>
+–&#160;<i>necessarily&#160;unobservable!</i><br/>
+1&#160;<br/>
+0<br/>
+<hr/>
+<a name=21></a>General Functional Model<br/>
+<i>Y&#160;</i>=&#160;<i>f</i>(<i>T</i>,&#160;<i>U</i>)<br/>
+(<i>U&#160;</i>=&#160;“unit&#160;characteristics”)<br/>
+•&#160;Value&#160;of&#160;<i>U&#160;</i>supposed&#160;the&#160;same&#160;,&#160;independent&#160;of&#160;<br/>
+value of&#160;<i>T</i><br/>
+–&#160;and&#160;of whether we&#160;intervene&#160;or just&#160;observe<br/>
+•&#160;Formally includes:<br/>
+–&#160;Structural&#160;model:&#160;<i>U&#160;</i>=&#160;<i>E,&#160;Y&#160;</i>=&#160;µ&#160;+&#160;<i>E</i><br/>
+<i>T</i><br/>
+–&#160;PR&#160;model:&#160;&#160;<br/>
+<i>U&#160;</i>=&#160;<b>Y</b><i>,&#160;Y =&#160;YT</i><br/>
+<hr/>
+<a name=22></a>Potential&#160;Response Model<br/>
+•&#160;Any&#160;functional&#160;model&#160;<i>Y&#160;</i>=&#160;<i>f</i>(<i>T</i>,&#160;<i>U</i>)&#160;generates&#160;a&#160;<br/>
+PR&#160;model:&#160;<i>Y&#160;</i>=&#160;<i>f</i>(<i>t</i>,&#160;<i>U</i>)<br/>
+<i>t</i><br/>
+•&#160;Any PR&#160;model&#160;generates&#160;a&#160;probability&#160;model:<br/>
+<i>P&#160;</i>is&#160;marginal&#160;distribution of&#160;<i>Y</i><br/>
+(<i>t&#160;</i>=&#160;0,&#160;1)<br/>
+<i>t&#160;</i><br/>
+<i>t &#160;</i><br/>
+•&#160;Distinct&#160;PR&#160;models&#160;can&#160;generate&#160;the&#160;same<br/>
+statistical&#160;model<br/>
+–&#160;e.g.,&#160;correlation between&#160;<i>Y&#160;</i>and&#160;<i>Y&#160;</i>arbitrary<br/>
+0<br/>
+1<br/>
+•&#160;Cannot&#160;be&#160;distinguished observationally<br/>
+•&#160;Can&#160;have&#160;different&#160;inferential&#160;consequence<br/>
+–&#160;can&#160;be&#160;problematic!<br/>
+<hr/>
+<a name=23></a><img src="./MLSS09_Dawid_1-23_1.png"/><br/>
+<img src="./MLSS09_Dawid_1-23_2.png"/><br/>
+Potential&#160;Responses: Problems<br/>
+•&#160;<i>PR&#160;</i>model:<br/>
+•&#160;Corresponding&#160;<i>statistical&#160;</i>model:<br/>
+NB:&#160;ρ&#160;does&#160;not&#160;enter!&#160;<i>–&#160;can&#160;never&#160;identify&#160;</i>ρ<br/>
+<i>–&#160;does&#160;this&#160;matter??</i><br/>
+<hr/>
+<a name=24></a>Potential&#160;Responses: Problems<br/>
+Under&#160;PR&#160;model:<br/>
+E(<i>Y&#160;</i>/<i>Y&#160;</i>)&#160;depends&#160;on&#160;ρ<br/>
+1<br/>
+0<br/>
+&#160;<i>We&#160;can&#160;not&#160;estimate&#160;a&#160;“ratio”&#160;ICE</i><br/>
+var(<i>Y&#160;</i>−&#160;<i>Y&#160;</i>)&#160;=&#160;2(1&#160;−&#160;½)&#160;¾2<br/>
+1&#160;<br/>
+0<br/>
+&#160;<i>We&#160;can&#160;not&#160;identify&#160;the&#160;variance&#160;of&#160;the&#160;ICE</i><br/>
+E(<i>Y&#160;</i>−&#160;<i>Y&#160;</i>|&#160;<i>Y&#160;</i>=&#160;<i>y&#160;</i>) =&#160;(1&#160;−&#160;½)&#160;<i>y&#160;+&#160;</i>(½µ&#160;−&#160;µ&#160;)<br/>
+1&#160;<br/>
+0&#160;<br/>
+1&#160;<br/>
+1<br/>
+1&#160;<br/>
+1<br/>
+0<br/>
+&#160;<i>We&#160;can&#160;not&#160;identify&#160;the&#160;(counterfactual)&#160;</i><br/>
+<i>ICE,&#160;after&#160;observing response&#160;to&#160;treatment</i><br/>
+<hr/>
+<a name=25></a>OBSERVATIONAL&#160;STUDY<br/>
+•&#160;Treatment&#160;decision taken may be&#160;<br/>
+associated with patient’s&#160;state&#160;of health<br/>
+•&#160;What&#160;assumptions&#160;are&#160;required&#160;to&#160;<br/>
+make&#160;causal&#160;inferences?<br/>
+•&#160;When/how&#160;can such assumptions&#160;be&#160;<br/>
+justified?<br/>
+<hr/>
+<a name=26></a><img src="./MLSS09_Dawid_1-26_1.png"/><br/>
+Functional Model<br/>
+<i>Y&#160;</i>=&#160;<i>f&#160;</i>(<i>T&#160;</i>,<i>U&#160;</i>)<br/>
+<i>T&#160;=&#160;</i>treatment&#160;received<br/>
+<i>U&#160;</i>=&#160;“unit&#160;characteristics”<br/>
+–&#160;value&#160;supposed&#160;unaffected&#160;by treatment&#160;or how&#160;it&#160;<br/>
+is applied<br/>
+–&#160;but&#160;could influence&#160;choice&#160;of&#160;treatment&#160;&#160;<i>T</i><br/>
+&#160;observational&#160;dependence&#160;between&#160;<i>T&#160;</i>and&#160;<i>U</i><br/>
+Response to&#160;applied treatment&#160;<i>t:&#160;&#160;Y&#160;= f</i>(<i>t</i>,&#160;<i>U</i>).<br/>
+<i>t</i><br/>
+Observational&#160;distribution of&#160;<i>Y</i>,&#160;<i>given&#160;T&#160;</i>=&#160;<i>t</i>,&#160;<br/>same&#160;as&#160;distribution of&#160;<i>Y&#160;</i>if&#160;<br/>
+<i>t</i><br/>
+<hr/>
+<a name=27></a>Functional Model<br/>
+<i>U</i><br/>
+<i>U&#160;</i>~&#160;<i>PU</i><br/>
+<i>T</i><br/>
+<i>Y</i><br/>
+<i>Y&#160;</i>=&#160;<i>f&#160;</i>(<i>T&#160;</i>,<i>U&#160;</i>)<br/>
+<i>U&#160;</i>=&#160;“unit&#160;characteristics”<br/>
+–&#160;value&#160;supposed&#160;unaffected&#160;by treatment&#160;or how&#160;it&#160;<br/>
+is applied<br/>
+–&#160;but&#160;could influence&#160;treatment&#160;choice<br/>
+<hr/>
+<a name=28></a><img src="./MLSS09_Dawid_1-28_1.png"/><br/>
+Functional Model<br/>
+<i>U</i><br/>
+<i>U&#160;</i>~&#160;<i>PU</i><br/>
+<i>T&#160;</i>~&#160;<i>P</i><br/>
+<i>T</i><br/>
+<i>Y</i><br/>
+<i>Y&#160;</i>=&#160;<i>f&#160;</i>(<i>T&#160;</i>,<i>U&#160;</i>)<br/>
+<i>T</i><br/>
+“No confounding”&#160;(“ignorable&#160;treatment&#160;assignment”) if<br/>
+<i>(treatment&#160;independent&#160;of&#160;“unit&#160;characteristics”)</i><br/>
+<hr/>
+<a name=29></a><img src="./MLSS09_Dawid_1-29_1.png"/><br/>
+PR&#160;interpretation&#160;(<i>U&#160;</i>=&#160;<b>Y</b>)<br/>
+<b>Y</b><br/>
+<b>Y&#160;</b>~&#160;<i>P</i><b>Y</b><br/>
+<i>T&#160;</i>~&#160;<i>P</i><br/>
+<i>T</i><br/>
+<i>Y</i><br/>
+<i>Y&#160;</i>=&#160;<i>Y</i><br/>
+<i>T</i><br/>
+<i>T</i><br/>
+“No confounding”&#160;(“ignorable&#160;treatment&#160;assignment”) if<br/>
+<i>(treatment&#160;independent&#160;of&#160;potential&#160;responses)</i><br/>
+<hr/>
+<a name=30></a>PR&#160;interpretation&#160;(<i>U&#160;</i>=&#160;<b>Y</b>)<br/>
+•&#160;Value&#160;of &#160;<b>Y&#160;</b>= (<i>Y&#160;</i>,&#160;<i>Y&#160;</i>) on any&#160;unit&#160;<br/>
+0<br/>
+1<br/>
+supposed&#160;the&#160;same&#160;in observational&#160;and&#160;<br/>experimental&#160;regimes,&#160;as&#160;well&#160;as&#160;for both&#160;<br/>choices&#160;of&#160;<i>T</i><br/>
+•&#160;No confounding:&#160;&#160;independence&#160;of&#160;<i>T</i><br/>
+from&#160;PR pair&#160;<b>Y</b><br/>
+<i>How&#160;are we to judge&#160;this??</i><br/>
+<hr/>
+<a name=31></a>Statistical&#160;Decision&#160;Model<br/>
+•&#160;“Treatment&#160;regime&#160;indicator”&#160;variable&#160;&#160;<i>FT</i><br/>
+–&#160;<i>intervention&#160;variable</i><br/>
+–&#160;non-random,&#160;parameter<br/>
+•&#160;Values:<br/>
+<i>F&#160;</i>=&#160;0 :&#160;Assign treatment&#160;0<br/>
+(⇒&#160;<i>T&#160;</i>=&#160;0)<br/>
+<i>T</i><br/>
+<i>F&#160;</i>=&#160;1 :&#160;Assign treatment&#160;1<br/>
+(⇒&#160;<i>T&#160;</i>=&#160;1)<br/>
+<i>T</i><br/>
+<i>F&#160;</i>=&#160;<br/>
+<i>T</i><br/>
+;&#160;:&#160;Just&#160;observe&#160;<br/>
+(<i>T&#160;</i>random)<br/>
+(<i>Point&#160;intervention</i>:&#160;&#160;can&#160;generalize)<br/>
+<hr/>
+<a name=32></a>Statistical&#160;Decision&#160;Model<br/>
+•&#160;Causal&#160;target:&#160;comparison&#160;of&#160;distributions&#160;of&#160;<i>Y</i><br/>
+given&#160;<i>F&#160;</i>=&#160;1 and&#160;given&#160;<i>F&#160;</i>=&#160;0<br/>
+<i>T</i><br/>
+<i>T</i><br/>
+–&#160;e.g.,&#160;E(<i>Y&#160;</i>|&#160;<i>F&#160;</i>=&#160;1)&#160;−&#160;E(<i>Y&#160;</i>|&#160;<i>F&#160;</i>=&#160;0)<br/>
+<i>T</i><br/>
+<i>T</i><br/>
+<i>average&#160;causal&#160;effect,&#160;ACE</i><br/>
+•&#160;Causal&#160;inference:&#160;assess&#160;this&#160;(if&#160;possible)&#160;from&#160;<br/>
+properties&#160;of&#160;observational&#160;regime,&#160;<i>F&#160;</i>=&#160;<br/>
+<i>T</i><br/>
+;<br/>
+<hr/>
+<a name=33></a>Statistical&#160;Decision&#160;Model<br/>
+True&#160;ACE&#160;is<br/>
+E(<i>Y&#160;</i>|&#160;<i>T&#160;</i>=&#160;1,&#160;<i>F&#160;</i>=&#160;1)&#160;−&#160;E(<i>Y&#160;</i>|&#160;<i>T&#160;</i>=&#160;0,&#160;<i>F&#160;</i>=&#160;0)<br/>
+<i>T</i><br/>
+<i>T</i><br/>
+Its observational&#160;counterpart&#160;is:<br/>
+E(<i>Y&#160;</i>|&#160;<i>T&#160;</i>=&#160;1,&#160;<i>F&#160;</i>=&#160;<br/>
+=<br/>
+<i>T</i><br/>
+;)&#160;−&#160;E(<i>Y&#160;</i>|&#160;<i>T&#160;</i>=&#160;0,&#160;<i>FT&#160;</i>;)<br/>
+“No&#160;confounding”&#160;(ignorable&#160;treatment&#160;assignment)&#160;<br/>
+when&#160;these are&#160;equal.<br/>
+Can strengthen:<br/>
+<i>p</i>(<i>y&#160;</i>|&#160;<i>T&#160;</i>=&#160;<i>t</i>,&#160;<i>F&#160;</i>=&#160;<i>t</i>) =&#160;<i>p</i>(<i>y&#160;</i>|&#160;<i>T&#160;</i>=&#160;<i>t</i>,&#160;<i>F&#160;</i>=&#160;<br/>
+<i>T</i><br/>
+<i>T</i><br/>
+;)<br/>
+&#160;distribution of&#160;<i>Y&#160;</i>|&#160;<i>T&#160;</i>the&#160;same&#160;in observational&#160;<br/>and experimental&#160;regimes<br/>
+<hr/>
+<a name=34></a><img src="./MLSS09_Dawid_1-34_1.png"/><br/>
+Extended&#160;Conditional&#160;Independence<br/>
+Distribution&#160;of&#160;<i>Y&#160;</i>|&#160;<i>T&#160;</i>the&#160;same in observational&#160;and&#160;<br/>experimental&#160;regimes:<br/>
+<i>Y&#160;</i>| (<i>F&#160;</i>,&#160;<i>T</i>)&#160;&#160;does&#160;not&#160;depend&#160;on&#160;value&#160;of&#160;<i>F</i><br/>
+<i>T</i><br/>
+<i>T</i><br/>
+Can&#160;express&#160;and&#160;manipulate&#160;using&#160;notation&#160;and&#160;<br/>theory of&#160;conditional&#160;independence:<br/>
+(even though&#160;<i>FT&#160;</i>is&#160;not&#160;random)&#160;<br/>
+<hr/>
+<a name="outline"></a><h1>Document Outline</h1>
+<ul>
+<li><a href="MLSS09_Dawid_1s.html#1">Statistical Causality</a></li>
+<li><a href="MLSS09_Dawid_1s.html#2">Statistical Causality</a></li>
+<li><a href="MLSS09_Dawid_1s.html#3">1. The Problems of Causal Inference</a></li>
+<li><a href="MLSS09_Dawid_1s.html#4">Conceptions of Causality</a></li>
+<li><a href="MLSS09_Dawid_1s.html#5">Causal Queries</a></li>
+<li><a href="MLSS09_Dawid_1s.html#6">Causal Enquiry</a></li>
+<li><a href="MLSS09_Dawid_1s.html#7">Problems of observational studies</a></li>
+<li><a href="MLSS09_Dawid_1s.html#8">Problems of observational studies</a></li>
+<li><a href="MLSS09_Dawid_1s.html#9">Problems of observational studies</a></li>
+<li><a href="MLSS09_Dawid_1s.html#10">Problems of observational studies</a></li>
+<li><a href="MLSS09_Dawid_1s.html#11">Problems of observational studies</a></li>
+<li><a href="MLSS09_Dawid_1s.html#12">Simpson’s Paradox</a></li>
+<li><a href="MLSS09_Dawid_1s.html#13">Causal Inference</a></li>
+<li><a href="MLSS09_Dawid_1s.html#14">2. Formal Frameworks for Statistical Causality</a></li>
+<li><a href="MLSS09_Dawid_1s.html#15">Some Formal Frameworks</a></li>
+<li><a href="MLSS09_Dawid_1s.html#16">A SIMPLE (??) PROBLEM</a></li>
+<li><a href="MLSS09_Dawid_1s.html#17">Slide Number 19</a></li>
+<li><a href="MLSS09_Dawid_1s.html#18">Slide Number 20</a></li>
+<li><a href="MLSS09_Dawid_1s.html#19">Structural Model</a></li>
+<li><a href="MLSS09_Dawid_1s.html#20">Slide Number 22</a></li>
+<li><a href="MLSS09_Dawid_1s.html#21">General Functional Model</a></li>
+<li><a href="MLSS09_Dawid_1s.html#22">Slide Number 24</a></li>
+<li><a href="MLSS09_Dawid_1s.html#23">Potential Responses: Problems</a></li>
+<li><a href="MLSS09_Dawid_1s.html#24">Slide Number 26</a></li>
+<li><a href="MLSS09_Dawid_1s.html#25">OBSERVATIONAL STUDY</a></li>
+<li><a href="MLSS09_Dawid_1s.html#26">Slide Number 28</a></li>
+<li><a href="MLSS09_Dawid_1s.html#27">Slide Number 29</a></li>
+<li><a href="MLSS09_Dawid_1s.html#28">Slide Number 30</a></li>
+<li><a href="MLSS09_Dawid_1s.html#29">Slide Number 31</a></li>
+<li><a href="MLSS09_Dawid_1s.html#30">PR interpretation (U = Y)</a></li>
+<li><a href="MLSS09_Dawid_1s.html#31">Slide Number 33</a></li>
+<li><a href="MLSS09_Dawid_1s.html#32">Slide Number 34</a></li>
+<li><a href="MLSS09_Dawid_1s.html#33">Slide Number 35</a></li>
+<li><a href="MLSS09_Dawid_1s.html#34">Slide Number 36</a></li>
+<li>3. Graphical Representations and Applications</li>
+<li>Graphical Representation</li>
+<li>Moralization: 1</li>
+<li>Moralization: 1</li>
+<li>Moralization: 2</li>
+<li>Moralization: 3</li>
+<li>Slide Number 43</li>
+<li>Augmented DAG</li>
+<li>Sufficient Covariate“(un)confounder”</li>
+<li>Slide Number 47</li>
+<li>Non-confounding</li>
+<li>Pearlian DAG</li>
+<li>Slide Number 51</li>
+<li>Slide Number 52</li>
+<li>Slide Number 53</li>
+<li>More complex DAGs</li>
+<li>Instrumental Variable</li>
+<li>Instrumental Variable</li>
+<li>Discrete case</li>
+<li>Hypothesis Test</li>
+<li>Mendelian Randomisation</li>
+<li>Equivalence</li>
+<li>Non-equivalence</li>
+<li>Can we identify a causal effect from observational data?</li>
+<li>Example: “back-door formula”</li>
+<li>Example: “back-door formula”</li>
+<li>Example: “front-door formula”</li>
+<li>do-calculus</li>
+<li>Slide Number 68</li>
+<li>4. &#160;Causal Discovery</li>
+<li>Probabilistic Causality</li>
+<li>Probabilistic Causality</li>
+<li>Causal Discovery</li>
+<li>Causal Discovery</li>
+<li>Constraint-Based Methods</li>
+<li>Wermuth-Lauritzen algorithm</li>
+<li>SGS algorithm(no prior ordering)</li>
+<li>Comments</li>
+<li>Constraint-Based Methods(incomplete data)</li>
+<li>Slide Number 79</li>
+<li>Slide Number 80</li>
+<li>Bayesian Model Selection	</li>
+<li>Bayesian Model Selection	</li>
+<li>Mixed data</li>
+<li>A Parting Caution</li>
+<li>Thank you!</li>
+<li>Further Reading</li>
+</ul>
+<hr/>
+</body>
+</html>

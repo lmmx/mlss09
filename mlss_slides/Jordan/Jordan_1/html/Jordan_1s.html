@@ -1,0 +1,1011 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Are&#160;You&#160;a&#160;Bayesian&#160;or&#160;a&#160;Frequentist?<br/>
+Michael&#160;I.&#160;Jordan<br/>
+Department&#160;of&#160;EECS<br/>
+Department&#160;of&#160;Statistics<br/>
+University&#160;of&#160;California,&#160;Berkeley<br/>
+http://www.cs.berkeley.edu/∼jordan<br/>
+1<br/>
+<hr/>
+<a name=2></a>Statistical&#160;Inference<br/>
+•&#160;Bayesian&#160;perspective<br/>
+–&#160;conditional&#160;perspective—inferences&#160;should&#160;be&#160;made&#160;conditional&#160;on&#160;the<br/>
+current&#160;data<br/>
+–&#160;natural&#160;in&#160;the&#160;setting&#160;of&#160;a&#160;long-term&#160;project&#160;with&#160;a&#160;domain&#160;expert<br/>–&#160;the&#160;optimist—let’s&#160;make&#160;the&#160;best&#160;possible&#160;use&#160;of&#160;our&#160;sophisticated<br/>
+inferential&#160;tool<br/>
+•&#160;Frequentist&#160;perspective<br/>
+–&#160;unconditional&#160;perspective—inferential&#160;methods&#160;should&#160;give&#160;good&#160;answers<br/>
+in&#160;repeated&#160;use<br/>
+–&#160;natural&#160;in&#160;the&#160;setting&#160;of&#160;writing&#160;software&#160;that&#160;will&#160;be&#160;used&#160;by&#160;many&#160;people<br/>
+with&#160;many&#160;data&#160;sets<br/>
+–&#160;the&#160;pessimist—let’s&#160;protect&#160;ourselves&#160;against&#160;bad&#160;decisions&#160;given&#160;that&#160;our<br/>
+inferential&#160;procedure&#160;is&#160;inevitably&#160;based&#160;on&#160;a&#160;simplification&#160;of&#160;reality<br/>
+2<br/>
+<hr/>
+<a name=3></a>Machine&#160;Learning&#160;(As&#160;Explained&#160;to&#160;a&#160;Statistician)<br/>
+•&#160;A&#160;loose&#160;confederation&#160;of&#160;themes&#160;in&#160;statistical&#160;inference&#160;(and&#160;decision-making)<br/>
+•&#160;A&#160;focus&#160;on&#160;prediction&#160;and&#160;exploratory&#160;data&#160;analysis<br/>
+–&#160;not&#160;much&#160;worry&#160;about&#160;“coverage”<br/>
+•&#160;A&#160;focus&#160;on&#160;computational&#160;methodology&#160;and&#160;empirical&#160;evaluation,&#160;with&#160;a<br/>
+dollop&#160;of&#160;empirical&#160;process&#160;theory<br/>
+–&#160;lots&#160;of&#160;nonparametrics,&#160;but&#160;not&#160;much&#160;asymptotics<br/>
+•&#160;Sometimes&#160;Bayesian&#160;and&#160;sometimes&#160;frequentist<br/>
+–&#160;not&#160;much&#160;interplay<br/>
+3<br/>
+<hr/>
+<a name=4></a>Decision-Theoretic&#160;Perspective<br/>
+•&#160;Define&#160;a&#160;family&#160;of&#160;probability&#160;models&#160;for&#160;the&#160;data&#160;X,&#160;indexed&#160;by&#160;a<br/>
+“parameter”&#160;θ<br/>
+•&#160;Define&#160;a&#160;“procedure”&#160;δ(X)&#160;that&#160;operates&#160;on&#160;the&#160;data&#160;to&#160;produce&#160;a&#160;decision<br/>
+•&#160;Define&#160;a&#160;loss&#160;function:<br/>
+l(δ(X),&#160;θ)<br/>
+•&#160;The&#160;goal&#160;is&#160;to&#160;use&#160;the&#160;loss&#160;function&#160;to&#160;compare&#160;procedures,&#160;but&#160;both&#160;of&#160;its<br/>
+arguments&#160;are&#160;unknown<br/>
+4<br/>
+<hr/>
+<a name=5></a>Decision-Theoretic&#160;Perspective<br/>
+•&#160;Define&#160;a&#160;family&#160;of&#160;probability&#160;models&#160;for&#160;the&#160;data&#160;X,&#160;indexed&#160;by&#160;a<br/>
+“parameter”&#160;θ<br/>
+•&#160;Define&#160;a&#160;“procedure”&#160;δ(X)&#160;that&#160;operates&#160;on&#160;the&#160;data&#160;to&#160;produce&#160;a&#160;decision<br/>
+•&#160;Define&#160;a&#160;loss&#160;function:<br/>
+l(δ(X),&#160;θ)<br/>
+•&#160;The&#160;goal&#160;is&#160;to&#160;use&#160;the&#160;loss&#160;function&#160;to&#160;compare&#160;procedures,&#160;but&#160;both&#160;of&#160;its<br/>
+arguments&#160;are&#160;unknown<br/>
+frequentist<br/>
+Bayesian&#160;<br/>
+expectation<br/>
+expectation<br/>
+R(θ)&#160;=&#160;Eθl(δ(X),&#160;θ)<br/>
+ρ(X)&#160;=&#160;E[l(δ(X),&#160;θ)&#160;|&#160;X]<br/>
+5<br/>
+<hr/>
+<a name=6></a>Decision-Theoretic&#160;Perspective<br/>
+•&#160;Define&#160;a&#160;family&#160;of&#160;probability&#160;models&#160;for&#160;the&#160;data&#160;X,&#160;indexed&#160;by&#160;a<br/>
+“parameter”&#160;θ<br/>
+•&#160;Define&#160;a&#160;“procedure”&#160;δ(X)&#160;that&#160;operates&#160;on&#160;the&#160;data&#160;to&#160;produce&#160;a&#160;decision<br/>
+•&#160;Define&#160;a&#160;loss&#160;function:<br/>
+l(δ(X),&#160;θ)<br/>
+•&#160;The&#160;goal&#160;is&#160;to&#160;use&#160;the&#160;loss&#160;function&#160;to&#160;compare&#160;procedures,&#160;but&#160;both&#160;of&#160;its<br/>
+arguments&#160;are&#160;unknown<br/>
+frequentist<br/>
+Bayesian&#160;<br/>
+expectation<br/>
+expectation<br/>
+R(θ)&#160;=&#160;Eθl(δ(X),&#160;θ)<br/>
+ρ(X)&#160;=&#160;E[l(δ(X),&#160;θ)&#160;|&#160;X]<br/>
+6<br/>
+<hr/>
+<a name=7></a>Decision-Theoretic&#160;Perspective<br/>
+•&#160;Define&#160;a&#160;family&#160;of&#160;probability&#160;models&#160;for&#160;the&#160;data&#160;X,&#160;indexed&#160;by&#160;a<br/>
+“parameter”&#160;θ<br/>
+•&#160;Define&#160;a&#160;“procedure”&#160;δ(X)&#160;that&#160;operates&#160;on&#160;the&#160;data&#160;to&#160;produce&#160;a&#160;decision<br/>
+•&#160;Define&#160;a&#160;loss&#160;function:<br/>
+l(δ(X),&#160;θ)<br/>
+•&#160;The&#160;goal&#160;is&#160;to&#160;use&#160;the&#160;loss&#160;function&#160;to&#160;compare&#160;procedures,&#160;but&#160;both&#160;of&#160;its<br/>
+arguments&#160;are&#160;unknown<br/>
+frequentist<br/>
+Bayesian&#160;<br/>
+expectation<br/>
+expectation<br/>
+R(θ)&#160;=&#160;Eθl(δ(X),&#160;θ)<br/>
+ρ(X)&#160;=&#160;E[l(δ(X),&#160;θ)&#160;|&#160;X]<br/>
+7<br/>
+<hr/>
+<a name=8></a>Coherence&#160;and&#160;Calibration<br/>
+•&#160;Coherence&#160;and&#160;calibration&#160;are&#160;two&#160;important&#160;goals&#160;for&#160;statistical&#160;inference<br/>
+•&#160;Bayesian&#160;work&#160;has&#160;tended&#160;to&#160;focus&#160;on&#160;coherence&#160;while&#160;frequentist&#160;work<br/>
+hasn’t&#160;been&#160;too&#160;worried&#160;about&#160;coherence<br/>
+–&#160;the&#160;problem&#160;with&#160;pure&#160;coherence&#160;is&#160;that&#160;one&#160;can&#160;be&#160;coherent&#160;and<br/>
+completely&#160;wrong<br/>
+•&#160;Frequentist&#160;work&#160;has&#160;tended&#160;to&#160;focus&#160;on&#160;calibration&#160;while&#160;Bayesian&#160;work<br/>
+hasn’t&#160;been&#160;too&#160;worried&#160;about&#160;calibration<br/>
+–&#160;the&#160;problem&#160;with&#160;pure&#160;calibration&#160;is&#160;that&#160;one&#160;can&#160;be&#160;calibrated&#160;and<br/>
+completely&#160;useless<br/>
+•&#160;Many&#160;statisticians&#160;find&#160;that&#160;they&#160;make&#160;use&#160;of&#160;both&#160;the&#160;Bayesian&#160;perspective<br/>
+and&#160;the&#160;frequentist&#160;perspective,&#160;because&#160;a&#160;blend&#160;is&#160;often&#160;a&#160;natural&#160;way&#160;to<br/>achieve&#160;both&#160;coherence&#160;and&#160;calibration<br/>
+8<br/>
+<hr/>
+<a name=9></a>The&#160;Bayesian&#160;World<br/>
+•&#160;The&#160;Bayesian&#160;world&#160;is&#160;further&#160;subdivided&#160;into&#160;subjective&#160;Bayes&#160;and&#160;objective<br/>
+Bayes<br/>
+•&#160;Subjective&#160;Bayes:&#160;work&#160;hard&#160;with&#160;the&#160;domain&#160;expert&#160;to&#160;come&#160;up&#160;with&#160;the<br/>
+model,&#160;the&#160;prior&#160;and&#160;the&#160;loss<br/>
+•&#160;Subjective&#160;Bayesian&#160;research&#160;involves&#160;(inter&#160;alia)&#160;developing&#160;new&#160;kinds&#160;of<br/>
+models,&#160;new&#160;kinds&#160;of&#160;computational&#160;methods&#160;for&#160;integration,&#160;new&#160;kinds&#160;of<br/>subjective&#160;assessment&#160;techniques<br/>
+•&#160;Not&#160;much&#160;focus&#160;on&#160;analysis,&#160;because&#160;the&#160;spirit&#160;is&#160;that&#160;“Bayes&#160;is&#160;optimal”<br/>
+(given&#160;a&#160;good&#160;model,&#160;a&#160;good&#160;prior&#160;and&#160;a&#160;good&#160;loss)<br/>
+9<br/>
+<hr/>
+<a name=10></a>Subjective&#160;Bayes<br/>
+•&#160;A&#160;fairly&#160;unassailable&#160;framework&#160;in&#160;principle,&#160;but&#160;there&#160;are&#160;serious&#160;problems<br/>
+in&#160;practice:<br/>
+–&#160;for&#160;complex&#160;models,&#160;there&#160;can&#160;be&#160;many,&#160;many&#160;unknown&#160;parameters&#160;whose<br/>
+distributions&#160;must&#160;be&#160;assessed<br/>
+–&#160;independence&#160;assumptions&#160;often&#160;must&#160;be&#160;imposed&#160;to&#160;make&#160;it&#160;possible&#160;for<br/>
+humans&#160;to&#160;develop&#160;assessments<br/>
+–&#160;independence&#160;assumptions&#160;often&#160;must&#160;be&#160;imposed&#160;to&#160;obtain&#160;a<br/>
+computationally&#160;tractable&#160;model<br/>
+–&#160;it&#160;is&#160;particularly&#160;difficult&#160;to&#160;assess&#160;tail&#160;behavior,&#160;and&#160;tail&#160;behavior&#160;can<br/>
+matter&#160;(cf.&#160;marginal&#160;likelihoods&#160;and&#160;Bayes&#160;factors)<br/>
+–&#160;Bayesian&#160;nonparametrics&#160;can&#160;be&#160;awkward&#160;for&#160;subjective&#160;Bayes<br/>
+•&#160;Also,&#160;there&#160;are&#160;lots&#160;of&#160;reasonable&#160;methods&#160;out&#160;there&#160;that&#160;don’t&#160;look&#160;Bayesian;<br/>
+why&#160;should&#160;we&#160;not&#160;consider&#160;them?<br/>
+10<br/>
+<hr/>
+<a name=11></a>Objective&#160;Bayes<br/>
+•&#160;When&#160;the&#160;subjective&#160;Bayesian&#160;runs&#160;aground&#160;in&#160;complexity,&#160;the&#160;objective<br/>
+Bayesian&#160;attempts&#160;to&#160;step&#160;in<br/>
+•&#160;The&#160;goal&#160;is&#160;to&#160;find&#160;principles&#160;for&#160;setting&#160;priors&#160;so&#160;as&#160;to&#160;have&#160;minimal&#160;impact<br/>
+on&#160;posterior&#160;inference<br/>
+•&#160;E.g.,&#160;reference&#160;priors&#160;maximize&#160;the&#160;divergence&#160;between&#160;the&#160;prior&#160;and&#160;the<br/>
+posterior<br/>
+–&#160;which&#160;often&#160;yields&#160;“improper&#160;priors”<br/>
+•&#160;Objective&#160;Bayesians&#160;often&#160;make&#160;use&#160;of&#160;frequentist&#160;ideas&#160;in&#160;developing<br/>
+principles&#160;for&#160;choosing&#160;priors<br/>
+•&#160;An&#160;appealing&#160;framework&#160;(and&#160;a&#160;great&#160;area&#160;to&#160;work&#160;in),&#160;but&#160;can&#160;be&#160;challenging<br/>
+to&#160;work&#160;with&#160;in&#160;complex&#160;(multivariate,&#160;hierarchical)&#160;models<br/>
+11<br/>
+<hr/>
+<a name=12></a>Frequentist&#160;Perspective<br/>
+•&#160;From&#160;the&#160;frequentist&#160;perspective,&#160;procedures&#160;can&#160;come&#160;from&#160;anywhere;&#160;they<br/>
+don’t&#160;have&#160;to&#160;be&#160;derived&#160;from&#160;a&#160;probability&#160;model<br/>
+–&#160;e.g.,&#160;nonparametric&#160;testing<br/>–&#160;e.g.,&#160;the&#160;support&#160;vector&#160;machine,&#160;boosting<br/>–&#160;e.g.,&#160;methods&#160;based&#160;on&#160;first-order&#160;logic<br/>
+•&#160;This&#160;opens&#160;the&#160;door&#160;to&#160;some&#160;possibly&#160;silly&#160;methods,&#160;so&#160;it’s&#160;important&#160;to<br/>
+develop&#160;principles&#160;and&#160;techniques&#160;of&#160;analysis&#160;that&#160;allow&#160;one&#160;to&#160;rule&#160;out<br/>methods,&#160;and&#160;to&#160;rank&#160;the&#160;reasonable&#160;methods<br/>
+•&#160;Frequentist&#160;statistics&#160;tends&#160;to&#160;focus&#160;more&#160;on&#160;analysis&#160;than&#160;on&#160;methods<br/>
+•&#160;(One&#160;general&#160;method—the&#160;bootstrap)<br/>
+12<br/>
+<hr/>
+<a name=13></a>Frequentist&#160;Activities<br/>
+•&#160;There&#160;is&#160;a&#160;hierarchy&#160;of&#160;analytic&#160;activities:<br/>
+–&#160;consistency<br/>–&#160;rates<br/>–&#160;sampling&#160;distributions<br/>
+•&#160;Classical&#160;frequentist&#160;statistics&#160;focused&#160;on&#160;parametric&#160;statistics,&#160;then&#160;there<br/>
+was&#160;a&#160;wave&#160;of&#160;activity&#160;in&#160;nonparametric&#160;testing,&#160;and&#160;more&#160;recently&#160;there&#160;has<br/>been&#160;a&#160;wave&#160;of&#160;activity&#160;in&#160;other&#160;kinds&#160;of&#160;nonparametrics<br/>
+–&#160;e.g.,&#160;function&#160;estimation<br/>–&#160;e.g.,&#160;large&#160;p,&#160;small&#160;n&#160;problems<br/>
+•&#160;One&#160;of&#160;the&#160;most&#160;powerful&#160;general&#160;tools&#160;is&#160;empirical&#160;process&#160;theory,&#160;where<br/>
+consistency,&#160;rates&#160;and&#160;sampling&#160;distributions&#160;are&#160;obtained&#160;uniformly&#160;on<br/>various&#160;general&#160;spaces&#160;(this&#160;is&#160;the&#160;general&#160;field&#160;that&#160;encompasses&#160;statistical<br/>learning&#160;theory)<br/>
+13<br/>
+<hr/>
+<a name=14></a>Outline<br/>
+•&#160;Surrogate&#160;loss&#160;functions,&#160;f-divergences&#160;and&#160;experimental&#160;design<br/>
+•&#160;Composite&#160;loss&#160;functions&#160;and&#160;multivariate&#160;regression<br/>
+•&#160;Sufficient&#160;dimension&#160;reduction<br/>
+•&#160;Sparse&#160;principal&#160;component&#160;analysis<br/>
+14<br/>
+<hr/>
+<a name=15></a>Surrogate&#160;Loss&#160;Functions,&#160;f&#160;-Divergences&#160;and<br/>
+Experimental&#160;Design<br/>
+Nguyen,&#160;X.,&#160;Wainwright,&#160;M.&#160;J.,&#160;and&#160;Jordan,&#160;M.&#160;I.&#160;(2008).&#160;On&#160;loss&#160;functions<br/>and&#160;f&#160;-divergences.&#160;Annals&#160;of&#160;Statistics,&#160;37,&#160;876–904.<br/>
+Bartlett,&#160;P.,&#160;Jordan,&#160;M.&#160;I.,&#160;and&#160;McAuliffe,&#160;J.&#160;(2006).&#160;Convexity,&#160;classification<br/>and&#160;risk&#160;bounds.&#160;Journal&#160;of&#160;the&#160;American&#160;Statistical&#160;Association,&#160;101,&#160;138–156.<br/>
+Nguyen,&#160;X.,&#160;Jordan,&#160;M.&#160;I.,&#160;and&#160;Sinopoli,&#160;B.&#160;(2005).&#160;ACM&#160;Transactions&#160;on<br/>Sensor&#160;Networks,&#160;1,&#160;134–152.<br/>
+15<br/>
+<hr/>
+<a name=16></a><img class="yflip" src="./Jordan_1-16_1.png"/><br/>
+<img src="./Jordan_1-16_2.jpg"/><br/>
+Motivating&#160;Example:&#160;Decentralized&#160;Detection<br/>
+Light&#160;source<br/>
+...<br/>
+...<br/>
+...<br/>
+...<br/>
+sensors<br/>
+•&#160;Wireless&#160;network&#160;of&#160;motes&#160;equipped&#160;with&#160;sensors&#160;(e.g.,&#160;light,&#160;heat,&#160;sound)<br/>•&#160;Limited&#160;battery:&#160;can&#160;only&#160;transmit&#160;quantized&#160;observations<br/>•&#160;Is&#160;the&#160;light&#160;source&#160;above&#160;the&#160;green&#160;region?<br/>
+16<br/>
+<hr/>
+<a name=17></a><img class="yflip" src="./Jordan_1-17_1.png"/><br/>
+Decentralized&#160;Detection<br/>
+Hypothesis:&#160;Y&#160;∈&#160;{±1}<br/>
+X1<br/>
+X2<br/>
+X3<br/>
+. . .XS<br/>
+Observations:&#160;X&#160;∈&#160;{1,&#160;.&#160;.&#160;.&#160;,&#160;M}S<br/>
+Q1<br/>
+Q2<br/>
+Q3<br/>
+. . .&#160;QS<br/>
+Z1<br/>
+Z2<br/>
+Z3<br/>
+. . .ZS<br/>
+Quantized&#160;versions:&#160;Z&#160;∈&#160;{1,&#160;.&#160;.&#160;.&#160;,&#160;L}S<br/>L&#160;≪&#160;M<br/>
+γ(Z1,&#160;.&#160;.&#160;.&#160;,&#160;ZS)<br/>
+17<br/>
+<hr/>
+<a name=18></a>Decentralized&#160;Detection&#160;(cont.)<br/>
+•&#160;General&#160;set-up:<br/>
+–&#160;data&#160;are&#160;(X,&#160;Y&#160;)&#160;pairs,&#160;assumed&#160;sampled&#160;i.i.d.&#160;for&#160;simplicity,&#160;where&#160;Y&#160;∈<br/>
+{0,&#160;1}<br/>
+–&#160;given&#160;X,&#160;let&#160;Z&#160;=&#160;Q(X)&#160;denote&#160;the&#160;covariate&#160;vector,&#160;where&#160;Q&#160;∈&#160;Q,&#160;where<br/>
+Q&#160;is&#160;some&#160;set&#160;of&#160;random&#160;mappings&#160;(can&#160;be&#160;viewed&#160;as&#160;an&#160;experimental<br/>design)<br/>
+–&#160;consider&#160;a&#160;family&#160;{γ(·)},&#160;where&#160;γ&#160;is&#160;a&#160;discriminant&#160;function&#160;lying&#160;in&#160;some<br/>
+(nonparametric)&#160;family&#160;Γ<br/>
+•&#160;Problem:&#160;Find&#160;the&#160;decision&#160;(Q;&#160;γ)&#160;that&#160;minimizes&#160;the&#160;probability&#160;of&#160;error<br/>
+P&#160;(Y&#160;6=&#160;γ(Z))<br/>
+•&#160;Applications&#160;include:<br/>
+–&#160;decentralized&#160;compression&#160;and&#160;detection<br/>–&#160;feature&#160;extraction,&#160;dimensionality&#160;reduction<br/>–&#160;problem&#160;of&#160;sensor&#160;placement<br/>
+18<br/>
+<hr/>
+<a name=19></a>Perspectives<br/>
+•&#160;Signal&#160;processing&#160;literature<br/>
+–&#160;everything&#160;is&#160;assumed&#160;known&#160;except&#160;for&#160;Q—the&#160;problem&#160;of&#160;“decentralized<br/>
+detection”&#160;is&#160;to&#160;find&#160;Q<br/>
+–&#160;this&#160;is&#160;done&#160;via&#160;the&#160;maximization&#160;of&#160;an&#160;“f&#160;-divergence”&#160;(e.g.,&#160;Hellinger<br/>
+distance,&#160;Chernoff&#160;distance)<br/>
+–&#160;basically&#160;a&#160;heuristic&#160;literature&#160;from&#160;a&#160;statistical&#160;perspective&#160;(plug-in<br/>
+estimation)<br/>
+•&#160;Statistical&#160;machine&#160;learning&#160;literature<br/>
+–&#160;Q&#160;is&#160;assumed&#160;known&#160;and&#160;the&#160;problem&#160;is&#160;to&#160;find&#160;γ<br/>–&#160;this&#160;is&#160;done&#160;via&#160;the&#160;minimization&#160;of&#160;an&#160;“surrogate&#160;loss&#160;function”&#160;(e.g.,<br/>
+boosting,&#160;logistic&#160;regression,&#160;support&#160;vector&#160;machine)<br/>
+–&#160;decision-theoretic&#160;flavor;&#160;consistency&#160;results<br/>
+19<br/>
+<hr/>
+<a name=20></a><img class="yflip" src="./Jordan_1-20_1.png"/><br/>
+<img class="yflip" src="./Jordan_1-20_2.png"/><br/>
+<img class="yflip" src="./Jordan_1-20_3.png"/><br/>
+<img class="yflip" src="./Jordan_1-20_4.png"/><br/>
+<img class="yflip" src="./Jordan_1-20_5.png"/><br/>
+<img class="yflip" src="./Jordan_1-20_6.png"/><br/>
+f&#160;-divergences&#160;(Ali-Silvey&#160;Distances)<br/>
+The&#160;f&#160;-divergence&#160;between&#160;measures&#160;µ&#160;and&#160;π&#160;is&#160;given&#160;by<br/>
+<br/>
+<br/>
+X<br/>
+µ(z)<br/>
+If(µ,&#160;π)&#160;:=<br/>
+π(z)f<br/>
+.<br/>
+π(z)<br/>
+z<br/>
+where&#160;f&#160;:&#160;[0,&#160;+∞)&#160;→&#160;R&#160;∪&#160;{+∞}&#160;is&#160;a&#160;continuous&#160;convex&#160;function<br/>
+•&#160;Kullback-Leibler&#160;divergence:&#160;f(u)&#160;=&#160;u&#160;log&#160;u.<br/>
+X<br/>
+µ(z)<br/>
+If&#160;(µ,&#160;π)&#160;=<br/>
+µ(z)&#160;log<br/>
+.<br/>
+π(z)<br/>
+z<br/>
+•&#160;variational&#160;distance:&#160;f(u)&#160;=&#160;|u&#160;−&#160;1|.<br/>
+X<br/>
+If(µ,&#160;π)&#160;:=<br/>
+|µ(z)&#160;−&#160;π(z)|.<br/>
+z<br/>
+√<br/>
+•&#160;Hellinger&#160;distance:&#160;f(u)&#160;=&#160;1(&#160;u<br/>
+2<br/>
+−&#160;1)2.<br/>
+q<br/>
+q<br/>
+X<br/>
+If(µ,&#160;π)&#160;:=<br/>
+(<br/>
+µ(z)&#160;−<br/>
+π(z))2.<br/>
+z∈Z<br/>
+20<br/>
+<hr/>
+<a name=21></a>Why&#160;the&#160;f&#160;-divergence?<br/>
+•&#160;A&#160;classical&#160;theorem&#160;due&#160;to&#160;Blackwell&#160;(1951):&#160;If&#160;a&#160;procedure&#160;A&#160;has&#160;a&#160;smaller<br/>
+f&#160;-divergence&#160;than&#160;a&#160;procedure&#160;B&#160;(for&#160;some&#160;fixed&#160;f&#160;),&#160;then&#160;there&#160;exist&#160;some<br/>set&#160;of&#160;prior&#160;probabilities&#160;such&#160;that&#160;procedure&#160;A&#160;has&#160;a&#160;smaller&#160;probability&#160;of<br/>error&#160;than&#160;procedure&#160;B<br/>
+•&#160;Given&#160;that&#160;it&#160;is&#160;intractable&#160;to&#160;minimize&#160;probability&#160;of&#160;error,&#160;this&#160;result<br/>
+has&#160;motivated&#160;(many)&#160;authors&#160;in&#160;signal&#160;processing&#160;to&#160;use&#160;f&#160;-divergences&#160;as<br/>surrogates&#160;for&#160;probability&#160;of&#160;error<br/>
+•&#160;I.e.,&#160;choose&#160;a&#160;quantizer&#160;Q&#160;by&#160;maximizing&#160;an&#160;f-divergence&#160;between&#160;P&#160;(Z|Y&#160;=<br/>
+1)&#160;and&#160;P&#160;(Z|Y&#160;=&#160;−1)<br/>
+–&#160;Hellinger&#160;distance<br/>
+(Kailath&#160;1967;&#160;Longo&#160;et&#160;al,&#160;1990)<br/>
+–&#160;Chernoff&#160;distance<br/>
+(Chamberland&#160;&amp;&#160;Veeravalli,&#160;2003)<br/>
+•&#160;Supporting&#160;arguments&#160;from&#160;asymptotics<br/>
+–&#160;Kullback-Leibler&#160;divergence&#160;in&#160;the&#160;Neyman-Pearson&#160;setting<br/>–&#160;Chernoff&#160;distance&#160;in&#160;the&#160;Bayesian&#160;setting<br/>
+21<br/>
+<hr/>
+<a name=22></a>Statistical&#160;Machine&#160;Learning&#160;Perspective<br/>
+•&#160;Decision-theoretic:&#160;based&#160;on&#160;a&#160;loss&#160;function&#160;φ(Y,&#160;γ(Z))<br/>
+•&#160;E.g.,&#160;0-1&#160;loss:<br/>
+(1<br/>
+if&#160;Y&#160;6=&#160;γ(Z)<br/>
+φ(Y,&#160;γ(Z))&#160;=<br/>
+0<br/>
+otherwise<br/>
+which&#160;can&#160;be&#160;written&#160;in&#160;the&#160;binary&#160;case&#160;as&#160;φ(Y,&#160;γ(Z))&#160;=&#160;I(Y&#160;γ(Z)&#160;&lt;&#160;0)<br/>
+•&#160;The&#160;main&#160;focus&#160;is&#160;on&#160;estimating&#160;γ;&#160;the&#160;problem&#160;of&#160;estimating&#160;Q&#160;by<br/>
+minimizing&#160;the&#160;loss&#160;function&#160;is&#160;only&#160;occasionally&#160;addressed<br/>
+•&#160;It&#160;is&#160;intractable&#160;to&#160;minimize&#160;0-1&#160;loss,&#160;so&#160;consider&#160;minimizing&#160;a&#160;surrogate&#160;loss<br/>
+functions&#160;that&#160;is&#160;a&#160;convex&#160;upper&#160;bound&#160;on&#160;the&#160;0-1&#160;loss<br/>
+22<br/>
+<hr/>
+<a name=23></a>Margin-Based&#160;Surrogate&#160;Loss&#160;Functions<br/>
+3<br/>
+Zero−one<br/>Hinge<br/>Logistic<br/>
+2.5<br/>
+Exponential<br/>
+2<br/>
+1.5<br/>
+Surrogate loss<br/>
+1<br/>
+0.5<br/>
+0<br/>
+−1<br/>
+−0.5<br/>
+0<br/>
+0.5<br/>
+1<br/>
+1.5<br/>
+2<br/>
+Margin value<br/>
+•&#160;Define&#160;a&#160;convex&#160;surrogate&#160;in&#160;terms&#160;of&#160;the&#160;margin&#160;u&#160;=&#160;yγ(z)<br/>
+–&#160;hinge&#160;loss:&#160;φ(u)&#160;=&#160;max(0,&#160;1&#160;−&#160;u)<br/>
+support&#160;vector&#160;machine<br/>
+–&#160;exponential&#160;loss:&#160;φ(u)&#160;=&#160;exp(−u)<br/>
+boosting<br/>
+–&#160;logistic&#160;loss:&#160;φ(u)&#160;=&#160;log[1&#160;+&#160;exp(−u)]<br/>
+logistic&#160;regression<br/>
+23<br/>
+<hr/>
+<a name=24></a><img class="yflip" src="./Jordan_1-24_1.png"/><br/>
+Estimation&#160;Based&#160;on&#160;a&#160;Convex&#160;Surrogate&#160;Loss<br/>
+•&#160;Estimation&#160;procedures&#160;used&#160;in&#160;the&#160;classification&#160;literature&#160;are&#160;generally<br/>
+M&#160;-estimators&#160;(“empirical&#160;risk&#160;minimization”)<br/>
+•&#160;Given&#160;i.i.d.&#160;training&#160;data&#160;(x1,&#160;y1),&#160;.&#160;.&#160;.&#160;,&#160;(xn,&#160;yn)<br/>
+•&#160;Find&#160;a&#160;classifier&#160;γ&#160;that&#160;minimizes&#160;the&#160;empirical&#160;expectation&#160;of&#160;the&#160;surrogate<br/>
+loss:<br/>
+n<br/>
+ˆ<br/>
+1&#160;X<br/>
+Eφ(Y&#160;γ(X))&#160;:=<br/>
+φ(y<br/>
+n<br/>
+iγ(xi))<br/>
+i=1<br/>
+where&#160;the&#160;convexity&#160;of&#160;φ&#160;makes&#160;this&#160;feasible&#160;in&#160;practice&#160;and&#160;in&#160;theory<br/>
+24<br/>
+<hr/>
+<a name=25></a>Some&#160;Theory&#160;for&#160;Surrogate&#160;Loss&#160;Functions<br/>
+(Bartlett,&#160;Jordan,&#160;&amp;&#160;McAuliffe,&#160;JASA&#160;2006)<br/>
+•&#160;φ&#160;must&#160;be&#160;classification-calibrated,&#160;i.e.,&#160;for&#160;any&#160;a,&#160;b&#160;≥&#160;0&#160;and&#160;a&#160;6=&#160;b,<br/>
+inf<br/>
+φ(α)a&#160;+&#160;φ(−α)b&#160;&gt;&#160;inf&#160;φ(α)a&#160;+&#160;φ(−α)b<br/>
+α:α(a−b)&lt;0<br/>
+α∈R<br/>
+(essentially&#160;a&#160;form&#160;of&#160;Fisher&#160;consistency&#160;that&#160;is&#160;appropriate&#160;for&#160;classification)<br/>
+•&#160;This&#160;is&#160;necessary&#160;and&#160;sufficient&#160;for&#160;Bayes&#160;consistency;&#160;we&#160;take&#160;it&#160;as&#160;the<br/>
+definition&#160;of&#160;a&#160;“surrogate&#160;loss&#160;function”&#160;for&#160;classification<br/>
+•&#160;In&#160;the&#160;convex&#160;case,&#160;φ&#160;is&#160;classification-calibrated&#160;iff&#160;differentiable&#160;at&#160;0&#160;and<br/>
+φ′(0)&#160;&lt;&#160;0<br/>
+25<br/>
+<hr/>
+<a name=26></a>Outline<br/>
+•&#160;A&#160;precise&#160;link&#160;between&#160;surrogate&#160;convex&#160;losses&#160;and&#160;f-divergences<br/>
+–&#160;we&#160;establish&#160;a&#160;constructive&#160;and&#160;many-to-one&#160;correspondence<br/>
+•&#160;A&#160;notion&#160;of&#160;universal&#160;equivalence&#160;among&#160;convex&#160;surrogate&#160;loss&#160;functions<br/>
+•&#160;An&#160;application:&#160;Proof&#160;of&#160;consistency&#160;for&#160;the&#160;choice&#160;of&#160;a&#160;(Q,&#160;γ)&#160;pair&#160;using<br/>
+any&#160;convex&#160;surrogate&#160;for&#160;the&#160;0-1&#160;loss<br/>
+26<br/>
+<hr/>
+<a name=27></a>Setup<br/>
+•&#160;We&#160;want&#160;to&#160;find&#160;(Q,&#160;γ)&#160;to&#160;minimize&#160;the&#160;φ-risk<br/>
+Rφ(γ,&#160;Q)&#160;=&#160;Eφ(Y&#160;γ(Z))<br/>
+•&#160;Define:<br/>
+Z<br/>
+µ(z)&#160;=&#160;P&#160;(Y&#160;=&#160;1,&#160;z)&#160;=&#160;p<br/>
+Q(z|x)dP&#160;(x|Y&#160;=&#160;1)<br/>
+x<br/>
+Z<br/>
+π(z)&#160;=&#160;P&#160;(Y&#160;=&#160;−1,&#160;z)&#160;=&#160;q<br/>
+Q(z|x)dP&#160;(x|Y&#160;=&#160;−1).<br/>
+x<br/>
+•&#160;φ-risk&#160;can&#160;be&#160;represented&#160;as:<br/>
+X<br/>
+Rφ(γ,&#160;Q)&#160;=<br/>
+φ(γ(z))µ(z)&#160;+&#160;φ(−γ(z))π(z)<br/>
+z<br/>
+27<br/>
+<hr/>
+<a name=28></a><img class="yflip" src="./Jordan_1-28_1.png"/><br/>
+<img class="yflip" src="./Jordan_1-28_2.png"/><br/>
+<img class="yflip" src="./Jordan_1-28_3.png"/><br/>
+Profiling<br/>
+•&#160;Optimize&#160;out&#160;over&#160;γ&#160;(for&#160;each&#160;z)&#160;and&#160;define:<br/>
+Rφ(Q)&#160;:=&#160;infγ∈ΓRφ(γ,&#160;Q)<br/>
+•&#160;For&#160;example,&#160;for&#160;0-1&#160;loss,&#160;we&#160;easily&#160;obtain&#160;γ(z)&#160;=&#160;sign(µ(z)&#160;−&#160;π(z)).&#160;Thus:<br/>
+X<br/>
+R0-1(Q)&#160;=<br/>
+min{µ(z),&#160;π(z)}<br/>
+z∈Z<br/>
+1<br/>
+1&#160;X<br/>
+=<br/>
+−<br/>
+|µ(z)&#160;−&#160;π(z)|<br/>
+2<br/>
+2&#160;z∈Z<br/>
+1<br/>
+=<br/>
+(1&#160;−&#160;V&#160;(µ,&#160;π))<br/>
+2<br/>
+where&#160;V&#160;(µ,&#160;π)&#160;is&#160;the&#160;variational&#160;distance.<br/>
+•&#160;I.e.,&#160;optimizing&#160;out&#160;a&#160;φ-risk&#160;yields&#160;an&#160;f-divergence.&#160;Does&#160;this&#160;hold&#160;more<br/>
+generally?<br/>
+28<br/>
+<hr/>
+<a name=29></a><img class="yflip" src="./Jordan_1-29_1.png"/><br/>
+<img class="yflip" src="./Jordan_1-29_2.png"/><br/>
+<img class="yflip" src="./Jordan_1-29_3.png"/><br/>
+<img class="yflip" src="./Jordan_1-29_4.png"/><br/>
+Some&#160;Examples<br/>
+•&#160;hinge&#160;loss:<br/>
+Rhinge(Q)&#160;=&#160;1&#160;−&#160;V&#160;(µ,&#160;π)<br/>
+(variational&#160;distance)<br/>
+•&#160;exponential&#160;loss:<br/>
+X<br/>
+Rexp(Q)&#160;=&#160;1&#160;−<br/>
+(pµ(z)&#160;−&#160;pπ(z))2<br/>
+(Hellinger&#160;distance)<br/>
+z∈Z<br/>
+•&#160;logistic&#160;loss:<br/>
+µ&#160;+&#160;π<br/>
+µ&#160;+&#160;π<br/>
+Rlog(Q)&#160;=&#160;log&#160;2−D(µk<br/>
+)−D(πk<br/>
+)<br/>
+(capacitory&#160;discrimination)<br/>
+2<br/>
+2<br/>
+29<br/>
+<hr/>
+<a name=30></a><img class="yflip" src="./Jordan_1-30_1.png"/><br/>
+Link&#160;between&#160;φ-losses&#160;and&#160;f&#160;-divergences<br/>
+φ1<br/>
+f1<br/>
+φ2<br/>
+f2<br/>
+φ3<br/>
+f3<br/>
+Surrogate&#160;loss&#160;functions<br/>
+Class&#160;of&#160;f&#160;-divergences<br/>
+30<br/>
+<hr/>
+<a name=31></a>Conjugate&#160;Duality<br/>
+•&#160;Recall&#160;the&#160;notion&#160;of&#160;conjugate&#160;duality&#160;(Rockafellar):<br/>
+For&#160;a&#160;lower-<br/>
+semicontinuous&#160;convex&#160;function&#160;f&#160;:&#160;R&#160;→&#160;R&#160;∪&#160;{∞},&#160;the&#160;conjugate&#160;dual<br/>f&#160;∗&#160;:&#160;R&#160;→&#160;R&#160;∪&#160;{∞}&#160;is&#160;defined&#160;as<br/>
+f&#160;∗(u)&#160;=&#160;sup{uv&#160;−&#160;f(v)},<br/>
+v∈R<br/>
+which&#160;is&#160;necessarily&#160;a&#160;convex&#160;function.<br/>
+•&#160;Define<br/>
+Ψ(β)&#160;=&#160;f&#160;∗(−β)<br/>
+31<br/>
+<hr/>
+<a name=32></a>Link&#160;between&#160;φ-losses&#160;and&#160;f&#160;-divergences<br/>
+Theorem&#160;1.&#160;(a)&#160;For&#160;any&#160;margin-based&#160;surrogate&#160;loss&#160;function&#160;φ,&#160;there&#160;is&#160;an<br/>f&#160;-divergence&#160;such&#160;that&#160;Rφ(Q)&#160;=&#160;−If(µ,&#160;π)&#160;for&#160;some&#160;lower-semicontinuous<br/>convex&#160;function&#160;f&#160;.<br/>
+In&#160;addition,&#160;if&#160;φ&#160;is&#160;continuous&#160;and&#160;satisfies&#160;a&#160;(weak)&#160;regularity&#160;condition,<br/>
+then&#160;the&#160;following&#160;properties&#160;hold:<br/>
+(i)&#160;Ψ&#160;is&#160;a&#160;decreasing&#160;and&#160;convex&#160;function.<br/>
+(ii)&#160;Ψ(Ψ(β))&#160;=&#160;β&#160;for&#160;all&#160;β&#160;∈&#160;(β1,&#160;β2).<br/>
+(iii)&#160;There&#160;exists&#160;a&#160;point&#160;u∗&#160;such&#160;that&#160;Ψ(u∗)&#160;=&#160;u∗.<br/>
+(b)&#160;Conversely,&#160;if&#160;f&#160;is&#160;a&#160;lower-semicontinuous&#160;convex&#160;function&#160;satisfying<br/>conditions&#160;(i–iii),&#160;there&#160;exists&#160;a&#160;decreasing&#160;convex&#160;surrogate&#160;loss&#160;φ&#160;that<br/>induces&#160;the&#160;corresponding&#160;f&#160;-divergence<br/>
+32<br/>
+<hr/>
+<a name=33></a><img class="yflip" src="./Jordan_1-33_1.png"/><br/>
+<img class="yflip" src="./Jordan_1-33_2.png"/><br/>
+The&#160;Easy&#160;Direction:&#160;φ&#160;→&#160;f<br/>
+•&#160;Recall<br/>
+X<br/>
+Rφ(γ,&#160;Q)&#160;=<br/>
+φ(γ(z))µ(z)&#160;+&#160;φ(−γ(z))π(z)<br/>
+z∈Z<br/>
+•&#160;Optimizing&#160;out&#160;γ(z)&#160;for&#160;each&#160;z:<br/>
+<br/>
+<br/>
+X<br/>
+X<br/>
+µ(z)<br/>
+Rφ(Q)&#160;=<br/>
+inf&#160;φ(α)µ(z)+φ(−α)π(z)&#160;=<br/>
+π(z)inf&#160;φ(−α)&#160;+&#160;φ(α)<br/>
+α<br/>
+α<br/>
+π(z)<br/>
+z∈Z<br/>
+z<br/>
+•&#160;For&#160;each&#160;z&#160;let&#160;u&#160;=&#160;µ(z),&#160;define:<br/>
+π(z)<br/>
+f&#160;(u)&#160;:=&#160;−&#160;inf(φ(−α)&#160;+&#160;φ(α)u)<br/>
+α<br/>
+–&#160;f&#160;is&#160;a&#160;convex&#160;function<br/>–&#160;we&#160;have<br/>
+Rφ(Q)&#160;=&#160;−If(µ,&#160;π)<br/>
+33<br/>
+<hr/>
+<a name=34></a><img class="yflip" src="./Jordan_1-34_1.png"/><br/>
+The&#160;f&#160;→&#160;φ&#160;Direction&#160;Has&#160;a&#160;Constructive&#160;Consequence<br/>
+•&#160;Any&#160;continuous&#160;loss&#160;function&#160;φ&#160;that&#160;induces&#160;an&#160;f-divergence&#160;must&#160;be&#160;of&#160;the<br/>
+form<br/>
+u∗<br/>
+if&#160;α&#160;=&#160;0<br/>
+<br/>
+<br/>
+φ(α)&#160;=<br/>
+Ψ(g(α&#160;+&#160;u∗))&#160;if&#160;α&#160;&gt;&#160;0<br/>
+<br/>
+g(−α&#160;+&#160;u∗)<br/>
+if&#160;α&#160;&lt;&#160;0,<br/>
+where&#160;g&#160;:&#160;[u∗,&#160;+∞)&#160;→&#160;R&#160;is&#160;some&#160;increasing&#160;continuous&#160;and&#160;convex&#160;function<br/>such&#160;that&#160;g(u∗)&#160;=&#160;u∗,&#160;and&#160;g&#160;is&#160;right-differentiable&#160;at&#160;u∗&#160;with&#160;g′(u∗)&#160;&gt;&#160;0.<br/>
+34<br/>
+<hr/>
+<a name=35></a><img class="yflip" src="./Jordan_1-35_1.png"/><br/>
+Example&#160;–&#160;Hellinger&#160;distance<br/>
+4<br/>
+g = exp(u−1)<br/>g = u<br/>
+3<br/>
+g = u2<br/>
+2<br/>
+&#160;φ&#160; loss<br/>
+1<br/>
+0<br/>
+−1<br/>
+0<br/>
+1<br/>
+2<br/>
+margin<br/>
+√<br/>
+•&#160;Hellinger&#160;distance&#160;corresponds&#160;to&#160;an&#160;f-divergence&#160;with&#160;f(u)&#160;=&#160;−2&#160;u<br/>
+(1/β<br/>
+when&#160;β&#160;&gt;&#160;0<br/>
+•&#160;Recover&#160;immediate&#160;function&#160;Ψ(β)&#160;=&#160;f∗(−β)&#160;=&#160;+∞&#160;otherwise.<br/>
+•&#160;Choosing&#160;g(u)&#160;=&#160;eu−1&#160;yields&#160;φ(α)&#160;=&#160;exp(−α)<br/>
+⇒&#160;exponential&#160;loss<br/>
+35<br/>
+<hr/>
+<a name=36></a>Example&#160;–&#160;Variational&#160;distance<br/>
+4<br/>
+g = eu−1<br/>g = u<br/>
+3<br/>
+g = u2<br/>
+2<br/>
+&#160;φ&#160;loss<br/>
+1<br/>
+0<br/>
+−1<br/>
+0<br/>
+1<br/>
+2<br/>
+margin value<br/>
+•&#160;Variational&#160;distance&#160;corresp.&#160;to&#160;an&#160;f-divergence&#160;with&#160;f(u)&#160;=&#160;−2&#160;min{u,&#160;1}<br/>
+((2<br/>
+•&#160;Recover&#160;immediate&#160;function<br/>
+−&#160;β)<br/>
+Ψ(β)&#160;=&#160;f&#160;∗(−β)&#160;=<br/>
++<br/>
+when&#160;β&#160;&gt;&#160;0<br/>
++∞<br/>
+otherwise.<br/>
+•&#160;Choosing&#160;g(u)&#160;=&#160;u&#160;yields&#160;φ(α)&#160;=&#160;(1&#160;−&#160;α)+<br/>
+⇒&#160;hinge&#160;loss<br/>
+36<br/>
+<hr/>
+<a name=37></a>Example&#160;–&#160;Kullback-Leibler&#160;divergence<br/>
+4<br/>
+φ(α) = e−α&#160;−&#160;α<br/>
+3<br/>
+φ(α) = 1(α&#160;&lt; 0)<br/>
+2<br/>
+1<br/>
+&#160;φ&#160; loss<br/>
+0<br/>
+−1<br/>
+−2<br/>
+−1<br/>
+0<br/>
+1<br/>
+2<br/>
+margin (α)<br/>
+•&#160;There&#160;is&#160;no&#160;corresponding&#160;φ&#160;loss&#160;for&#160;either&#160;D(µkπ)&#160;or&#160;D(πkµ)<br/>
+•&#160;But&#160;the&#160;symmetrized&#160;KL&#160;divergence&#160;D(µkπ)&#160;+&#160;D(πkµ)<br/>
+is&#160;realized&#160;by<br/>
+φ(α)&#160;=&#160;e−α&#160;−&#160;α<br/>
+37<br/>
+<hr/>
+<a name=38></a>Bayes&#160;Consistency&#160;for&#160;Choice&#160;of&#160;(Q,&#160;λ)<br/>
+•&#160;Recall&#160;that&#160;from&#160;the&#160;0-1&#160;loss,&#160;we&#160;obtain&#160;the&#160;variational&#160;distance&#160;as&#160;the<br/>
+corresponding&#160;f&#160;-divergence,&#160;where&#160;f&#160;(u)&#160;=&#160;min{u,&#160;1}.<br/>
+•&#160;Consider&#160;a&#160;broader&#160;class&#160;of&#160;f-divergences&#160;defined&#160;by:<br/>
+f&#160;(u)&#160;=&#160;−c&#160;min{u,&#160;1}&#160;+&#160;au&#160;+&#160;b<br/>
+•&#160;And&#160;consider&#160;the&#160;set&#160;of&#160;(continuous,&#160;convex&#160;and&#160;classification-calibrated)<br/>
+φ-losses&#160;that&#160;can&#160;be&#160;obtained&#160;(via&#160;Theorem&#160;1)&#160;from&#160;these&#160;f&#160;-divergences<br/>
+•&#160;We&#160;will&#160;provide&#160;conditions&#160;under&#160;which&#160;such&#160;φ-losses&#160;yield&#160;Bayes&#160;consistency<br/>
+for&#160;procedures&#160;that&#160;jointly&#160;choose&#160;(Q,&#160;λ)<br/>
+•&#160;(And&#160;later&#160;we&#160;will&#160;show&#160;that&#160;only&#160;such&#160;φ-losses&#160;yield&#160;Bayes&#160;consistency)<br/>
+38<br/>
+<hr/>
+<a name=39></a><img class="yflip" src="./Jordan_1-39_1.png"/><br/>
+Setup<br/>
+•&#160;Consider&#160;sequences&#160;of&#160;increasing&#160;compact&#160;function&#160;classes&#160;C1&#160;⊆&#160;.&#160;.&#160;.&#160;⊆&#160;Γ&#160;and<br/>
+D1&#160;⊆&#160;.&#160;.&#160;.&#160;⊆&#160;Q<br/>
+•&#160;Assume&#160;there&#160;exists&#160;an&#160;oracle&#160;that&#160;outputs&#160;an&#160;optimal&#160;solution&#160;to:<br/>
+1&#160;n<br/>
+X&#160;X<br/>
+min<br/>
+ˆ<br/>
+Rφ(γ,&#160;Q)&#160;=<br/>
+min<br/>
+φ(Yiγ(z))Q(z|Xi)<br/>
+(γ,Q)∈(Cn,Dn)<br/>
+(γ,Q)∈(Cn,Dn)&#160;n&#160;i=1&#160;z∈Z<br/>
+and&#160;let&#160;(γ∗n,&#160;Q∗n)&#160;denote&#160;one&#160;such&#160;solution.<br/>
+•&#160;Let&#160;R∗Bayes&#160;denote&#160;the&#160;minimum&#160;Bayes&#160;risk:<br/>
+R∗Bayes&#160;:=<br/>
+inf<br/>
+RBayes(γ,&#160;Q).<br/>
+(γ,Q)∈(Γ,Q)<br/>
+•&#160;Excess&#160;Bayes&#160;risk:&#160;RBayes(γ∗n,&#160;Q∗n)&#160;−&#160;R∗Bayes<br/>
+39<br/>
+<hr/>
+<a name=40></a>Setup<br/>
+•&#160;Approximation&#160;error:<br/>
+E0(Cn,&#160;Dn)&#160;=<br/>
+inf<br/>
+{Rφ(γ,&#160;Q)}&#160;−&#160;R∗φ<br/>
+(γ,Q)∈(Cn,Dn)<br/>
+where&#160;R∗&#160;:=&#160;inf<br/>
+φ<br/>
+(γ,Q)∈(Γ,Q)&#160;Rφ(γ,&#160;Q)<br/>
+•&#160;Estimation&#160;error:<br/>
+<br/>
+<br/>
+E<br/>
+&#160;ˆ<br/>
+<br/>
+1(Cn,&#160;Dn)&#160;=&#160;E<br/>
+sup<br/>
+Rφ(γ,&#160;Q)&#160;−&#160;Rφ(γ,&#160;Q)<br/>
+(γ,Q)∈(C<br/>
+<br/>
+<br/>
+n,Dn)<br/>
+where&#160;the&#160;expectation&#160;is&#160;taken&#160;with&#160;respect&#160;to&#160;the&#160;measure&#160;Pn(X,&#160;Y&#160;)<br/>
+40<br/>
+<hr/>
+<a name=41></a><img class="yflip" src="./Jordan_1-41_1.png"/><br/>
+<img class="yflip" src="./Jordan_1-41_2.png"/><br/>
+<img class="yflip" src="./Jordan_1-41_3.png"/><br/>
+Bayes&#160;Consistency&#160;for&#160;Choice&#160;of&#160;(Q,&#160;λ)<br/>
+Theorem&#160;2.<br/>
+Under&#160;the&#160;stated&#160;conditions:<br/>
+(<br/>
+r<br/>
+)<br/>
+2<br/>
+ln(2/δ)<br/>
+RBayes(γ∗n,&#160;Q∗n)&#160;−&#160;R∗Bayes&#160;≤<br/>
+2E<br/>
+2<br/>
+c<br/>
+1(Cn,&#160;Dn)&#160;+&#160;E0(Cn,&#160;Dn)&#160;+&#160;2Mn<br/>
+n<br/>
+•&#160;Thus,&#160;under&#160;the&#160;usual&#160;kinds&#160;of&#160;conditions&#160;that&#160;drive&#160;approximation&#160;and<br/>
+estimation&#160;error&#160;to&#160;zero,&#160;and&#160;under&#160;the&#160;additional&#160;condition&#160;on&#160;φ:<br/>
+Mn&#160;:=<br/>
+max<br/>
+sup<br/>
+sup&#160;|φ(yγ(z))|&#160;&lt;&#160;+∞,<br/>
+y∈{−1,+1}&#160;(γ,Q)∈(Cn,Dn)&#160;z∈Z<br/>
+we&#160;obtain&#160;Bayes&#160;consistency&#160;(for&#160;the&#160;class&#160;of&#160;φ&#160;obtained&#160;from&#160;f&#160;(u)&#160;=<br/>−c&#160;min{u,&#160;1}&#160;+&#160;au&#160;+&#160;b)<br/>
+41<br/>
+<hr/>
+<a name=42></a>Universal&#160;Equivalence&#160;of&#160;Loss&#160;Functions<br/>
+•&#160;Consider&#160;two&#160;loss&#160;functions&#160;φ1&#160;and&#160;φ2,&#160;corresponding&#160;to&#160;f-divergences<br/>
+induced&#160;by&#160;f1&#160;and&#160;f2<br/>
+•&#160;φ1&#160;and&#160;φ2&#160;are&#160;universally&#160;equivalent,&#160;denoted&#160;by<br/>
+u<br/>
+φ1&#160;≈&#160;φ2<br/>
+if&#160;for&#160;any&#160;P&#160;(X,&#160;Y&#160;)&#160;and&#160;quantization&#160;rules&#160;QA,&#160;QB,&#160;there&#160;holds:<br/>
+Rφ&#160;(Q<br/>
+(Q<br/>
+(Q<br/>
+(Q<br/>
+1<br/>
+A)&#160;≤&#160;Rφ1<br/>
+B)&#160;⇔&#160;Rφ2<br/>
+A)&#160;≤&#160;Rφ2<br/>
+B).<br/>
+42<br/>
+<hr/>
+<a name=43></a>An&#160;Equivalence&#160;Theorem<br/>
+Theorem&#160;3.<br/>
+u<br/>
+φ1&#160;≈&#160;φ2<br/>
+if&#160;and&#160;only&#160;if<br/>
+f1(u)&#160;=&#160;cf2(u)&#160;+&#160;au&#160;+&#160;b<br/>
+for&#160;constants&#160;a,&#160;b&#160;∈&#160;R&#160;and&#160;c&#160;&gt;&#160;0.<br/>
+•&#160;⇐&#160;is&#160;easy;&#160;⇒&#160;is&#160;not<br/>
+•&#160;In&#160;particular,&#160;surrogate&#160;losses&#160;universally&#160;equivalent&#160;to&#160;0-1&#160;loss&#160;are&#160;those<br/>
+whose&#160;induced&#160;f&#160;divergence&#160;has&#160;the&#160;form:<br/>
+f&#160;(u)&#160;=&#160;−c&#160;min{u,&#160;1}&#160;+&#160;au&#160;+&#160;b<br/>
+•&#160;Thus&#160;we&#160;see&#160;that&#160;only&#160;such&#160;losses&#160;yield&#160;Bayes&#160;consistency&#160;for&#160;procedures<br/>
+that&#160;jointly&#160;choose&#160;(Q,&#160;λ)<br/>
+43<br/>
+<hr/>
+<a name=44></a><img class="yflip" src="./Jordan_1-44_1.png"/><br/>
+Estimation&#160;of&#160;Divergences<br/>
+•&#160;Given&#160;i.i.d.&#160;{x1,&#160;.&#160;.&#160;.&#160;,&#160;xn}&#160;∼&#160;Q,&#160;{y1,&#160;.&#160;.&#160;.&#160;,&#160;yn}&#160;∼&#160;P<br/>
+–&#160;P,&#160;Q&#160;are&#160;unknown&#160;multivariate&#160;distributions&#160;with&#160;densities&#160;p0,&#160;q0&#160;wrt<br/>
+Lesbegue&#160;measure&#160;µ&#160;on&#160;Rd<br/>
+•&#160;Consider&#160;the&#160;problem&#160;of&#160;estimating&#160;a&#160;divergence;&#160;e.g.,&#160;KL&#160;divergence:<br/>
+–&#160;Kullback-Leibler&#160;(KL)&#160;divergence&#160;functional<br/>
+Z<br/>
+p<br/>
+D<br/>
+0<br/>
+K&#160;(P,&#160;Q)&#160;=<br/>
+p0&#160;log<br/>
+dµ<br/>
+q0<br/>
+44<br/>
+<hr/>
+<a name=45></a>Existing&#160;Work<br/>
+•&#160;Relations&#160;to&#160;entropy&#160;estimation<br/>
+–&#160;large&#160;body&#160;of&#160;work&#160;on&#160;functional&#160;of&#160;one&#160;density&#160;(Bickel&#160;&amp;&#160;Ritov,&#160;1988;<br/>
+Donoho&#160;&amp;&#160;Liu&#160;1991;&#160;Birg´e&#160;&amp;&#160;Massart,&#160;1993;&#160;Laurent,&#160;1996&#160;and&#160;so&#160;on)<br/>
+•&#160;KL&#160;is&#160;a&#160;functional&#160;of&#160;two&#160;densities<br/>
+•&#160;Very&#160;little&#160;work&#160;on&#160;nonparametric&#160;divergence&#160;estimation,&#160;especially&#160;for&#160;high-<br/>
+dimensional&#160;data<br/>
+•&#160;Little&#160;existing&#160;work&#160;on&#160;estimating&#160;density&#160;ratio&#160;per&#160;se<br/>
+45<br/>
+<hr/>
+<a name=46></a>Main&#160;Idea<br/>
+•&#160;Variational&#160;representation&#160;of&#160;f-divergences:<br/>
+Lemma&#160;4.&#160;Letting&#160;F&#160;be&#160;any&#160;function&#160;class&#160;in&#160;X&#160;→&#160;R,&#160;there&#160;holds:<br/>
+Z<br/>
+Dφ(P,&#160;Q)&#160;≥&#160;sup<br/>
+f&#160;dQ&#160;−&#160;φ∗(f)&#160;dP,<br/>
+f&#160;∈F<br/>
+with&#160;equality&#160;if&#160;F&#160;∩&#160;∂φ(q0/p0)&#160;6=&#160;∅.<br/>
+φ∗&#160;denotes&#160;the&#160;conjugate&#160;dual&#160;of&#160;φ<br/>
+•&#160;Implications:<br/>
+–&#160;obtain&#160;an&#160;M-estimation&#160;procedure&#160;for&#160;divergence&#160;functional<br/>–&#160;also&#160;obtain&#160;the&#160;likelihood&#160;ratio&#160;function&#160;dP/dQ<br/>–&#160;how&#160;to&#160;choose&#160;F<br/>–&#160;how&#160;to&#160;implement&#160;the&#160;optimization&#160;efficiently<br/>–&#160;convergence&#160;rate?<br/>
+46<br/>
+<hr/>
+<a name=47></a>Kullback-Leibler&#160;Divergence<br/>
+•&#160;For&#160;the&#160;Kullback-Leibler&#160;divergence:<br/>
+Z<br/>
+Z<br/>
+DK(P,&#160;Q)&#160;=&#160;sup<br/>
+log&#160;g&#160;dP&#160;−<br/>
+gdQ&#160;+&#160;1.<br/>
+g&gt;0<br/>
+•&#160;Furthermore,&#160;the&#160;supremum&#160;is&#160;attained&#160;at&#160;g&#160;=&#160;p0/q0.<br/>
+47<br/>
+<hr/>
+<a name=48></a>M-Estimation&#160;Procedure<br/>
+•&#160;Let&#160;G&#160;be&#160;a&#160;function&#160;class:&#160;X&#160;→&#160;R+<br/>
+•&#160;R&#160;dPn&#160;and&#160;R&#160;dQn&#160;denote&#160;the&#160;expectation&#160;under&#160;empirical&#160;measures&#160;Pn&#160;and<br/>
+Qn,&#160;respectively<br/>
+•&#160;One&#160;possible&#160;estimator&#160;has&#160;the&#160;following&#160;form:<br/>
+Z<br/>
+Z<br/>
+ˆ<br/>
+DK&#160;=&#160;sup<br/>
+log&#160;g&#160;dPn&#160;−<br/>
+gdQn&#160;+&#160;1.<br/>
+g∈G<br/>
+•&#160;Supremum&#160;is&#160;attained&#160;at&#160;ˆgn,&#160;which&#160;estimates&#160;the&#160;likelihood&#160;ratio&#160;p0/q0<br/>
+48<br/>
+<hr/>
+<a name=49></a><img class="yflip" src="./Jordan_1-49_1.png"/><br/>
+Convex&#160;Empirical&#160;Risk&#160;with&#160;Penalty<br/>
+•&#160;In&#160;practice,&#160;control&#160;the&#160;size&#160;of&#160;the&#160;function&#160;class&#160;G&#160;by&#160;using&#160;a&#160;penalty<br/>
+•&#160;Let&#160;I(g)&#160;be&#160;a&#160;measure&#160;of&#160;complexity&#160;for&#160;g<br/>
+•&#160;Decompose&#160;G&#160;as&#160;follows:<br/>
+G&#160;=&#160;∪1≤M≤∞GM,<br/>
+where&#160;GM&#160;is&#160;restricted&#160;to&#160;g&#160;for&#160;which&#160;I(g)&#160;≤&#160;M.<br/>
+•&#160;The&#160;estimation&#160;procedure&#160;involves&#160;solving:<br/>
+Z<br/>
+Z<br/>
+λ<br/>
+ˆ<br/>
+g<br/>
+n<br/>
+n&#160;=&#160;argming∈G<br/>
+gdQn&#160;−<br/>
+log&#160;g&#160;dPn&#160;+<br/>
+I2(g).<br/>
+2<br/>
+49<br/>
+<hr/>
+<a name=50></a>Convergence&#160;Rates<br/>
+Theorem&#160;5.&#160;When&#160;λn&#160;vanishes&#160;sufficiently&#160;slowly:<br/>
+λ−1<br/>
+n<br/>
+=&#160;OP&#160;(n2/(2+γ))(1&#160;+&#160;I(g0)),<br/>
+then&#160;under&#160;P:<br/>
+hQ(g0,&#160;ˆgn)&#160;=&#160;OP&#160;(λ1/2<br/>
+n<br/>
+)(1&#160;+&#160;I(g0))<br/>
+I(ˆ<br/>
+gn)&#160;=&#160;OP&#160;(1&#160;+&#160;I(g0)).<br/>
+50<br/>
+<hr/>
+<a name=51></a>Results<br/>
+Estimate of KL(Beta(1,2),Unif[0,1])<br/>
+Estimate of KL(1/2 N&#160;(0,1)+ 1/2 N&#160;(1,1),Unif[−5,5])<br/>
+t<br/>
+t<br/>
+0.8<br/>
+0.7<br/>
+0.4<br/>
+0.6<br/>
+0.3<br/>
+0.5<br/>
+0.2<br/>
+0.4<br/>
+0.414624<br/>
+0.3<br/>
+0.1<br/>
+0.1931<br/>
+M1,&#160;σ&#160;= .1,&#160;λ&#160;= 1/n<br/>
+M1,&#160;σ&#160;= .1,&#160;λ&#160;= 1/n<br/>
+M2,&#160;σ&#160;= 1,&#160;λ&#160;= .1/n<br/>
+0.2<br/>
+M2,&#160;σ&#160;= .1,&#160;λ&#160;= .1/n<br/>
+WKV, s = n1/3<br/>
+0<br/>
+WKV, s = n1/2<br/>
+0.1<br/>
+WKV, s = n1/2<br/>
+WKV, s = n1/3<br/>
+WKV, s = n2/3<br/>
+−0.1<br/>
+0<br/>
+100<br/>
+200<br/>
+500<br/>
+1000<br/>
+2000<br/>
+5000<br/>
+10000&#160;20000<br/>
+50000<br/>
+100<br/>
+200<br/>
+500<br/>
+1000<br/>
+2000<br/>
+5000<br/>
+10000<br/>
+51<br/>
+<hr/>
+<a name=52></a>Estimate of KL(N&#160;(0,I&#160;),N&#160;(1,I&#160;))<br/>
+t<br/>
+2<br/>
+t<br/>
+2<br/>
+Estimate of KL(N&#160;(0,I&#160;),Unif[−3,3]2)<br/>
+t<br/>
+2<br/>
+1.5<br/>
+1.5<br/>
+1<br/>
+1<br/>
+0.5<br/>
+0.959316<br/>
+0.5<br/>
+0.777712<br/>
+M1,&#160;σ&#160;= .5,&#160;λ&#160;= .1/n<br/>
+M1,&#160;σ&#160;= .5,&#160;λ&#160;= .1/n<br/>
+M2,&#160;σ&#160;= .5,&#160;λ&#160;= .1/n<br/>
+M2,&#160;σ&#160;= .5,&#160;λ&#160;= .1/n<br/>
+WKV, n1/3<br/>
+WKV, n1/3<br/>
+WKV, n1/2<br/>
+WKV, n1/2<br/>
+0<br/>
+0<br/>
+100<br/>
+200<br/>
+500<br/>
+1000<br/>
+2000<br/>
+5000<br/>
+10000<br/>
+100<br/>
+200<br/>
+500<br/>
+1000<br/>
+2000<br/>
+5000<br/>
+10000<br/>
+Estimate of KL(N&#160;(0,I&#160;),N&#160;(1,I&#160;))<br/>
+t<br/>
+3<br/>
+t<br/>
+3<br/>
+Estimate of KL(N&#160;(0,I&#160;),Unif[−3,3]3)<br/>
+t<br/>
+3<br/>
+2<br/>
+1.8<br/>
+1.6<br/>
+1.5<br/>
+1.4<br/>
+1.2<br/>
+1<br/>
+1<br/>
+0.8<br/>
+1.16657<br/>
+0.6<br/>
+1.43897<br/>
+0.5<br/>
+M1&#160;σ&#160;= 1,&#160;λ&#160;= .1/n1/2<br/>
+0.4<br/>
+M1,&#160;σ&#160;= 1,&#160;λ&#160;= .1/n<br/>
+M2,&#160;σ&#160;= 1,&#160;λ&#160;= .1/n<br/>
+0.2<br/>
+M2,&#160;σ&#160;= 1,&#160;λ&#160;= .1/n<br/>
+M2,&#160;σ&#160;= 1,&#160;λ&#160;= .1/n2/3<br/>
+WKV, n1/2<br/>
+0<br/>
+WKV, n1/3<br/>
+0<br/>
+WKV, n1/3<br/>
+WKV, n1/2<br/>
+−0.2<br/>
+100<br/>
+200<br/>
+500<br/>
+1000<br/>
+2000<br/>
+5000<br/>
+10000<br/>
+100<br/>
+200<br/>
+500<br/>
+1000<br/>
+2000<br/>
+5000<br/>
+10000<br/>
+52<br/>
+<hr/>
+<a name=53></a>53<br/>
+<hr/>
+<a name=54></a>Conclusions<br/>
+•&#160;Formulated&#160;a&#160;precise&#160;link&#160;between&#160;f-divergences&#160;and&#160;surrogate&#160;loss&#160;functions<br/>
+•&#160;Decision-theoretic&#160;perspective&#160;on&#160;f-divergences<br/>
+•&#160;Equivalent&#160;classes&#160;of&#160;loss&#160;functions<br/>
+•&#160;Can&#160;design&#160;new&#160;convex&#160;surrogate&#160;loss&#160;functions&#160;that&#160;are&#160;equivalent&#160;(in&#160;a<br/>
+deep&#160;sense)&#160;to&#160;0-1&#160;loss<br/>
+–&#160;Applications&#160;to&#160;the&#160;Bayes&#160;consistency&#160;of&#160;procedures&#160;that&#160;jointly&#160;choose<br/>
+an&#160;experimental&#160;design&#160;and&#160;a&#160;classifier<br/>
+–&#160;Applications&#160;to&#160;the&#160;estimation&#160;of&#160;divergences&#160;and&#160;entropy<br/>
+54<br/>
+<hr/>
+</body>
+</html>

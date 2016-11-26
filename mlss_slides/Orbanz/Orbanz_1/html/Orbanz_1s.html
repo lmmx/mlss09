@@ -1,0 +1,363 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><b>Foundations&#160;of&#160;Nonparametric&#160;Bayesian</b><br/>
+<b>Methods</b><br/>
+Peter&#160;Orbanz<br/>
+1&#160;/&#160;25<br/>
+<hr/>
+<a name=2></a>Overview:&#160;Today<br/>
+1.&#160;Basic&#160;measure&#160;theory<br/>
+2.&#160;Bayesian&#160;estimation<br/>
+3.&#160;Construction&#160;of&#160;stochastic&#160;processes<br/>
+2&#160;/&#160;25<br/>
+<hr/>
+<a name=3></a>Introduction:&#160;Parametric&#160;vs&#160;Nonparametric<br/>
+Parametric&#160;model<br/>A&#160;parameterized&#160;family&#160;of&#160;distributions,&#160;such&#160;that&#160;the&#160;number&#160;of<br/>parameters&#160;does&#160;not&#160;depend&#160;on&#160;sample&#160;size.<br/>
+Nonparametric&#160;model<br/>A&#160;parameterized&#160;model,&#160;but&#160;the&#160;number&#160;of&#160;parameters&#160;may<br/>grow&#160;with&#160;sample&#160;size.<br/>
+Remarks:<br/>
+I&#160;Number&#160;of&#160;parameters&#160;≈&#160;model&#160;complexity<br/>
+I&#160;Complexity&#160;constant&#160;wrt&#160;sample&#160;size&#160;→&#160;nice&#160;convergence<br/>
+I&#160;Typically:&#160;Nonparametric&#160;model&#160;→&#160;∞-dim&#160;parameter<br/>
+space<br/>
+3&#160;/&#160;25<br/>
+<hr/>
+<a name=4></a>Motivation:&#160;Measure&#160;Theory<br/>
+Bayesian&#160;Nonparametrics<br/>Probability&#160;models&#160;on&#160;infinite-dimensional&#160;spaces.<br/>
+Problem:&#160;Density&#160;modeling<br/>
+I&#160;Many&#160;∞-dim&#160;distributions:&#160;No&#160;useful&#160;density.<br/>
+I&#160;Some&#160;∞-dim&#160;Bayesian&#160;models:&#160;No&#160;Bayes&#160;equation.<br/>
+Measure-theoretic&#160;probability<br/>
+I&#160;Most&#160;general&#160;available&#160;formalism&#160;for&#160;probability<br/>
+I&#160;Measures&#160;good&#160;for&#160;proofs,&#160;densities&#160;good&#160;for&#160;modeling<br/>
+I&#160;∞-dim&#160;case:&#160;<i>Have&#160;to&#160;</i>work&#160;with&#160;measures<br/>
+4&#160;/&#160;25<br/>
+<hr/>
+<a name=5></a>Measure&#160;Theory<br/>
+Measure:&#160;Intuition<br/>Roughly:&#160;Measure&#160;=&#160;Integral&#160;as&#160;a&#160;function&#160;of&#160;its&#160;region<br/>
+Z<br/>
+Z<br/>
+µ(<i>A</i>)&#160;=<br/>
+<i>dx</i><br/>
+or<br/>
+µ(<i>A</i>)&#160;=<br/>
+<i>p</i>(<i>x&#160;</i>)<i>dx</i><br/>
+<i>A</i><br/>
+<i>A</i><br/>
+Interpretation<br/>
+µ(<i>A</i>)&#160;is&#160;mass&#160;of&#160;<i>A</i>,&#160;eg:<br/>
+I&#160;Geometric&#160;case:&#160;Volume&#160;of&#160;<i>A</i>,&#160;or&#160;physical&#160;mass&#160;of&#160;a&#160;body.<br/>
+I&#160;Probability&#160;case:&#160;Probability&#160;mass&#160;of&#160;event&#160;“random<br/>
+variable&#160;<i>X&#160;</i>takes&#160;value&#160;in&#160;<i>A</i>”<br/>
+5&#160;/&#160;25<br/>
+<hr/>
+<a name=6></a>Integration:&#160;Abstract&#160;properties<br/>
+Integrals:&#160;Decomposition&#160;properties<br/>Write&#160;µ(<i>A</i>)&#160;for&#160;integral&#160;R&#160;<i>dx&#160;</i>.<br/>
+<i>A</i><br/>
+I&#160;µ(∅)&#160;=&#160;0&#160;(integral&#160;over&#160;empty&#160;set&#160;is&#160;zero)<br/>
+I&#160;Pairwise&#160;disjoint&#160;sets&#160;<i>An</i>:<br/>
+∞<br/>
+∞<br/>
+&#160;[<br/>
+<br/>
+X<br/>
+µ(<i>A</i>1&#160;∪&#160;<i>A</i>2)&#160;=&#160;µ(<i>A</i>1)&#160;+&#160;µ(<i>A</i>2)<br/>
+and<br/>
+µ<br/>
+<i>An&#160;</i>=<br/>
+µ(<i>An</i>)<br/>
+<i>n</i>=1<br/>
+<i>n</i>=1<br/>
+I&#160;If&#160;<i>B&#160;</i>⊂&#160;<i>A</i>:<br/>
+µ(<i>B</i>)&#160;≤&#160;µ(<i>A</i>)<br/>
+and<br/>
+µ(<i>A&#160;</i>\&#160;<i>B</i>)&#160;=&#160;µ(<i>A</i>)&#160;−&#160;µ(<i>B</i>)<br/>
+Henri&#160;Lebesgue’s&#160;Approach<br/>Call&#160;any&#160;set&#160;function&#160;an&#160;integral&#160;(a&#160;measure)&#160;if&#160;it&#160;decomposes<br/>like&#160;an&#160;integral.<br/>
+6&#160;/&#160;25<br/>
+<hr/>
+<a name=7></a>σ-algebras&#160;(1)<br/>
+Motivation<br/>
+I&#160;Defining&#160;measure:&#160;Often&#160;difficult/impossible&#160;on&#160;P(Ω)<br/>
+I&#160;Idea:&#160;Restrict&#160;µ&#160;to&#160;subset&#160;A&#160;(“measurable&#160;sets”)&#160;of&#160;P(Ω)<br/>
+I&#160;Measurable&#160;sets&#160;=&#160;sets&#160;over&#160;which&#160;we&#160;can&#160;integrate<br/>
+Intuition:&#160;σ-algebra<br/>
+I&#160;Always&#160;assume&#160;we&#160;can&#160;integrate&#160;over&#160;Ω<br/>
+I&#160;If&#160;integrals&#160;on&#160;<i>A</i>1,&#160;<i>A</i>2,&#160;.&#160;.&#160;.&#160;given:&#160;Write&#160;A&#160;=&#160;σ({<i>A</i>1,&#160;<i>A</i>2,&#160;.&#160;.&#160;.&#160;})<br/>
+for&#160;system&#160;of&#160;all&#160;sets&#160;with&#160;deducable&#160;integrals.<br/>
+I&#160;Compeleted&#160;set&#160;system&#160;A&#160;is&#160;called&#160;σ<i>-algebra</i>.<br/>
+7&#160;/&#160;25<br/>
+<hr/>
+<a name=8></a>σ-algebras&#160;(2)<br/>
+Def:&#160;σ-algebra<br/>A&#160;system&#160;of&#160;sets&#160;A&#160;⊂&#160;P(Ω)&#160;is&#160;called&#160;a&#160;σ-algebra&#160;if:<br/>
+1.&#160;∅,&#160;Ω&#160;∈&#160;A<br/>
+2.&#160;If&#160;<i>A&#160;</i>∈&#160;A,&#160;then&#160;{<i>A&#160;</i>∈&#160;A<br/>3.&#160;If&#160;<i>An&#160;</i>∈&#160;A&#160;(for&#160;<i>n&#160;</i>∈&#160;N),&#160;then&#160;∪∞<br/>
+<i>n&#160;An&#160;</i>∈&#160;A<br/>
+Constructing&#160;σ-algebras<br/>Most&#160;important&#160;method:<br/>
+I&#160;Start&#160;with:&#160;T&#160;=&#160;all&#160;open&#160;sets&#160;in&#160;Ω.<br/>
+I&#160;σ-algebra:&#160;B(Ω)&#160;:=&#160;σ(T&#160;)<br/>
+Read:&#160;σ(T&#160;)&#160;=&#160;smallest&#160;σ-algebra&#160;that&#160;includes&#160;T<br/>
+I&#160;B(Ω)&#160;is&#160;called&#160;the&#160;<i>Borel&#160;</i>σ<i>-algebra&#160;</i>of&#160;Ω<br/>
+I&#160;Contains&#160;all&#160;open&#160;and&#160;closed&#160;sets<br/>
+8&#160;/&#160;25<br/>
+<hr/>
+<a name=9></a>Measures<br/>
+Def:&#160;Measure<br/>Given&#160;σ-algebra&#160;A,&#160;a&#160;<i>measure&#160;</i>is&#160;a&#160;function&#160;µ&#160;:&#160;A&#160;→&#160;R+&#160;with:<br/>
+1.&#160;µ(∅)&#160;=&#160;0<br/>
+2.&#160;µ(∪∞&#160;<i>A</i><br/>
+µ(<i>A</i><br/>
+<i>n</i>=1<br/>
+<i>n</i>)&#160;=&#160;P∞<br/>
+<i>n</i>=1<br/>
+<i>n</i>)&#160;if&#160;<i>An&#160;</i>∈&#160;A&#160;pairwise&#160;disjoint.<br/>
+µ&#160;is&#160;<i>probability&#160;measure&#160;</i>if&#160;additionally<br/>
+3.&#160;µ(Ω)&#160;=&#160;1<br/>
+<i>Note:&#160;</i>(1)&#160;and&#160;(2)&#160;imply&#160;all&#160;integral&#160;decomposition&#160;properties.<br/>
+Most&#160;important&#160;measures<br/>
+I&#160;<i>Lebesgue&#160;measure</i>:&#160;“Flat”&#160;measure&#160;on<br/>
+<i>d</i><br/>
+R&#160;(<i>d&#160;</i>-volume).<br/>
+I&#160;<i>Counting&#160;measure</i>:&#160;|<i>A</i>|&#160;if&#160;<i>A&#160;</i>finite&#160;set,&#160;+∞&#160;otherwise.<br/>
+9&#160;/&#160;25<br/>
+<hr/>
+<a name=10></a>Densities<br/>
+Intuition<br/>
+Density&#160;=&#160;function&#160;that&#160;transforms&#160;measure&#160;µ1&#160;into<br/>
+measure&#160;µ2&#160;by&#160;pointwise&#160;reweighting&#160;(on&#160;Ω)<br/>
+Derivative&#160;Notation<br/>
+<i>d&#160;</i>µ<br/>
+<i>d&#160;</i>µ<br/>
+2<br/>
+2(<i>x&#160;</i>)&#160;=&#160;<i>f&#160;</i>(<i>x&#160;</i>)<i>d&#160;</i>µ1(<i>x&#160;</i>)<br/>
+or<br/>
+(<i>x&#160;</i>)&#160;=&#160;<i>f&#160;</i>(<i>x&#160;</i>)<br/>
+<i>d&#160;</i>µ1<br/>
+Motivation:&#160;<i>f&#160;</i>=&#160;a&#160;function&#160;that&#160;is&#160;integrated&#160;to&#160;obtain&#160;µ2<br/>
+→&#160;“derivative”&#160;of&#160;µ2<br/>
+Immediate&#160;Question:<br/>Is&#160;there&#160;always&#160;a&#160;density&#160;for&#160;µ1,&#160;µ2&#160;given?<br/>
+10&#160;/&#160;25<br/>
+<hr/>
+<a name=11></a>Radon-Nikodym&#160;Theorem<br/>
+Absolute&#160;Continuity<br/>
+I&#160;“Reweighting”&#160;by&#160;density<br/>
+Z<br/>
+Z<br/>
+µ2(<i>A</i>)&#160;=<br/>
+<i>d&#160;</i>µ2(<i>x</i>)&#160;=<br/>
+<i>f&#160;</i>(<i>x&#160;</i>)<i>d&#160;</i>µ1(<i>x</i>)<br/>
+<i>A</i><br/>
+<i>A</i><br/>
+cannot&#160;work&#160;if&#160;µ1(<i>A</i>)&#160;=&#160;0&#160;and&#160;µ2(<i>A</i>)&#160;6=&#160;0.<br/>
+I&#160;If&#160;that&#160;never&#160;happens&#160;for&#160;any&#160;<i>A&#160;</i>∈&#160;A,&#160;then&#160;µ2&#160;is&#160;called<br/>
+“absolutely&#160;continuous&#160;wrt&#160;µ1”,&#160;in&#160;symbols:&#160;µ2&#160;&#160;µ1<br/>
+Theorem&#160;(Radon-Nikodym)<br/><i>Let&#160;</i>µ1,&#160;µ2&#160;<i>be&#160;two&#160;finite&#160;measures&#160;on&#160;</i>A<i>.&#160;Then&#160;</i>µ2&#160;<i>has&#160;a&#160;density<br/>w.r.t.&#160;</i>µ1&#160;<i>if&#160;and&#160;only&#160;if&#160;</i>µ2&#160;&#160;µ1<i>.</i><br/>
+11&#160;/&#160;25<br/>
+<hr/>
+<a name=12></a>Probability:&#160;Formal&#160;Framework<br/>
+Random&#160;variable&#160;<i>X</i><br/>
+Random&#160;event&#160;ω<br/>
+<i>X&#160;</i>(ω)<br/>
+Observation&#160;space&#160;(Ω,&#160;B(Ω))<br/>
+Abstract&#160;probability&#160;space&#160;(Λ,&#160;A,&#160;P)<br/>
+I&#160;ω:&#160;atomic&#160;random&#160;event,&#160;“state&#160;of&#160;the&#160;universe”<br/>
+I&#160;<i>X&#160;</i>:&#160;Random&#160;variable&#160;(mapping&#160;Λ&#160;→&#160;Ω)<br/>
+I&#160;<i>X&#160;</i>(ω):&#160;observed&#160;random&#160;value<br/>
+I&#160;P:&#160;probability&#160;measure&#160;(distribution&#160;of&#160;ω)<br/>
+I&#160;For&#160;set&#160;<i>A&#160;</i>∈&#160;B(Ω):&#160;Probability&#160;of&#160;“<i>X&#160;</i>(ω)&#160;∈&#160;<i>A</i>”&#160;=&#160;P(<i>X&#160;</i>−1(<i>A</i>))<br/>
+12&#160;/&#160;25<br/>
+<hr/>
+<a name=13></a>Probability:&#160;Definitions<br/>
+Def:&#160;Measurable&#160;mapping<br/>Let&#160;A,&#160;B&#160;be&#160;σ-algebras&#160;in&#160;Λ,&#160;Ω.&#160;A&#160;mapping&#160;<i>X&#160;</i>:&#160;Λ&#160;→&#160;Ω&#160;is&#160;called<br/><i>measurable&#160;</i>if&#160;<i>X&#160;</i>−1(<i>B</i>)&#160;∈&#160;A&#160;for&#160;all&#160;<i>B&#160;</i>∈&#160;B.<br/>
+Interpretation:&#160;“<i>F&#160;</i>measurable”&#160;means&#160;that&#160;expression<br/>
+“P(<i>X&#160;</i>−1(<i>B</i>))”&#160;makes&#160;sense.<br/>
+Def:&#160;Random&#160;variables<br/>A&#160;<i>random&#160;variable&#160;X&#160;</i>is&#160;a&#160;measurable&#160;mapping&#160;from&#160;an&#160;abstract<br/>probability&#160;space&#160;(Λ,&#160;A,&#160;P)&#160;into&#160;an&#160;observation&#160;space&#160;(Ω,&#160;B(Ω)).<br/>
+Image&#160;Measure<br/>The&#160;measure&#160;P&#160;is&#160;not&#160;known&#160;explicitly.&#160;We&#160;work&#160;with&#160;the<br/>distribution&#160;µ<i>X&#160;</i>of&#160;random&#160;variable&#160;<i>X&#160;</i>defined&#160;as&#160;the&#160;<i>image<br/>measure</i>:<br/>
+µ<i>X&#160;</i>:=&#160;<i>X&#160;</i>(P)<br/>
+i.e.<br/>
+µ<i>X&#160;</i>(<i>A</i>)&#160;:=&#160;P(<i>X&#160;</i>−1(<i>A</i>))<br/>
+13&#160;/&#160;25<br/>
+<hr/>
+<a name=14></a>Conditioning<br/>
+Note<br/>Defining&#160;conditional&#160;measures&#160;requires&#160;some&#160;effort.<br/>
+Direct&#160;approach<br/>Conditional&#160;probability&#160;of&#160;<i>X&#160;</i>(ω)&#160;∈&#160;<i>A&#160;</i>given&#160;that&#160;<i>X&#160;</i>(ω)&#160;∈&#160;<i>B</i>:<br/>
+µ(<i>A&#160;</i>∩&#160;<i>B</i>)<br/>
+µ(<i>A</i>|<i>B</i>)&#160;:=<br/>
+µ(<i>B</i>)<br/>
+→&#160;no&#160;use&#160;if&#160;µ(<i>B</i>)&#160;=&#160;0&#160;(think&#160;of&#160;Bayesian&#160;model&#160;on<br/>
+<i>d</i><br/>
+R&#160;)<br/>
+For&#160;now:<br/>
+I&#160;We&#160;will&#160;just&#160;write&#160;µ(<i>X&#160;</i>|<i>Y&#160;</i>)&#160;for&#160;the&#160;conditional&#160;probability&#160;of&#160;<i>X</i><br/>
+given&#160;<i>Y&#160;</i>and&#160;forget&#160;about&#160;details.<br/>
+I&#160;If&#160;<i>X&#160;</i>,&#160;<i>Y&#160;</i>have&#160;a&#160;joint&#160;density,&#160;µ(<i>X&#160;</i>|<i>Y&#160;</i>)&#160;has&#160;a&#160;conditional<br/>
+density&#160;<i>p</i>(<i>x&#160;</i>|<i>y&#160;</i>).<br/>
+14&#160;/&#160;25<br/>
+<hr/>
+<a name=15></a>Parametric&#160;Model<br/>
+Parametric&#160;model<br/>Let&#160;<i>X&#160;</i>:&#160;(Λ,&#160;A)&#160;→&#160;(Ω<i>x&#160;</i>,&#160;B<i>x&#160;</i>)&#160;and&#160;Θ&#160;:&#160;(Λ,&#160;A)&#160;→&#160;(Ωθ,&#160;Bθ)&#160;be&#160;two<br/>random&#160;variables,&#160;and&#160;µ<i>X&#160;</i>=&#160;<i>X&#160;</i>(P).&#160;Then&#160;the&#160;conditional<br/>distribution&#160;µ<i>X&#160;</i>(<i>X&#160;</i>|Θ)&#160;is&#160;called&#160;a&#160;<i>parametric&#160;family&#160;</i>of&#160;models<br/>(parameterized&#160;by&#160;θ&#160;∈&#160;Ωθ).<br/>
+Bayesian&#160;model<br/>If&#160;<i>X&#160;</i>observed&#160;and&#160;Θ&#160;unobserved,&#160;we&#160;call:<br/>
+I&#160;µΘ&#160;:=&#160;Θ(P)&#160;the&#160;<i>prior&#160;measure</i><br/>
+I&#160;µΘ(Θ|<i>X&#160;</i>)&#160;the&#160;<i>posterior&#160;measure</i><br/>
+I&#160;The&#160;overall&#160;model&#160;is&#160;called&#160;a&#160;Bayesian&#160;model.<br/>
+<i>Note:&#160;</i>Not&#160;defined&#160;by&#160;a&#160;Bayes&#160;equation!<br/>
+15&#160;/&#160;25<br/>
+<hr/>
+<a name=16></a>Bayes’&#160;Theorem<br/>
+Problem:<br/>Given&#160;the&#160;prior&#160;and&#160;the&#160;data,&#160;how&#160;can&#160;we&#160;determine&#160;the<br/>posterior?&#160;(Without&#160;exhaustive&#160;knowledge&#160;of&#160;P,&#160;A&#160;etc)<br/>
+Bayes&#160;Theorem<br/>If&#160;the&#160;sampling&#160;model&#160;µ<i>X&#160;</i>(<i>X&#160;</i>|Θ)&#160;has&#160;density&#160;<i>pX</i>|θ,&#160;then:<br/>
+<i>d&#160;</i>µΘ|<i>X</i><br/>
+<i>pX</i>|θ<br/>
+(θ|<i>x&#160;</i>)&#160;=<br/>
+<i>d&#160;</i>µ<br/>
+R<br/>
+Θ<br/>
+<i>pX</i>|θ<i>d</i>µθ(θ)<br/>
+for&#160;all&#160;<i>x&#160;</i>with&#160;R&#160;<i>pX</i>|θ<i>d</i>µθ(θ)&#160;6∈&#160;{0,&#160;∞}.<br/>
+16&#160;/&#160;25<br/>
+<hr/>
+<a name=17></a>Undominated&#160;Models<br/>
+Dominated&#160;family:<br/>Family&#160;of&#160;measures&#160;µ<i>t&#160;</i>that&#160;all&#160;have&#160;density&#160;w.r.t.&#160;same&#160;ν.<br/>
+In&#160;Bayes’&#160;theorem:<br/>
+I&#160;“<i>pX</i>|θ&#160;density&#160;of&#160;µ<i>X</i>|Θ”&#160;requires&#160;family&#160;µ<i>X</i>|Θ&#160;dominated.<br/>
+I&#160;Then:&#160;(1)&#160;posterior&#160;&#160;prior&#160;and&#160;(2)&#160;density&#160;generic.<br/>
+I&#160;∞-dim&#160;case:&#160;Often&#160;posterior&#160;&#160;prior&#160;<i>not&#160;</i>satisfied&#160;→<br/>
+<b>Bayesian&#160;model,&#160;but&#160;no&#160;Bayes&#160;equation.</b><br/>
+Note:<br/>
+“No&#160;Bayes&#160;equation”&#160;6=&#160;“intractable&#160;posterior”<br/>
+17&#160;/&#160;25<br/>
+<hr/>
+<a name=18></a>Bayesian&#160;Nonparametrics<br/>
+Nonparametric&#160;Bayesian&#160;model<br/>A&#160;Bayesian&#160;model&#160;with:<br/>
+1.&#160;dim(Ωθ)&#160;=&#160;dim(Ω<i>x&#160;</i>)&#160;=&#160;+∞.<br/>2.&#160;Model&#160;can&#160;be&#160;evaluated&#160;on&#160;partial&#160;observations.<br/>
+Partial&#160;observation<br/>Random&#160;quantity&#160;with&#160;<i>d&#160;</i>dimensions,&#160;only&#160;<i>m&#160;</i>&lt;&#160;<i>d&#160;</i>are&#160;observed.<br/>
+Example:&#160;GP&#160;regression<br/>GP&#160;draw&#160;is&#160;function&#160;<i>f&#160;</i>,&#160;but&#160;only&#160;finite&#160;number&#160;of&#160;values&#160;of&#160;<i>f<br/></i>known.<br/>
+18&#160;/&#160;25<br/>
+<hr/>
+<a name=19></a>Stochastic&#160;Process&#160;Models<br/>
+Intuition<br/>Stochastic&#160;process&#160;=&#160;∞-dim&#160;probability&#160;distribution<br/>
+Typical&#160;GP&#160;definition<br/>“A&#160;Gaussian&#160;process&#160;is&#160;a&#160;probability&#160;distribution&#160;on&#160;an&#160;infinite<br/>collection&#160;of&#160;random&#160;variables&#160;<i>Xt&#160;</i>such&#160;that&#160;the&#160;marginal<br/>distribution&#160;for&#160;each&#160;finite&#160;subset&#160;(<i>t</i>1,&#160;.&#160;.&#160;.&#160;,&#160;<i>tn</i>)&#160;of&#160;indices&#160;is<br/>Gaussian.”<br/>
+→&#160;Existence?&#160;Uniqueness?<br/>
+19&#160;/&#160;25<br/>
+<hr/>
+<a name=20></a>Stochastic&#160;Process&#160;Construction&#160;(1)<br/>
+Stochastic&#160;process&#160;measure&#160;µE:&#160;Distribution&#160;of&#160;RV<br/>
+<i>X&#160;</i>E&#160;:&#160;(Λ,&#160;A)&#160;→&#160;(ΩE,&#160;BE)<br/>
+I&#160;<i>E&#160;</i>:&#160;infinite&#160;index&#160;set&#160;(indexes&#160;entries&#160;of&#160;random&#160;vector)<br/>
+I&#160;Ω0:&#160;“one-dimensional”&#160;sample&#160;space<br/>I&#160;ΩE&#160;:=&#160;Q<br/>
+Ω<br/>
+<i>i</i>∈<i>E</i><br/>
+0<br/>
+I&#160;Interpretation:&#160;µE-draws&#160;=&#160;mappings&#160;<i>x&#160;</i>:&#160;<i>E&#160;</i>→&#160;Ω0<br/>
+Projector<br/>
+P&#160;:=&#160;projection&#160;mapping&#160;ΩJ&#160;→&#160;ΩI&#160;(for&#160;<i>I&#160;</i>⊂&#160;<i>J&#160;</i>⊂&#160;<i>E&#160;</i>)<br/>
+JI<br/>
+Marginals<br/>Marginal&#160;of&#160;µJ&#160;on&#160;ΩI&#160;⊂&#160;ΩJ:<br/>
+(P&#160;µJ)(<i>A</i>)&#160;:=&#160;µJ(P−1<i>A</i>)<br/>
+JI<br/>
+JI<br/>
+|<br/>
+{z<br/>
+}<br/>
+|<br/>
+{z<br/>
+}<br/>
+on&#160;ΩI<br/>
+on&#160;ΩJ<br/>
+marginals&#160;=&#160;projections&#160;of&#160;measures<br/>
+20&#160;/&#160;25<br/>
+<hr/>
+<a name=21></a>Stochastic&#160;Process&#160;Construction&#160;(2)<br/>
+Def:&#160;Projective&#160;family<br/>Family&#160;{µI|<i>I&#160;</i>⊂&#160;<i>E&#160;</i>finite}&#160;such&#160;that&#160;for&#160;all&#160;finite&#160;<i>I</i>,&#160;<i>J&#160;</i>with&#160;<i>I&#160;</i>⊂&#160;<i>J</i>:<br/>
+P&#160;µJ&#160;=&#160;µI<br/>
+JI<br/>
+<i>Note:&#160;</i>If&#160;µE&#160;given,&#160;the&#160;finite-dim&#160;marginals&#160;µI&#160;:=&#160;P&#160;µE&#160;are<br/>
+EI<br/>
+a&#160;projective&#160;family.<br/>
+Kolmogorov’s&#160;Extension&#160;Theorem<br/>If&#160;a&#160;family&#160;{µI|<i>I&#160;</i>⊂&#160;<i>E&#160;</i>finite}&#160;of&#160;finite-dimensional&#160;measures&#160;is<br/>projective,&#160;there&#160;exists&#160;a&#160;unique&#160;measure&#160;µE&#160;on&#160;ΩE&#160;with&#160;µI&#160;as&#160;its<br/>marginals.<br/>
+Jargon:&#160;µE&#160;is&#160;called&#160;the&#160;<i>projective&#160;limit&#160;</i>of&#160;the&#160;µI.<br/>
+21&#160;/&#160;25<br/>
+<hr/>
+<a name=22></a>Example:&#160;GP&#160;construction<br/>
+Choice&#160;of&#160;components<br/>
+I&#160;Ω0&#160;:=&#160;R&#160;and&#160;index&#160;set&#160;<i>E&#160;</i>=&#160;R<br/>
+I&#160;P&#160;:&#160;Euclidean&#160;projector&#160;from<br/>
+|<i>J</i>|&#160;to&#160;|<i>I</i>|.<br/>
+JI<br/>
+R<br/>
+R<br/>
+I&#160;Marginal&#160;family:&#160;µI&#160;are&#160;|<i>I</i>|-dimensional&#160;Gaussians<br/>
+Ensure&#160;marginals&#160;projective<br/>
+I&#160;Start&#160;with&#160;mean&#160;function&#160;<i>m</i>(&#160;.&#160;)&#160;and&#160;covariance&#160;<i>k&#160;</i>(&#160;.&#160;,&#160;.&#160;).<br/>
+I&#160;Note:&#160;<i>E&#160;</i>=&#160;R,&#160;finite&#160;<i>I&#160;</i>=&#160;{<i>t</i>1,&#160;.&#160;.&#160;.&#160;,&#160;<i>t</i>|<i>I</i>|}&#160;⊂&#160;R<br/>
+I&#160;µI&#160;=&#160;Gaussian,&#160;mean&#160;(<i>m</i>(<i>t</i>1),&#160;.&#160;.&#160;.&#160;,&#160;<i>m</i>(<i>t</i>|<i>I</i>|))&#160;and&#160;Σ<i>ij&#160;</i>=&#160;<i>k&#160;</i>(<i>ti&#160;</i>,&#160;<i>tj&#160;</i>)<br/>
+Apply&#160;Extension&#160;Theorem<br/>GP&#160;measure&#160;µE&#160;exists&#160;and&#160;is&#160;unique.<br/><i>Note:&#160;</i>µE&#160;has&#160;mean&#160;<i>m&#160;</i>and&#160;covariance&#160;function&#160;<i>k&#160;</i>,&#160;but&#160;that&#160;is&#160;<i>not</i><br/>
+an&#160;immediate&#160;consequence&#160;of&#160;theorem!<br/>
+22&#160;/&#160;25<br/>
+<hr/>
+<a name=23></a>The&#160;Problem&#160;with&#160;Kolmogorov<br/>
+Problem<br/>If&#160;dimension&#160;<i>E&#160;</i>is&#160;uncountable,&#160;the&#160;projective&#160;limit&#160;measure&#160;µE&#160;is<br/>basically&#160;useless.<br/>
+Explanation<br/>
+I&#160;Domain&#160;of&#160;µE:&#160;BE&#160;(generated&#160;by&#160;product&#160;topology)<br/>
+I&#160;Sets&#160;in&#160;BE:&#160;“axes-parallel”&#160;in&#160;all&#160;but&#160;countably&#160;many<br/>
+dimensions<br/>
+I&#160;<i>E&#160;</i>uncountable&#160;→&#160;BE&#160;too&#160;coarse&#160;for&#160;meaningful&#160;modeling<br/>
+A&#160;Note&#160;of&#160;Caution:<br/>Problem&#160;is&#160;often&#160;neglected&#160;in&#160;literature.<br/>Example:&#160;Original&#160;paper&#160;on&#160;the&#160;DP&#160;(Ferguson,&#160;1973).<br/>
+23&#160;/&#160;25<br/>
+<hr/>
+<a name=24></a>Uncountable&#160;Dimensions<br/>
+Intuition:<br/>Objects&#160;of&#160;interest&#160;<i>effectively&#160;</i>have&#160;countably&#160;many&#160;degrees&#160;of<br/>freedom.<br/>
+Examples<br/>
+I&#160;Continuous&#160;functions:&#160;Completely&#160;defined&#160;by&#160;values&#160;on<br/>
+dense&#160;subset&#160;(e.g.&#160;Q&#160;in&#160;R)<br/>
+I&#160;Probability&#160;measures:&#160;Completely&#160;defined&#160;by&#160;values&#160;on<br/>
+countable&#160;system&#160;of&#160;sets.<br/>
+Strategies<br/>
+1.&#160;Modify&#160;theorem&#160;to&#160;directly&#160;define&#160;measure&#160;on&#160;“interesting”<br/>
+space&#160;(eg&#160;space&#160;of&#160;continuous&#160;functions).<br/>
+2.&#160;Use&#160;Kolmogorov&#160;theorem,&#160;than&#160;restrict&#160;µE&#160;to&#160;interesting<br/>
+subspace.<br/>
+24&#160;/&#160;25<br/>
+<hr/>
+<a name=25></a>Summary:&#160;Stochastic&#160;Process&#160;Construction<br/>
+Kolmogorov<br/>
+I&#160;Measure&#160;µE&#160;on&#160;product&#160;space&#160;ΩE&#160;and&#160;“cylinder”&#160;σ-algebra<br/>
+BE<br/>
+I&#160;Conditions&#160;to&#160;check:&#160;Projective&#160;family<br/>
+I&#160;Many&#160;interesting&#160;sets:&#160;Not&#160;product&#160;spaces<br/>
+product&#160;space&#160;↔&#160;pointwise&#160;properties<br/>
+I&#160;<i>E&#160;</i>uncountable:&#160;BE&#160;too&#160;coarse<br/>
+Second&#160;Step<br/>
+I&#160;If&#160;<i>E&#160;</i>countable:&#160;Done.<br/>
+I&#160;If&#160;<i>E&#160;</i>uncountable:&#160;Measure&#160;µE&#160;has&#160;to&#160;be&#160;restricted&#160;to<br/>
+subspace&#160;to&#160;be&#160;useful.<br/>
+Second&#160;step&#160;for&#160;uncountable&#160;<i>E&#160;</i>can&#160;be&#160;difficult.<br/>
+25&#160;/&#160;25<br/>
+<hr/>
+</body>
+</html>

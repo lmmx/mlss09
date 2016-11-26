@@ -1,0 +1,1862 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a>Solving&#160;Challenging&#160;Non-linear&#160;Regression&#160;Problems<br/>
+by&#160;Manipulating&#160;a&#160;Gaussian&#160;Distribution<br/>
+Machine&#160;Learning&#160;Summer&#160;School,&#160;Cambridge&#160;2009<br/>
+Carl&#160;Edward&#160;Rasmussen<br/>
+Department&#160;of&#160;Engineering,&#160;University&#160;of&#160;Cambridge<br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#62">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+1&#160;/&#160;62<br/>
+<hr/>
+<a name=2></a>The&#160;Prediction&#160;Problem<br/>
+420<br/>
+400<br/>
+?<br/>
+380<br/>
+360<br/>
+&#160;concentration, ppm&#160;2&#160;340<br/>CO<br/>
+320<br/>
+1960<br/>
+1980<br/>
+2000<br/>
+2020<br/>
+year<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+2&#160;/&#160;62<br/>
+<hr/>
+<a name=3></a>The&#160;Prediction&#160;Problem<br/>
+420<br/>
+400<br/>
+380<br/>
+360<br/>
+&#160;concentration, ppm&#160;2&#160;340<br/>CO<br/>
+320<br/>
+1960<br/>
+1980<br/>
+2000<br/>
+2020<br/>
+year<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+3&#160;/&#160;62<br/>
+<hr/>
+<a name=4></a>The&#160;Prediction&#160;Problem<br/>
+420<br/>
+400<br/>
+380<br/>
+360<br/>
+&#160;concentration, ppm&#160;2&#160;340<br/>CO<br/>
+320<br/>
+1960<br/>
+1980<br/>
+2000<br/>
+2020<br/>
+year<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+4&#160;/&#160;62<br/>
+<hr/>
+<a name=5></a>The&#160;Prediction&#160;Problem<br/>
+420<br/>
+400<br/>
+380<br/>
+360<br/>
+&#160;concentration, ppm&#160;2&#160;340<br/>CO<br/>
+320<br/>
+1960<br/>
+1980<br/>
+2000<br/>
+2020<br/>
+year<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+5&#160;/&#160;62<br/>
+<hr/>
+<a name=6></a>Maximum&#160;likelihood,&#160;parametric&#160;model<br/>
+Supervised&#160;parametric&#160;learning:<br/>
+•&#160;data:&#160;<b>x</b>,&#160;<b>y<br/></b>•&#160;model:&#160;<i>y&#160;</i>=&#160;<i>f</i><b>w</b>(<i>x</i>)&#160;+&#160;ε<br/>
+Gaussian&#160;likelihood:<br/>
+Y<br/>
+<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>)&#160;∝<br/>
+exp(−&#160;1&#160;(<i>y</i><br/>
+2<br/>
+<i>c&#160;</i>−&#160;<i>f</i><b>w</b>(<i>xc</i>))2/σ2<br/>
+noise).<br/>
+<i>c</i><br/>
+Maximize&#160;the&#160;likelihood:<br/>
+<b>w</b>ML&#160;=&#160;argmax&#160;<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>).<br/>
+<b>w</b><br/>
+Make&#160;predictions,&#160;by&#160;plugging&#160;in&#160;the&#160;ML&#160;estimate:<br/>
+<i>p</i>(<i>y</i>∗|<i>x</i>∗,&#160;<b>w</b>ML)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+6&#160;/&#160;62<br/>
+<hr/>
+<a name=7></a>Bayesian&#160;Inference,&#160;parametric&#160;model<br/>
+Supervised&#160;parametric&#160;learning:<br/>
+•&#160;data:&#160;<b>x</b>,&#160;<b>y<br/></b>•&#160;model:&#160;<i>y&#160;</i>=&#160;<i>f</i><b>w</b>(<i>x</i>)&#160;+&#160;ε<br/>
+Gaussian&#160;likelihood:<br/>
+Y<br/>
+<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>)&#160;∝<br/>
+exp(−&#160;1&#160;(<i>y</i><br/>
+2<br/>
+<i>c&#160;</i>−&#160;<i>f</i><b>w</b>(<i>xc</i>))2/σ2<br/>
+noise).<br/>
+<i>c</i><br/>
+Parameter&#160;prior:<br/>
+<i>p</i>(<b>w</b>)<br/>
+Posterior&#160;parameter&#160;distribution&#160;by&#160;Bayes&#160;rule&#160;<i>p</i>(<i>a</i>|<i>b</i>)&#160;=&#160;<i>p</i>(<i>b</i>|<i>a</i>)<i>p</i>(<i>a</i>)/<i>p</i>(<i>b</i>):<br/>
+<i>p</i>(<b>w</b>)<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>)<br/>
+<i>p</i>(<b>w</b>|<b>x</b>,&#160;<b>y</b>)&#160;=<br/>
+<i>p</i>(<b>y</b>|<b>x</b>)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+7&#160;/&#160;62<br/>
+<hr/>
+<a name=8></a>Bayesian&#160;Inference,&#160;parametric&#160;model,&#160;cont.<br/>
+Making&#160;predictions:<br/>
+Z<br/>
+<i>p</i>(<i>y</i>∗|<i>x</i>∗,&#160;<b>x</b>,&#160;<b>y</b>)&#160;=<br/>
+<i>p</i>(<i>y</i>∗|<b>w</b>,&#160;<i>x</i>∗)<i>p</i>(<b>w</b>|<b>x</b>,&#160;<b>y</b>)<i>d</i><b>w</b><br/>
+Marginal&#160;likelihood:<br/>
+Z<br/>
+<i>p</i>(<b>y</b>|<b>x</b>)&#160;=<br/>
+<i>p</i>(<b>w</b>)<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>)<i>d</i><b>w</b>.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+8&#160;/&#160;62<br/>
+<hr/>
+<a name=9></a>The&#160;Gaussian&#160;Distribution<br/>
+The&#160;Gaussian&#160;distribution&#160;is&#160;given&#160;by<br/>
+<i>p</i>(<b>x</b>|µ,&#160;Σ)&#160;=&#160;N(µ,&#160;Σ)&#160;=&#160;(2π)−<i>D</i>/2|Σ|−1/2&#160;exp&#160;−&#160;1&#160;(<b>x&#160;</b>−&#160;µ)&gt;Σ−1(<b>x&#160;</b>−&#160;µ)<br/>
+2<br/>
+where&#160;µ&#160;is&#160;the&#160;mean&#160;vector&#160;and&#160;Σ&#160;the&#160;covariance&#160;matrix.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+9&#160;/&#160;62<br/>
+<hr/>
+<a name=10></a>Conditionals&#160;and&#160;Marginals&#160;of&#160;a&#160;Gaussian<br/>
+&#160;<br/>
+&#160;<br/>
+joint Gaussian<br/>
+joint Gaussian<br/>
+conditional<br/>
+marginal<br/>
+&#160;<br/>
+&#160;<br/>
+Both&#160;the&#160;conditionals&#160;and&#160;the&#160;marginals&#160;of&#160;a&#160;joint&#160;Gaussian&#160;are&#160;again&#160;Gaussian.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+10&#160;/&#160;62<br/>
+<hr/>
+<a name=11></a>Conditionals&#160;and&#160;Marginals&#160;of&#160;a&#160;Gaussian<br/>
+In&#160;algebra,&#160;if&#160;<b>x&#160;</b>and&#160;<b>y&#160;</b>are&#160;jointly&#160;Gaussian<br/>
+i<br/>
+i<br/>
+<i>p</i>(<b>x</b>,&#160;<b>y</b>)&#160;=&#160;N&#160;h&#160;<b>a&#160;</b>,&#160;h&#160;<i>A</i><br/>
+<i>B&#160;</i>,<br/>
+<b>b</b><br/>
+<i>B</i>&gt;<br/>
+<i>C</i><br/>
+the&#160;marginal&#160;distribution&#160;of&#160;<b>x&#160;</b>is<br/>
+i<br/>
+i<br/>
+<i>p</i>(<b>x</b>,&#160;<b>y</b>)&#160;=&#160;N&#160;h&#160;<b>a&#160;</b>,&#160;h&#160;<i>A</i><br/>
+<i>B&#160;</i>&#160;=⇒&#160;<i>p</i>(<b>x</b>)&#160;=&#160;N(<b>a</b>,&#160;<i>A</i>),<br/>
+<b>b</b><br/>
+<i>B</i>&gt;<br/>
+<i>C</i><br/>
+and&#160;the&#160;conditional&#160;distribution&#160;of&#160;<b>x&#160;</b>given&#160;<b>y&#160;</b>is<br/>
+i<br/>
+i<br/>
+<i>p</i>(<b>x</b>,&#160;<b>y</b>)&#160;=&#160;N&#160;h&#160;<b>a&#160;</b>,&#160;h&#160;<i>A</i><br/>
+<i>B&#160;</i>&#160;=⇒&#160;<i>p</i>(<b>x</b>|<b>y</b>)&#160;=&#160;N(<b>a</b>+<i>BC</i>−1(<b>y</b>−<b>b</b>),&#160;<i>A</i>−<i>BC</i>−1<i>B</i>&gt;),<br/>
+<b>b</b><br/>
+<i>B</i>&gt;<br/>
+<i>C</i><br/>
+where&#160;<b>x&#160;</b>and&#160;<b>y&#160;</b>can&#160;be&#160;scalars&#160;or&#160;vectors.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+11&#160;/&#160;62<br/>
+<hr/>
+<a name=12></a>What&#160;is&#160;a&#160;Gaussian&#160;Process?<br/>
+A&#160;<i>Gaussian&#160;process&#160;</i>is&#160;a&#160;generalization&#160;of&#160;a&#160;multivariate&#160;Gaussian&#160;distribution&#160;to<br/>infinitely&#160;many&#160;variables.<br/>
+Informally:&#160;infinitely&#160;long&#160;vector&#160;'&#160;function<br/>
+<b>Definition</b><i>:&#160;a&#160;Gaussian&#160;process&#160;is&#160;a&#160;collection&#160;of&#160;random&#160;variables,&#160;any<br/>finite&#160;number&#160;of&#160;which&#160;have&#160;(consistent)&#160;Gaussian&#160;distributions.</i><br/>
+<br/>
+A&#160;Gaussian&#160;distribution&#160;is&#160;fully&#160;specified&#160;by&#160;a&#160;mean&#160;vector,&#160;µ,&#160;and&#160;covariance<br/>matrix&#160;Σ:<br/>
+<b>f&#160;</b>=&#160;(<i>f</i>1,&#160;.&#160;.&#160;.&#160;,&#160;<i>fn</i>)&gt;&#160;∼&#160;N(µ,&#160;Σ),&#160;indexes&#160;<i>i&#160;</i>=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;<i>n</i><br/>
+A&#160;Gaussian&#160;process&#160;is&#160;fully&#160;specified&#160;by&#160;a&#160;mean&#160;function&#160;<i>m</i>(<i>x</i>)&#160;and&#160;covariance<br/>function&#160;<i>k</i>(<i>x</i>,&#160;<i>x</i>0):<br/>
+<i>f&#160;</i>(<i>x</i>)&#160;∼&#160;GP&#160;<i>m</i>(<i>x</i>),&#160;<i>k</i>(<i>x</i>,&#160;<i>x</i>0),&#160;indexes:&#160;<i>x</i><br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+12&#160;/&#160;62<br/>
+<hr/>
+<a name=13></a>The&#160;marginalization&#160;property<br/>
+Thinking&#160;of&#160;a&#160;GP&#160;as&#160;a&#160;Gaussian&#160;distribution&#160;with&#160;an&#160;infinitely&#160;long&#160;mean&#160;vector<br/>and&#160;an&#160;infinite&#160;by&#160;infinite&#160;covariance&#160;matrix&#160;may&#160;seem&#160;impractical.&#160;.&#160;.<br/>
+.&#160;.&#160;.&#160;luckily&#160;we&#160;are&#160;saved&#160;by&#160;the&#160;<i>marginalization&#160;property</i>:<br/>
+Recall:<br/>
+Z<br/>
+<i>p</i>(<b>x</b>)&#160;=<br/>
+<i>p</i>(<b>x</b>,&#160;<b>y</b>)<i>d</i><b>y</b>.<br/>
+For&#160;Gaussians:<br/>
+i<br/>
+i<br/>
+<i>p</i>(<b>x</b>,&#160;<b>y</b>)&#160;=&#160;N&#160;h&#160;<b>a&#160;</b>,&#160;h&#160;<i>A</i><br/>
+<i>B&#160;</i>&#160;=⇒&#160;<i>p</i>(<b>x</b>)&#160;=&#160;N(<b>a</b>,&#160;<i>A</i>)<br/>
+<b>b</b><br/>
+<i>B</i>&gt;<br/>
+<i>C</i><br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+13&#160;/&#160;62<br/>
+<hr/>
+<a name=14></a>Random&#160;functions&#160;from&#160;a&#160;Gaussian&#160;Process<br/>
+Example&#160;one&#160;dimensional&#160;Gaussian&#160;process:<br/>
+<i>p</i>(<i>f&#160;</i>(<i>x</i>))&#160;∼&#160;GP&#160;<i>m</i>(<i>x</i>)&#160;=&#160;0,&#160;<i>k</i>(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;exp(−&#160;1&#160;(<i>x&#160;</i>−&#160;<i>x</i>0)2).<br/>
+2<br/>
+To&#160;get&#160;an&#160;indication&#160;of&#160;what&#160;this&#160;distribution&#160;over&#160;functions&#160;looks&#160;like,&#160;focus&#160;on&#160;a<br/>finite&#160;subset&#160;of&#160;function&#160;values&#160;<b>f&#160;</b>=&#160;(<i>f&#160;</i>(<i>x</i>1),&#160;<i>f&#160;</i>(<i>x</i>2),&#160;.&#160;.&#160;.&#160;,&#160;<i>f&#160;</i>(<i>xn</i>))&gt;,&#160;for&#160;which<br/>
+<b>f&#160;</b>∼&#160;N(0,&#160;Σ),<br/>
+where&#160;Σ<i>ij&#160;</i>=&#160;<i>k</i>(<i>xi</i>,&#160;<i>xj</i>).<br/>
+Then&#160;plot&#160;the&#160;coordinates&#160;of&#160;<i>f&#160;</i>as&#160;a&#160;function&#160;of&#160;the&#160;corresponding&#160;<i>x&#160;</i>values.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+14&#160;/&#160;62<br/>
+<hr/>
+<a name=15></a>Some&#160;values&#160;of&#160;the&#160;random&#160;function<br/>
+1.5<br/>
+1<br/>
+0.5<br/>
+0<br/>
+output, f(x)&#160;−0.5<br/>
+−1<br/>
+−1.5<br/>
+−5<br/>
+0<br/>
+5<br/>
+input, x<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+15&#160;/&#160;62<br/>
+<hr/>
+<a name=16></a>Joint&#160;Generation<br/>
+To&#160;generate&#160;a&#160;random&#160;sample&#160;from&#160;a&#160;D&#160;dimensional&#160;joint&#160;Gaussian&#160;with<br/>covariance&#160;matrix&#160;<i>K&#160;</i>and&#160;mean&#160;vector&#160;<b>m</b>:&#160;(in&#160;octave&#160;or&#160;matlab)<br/>
+z&#160;=&#160;randn(D,1);<br/>
+y&#160;=&#160;chol(K)'*z&#160;+&#160;m;<br/>
+where&#160;chol&#160;is&#160;the&#160;Cholesky&#160;factor&#160;<i>R&#160;</i>such&#160;that&#160;<i>R</i>&gt;<i>R&#160;</i>=&#160;<i>K</i>.<br/>
+Thus,&#160;the&#160;covariance&#160;of&#160;<b>y&#160;</b>is:<br/>
+E[(<b>y&#160;</b>−&#160;	<br/>
+<b>y</b>)(<b>y&#160;</b>−&#160;	<b>y</b>)&gt;]&#160;=&#160;E[<i>R</i>&gt;<b>zz</b>&gt;<i>R</i>]&#160;=&#160;<i>R</i>&gt;E[<b>zz</b>&gt;]<i>R&#160;</i>=&#160;<i>R</i>&gt;<i>IR&#160;</i>=&#160;<i>K</i>.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+16&#160;/&#160;62<br/>
+<hr/>
+<a name=17></a>Sequential&#160;Generation<br/>
+Factorize&#160;the&#160;joint&#160;distribution<br/>
+<i>n</i><br/>
+Y<br/>
+<i>p</i>(<i>f</i>1,&#160;.&#160;.&#160;.&#160;,&#160;<i>fn</i>|<b>x</b>1,&#160;.&#160;.&#160;.&#160;<b>x</b><i>n</i>)&#160;=<br/>
+<i>p</i>(<i>fi</i>|<i>fi</i>−1,&#160;.&#160;.&#160;.&#160;,&#160;<i>f</i>1,&#160;<b>x</b><i>i</i>,&#160;.&#160;.&#160;.&#160;,&#160;<b>x</b>1),<br/>
+<i>i</i>=1<br/>
+and&#160;generate&#160;function&#160;values&#160;sequentially.<br/>
+What&#160;do&#160;the&#160;individual&#160;terms&#160;look&#160;like?&#160;For&#160;Gaussians:<br/>
+i<br/>
+i<br/>
+<i>p</i>(<b>x</b>,&#160;<b>y</b>)&#160;=&#160;N&#160;h&#160;<b>a&#160;</b>,&#160;h&#160;<i>A</i><br/>
+<i>B&#160;</i>&#160;=⇒&#160;<i>p</i>(<b>x</b>|<b>y</b>)&#160;=&#160;N(<b>a</b>+<i>BC</i>−1(<b>y</b>−<b>b</b>),&#160;<i>A</i>−<i>BC</i>−1<i>B</i>&gt;)<br/>
+<b>b</b><br/>
+<i>B</i>&gt;<br/>
+<i>C</i><br/>
+Do&#160;try&#160;this&#160;at&#160;home!<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+17&#160;/&#160;62<br/>
+<hr/>
+<a name=18></a>Function drawn at random from a Gaussian Process with Gaussian covariance<br/>
+8<br/>
+7<br/>
+6<br/>
+5<br/>
+4<br/>
+3<br/>
+2<br/>
+1<br/>
+0<br/>
+−1<br/>
+−2<br/>
+6<br/>
+4<br/>
+6<br/>
+2<br/>
+4<br/>
+0<br/>
+2<br/>
+0<br/>
+−2<br/>
+−2<br/>
+−4<br/>
+−4<br/>
+−6<br/>
+−6<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+18&#160;/&#160;62<br/>
+<hr/>
+<a name=19></a>Maximum&#160;likelihood,&#160;parametric&#160;model<br/>
+Supervised&#160;parametric&#160;learning:<br/>
+•&#160;data:&#160;<b>x</b>,&#160;<b>y<br/></b>•&#160;model:&#160;<i>y&#160;</i>=&#160;<i>f</i><b>w</b>(<i>x</i>)&#160;+&#160;ε<br/>
+Gaussian&#160;likelihood:<br/>
+Y<br/>
+<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>,&#160;<i>Mi</i>)&#160;∝<br/>
+exp(−&#160;1&#160;(<i>y</i><br/>
+2<br/>
+<i>c&#160;</i>−&#160;<i>f</i><b>w</b>(<i>xc</i>))2/σ2<br/>
+noise).<br/>
+<i>c</i><br/>
+Maximize&#160;the&#160;likelihood:<br/>
+<b>w</b>ML&#160;=&#160;argmax&#160;<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>,&#160;<i>Mi</i>).<br/>
+<b>w</b><br/>
+Make&#160;predictions,&#160;by&#160;plugging&#160;in&#160;the&#160;ML&#160;estimate:<br/>
+<i>p</i>(<i>y</i>∗|<i>x</i>∗,&#160;<b>w</b>ML,&#160;<i>Mi</i>)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+19&#160;/&#160;62<br/>
+<hr/>
+<a name=20></a>Bayesian&#160;Inference,&#160;parametric&#160;model<br/>
+Supervised&#160;parametric&#160;learning:<br/>
+•&#160;data:&#160;<b>x</b>,&#160;<b>y<br/></b>•&#160;model:&#160;<i>y&#160;</i>=&#160;<i>f</i><b>w</b>(<i>x</i>)&#160;+&#160;ε<br/>
+Gaussian&#160;likelihood:<br/>
+Y<br/>
+<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>,&#160;<i>Mi</i>)&#160;∝<br/>
+exp(−&#160;1&#160;(<i>y</i><br/>
+2<br/>
+<i>c&#160;</i>−&#160;<i>f</i><b>w</b>(<i>xc</i>))2/σ2<br/>
+noise).<br/>
+<i>c</i><br/>
+Parameter&#160;prior:<br/>
+<i>p</i>(<b>w</b>|<i>Mi</i>)<br/>
+Posterior&#160;parameter&#160;distribution&#160;by&#160;Bayes&#160;rule&#160;<i>p</i>(<i>a</i>|<i>b</i>)&#160;=&#160;<i>p</i>(<i>b</i>|<i>a</i>)<i>p</i>(<i>a</i>)/<i>p</i>(<i>b</i>):<br/>
+<i>p</i>(<b>w</b>|<i>M</i><br/>
+<i>p</i><br/>
+<i>i</i>)<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>,&#160;<i>Mi</i>)<br/>
+(<b>w</b>|<b>x</b>,&#160;<b>y</b>,&#160;<i>Mi</i>)&#160;=<br/>
+<i>p</i>(<b>y</b>|<b>x</b>,&#160;<i>Mi</i>)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+20&#160;/&#160;62<br/>
+<hr/>
+<a name=21></a>Bayesian&#160;Inference,&#160;parametric&#160;model,&#160;cont.<br/>
+Making&#160;predictions:<br/>
+Z<br/>
+<i>p</i>(<i>y</i>∗|<i>x</i>∗,&#160;<b>x</b>,&#160;<b>y</b>,&#160;<i>Mi</i>)&#160;=<br/>
+<i>p</i>(<i>y</i>∗|<b>w</b>,&#160;<i>x</i>∗,&#160;<i>Mi</i>)<i>p</i>(<b>w</b>|<b>x</b>,&#160;<b>y</b>,&#160;<i>Mi</i>)<i>d</i><b>w</b><br/>
+Marginal&#160;likelihood:<br/>
+Z<br/>
+<i>p</i>(<b>y</b>|<b>x</b>,&#160;<i>Mi</i>)&#160;=<br/>
+<i>p</i>(<b>w</b>|<i>Mi</i>)<i>p</i>(<b>y</b>|<b>x</b>,&#160;<b>w</b>,&#160;<i>Mi</i>)<i>d</i><b>w</b>.<br/>
+Model&#160;probability:<br/>
+<i>p</i>(<i>M</i><br/>
+<i>p</i><br/>
+<i>i</i>)<i>p</i>(<b>y</b>|<b>x</b>,&#160;<i>Mi</i>)<br/>
+(<i>Mi</i>|<b>x</b>,&#160;<b>y</b>)&#160;=<br/>
+<i>p</i>(<b>y</b>|<b>x</b>)<br/>
+Problem:&#160;integrals&#160;are&#160;intractable&#160;for&#160;most&#160;interesting&#160;models!<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+21&#160;/&#160;62<br/>
+<hr/>
+<a name=22></a>Non-parametric&#160;Gaussian&#160;process&#160;models<br/>
+In&#160;our&#160;non-parametric&#160;model,&#160;the&#160;“parameters”&#160;are&#160;the&#160;function&#160;itself!<br/>
+Gaussian&#160;likelihood:<br/>
+<b>y</b>|<b>x</b>,&#160;<i>f&#160;</i>(<i>x</i>),&#160;<i>Mi&#160;</i>∼&#160;N(<b>f</b>,&#160;σ2noise<i>I</i>)<br/>
+(Zero&#160;mean)&#160;Gaussian&#160;process&#160;prior:<br/>
+<i>f&#160;</i>(<i>x</i>)|<i>Mi&#160;</i>∼&#160;GP&#160;<i>m</i>(<i>x</i>)&#160;≡&#160;0,&#160;<i>k</i>(<i>x</i>,&#160;<i>x</i>0)<br/>
+Leads&#160;to&#160;a&#160;Gaussian&#160;process&#160;posterior<br/>
+<i>f&#160;</i>(<i>x</i>)|<b>x</b>,&#160;<b>y</b>,&#160;<i>Mi&#160;</i>∼&#160;GP&#160;<i>m</i>post(<i>x</i>)&#160;=&#160;<i>k</i>(<i>x</i>,&#160;<b>x</b>)[<i>K</i>(<b>x</b>,&#160;<b>x</b>)&#160;+&#160;σ2noise<i>I</i>]−1<b>y</b>,<br/>
+<i>k</i>post(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;<i>k</i>(<i>x</i>,&#160;<i>x</i>0)&#160;−&#160;<i>k</i>(<i>x</i>,&#160;<b>x</b>)[<i>K</i>(<b>x</b>,&#160;<b>x</b>)&#160;+&#160;σ2noise<i>I</i>]−1<i>k</i>(<b>x</b>,&#160;<i>x</i>0).<br/>
+And&#160;a&#160;Gaussian&#160;predictive&#160;distribution:<br/>
+<i>y</i>∗|<i>x</i>∗,&#160;<b>x</b>,&#160;<b>y</b>,&#160;<i>Mi&#160;</i>∼&#160;N&#160;<b>k</b>(<i>x</i>∗,&#160;<b>x</b>)&gt;[<i>K&#160;</i>+&#160;σ2noise<i>I</i>]−1<b>y</b>,<br/>
+<i>k</i>(<i>x</i>∗,&#160;<i>x</i>∗)&#160;+&#160;σ2noise&#160;−&#160;<b>k</b>(<i>x</i>∗,&#160;<b>x</b>)&gt;[<i>K&#160;</i>+&#160;σ2noise<i>I</i>]−1<b>k</b>(<i>x</i>∗,&#160;<b>x</b>)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+22&#160;/&#160;62<br/>
+<hr/>
+<a name=23></a>Prior&#160;and&#160;Posterior<br/>
+2<br/>
+2<br/>
+1<br/>
+1<br/>
+0<br/>
+0<br/>
+output, f(x)<br/>
+output, f(x)<br/>
+−1<br/>
+−1<br/>
+−2<br/>
+−2<br/>
+−5<br/>
+0<br/>
+5<br/>
+−5<br/>
+0<br/>
+5<br/>
+input, x<br/>
+input, x<br/>
+Predictive&#160;distribution:<br/>
+<i>p</i>(<i>y</i>∗|<i>x</i>∗,&#160;<b>x</b>,&#160;<b>y</b>)&#160;∼&#160;N&#160;<b>k</b>(<i>x</i>∗,&#160;<b>x</b>)&gt;[<i>K&#160;</i>+&#160;σ2noise<i>I</i>]−1<b>y</b>,<br/>
+<i>k</i>(<i>x</i>∗,&#160;<i>x</i>∗)&#160;+&#160;σ2noise&#160;−&#160;<b>k</b>(<i>x</i>∗,&#160;<b>x</b>)&gt;[<i>K&#160;</i>+&#160;σ2noise<i>I</i>]−1<b>k</b>(<i>x</i>∗,&#160;<b>x</b>)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+23&#160;/&#160;62<br/>
+<hr/>
+<a name=24></a>Graphical&#160;model&#160;for&#160;Gaussian&#160;Process<br/>
+Square&#160;nodes&#160;are&#160;observed&#160;(clamped),<br/>
+y1<br/>
+<b>x</b>∗1<br/>
+round&#160;nodes&#160;stochastic&#160;(free).<br/>
+<b>x</b>1<br/>
+f1<br/>
+f∗<br/>
+y∗<br/>
+1<br/>
+1<br/>
+All&#160;pairs&#160;of&#160;latent&#160;variables&#160;are&#160;con-<br/>
+y2<br/>
+<b>x</b>∗&#160;nected.<br/>
+2<br/>
+f2<br/>
+f∗2<br/>
+<b>x</b>2<br/>
+y∗2&#160;Predictions&#160;<i>y</i>∗&#160;depend&#160;only&#160;on&#160;the&#160;corre-<br/>
+sponding&#160;single&#160;latent&#160;<i>f&#160;</i>∗.<br/>
+y3<br/>
+f3<br/>
+f∗3<br/>
+<b>x</b>∗3<br/>
+<b>x</b>3<br/>
+y∗<br/>
+Notice,&#160;that&#160;adding&#160;a&#160;triplet<br/>
+,&#160;,<br/>
+3<br/>
+<i>x</i>∗<i>m&#160;f&#160;</i>∗<i>m&#160;y</i>∗<i>m</i><br/>
+fn<br/>
+does&#160;not&#160;influence&#160;the&#160;distribution.&#160;This<br/>is&#160;guaranteed&#160;by&#160;the&#160;marginalization<br/>
+yn<br/>
+<b>x</b>n<br/>
+property&#160;of&#160;the&#160;GP.<br/>
+This&#160;explains&#160;why&#160;we&#160;can&#160;make&#160;inference&#160;using&#160;a&#160;finite&#160;amount&#160;of&#160;computation!<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+24&#160;/&#160;62<br/>
+<hr/>
+<a name=25></a>Some&#160;interpretation<br/>
+Recall&#160;our&#160;main&#160;result:<br/>
+<b>f</b>∗|<i>X</i>∗,&#160;<i>X</i>,&#160;<b>y&#160;</b>∼&#160;N&#160;<i>K</i>(<i>X</i>∗,&#160;<i>X</i>)[<i>K</i>(<i>X</i>,&#160;<i>X</i>)&#160;+&#160;σ2<i>nI</i>]−1<b>y</b>,<br/>
+<i>K</i>(<i>X</i>∗,&#160;<i>X</i>∗)&#160;−&#160;<i>K</i>(<i>X</i>∗,&#160;<i>X</i>)[<i>K</i>(<i>X</i>,&#160;<i>X</i>)&#160;+&#160;σ2<i>nI</i>]−1<i>K</i>(<i>X</i>,&#160;<i>X</i>∗).<br/>
+The&#160;mean&#160;is&#160;linear&#160;in&#160;two&#160;ways:<br/>
+<i>n</i><br/>
+X<br/>
+<i>n</i><br/>
+X<br/>
+µ(<b>x</b>∗)&#160;=&#160;<i>k</i>(<b>x</b>∗,&#160;<i>X</i>)[<i>K</i>(<i>X</i>,&#160;<i>X</i>)&#160;+&#160;σ2<i>n</i>]−1<b>y&#160;</b>=<br/>
+β<i>cy</i>(<i>c</i>)&#160;=<br/>
+α<i>ck</i>(<b>x</b>∗,&#160;<b>x</b>(<i>c</i>)).<br/>
+<i>c</i>=1<br/>
+<i>c</i>=1<br/>
+The&#160;last&#160;form&#160;is&#160;most&#160;commonly&#160;encountered&#160;in&#160;the&#160;kernel&#160;literature.<br/>
+The&#160;variance&#160;is&#160;the&#160;difference&#160;between&#160;two&#160;terms:<br/>
+<i>V</i>(<b>x</b>∗)&#160;=&#160;<i>k</i>(<b>x</b>∗,&#160;<b>x</b>∗)&#160;−&#160;<b>k</b>(<b>x</b>∗,&#160;<i>X</i>)[<i>K</i>(<i>X</i>,&#160;<i>X</i>)&#160;+&#160;σ2<i>nI</i>]−1<b>k</b>(<i>X</i>,&#160;<b>x</b>∗),<br/>
+the&#160;first&#160;term&#160;is&#160;the&#160;<i>prior&#160;variance</i>,&#160;from&#160;which&#160;we&#160;subtract&#160;a&#160;(positive)&#160;term,<br/>telling&#160;how&#160;much&#160;the&#160;data&#160;<i>X&#160;</i>has&#160;explained.&#160;Note,&#160;that&#160;the&#160;variance&#160;is<br/>independent&#160;of&#160;the&#160;observed&#160;outputs&#160;<b>y</b>.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+25&#160;/&#160;62<br/>
+<hr/>
+<a name=26></a>The&#160;marginal&#160;likelihood<br/>
+Log&#160;marginal&#160;likelihood:<br/>
+1<br/>
+1<br/>
+<i>n</i><br/>
+log&#160;<i>p</i>(<b>y</b>|<b>x</b>,&#160;<i>Mi</i>)&#160;=&#160;−&#160;<b>y</b>&gt;<i>K</i>−1<b>y&#160;</b>−<br/>
+log&#160;|<i>K</i>|&#160;−<br/>
+log(2π)<br/>
+2<br/>
+2<br/>
+2<br/>
+is&#160;the&#160;combination&#160;of&#160;a&#160;data&#160;fit&#160;term&#160;and&#160;complexity&#160;penalty.&#160;Occam’s&#160;Razor&#160;is<br/>automatic.<br/>
+Learning&#160;in&#160;Gaussian&#160;process&#160;models&#160;involves&#160;finding<br/>
+•&#160;the&#160;form&#160;of&#160;the&#160;covariance&#160;function,&#160;and<br/>
+•&#160;any&#160;unknown&#160;(hyper-)&#160;parameters&#160;θ.<br/>
+This&#160;can&#160;be&#160;done&#160;by&#160;optimizing&#160;the&#160;marginal&#160;likelihood:<br/>
+∂&#160;log&#160;<i>p</i>(<b>y</b>|<b>x</b>,&#160;θ,&#160;<i>Mi</i>)<br/>
+1<br/>
+1<br/>
+=<br/>
+<b>y</b>&gt;<i>K</i>−1&#160;∂<i>K&#160;K</i>−1<b>y&#160;</b>−<br/>
+trace(<i>K</i>−1&#160;∂<i>K&#160;</i>)<br/>
+∂θ<i>j</i><br/>
+2<br/>
+∂θ<i>j</i><br/>
+2<br/>
+∂θ<i>j</i><br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+26&#160;/&#160;62<br/>
+<hr/>
+<a name=27></a>Example:&#160;Fitting&#160;the&#160;length&#160;scale&#160;parameter<br/>
+(<i>x&#160;</i>−&#160;<i>x</i>0)2<br/>
+Parameterized&#160;covariance&#160;function:&#160;<i>k</i>(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;<i>v</i>2&#160;exp&#160;−<br/>
+&#160;+&#160;σ2<br/>
+2`2<br/>
+<i>n</i>δ<i>xx</i>0&#160;.<br/>
+1.5<br/>
+observations<br/>too short<br/>good length scale<br/>
+1<br/>
+too long<br/>
+0.5<br/>
+0<br/>
+−0.5<br/>
+−10<br/>
+−8<br/>
+−6<br/>
+−4<br/>
+−2<br/>
+0<br/>
+2<br/>
+4<br/>
+6<br/>
+8<br/>
+10<br/>
+The&#160;mean&#160;posterior&#160;predictive&#160;function&#160;is&#160;plotted&#160;for&#160;3&#160;different&#160;length&#160;scales&#160;(the<br/>green&#160;curve&#160;corresponds&#160;to&#160;optimizing&#160;the&#160;marginal&#160;likelihood).&#160;Notice,&#160;that&#160;an<br/>almost&#160;exact&#160;fit&#160;to&#160;the&#160;data&#160;can&#160;be&#160;achieved&#160;by&#160;reducing&#160;the&#160;length&#160;scale&#160;–&#160;but&#160;the<br/>marginal&#160;likelihood&#160;does&#160;not&#160;favour&#160;this!<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+27&#160;/&#160;62<br/>
+<hr/>
+<a name=28></a>Why,&#160;in&#160;principle,&#160;does&#160;Bayesian&#160;Inference&#160;work?<br/>Occam’s&#160;Razor<br/>
+too&#160;simple<br/>
+)&#160;i<br/>|<i>M<br/></i>(Y<br/>P<br/>
+&#34;just&#160;right&#34;<br/>
+too&#160;complex<br/>
+Y<br/>
+All&#160;possible&#160;data&#160;sets<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+28&#160;/&#160;62<br/>
+<hr/>
+<a name=29></a>An&#160;illustrative&#160;analogous&#160;example<br/>
+Imagine&#160;the&#160;simple&#160;task&#160;of&#160;fitting&#160;the&#160;variance,&#160;σ2,&#160;of&#160;a&#160;zero-mean&#160;Gaussian&#160;to&#160;a<br/>set&#160;of&#160;<i>n&#160;</i>scalar&#160;observations.<br/>
+The&#160;log&#160;likelihood&#160;is&#160;log&#160;<i>p</i>(<b>y</b>|µ,&#160;σ2)&#160;=&#160;−&#160;1&#160;<b>y</b>&gt;<i>I</i><b>y</b>/σ2−&#160;1&#160;log&#160;|<i>I</i>σ2|&#160;−&#160;<i>n&#160;</i>log(2π)<br/>
+2<br/>
+2<br/>
+2<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+29&#160;/&#160;62<br/>
+<hr/>
+<a name=30></a>From&#160;random&#160;functions&#160;to&#160;covariance&#160;functions<br/>
+Consider&#160;the&#160;class&#160;of&#160;linear&#160;functions:<br/>
+<i>f&#160;</i>(<i>x</i>)&#160;=&#160;<i>ax&#160;</i>+&#160;<i>b</i>,&#160;where&#160;<i>a&#160;</i>∼&#160;N(0,&#160;α),&#160;and&#160;<i>b&#160;</i>∼&#160;N(0,&#160;β).<br/>
+We&#160;can&#160;compute&#160;the&#160;mean&#160;function:<br/>
+ZZ<br/>
+Z<br/>
+Z<br/>
+µ(<i>x</i>)&#160;=&#160;<i>E</i>[<i>f&#160;</i>(<i>x</i>)]&#160;=<br/>
+<i>f&#160;</i>(<i>x</i>)<i>p</i>(<i>a</i>)<i>p</i>(<i>b</i>)<i>dadb&#160;</i>=<br/>
+<i>axp</i>(<i>a</i>)<i>da&#160;</i>+&#160;<i>bp</i>(<i>b</i>)<i>db&#160;</i>=&#160;0,<br/>
+and&#160;covariance&#160;function:<br/>
+ZZ<br/>
+<i>k</i>(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;<i>E</i>[(<i>f&#160;</i>(<i>x</i>)&#160;−&#160;0)(<i>f&#160;</i>(<i>x</i>0)&#160;−&#160;0)]&#160;=<br/>
+(<i>ax&#160;</i>+&#160;<i>b</i>)(<i>ax</i>0&#160;+&#160;<i>b</i>)<i>p</i>(<i>a</i>)<i>p</i>(<i>b</i>)<i>dadb</i><br/>
+Z<br/>
+Z<br/>
+Z<br/>
+=<br/>
+<i>a</i>2<i>xx</i>0<i>p</i>(<i>a</i>)<i>da&#160;</i>+&#160;<i>b</i>2<i>p</i>(<i>b</i>)<i>db&#160;</i>+&#160;(<i>x&#160;</i>+&#160;<i>x</i>0)&#160;<i>abp</i>(<i>a</i>)<i>p</i>(<i>b</i>)<i>dadb&#160;</i>=&#160;α<i>xx</i>0&#160;+&#160;β.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+30&#160;/&#160;62<br/>
+<hr/>
+<a name=31></a>From&#160;random&#160;functions&#160;to&#160;covariance&#160;functions&#160;II<br/>
+Consider&#160;the&#160;class&#160;of&#160;functions&#160;(sums&#160;of&#160;squared&#160;exponentials):<br/>
+1&#160;X<br/>
+<i>f&#160;</i>(<i>x</i>)&#160;=&#160;lim<br/>
+γ<i>i&#160;</i>exp(−(<i>x&#160;</i>−&#160;<i>i</i>/<i>n</i>)2),&#160;where&#160;γ<i>i&#160;</i>∼&#160;N(0,&#160;1),&#160;∀<i>i</i><br/>
+<i>n</i>→∞&#160;<i>n</i><br/>
+<i>i</i><br/>
+Z∞<br/>
+=<br/>
+γ(<i>u</i>)&#160;exp(−(<i>x&#160;</i>−&#160;<i>u</i>)2)<i>du</i>,&#160;where&#160;γ(<i>u</i>)&#160;∼&#160;N(0,&#160;1),&#160;∀<i>u</i>.<br/>
+−∞<br/>
+The&#160;mean&#160;function&#160;is:<br/>
+Z∞<br/>
+Z∞<br/>
+µ(<i>x</i>)&#160;=&#160;<i>E</i>[<i>f&#160;</i>(<i>x</i>)]&#160;=<br/>
+exp(−(<i>x&#160;</i>−&#160;<i>u</i>)2)<br/>
+γ<i>p</i>(γ)<i>d</i>γ<i>du&#160;</i>=&#160;0,<br/>
+−∞<br/>
+−∞<br/>
+and&#160;the&#160;covariance&#160;function:<br/>
+Z<br/>
+<i>E</i>[<i>f&#160;</i>(<i>x</i>)<i>f&#160;</i>(<i>x</i>0)]&#160;=<br/>
+exp&#160;−&#160;(<i>x&#160;</i>−&#160;<i>u</i>)2&#160;−&#160;(<i>x</i>0&#160;−&#160;<i>u</i>)2<i>du</i><br/>
+Z<br/>
+<i>x&#160;</i>+&#160;<i>x</i>0<br/>
+(<i>x&#160;</i>+&#160;<i>x</i>0)2<br/>
+(<i>x&#160;</i>−&#160;<i>x</i>0)2<br/>
+=<br/>
+exp&#160;−&#160;2(<i>u&#160;</i>−<br/>
+)2&#160;+<br/>
+−&#160;<i>x</i>2&#160;−&#160;<i>x</i>02)<i>du&#160;</i>∝&#160;exp&#160;−<br/>
+.<br/>
+2<br/>
+2<br/>
+2<br/>
+Thus,&#160;the&#160;squared&#160;exponential&#160;covariance&#160;function&#160;is&#160;equivalent&#160;to&#160;regression<br/>using&#160;infinitely&#160;many&#160;Gaussian&#160;shaped&#160;basis&#160;functions&#160;placed&#160;everywhere,&#160;not&#160;just<br/>at&#160;your&#160;training&#160;points!<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+31&#160;/&#160;62<br/>
+<hr/>
+<a name=32></a>Using&#160;finitely&#160;many&#160;basis&#160;functions&#160;may&#160;be&#160;dangerous!<br/>
+1<br/>
+0.5<br/>
+?<br/>
+0<br/>
+−0.5<br/>
+−10<br/>
+−8<br/>
+−6<br/>
+−4<br/>
+−2<br/>
+0<br/>
+2<br/>
+4<br/>
+6<br/>
+8<br/>
+10<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+32&#160;/&#160;62<br/>
+<hr/>
+<a name=33></a>Spline&#160;models<br/>
+One&#160;dimensional&#160;minimization&#160;problem:&#160;find&#160;the&#160;function&#160;<i>f&#160;</i>(<i>x</i>)&#160;which&#160;minimizes:<br/>
+<i>c</i><br/>
+X<br/>
+Z1<br/>
+(<i>f&#160;</i>(<i>x</i>(<i>i</i>))&#160;−&#160;<i>y</i>(<i>i</i>))2&#160;+&#160;λ<br/>
+(<i>f&#160;</i>00(<i>x</i>))2<i>dx</i>,<br/>
+<i>i</i><br/>
+0<br/>
+=1<br/>
+where&#160;0&#160;&lt;&#160;<i>x</i>(<i>i</i>)&#160;&lt;&#160;<i>x</i>(<i>i</i>+1)&#160;&lt;&#160;1,&#160;∀<i>i&#160;</i>=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;<i>n&#160;</i>−&#160;1,&#160;has&#160;as&#160;solution&#160;the&#160;Natural<br/>Smoothing&#160;Cubic&#160;Spline:&#160;first&#160;order&#160;polinomials&#160;when&#160;<i>x&#160;</i>∈&#160;[0;&#160;<i>x</i>(1)]&#160;and&#160;when<br/><i>x&#160;</i>∈&#160;[<i>x</i>(<i>n</i>);&#160;1]&#160;and&#160;a&#160;cubic&#160;polynomical&#160;in&#160;each&#160;<i>x&#160;</i>∈&#160;[<i>x</i>(<i>i</i>);&#160;<i>x</i>(<i>i</i>+1)],&#160;∀<i>i&#160;</i>=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;<i>n&#160;</i>−&#160;1,<br/>joined&#160;to&#160;have&#160;continuous&#160;second&#160;derivatives&#160;at&#160;the&#160;knots.<br/>
+The&#160;identical&#160;function&#160;is&#160;also&#160;the&#160;mean&#160;of&#160;a&#160;Gaussian&#160;process:&#160;Consider&#160;the&#160;class<br/>a&#160;functions&#160;given&#160;by:<br/>
+<br/>
+1&#160;<i>n</i>−1<br/>
+X<br/>
+<i>i</i><br/>
+<i>x</i><br/>
+if&#160;<i>x&#160;</i>&gt;&#160;0<br/>
+<i>f&#160;</i>(<i>x</i>)&#160;=&#160;α&#160;+&#160;β<i>x&#160;</i>+&#160;lim&#160;√<br/>
+γ<i>i</i>(<i>x&#160;</i>−<br/>
+)+,<br/>
+where&#160;(<i>x</i>)+&#160;=<br/>
+<i>n</i>→∞<br/>
+<i>n</i><br/>
+<i>n</i><br/>
+0<br/>
+otherwise<br/>
+<i>i</i>=0<br/>
+with&#160;Gaussian&#160;priors:<br/>
+α&#160;∼&#160;N(0,&#160;ξ),<br/>
+β&#160;∼&#160;N(0,&#160;ξ),<br/>
+γ<i>i&#160;</i>∼&#160;N(0,&#160;Γ&#160;),&#160;∀<i>i&#160;</i>=&#160;0,&#160;.&#160;.&#160;.&#160;,&#160;<i>n&#160;</i>−&#160;1.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+33&#160;/&#160;62<br/>
+<hr/>
+<a name=34></a>The&#160;covariance&#160;function&#160;becomes:<br/>
+1&#160;<i>n</i>−1<br/>
+X<br/>
+<i>i</i><br/>
+<i>i</i><br/>
+<i>k</i>(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;ξ&#160;+&#160;<i>xx</i>0ξ&#160;+&#160;Γ&#160;lim<br/>
+(<i>x&#160;</i>−<br/>
+)+&#160;(<i>x</i>0&#160;−<br/>
+)+<br/>
+<i>n</i>→∞&#160;<i>n</i><br/>
+<i>n</i><br/>
+<i>n</i><br/>
+<i>i</i>=0<br/>
+Z1<br/>
+=&#160;ξ&#160;+&#160;<i>xx</i>0ξ&#160;+&#160;Γ<br/>
+(<i>x&#160;</i>−&#160;<i>u</i>)+&#160;(<i>x</i>0&#160;−&#160;<i>u</i>)+<i>du</i><br/>
+0<br/>
+1<br/>
+1<br/>
+=&#160;ξ&#160;+&#160;<i>xx</i>0ξ&#160;+&#160;Γ<br/>
+|<i>x&#160;</i>−&#160;<i>x</i>0|&#160;min(<i>x</i>,&#160;<i>x</i>0)2&#160;+&#160;min(<i>x</i>,&#160;<i>x</i>0)3.<br/>
+2<br/>
+3<br/>
+In&#160;the&#160;limit&#160;ξ&#160;→&#160;∞&#160;and&#160;λ&#160;=&#160;σ2<i>n</i>/Γ&#160;the&#160;posterior&#160;mean&#160;becomes&#160;the&#160;natrual&#160;cubic<br/>spline.<br/>
+We&#160;can&#160;thus&#160;find&#160;the&#160;hyperparameters&#160;σ2&#160;and&#160;Γ&#160;(and&#160;thereby&#160;λ)&#160;by&#160;maximising<br/>the&#160;marginal&#160;likelihood&#160;in&#160;the&#160;usual&#160;way.<br/>
+Defining&#160;<i>h</i>(<i>x</i>)&#160;=&#160;(1,&#160;<i>x</i>)&gt;&#160;the&#160;posterior&#160;predictions&#160;with&#160;mean&#160;and&#160;variance:<br/>
+µ(<i>X</i>∗)&#160;=&#160;<i>H</i>(<i>X</i>∗)&gt;β&#160;+&#160;<i>K</i>(<i>X</i>,&#160;<i>X</i>∗)[<i>K</i>(<i>X</i>,&#160;<i>X</i>)&#160;+&#160;σ2<i>nI</i>]−1(<b>y&#160;</b>−&#160;<i>H</i>(<i>X</i>)&gt;β)<br/>
+Σ(<i>x</i>∗)&#160;=&#160;Σ(<i>X</i>∗)&#160;+&#160;<i>R</i>(<i>X</i>,&#160;<i>X</i>∗)&gt;<i>A</i>(<i>X</i>)−1<i>R</i>(<i>X</i>,&#160;<i>X</i>∗)<br/>
+β&#160;=&#160;<i>A</i>(<i>X</i>)−1<i>H</i>(<i>X</i>)[<i>K&#160;</i>+&#160;σ2<i>nI</i>]−1<b>y</b>,<br/>
+<i>A</i>(<i>X</i>)&#160;=&#160;<i>H</i>(<i>X</i>)[<i>K</i>(<i>X</i>,&#160;<i>X</i>)&#160;+&#160;σ2<i>nI</i>]−1<i>H</i>(<i>X</i>)&gt;<br/>
+<i>R</i>(<i>X</i>,&#160;<i>X</i>∗)&#160;=&#160;<i>H</i>(<i>X</i>∗)&#160;−&#160;<i>H</i>(<i>X</i>)[<i>K&#160;</i>+&#160;σ2<i>nI</i>]−1<i>K</i>(<i>X</i>,&#160;<i>X</i>∗)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+34&#160;/&#160;62<br/>
+<hr/>
+<a name=35></a>Cubic&#160;Splines,&#160;Example<br/>
+Although&#160;this&#160;is&#160;not&#160;the&#160;fastest&#160;way&#160;to&#160;compute&#160;splines,&#160;it&#160;offers&#160;a&#160;principled&#160;way<br/>of&#160;finding&#160;hyperparameters,&#160;and&#160;uncertainties&#160;on&#160;predictions.<br/>
+Note&#160;also,&#160;that&#160;although&#160;the&#160;posterior&#160;mean&#160;is&#160;smooth&#160;(piecewise&#160;cubic),&#160;posterior<br/>sample&#160;functions&#160;are&#160;not.<br/>
+1.5<br/>
+observations<br/>
+1<br/>
+mean<br/>
+random<br/>
+random<br/>
+0.5<br/>
+95% conf<br/>
+0<br/>
+−0.5<br/>
+−10<br/>
+0.1<br/>
+0.2<br/>
+0.3<br/>
+0.4<br/>
+0.5<br/>
+0.6<br/>
+0.7<br/>
+0.8<br/>
+0.9<br/>
+1<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+35&#160;/&#160;62<br/>
+<hr/>
+<a name=36></a>Model&#160;Selection&#160;in&#160;Practise;&#160;Hyperparameters<br/>
+There&#160;are&#160;two&#160;types&#160;of&#160;task:&#160;<i>form&#160;</i>and&#160;<i>parameters&#160;</i>of&#160;the&#160;covariance&#160;function.<br/>
+Typically,&#160;our&#160;prior&#160;is&#160;too&#160;weak&#160;to&#160;quantify&#160;aspects&#160;of&#160;the&#160;covariance&#160;function.<br/>We&#160;use&#160;a&#160;hierarchical&#160;model&#160;using&#160;hyperparameters.&#160;Eg,&#160;in&#160;ARD:<br/>
+<i>D</i><br/>
+X&#160;(<i>x</i><br/>
+)2<br/>
+<i>k</i><br/>
+<i>d&#160;</i>−&#160;<i>x&#160;</i>0<br/>
+(<b>x</b>,&#160;<b>x</b>0)&#160;=&#160;<i>v</i>2<br/>
+<i>d</i><br/>
+,<br/>
+0&#160;exp&#160;−<br/>
+hyperparameters&#160;θ&#160;=&#160;(<i>v</i><br/>
+2<br/>
+0,&#160;<i>v</i>1,&#160;.&#160;.&#160;.&#160;,&#160;<i>v</i><br/>
+<i>v</i>2<br/>
+<i>d</i>,&#160;σ2<br/>
+<i>n</i>).<br/>
+<i>d</i>=1<br/>
+<i>d</i><br/>
+v1=v2=1<br/>
+v1=v2=0.32<br/>
+v1=0.32 and v2=1<br/>
+2<br/>
+2<br/>
+2<br/>
+1<br/>
+0<br/>
+0<br/>
+0<br/>
+−2<br/>
+−2<br/>
+2<br/>
+2&#160;2<br/>
+2<br/>
+0<br/>
+2<br/>
+2<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+0<br/>
+x2&#160;−2&#160;−2&#160;x1<br/>
+x2&#160;−2&#160;−2&#160;x1<br/>
+x2&#160;−2&#160;−2&#160;x1<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+36&#160;/&#160;62<br/>
+<hr/>
+<a name=37></a>Rational&#160;quadratic&#160;covariance&#160;function<br/>
+The&#160;<i>rational&#160;quadratic&#160;</i>(RQ)&#160;covariance&#160;function:<br/>
+<br/>
+<i>r</i>2&#160;−α<br/>
+<i>k</i>RQ(<i>r</i>)&#160;=<br/>
+1&#160;+&#160;2α`2<br/>
+with&#160;α,&#160;`&#160;&gt;&#160;0&#160;can&#160;be&#160;seen&#160;as&#160;a&#160;<i>scale&#160;mixture&#160;</i>(an&#160;infinite&#160;sum)&#160;of&#160;squared<br/>exponential&#160;(SE)&#160;covariance&#160;functions&#160;with&#160;different&#160;characteristic&#160;length-scales.<br/>
+Using&#160;τ&#160;=&#160;`−2&#160;and&#160;<i>p</i>(τ|α,&#160;β)&#160;∝&#160;τα−1&#160;exp(−ατ/β):<br/>
+Z<br/>
+<i>k</i>RQ(<i>r</i>)&#160;=<br/>
+<i>p</i>(τ|α,&#160;β)<i>k</i>SE(<i>r</i>|τ)<i>d</i>τ<br/>
+Z<br/>
+<br/>
+ατ&#160;<br/>
+<br/>
+τ<i>r</i>2&#160;<br/>
+<br/>
+<i>r</i>2&#160;−α<br/>
+∝<br/>
+τα−1&#160;exp&#160;−<br/>
+exp&#160;−<br/>
+<i>d</i>τ&#160;∝<br/>
+1&#160;+<br/>
+,<br/>
+β<br/>
+2<br/>
+2α`2<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+37&#160;/&#160;62<br/>
+<hr/>
+<a name=38></a>Rational&#160;quadratic&#160;covariance&#160;function&#160;II<br/>
+1<br/>
+α<br/>
+3<br/>
+=1/2<br/>
+α=2<br/>
+α→∞<br/>
+2<br/>
+0.8<br/>
+1<br/>
+0.6<br/>
+0<br/>
+0.4<br/>
+covariance<br/>
+output, f(x)&#160;−1<br/>
+0.2<br/>
+−2<br/>
+−3<br/>
+00<br/>
+1<br/>
+2<br/>
+3<br/>
+−5<br/>
+0<br/>
+5<br/>
+input distance<br/>
+input, x<br/>
+The&#160;limit&#160;α&#160;→&#160;∞&#160;of&#160;the&#160;RQ&#160;covariance&#160;function&#160;is&#160;the&#160;SE.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+38&#160;/&#160;62<br/>
+<hr/>
+<a name=39></a>Matérn&#160;covariance&#160;functions<br/>
+Stationary&#160;covariance&#160;functions&#160;can&#160;be&#160;based&#160;on&#160;the&#160;Matérn&#160;form:<br/>
+√<br/>
+√<br/>
+1<br/>
+h<br/>
+2ν<br/>
+<br/>
+2ν<br/>
+<i>k</i>(<b>x</b>,&#160;<b>x</b>0)&#160;=<br/>
+|<b>x&#160;</b>−&#160;<b>x</b>0|iν<i>K</i>ν<br/>
+|<b>x&#160;</b>−&#160;<b>x</b>0|,<br/>
+Γ&#160;(ν)2ν−1<br/>
+`<br/>
+`<br/>
+where&#160;<i>K</i>ν&#160;is&#160;the&#160;modified&#160;Bessel&#160;function&#160;of&#160;second&#160;kind&#160;of&#160;order&#160;ν,&#160;and&#160;`&#160;is&#160;the<br/>characteristic&#160;length&#160;scale.<br/>
+Sample&#160;functions&#160;from&#160;Matérn&#160;forms&#160;are&#160;bν&#160;−&#160;1c&#160;times&#160;differentiable.&#160;Thus,&#160;the<br/>hyperparameter&#160;ν&#160;can&#160;control&#160;the&#160;degree&#160;of&#160;smoothness<br/>
+Special&#160;cases:<br/>
+•&#160;<i>k</i>ν=1/2(<i>r</i>)&#160;=&#160;exp(−&#160;<i>r&#160;</i>):&#160;Laplacian&#160;covariance&#160;function,&#160;Browninan&#160;motion<br/>
+`<br/>
+(Ornstein-Uhlenbeck)<br/>
+√<br/>
+√<br/>
+•&#160;<i>k</i><br/>
+3<i>r&#160;</i><br/>
+3<i>r&#160;</i><br/>
+ν=3/2(<i>r</i>)&#160;=<br/>
+1&#160;+<br/>
+exp&#160;−<br/>
+(once&#160;differentiable)<br/>
+`<br/>
+`<br/>
+√<br/>
+√<br/>
+•&#160;<i>k</i><br/>
+5<i>r</i><br/>
+<br/>
+5<i>r&#160;</i><br/>
+ν=5/2(<i>r</i>)&#160;=<br/>
+1&#160;+<br/>
++&#160;5<i>r</i>2&#160;exp&#160;−<br/>
+(twice&#160;differentiable)<br/>
+`<br/>
+3`2<br/>
+`<br/>
+•&#160;<i>k</i>ν→∞&#160;=&#160;exp(−&#160;<i>r</i>2&#160;):&#160;smooth&#160;(infinitely&#160;differentiable)<br/>
+2`2<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+39&#160;/&#160;62<br/>
+<hr/>
+<a name=40></a>Matérn&#160;covariance&#160;functions&#160;II<br/>
+Univariate&#160;Matérn&#160;covariance&#160;function&#160;with&#160;unit&#160;characteristic&#160;length&#160;scale&#160;and<br/>unit&#160;variance:<br/>
+covariance function<br/>
+sample functions<br/>
+1<br/>
+ν=1/2<br/>
+2<br/>
+ν=1<br/>
+1<br/>
+ν=2<br/>
+0.5<br/>
+ν→∞<br/>
+0<br/>
+covariance<br/>
+−1<br/>
+output, f(x)<br/>
+−2<br/>
+00<br/>
+1<br/>
+2<br/>
+3<br/>
+−5<br/>
+0<br/>
+5<br/>
+input distance<br/>
+input, x<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+40&#160;/&#160;62<br/>
+<hr/>
+<a name=41></a>Periodic,&#160;smooth&#160;functions<br/>
+To&#160;create&#160;a&#160;distribution&#160;over&#160;periodic&#160;functions&#160;of&#160;<i>x</i>,&#160;we&#160;can&#160;first&#160;map&#160;the&#160;inputs<br/>to&#160;<i>u&#160;</i>=&#160;(sin(<i>x</i>),&#160;cos(<i>x</i>))&gt;,&#160;and&#160;then&#160;measure&#160;distances&#160;in&#160;the&#160;<i>u&#160;</i>space.&#160;Combined<br/>with&#160;the&#160;SE&#160;covariance&#160;function,&#160;which&#160;characteristic&#160;length&#160;scale&#160;`,&#160;we&#160;get:<br/>
+<i>k</i>periodic(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;exp(−2&#160;sin2(π(<i>x&#160;</i>−&#160;<i>x</i>0))/`2)<br/>
+3<br/>
+3<br/>
+2<br/>
+2<br/>
+1<br/>
+1<br/>
+0<br/>
+0<br/>
+−1<br/>
+−1<br/>
+−2<br/>
+−2<br/>
+−3<br/>
+−3<br/>
+−2<br/>
+−1<br/>
+0<br/>
+1<br/>
+2<br/>
+−2<br/>
+−1<br/>
+0<br/>
+1<br/>
+2<br/>
+Three&#160;functions&#160;drawn&#160;at&#160;random;&#160;left&#160;`&#160;&gt;&#160;1,&#160;and&#160;right&#160;`&#160;&lt;&#160;1.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+41&#160;/&#160;62<br/>
+<hr/>
+<a name=42></a>The&#160;Prediction&#160;Problem<br/>
+420<br/>
+400<br/>
+?<br/>
+380<br/>
+360<br/>
+&#160;concentration, ppm&#160;2&#160;340<br/>CO<br/>
+320<br/>
+1960<br/>
+1980<br/>
+2000<br/>
+2020<br/>
+year<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+42&#160;/&#160;62<br/>
+<hr/>
+<a name=43></a>Covariance&#160;Function<br/>
+The&#160;covariance&#160;function&#160;consists&#160;of&#160;several&#160;terms,&#160;parameterized&#160;by&#160;a&#160;total&#160;of&#160;11<br/><i>hyperparameters</i>:<br/>
+•&#160;long-term&#160;smooth&#160;trend&#160;(squared&#160;exponential)<br/>
+<i>k</i>1(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;θ2&#160;exp(−(<i>x&#160;</i>−&#160;<i>x</i>0)2/θ2),<br/>
+1<br/>
+2<br/>
+•&#160;seasonal&#160;trend&#160;(quasi-periodic&#160;smooth)<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<i>k</i>2(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;θ2&#160;exp&#160;−&#160;2&#160;sin2(π(<i>x&#160;</i>−&#160;<i>x</i>0))/θ2&#160;×&#160;exp&#160;−&#160;1&#160;(<i>x&#160;</i>−&#160;<i>x</i>0)2/θ2&#160;,<br/>
+3<br/>
+5<br/>
+2<br/>
+4<br/>
+•&#160;short-&#160;and&#160;medium-term&#160;anomaly&#160;(rational&#160;quadratic)<br/>
+<br/>
+−θ8<br/>
+<i>k</i>3(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;θ2&#160;1&#160;+&#160;(<i>x</i>−<i>x</i>0)2<br/>
+6<br/>
+2θ8θ27<br/>
+•&#160;noise&#160;(independent&#160;Gaussian,&#160;and&#160;dependent)<br/>
+<br/>
+<br/>
+<i>k</i>4(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;θ2&#160;exp&#160;−&#160;(<i>x</i>−<i>x</i>0)2&#160;+&#160;θ2&#160;δ<br/>
+9<br/>
+2θ2<br/>
+11&#160;<i>xx</i>0&#160;.<br/>
+10<br/>
+<i>k</i>(<i>x</i>,&#160;<i>x</i>0)&#160;=&#160;<i>k</i>1(<i>x</i>,&#160;<i>x</i>0)&#160;+&#160;<i>k</i>2(<i>x</i>,&#160;<i>x</i>0)&#160;+&#160;<i>k</i>3(<i>x</i>,&#160;<i>x</i>0)&#160;+&#160;<i>k</i>4(<i>x</i>,&#160;<i>x</i>0)<br/>
+Let’s&#160;try&#160;this&#160;with&#160;the&#160;gpml&#160;software&#160;<a href="http://www.gaussianprocess.org/gpml">(http://www.gaussianprocess.org/gpml).</a><br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+43&#160;/&#160;62<br/>
+<hr/>
+<a name=44></a>Long-&#160;and&#160;medium-term&#160;mean&#160;predictions<br/>
+400<br/>
+1<br/>
+380<br/>
+0.5<br/>
+360<br/>
+0<br/>
+&#160;concentration, ppm<br/>
+&#160;concentration, ppm<br/>
+2&#160;340<br/>
+−0.5<br/>
+2<br/>
+CO<br/>
+CO<br/>
+320<br/>
+−1<br/>
+1960&#160;1970&#160;1980&#160;1990&#160;2000&#160;2010&#160;2020<br/>
+year<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+44&#160;/&#160;62<br/>
+<hr/>
+<a name=45></a>Mean&#160;Seasonal&#160;Component<br/>
+2020<br/>
+−3.6<br/>
+2010<br/>
+2000<br/>
+−2.8<br/>
+−1<br/>
+1990<br/>
+0<br/>
+Year<br/>
+3.1<br/>
+0<br/>
+−2<br/>
+−2<br/>
+−1<br/>
+1<br/>
+2<br/>
+1<br/>
+2<br/>
+1980<br/>
+−3.3<br/>
+−2.8<br/>
+3&#160;2.8<br/>
+1970<br/>
+1960<br/>
+J<br/>
+F<br/>
+M<br/>
+A<br/>
+M<br/>
+J<br/>
+J<br/>
+A<br/>
+S<br/>
+O<br/>
+N<br/>
+D<br/>
+Month<br/>
+Seasonal&#160;component:&#160;magnitude&#160;θ3&#160;=&#160;2.4&#160;ppm,&#160;decay-time&#160;θ4&#160;=&#160;90&#160;years.<br/>
+Dependent&#160;noise,&#160;magnitude&#160;θ9&#160;=&#160;0.18&#160;ppm,&#160;decay&#160;θ10&#160;=&#160;1.6&#160;months.<br/>Independent&#160;noise,&#160;magnitude&#160;θ11&#160;=&#160;0.19&#160;ppm.<br/>
+Optimize&#160;or&#160;integrate&#160;out?&#160;See&#160;MacKay&#160;[3].<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+45&#160;/&#160;62<br/>
+<hr/>
+<a name=46></a>Binary&#160;Gaussian&#160;Process&#160;Classification<br/>
+4<br/>
+1<br/>
+2<br/>
+π(x)<br/>
+0<br/>
+−2<br/>
+latent function, f(x)<br/>
+class probability,&#160;<br/>
+−4<br/>
+0<br/>
+input, x<br/>
+input, x<br/>
+The&#160;class&#160;probability&#160;is&#160;related&#160;to&#160;the&#160;<i>latent&#160;</i>function,&#160;<i>f&#160;</i>,&#160;through:<br/>
+<i>p</i>(<i>y&#160;</i>=&#160;1|<i>f&#160;</i>(<b>x</b>))&#160;=&#160;π(<b>x</b>)&#160;=&#160;Φ&#160;<i>f&#160;</i>(<b>x</b>),<br/>
+where&#160;Φ&#160;is&#160;a&#160;sigmoid&#160;function,&#160;such&#160;as&#160;the&#160;logistic&#160;or&#160;cumulative&#160;Gaussian.<br/>Observations&#160;are&#160;independent&#160;given&#160;<i>f&#160;</i>,&#160;so&#160;the&#160;likelihood&#160;is<br/>
+<i>n</i><br/>
+Y<br/>
+<i>n</i><br/>
+Y<br/>
+<i>p</i>(<b>y</b>|<b>f</b>)&#160;=<br/>
+<i>p</i>(<i>yi</i>|<i>fi</i>)&#160;=<br/>
+Φ(<i>yifi</i>).<br/>
+<i>i</i>=1<br/>
+<i>i</i>=1<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+46&#160;/&#160;62<br/>
+<hr/>
+<a name=47></a>Prior&#160;and&#160;Posterior&#160;for&#160;Classification<br/>
+We&#160;use&#160;a&#160;Gaussian&#160;process&#160;prior&#160;for&#160;the&#160;latent&#160;function:<br/>
+<b>f</b>|<i>X</i>,&#160;θ&#160;∼&#160;N(<b>0</b>,&#160;<i>K</i>)<br/>
+The&#160;posterior&#160;becomes:<br/>
+<i>m</i><br/>
+<i>p</i>(<b>y</b>|<b>f</b>)&#160;<i>p</i>(<b>f</b>|<i>X</i>,&#160;θ)<br/>
+N(<b>f</b>|<b>0</b>,&#160;<i>K</i>)Y<br/>
+<i>p</i>(<b>f</b>|D,&#160;θ)&#160;=<br/>
+=<br/>
+Φ(<i>y</i><br/>
+<i>p</i><br/>
+<i>ifi</i>),<br/>
+(D|θ)<br/>
+<i>p</i>(D|θ)&#160;<i>i</i>=1<br/>
+which&#160;is&#160;non-Gaussian.<br/>
+The&#160;latent&#160;value&#160;at&#160;the&#160;test&#160;point,&#160;<i>f&#160;</i>(<b>x</b>∗)&#160;is<br/>
+Z<br/>
+<i>p</i>(<i>f</i>∗|D,&#160;θ,&#160;<b>x</b>∗)&#160;=<br/>
+<i>p</i>(<i>f</i>∗|<b>f</b>,&#160;<i>X</i>,&#160;θ,&#160;<b>x</b>∗)<i>p</i>(<b>f</b>|D,&#160;θ)<i>d</i><b>f</b>,<br/>
+and&#160;the&#160;predictive&#160;class&#160;probability&#160;becomes<br/>
+Z<br/>
+<i>p</i>(<i>y</i>∗|D,&#160;θ,&#160;<b>x</b>∗)&#160;=<br/>
+<i>p</i>(<i>y</i>∗|<i>f</i>∗)<i>p</i>(<i>f</i>∗|D,&#160;θ,&#160;<b>x</b>∗)<i>df</i>∗,<br/>
+both&#160;of&#160;which&#160;are&#160;intractable&#160;to&#160;compute.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+47&#160;/&#160;62<br/>
+<hr/>
+<a name=48></a>Gaussian&#160;Approximation&#160;to&#160;the&#160;Posterior<br/>
+We&#160;approximate&#160;the&#160;non-Gaussian&#160;posterior&#160;by&#160;a&#160;Gaussian:<br/>
+<i>p</i>(<b>f</b>|D,&#160;θ)&#160;'&#160;<i>q</i>(<b>f</b>|D,&#160;θ)&#160;=&#160;N(<b>m</b>,&#160;<i>A</i>)<br/>
+then&#160;<i>q</i>(<i>f</i>∗|D,&#160;θ,&#160;<b>x</b>∗)&#160;=&#160;N(<i>f</i>∗|µ∗,&#160;σ2∗),&#160;where<br/>
+µ∗&#160;=&#160;<b>k</b>&gt;<br/>
+∗&#160;<i>K</i>−1<b>m</b><br/>
+σ2∗&#160;=&#160;<i>k</i>(<b>x</b>∗,&#160;<b>x</b>∗)−<b>k</b>&gt;<br/>
+∗&#160;(<i>K</i>−1&#160;−&#160;<i>K</i>−1<i>AK</i>−1)<b>k</b>∗.<br/>
+Using&#160;this&#160;approximation&#160;with&#160;the&#160;cumulative&#160;Gaussian&#160;likelihood<br/>
+Z<br/>
+<br/>
+µ<br/>
+<br/>
+<i>q</i><br/>
+∗<br/>
+(<i>y</i>∗&#160;=&#160;1|D,&#160;θ,&#160;<b>x</b>∗)&#160;=<br/>
+Φ(<i>f</i>∗)&#160;N(<i>f</i>∗|µ∗,&#160;σ2<br/>
+√<br/>
+∗)<i>df</i>∗&#160;=&#160;Φ<br/>
+1&#160;+&#160;σ2∗<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+48&#160;/&#160;62<br/>
+<hr/>
+<a name=49></a>Laplace’s&#160;method&#160;and&#160;Expectation&#160;Propagation<br/>
+How&#160;do&#160;we&#160;find&#160;a&#160;good&#160;Gaussian&#160;approximation&#160;N(<b>m</b>,&#160;<i>A</i>)&#160;to&#160;the&#160;posterior?<br/>
+Laplace’s&#160;method:&#160;Find&#160;the&#160;Maximum&#160;A&#160;Posteriori&#160;(MAP)&#160;lantent&#160;values&#160;<b>f</b>MAP,<br/>and&#160;use&#160;a&#160;local&#160;expansion&#160;(Gaussian)&#160;around&#160;this&#160;point&#160;as&#160;suggested&#160;by&#160;Williams<br/>and&#160;Barber&#160;[8].<br/>
+Variational&#160;bounds:&#160;bound&#160;the&#160;likelihood&#160;by&#160;some&#160;tractable&#160;expression<br/>A&#160;<b>local&#160;variational&#160;bound&#160;for&#160;each&#160;likelihood&#160;term&#160;</b>was&#160;given&#160;by&#160;Gibbs&#160;and<br/>MacKay&#160;[1].&#160;A&#160;<b>lower&#160;bound&#160;based&#160;on&#160;Jensen’s&#160;inequality&#160;</b>by&#160;Opper&#160;and&#160;by&#160;Seeger<br/>[5].<br/>
+Expectation&#160;Propagation:&#160;use&#160;an&#160;approximation&#160;of&#160;the&#160;likelihood,&#160;such&#160;that&#160;the<br/>moments&#160;of&#160;the&#160;marginals&#160;of&#160;the&#160;approximate&#160;posterior&#160;match&#160;the&#160;(approximate)<br/>moment&#160;of&#160;the&#160;posterior,&#160;Minka&#160;[4].<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+49&#160;/&#160;62<br/>
+<hr/>
+<a name=50></a><img src="./Rasmussen_1-50_1.png"/><br/>
+<img src="./Rasmussen_1-50_2.png"/><br/>
+<img src="./Rasmussen_1-50_3.png"/><br/>
+<img src="./Rasmussen_1-50_4.png"/><br/>
+<img src="./Rasmussen_1-50_5.png"/><br/>
+<img src="./Rasmussen_1-50_6.png"/><br/>
+<img src="./Rasmussen_1-50_7.png"/><br/>
+<img src="./Rasmussen_1-50_8.png"/><br/>
+<img src="./Rasmussen_1-50_9.png"/><br/>
+<img src="./Rasmussen_1-50_10.png"/><br/>
+<img src="./Rasmussen_1-50_11.png"/><br/>
+<img src="./Rasmussen_1-50_12.png"/><br/>
+<img src="./Rasmussen_1-50_13.png"/><br/>
+<img src="./Rasmussen_1-50_14.png"/><br/>
+<img src="./Rasmussen_1-50_15.png"/><br/>
+<img src="./Rasmussen_1-50_16.png"/><br/>
+<img src="./Rasmussen_1-50_17.png"/><br/>
+<img src="./Rasmussen_1-50_18.png"/><br/>
+<img src="./Rasmussen_1-50_19.png"/><br/>
+Expectation&#160;Propagation<br/>
+<i>fx</i><br/>
+<i>f</i><br/>
+...<br/>
+<i>f</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+1<br/>
+<i>x</i>2<br/>
+<i>xn</i><br/>
+<i>x</i>1<br/>
+<i>x</i>2<br/>
+<i>x</i>3<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+<i>y</i>2<br/>
+<i>n</i><br/>
+<i>y∗</i>1<br/>
+<i>y∗</i><br/>
+<i>y∗</i><br/>
+2<br/>
+3<br/>
+<br/>
+proj[<i>p</i>(<i>y</i><br/>
+Y<br/>
+<i>f</i><br/>
+<i>i</i>|<i>fi</i>)<i>q</i>\<i>i</i>]<br/>
+<br/>
+<i>i&#160;</i>=<br/>
+,<br/>
+<i>q</i>\<i>i&#160;</i>=&#160;<i>p</i>(<b>f</b>)<br/>
+<i>f</i><br/>
+<i>q</i>\<i>i</i><br/>
+<i>i</i>.<br/>
+<i>j</i>6=<i>i</i><br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+50&#160;/&#160;62<br/>
+<hr/>
+<a name=51></a>USPS&#160;Digits,&#160;3s&#160;vs&#160;5s<br/>
+5<br/>
+5<br/>
+5<br/>
+−130<br/>
+−105<br/>
+−105<br/>
+−160<br/>
+−160<br/>
+−100<br/>
+−92−95<br/>
+4<br/>
+4<br/>
+4<br/>
+−100<br/>
+)<br/>
+)<br/>
+)<br/>
+σ&#160;f<br/>
+σ&#160;f<br/>
+σ&#160;f<br/>
+−92<br/>
+3<br/>
+3<br/>
+−95<br/>
+−130<br/>
+3<br/>
+−100<br/>
+−160<br/>
+−105<br/>
+−160<br/>
+−115<br/>
+2<br/>
+2<br/>
+2<br/>
+−200<br/>
+−115<br/>
+−200<br/>
+−105<br/>
+−105<br/>
+−200<br/>
+−130<br/>
+log magnitude, log(&#160;1<br/>
+−200<br/>
+log magnitude, log(&#160;1<br/>
+log magnitude, log(&#160;1<br/>
+−115<br/>
+−130<br/>
+−150<br/>
+−200<br/>
+−200<br/>
+0<br/>
+0<br/>
+0<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+log lengthscale, log(l)<br/>
+log lengthscale, log(l)<br/>
+log lengthscale, log(l)<br/>
+5<br/>
+5<br/>
+5<br/>
+0.86<br/>
+0.84<br/>
+0.86<br/>
+0.86<br/>
+0.8<br/>
+0.84<br/>
+0.7<br/>
+4<br/>
+4<br/>
+0.88<br/>
+0.8<br/>
+4<br/>
+)<br/>
+)<br/>
+)<br/>
+σ&#160;f<br/>
+σ&#160;f<br/>
+0.84<br/>
+σ&#160;f<br/>
+0.86<br/>
+0.25<br/>
+0.84<br/>
+3<br/>
+3<br/>
+0.7<br/>
+3<br/>
+0.89<br/>
+0.8<br/>
+0.8<br/>
+0.5<br/>
+0.89<br/>
+2<br/>
+2<br/>
+2<br/>
+0.7<br/>
+0.84<br/>
+0.88<br/>
+0.7<br/>
+log magnitude, log(&#160;1<br/>
+log magnitude, log(<br/>
+0.5<br/>
+1<br/>
+log magnitude, log(&#160;1<br/>
+0.8<br/>
+0.5<br/>
+0.25<br/>
+0.5<br/>
+0.7<br/>
+0<br/>
+0.7<br/>
+0<br/>
+0.25<br/>
+0<br/>
+0.25<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+log lengthscale, log(l)<br/>
+log lengthscale, log(l)<br/>
+log lengthscale, log(l)<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+51&#160;/&#160;62<br/>
+<hr/>
+<a name=52></a>USPS&#160;Digits,&#160;3s&#160;vs&#160;5s<br/>
+0.07<br/>
+MCMC samples<br/>
+MCMC samples<br/>
+0.2<br/>
+Laplace p(f|D)<br/>
+Laplace p(f|D)<br/>
+0.06<br/>
+EP p(f|D)<br/>
+EP p(f|D)<br/>
+0.05<br/>
+0.15<br/>
+0.04<br/>
+0.1<br/>
+0.03<br/>
+0.02<br/>
+0.05<br/>
+0.01<br/>
+0<br/>
+0<br/>
+−15<br/>
+−10<br/>
+−5<br/>
+0<br/>
+5<br/>
+−40<br/>
+−30<br/>
+−20<br/>
+−10<br/>
+0<br/>
+10<br/>
+f<br/>
+f<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+52&#160;/&#160;62<br/>
+<hr/>
+<a name=53></a>The&#160;Structure&#160;of&#160;the&#160;posterior<br/>
+0.45<br/>
+<br/>
+0.4<br/>
+0.35<br/>
+0.3<br/>
+)&#160;0.25<br/>
+i<br/>
+p(x<br/>
+<br/>
+<br/>
+0.2<br/>
+0.15<br/>
+0.1<br/>
+0.05<br/>
+00<br/>
+2<br/>
+4<br/>
+6<br/>
+xi<br/>
+<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+53&#160;/&#160;62<br/>
+<hr/>
+<a name=54></a><img src="./Rasmussen_1-54_1.png"/><br/>
+<img src="./Rasmussen_1-54_2.png"/><br/>
+<img src="./Rasmussen_1-54_3.png"/><br/>
+<img src="./Rasmussen_1-54_4.png"/><br/>
+<img src="./Rasmussen_1-54_5.png"/><br/>
+<img src="./Rasmussen_1-54_6.png"/><br/>
+<img src="./Rasmussen_1-54_7.png"/><br/>
+<img src="./Rasmussen_1-54_8.png"/><br/>
+<img src="./Rasmussen_1-54_9.png"/><br/>
+<img src="./Rasmussen_1-54_10.png"/><br/>
+<img src="./Rasmussen_1-54_11.png"/><br/>
+<img src="./Rasmussen_1-54_12.png"/><br/>
+<img src="./Rasmussen_1-54_13.png"/><br/>
+<img src="./Rasmussen_1-54_14.png"/><br/>
+<img src="./Rasmussen_1-54_15.png"/><br/>
+<img src="./Rasmussen_1-54_16.png"/><br/>
+<img src="./Rasmussen_1-54_17.png"/><br/>
+<img src="./Rasmussen_1-54_18.png"/><br/>
+<img src="./Rasmussen_1-54_19.png"/><br/>
+Sparse&#160;Approximations<br/>
+Recall&#160;the&#160;graphical&#160;model&#160;for&#160;a&#160;Gaussian&#160;process.&#160;Inference&#160;is&#160;expensive&#160;because<br/>the&#160;latent&#160;variables&#160;are&#160;fully&#160;connected.<br/>
+Exact&#160;inference:&#160;O(<i>n</i>3).<br/>
+Sparse&#160;approximations:&#160;solve&#160;a&#160;smaller,<br/>sparse,&#160;approximation&#160;of&#160;the&#160;original<br/>problem.<br/>
+<i>fx</i><br/>
+<i>f</i><br/>
+...<br/>
+<i>f</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+1<br/>
+<i>x</i>2<br/>
+<i>xn</i><br/>
+<i>x</i>1<br/>
+<i>x</i>2<br/>
+<i>x</i>3<br/>
+Algorithm:&#160;Subset&#160;of&#160;data.<br/>
+Are&#160;there&#160;better&#160;ways&#160;to&#160;sparsify?<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+<i>y</i>2<br/>
+<i>n</i><br/>
+<i>y∗</i>1<br/>
+<i>y∗</i><br/>
+<i>y∗</i><br/>
+2<br/>
+3<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+54&#160;/&#160;62<br/>
+<hr/>
+<a name=55></a><img src="./Rasmussen_1-55_1.png"/><br/>
+<img src="./Rasmussen_1-55_2.png"/><br/>
+<img src="./Rasmussen_1-55_3.png"/><br/>
+<img src="./Rasmussen_1-55_4.png"/><br/>
+<img src="./Rasmussen_1-55_5.png"/><br/>
+<img src="./Rasmussen_1-55_6.png"/><br/>
+<img src="./Rasmussen_1-55_7.png"/><br/>
+<img src="./Rasmussen_1-55_8.png"/><br/>
+<img src="./Rasmussen_1-55_9.png"/><br/>
+<img src="./Rasmussen_1-55_10.png"/><br/>
+<img src="./Rasmussen_1-55_11.png"/><br/>
+<img src="./Rasmussen_1-55_12.png"/><br/>
+<img src="./Rasmussen_1-55_13.png"/><br/>
+<img src="./Rasmussen_1-55_14.png"/><br/>
+<img src="./Rasmussen_1-55_15.png"/><br/>
+<img src="./Rasmussen_1-55_16.png"/><br/>
+<img src="./Rasmussen_1-55_17.png"/><br/>
+<img src="./Rasmussen_1-55_18.png"/><br/>
+<img src="./Rasmussen_1-55_19.png"/><br/>
+<img src="./Rasmussen_1-55_20.png"/><br/>
+<img src="./Rasmussen_1-55_21.png"/><br/>
+<img src="./Rasmussen_1-55_22.png"/><br/>
+Inducing&#160;Variables<br/>
+Because&#160;of&#160;the&#160;marginalization&#160;property,&#160;we&#160;can&#160;introduce&#160;more&#160;latent&#160;variables<br/>without&#160;changing&#160;the&#160;distribution&#160;of&#160;the&#160;original&#160;variables.<br/>
+The&#160;<b>u&#160;</b>=&#160;(<i>u</i>1,&#160;<i>u</i>2,&#160;.&#160;.&#160;.)&gt;&#160;are&#160;called&#160;<i>inducing</i><br/>
+<i>fu</i><br/>
+<i>f</i><br/>
+<i>f</i><br/>
+<i>variables</i>.<br/>
+1<br/>
+<i>u</i>2<br/>
+<i>u</i>3<br/>
+The&#160;inducing&#160;variables&#160;have&#160;associated<br/><i>inducing&#160;inputs</i>,&#160;<b>s</b>,&#160;but&#160;no&#160;associated<br/>output&#160;values.<br/>
+<i>fx</i><br/>
+<i>f</i><br/>
+...<br/>
+<i>f</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+1<br/>
+<i>x</i>2<br/>
+<i>xn</i><br/>
+<i>x</i>1<br/>
+<i>x</i>2<br/>
+<i>x</i>3<br/>
+The&#160;marginalization&#160;property&#160;ensures<br/>that<br/>
+Z<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+<i>p</i>(<b>f</b>,&#160;<b>f</b>∗)&#160;=<br/>
+<i>p</i>(<b>f</b>,&#160;<b>f</b>∗,&#160;<b>u</b>)<i>d</i><b>u</b><br/>
+1<br/>
+<i>y</i>2<br/>
+<i>n</i><br/>
+<i>y∗</i>1<br/>
+<i>y∗</i><br/>
+<i>y∗</i><br/>
+2<br/>
+3<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+55&#160;/&#160;62<br/>
+<hr/>
+<a name=56></a><img src="./Rasmussen_1-56_1.png"/><br/>
+<img src="./Rasmussen_1-56_2.png"/><br/>
+<img src="./Rasmussen_1-56_3.png"/><br/>
+<img src="./Rasmussen_1-56_4.png"/><br/>
+<img src="./Rasmussen_1-56_5.png"/><br/>
+<img src="./Rasmussen_1-56_6.png"/><br/>
+<img src="./Rasmussen_1-56_7.png"/><br/>
+<img src="./Rasmussen_1-56_8.png"/><br/>
+<img src="./Rasmussen_1-56_9.png"/><br/>
+<img src="./Rasmussen_1-56_10.png"/><br/>
+<img src="./Rasmussen_1-56_11.png"/><br/>
+<img src="./Rasmussen_1-56_12.png"/><br/>
+<img src="./Rasmussen_1-56_13.png"/><br/>
+<img src="./Rasmussen_1-56_14.png"/><br/>
+<img src="./Rasmussen_1-56_15.png"/><br/>
+<img src="./Rasmussen_1-56_16.png"/><br/>
+<img src="./Rasmussen_1-56_17.png"/><br/>
+<img src="./Rasmussen_1-56_18.png"/><br/>
+<img src="./Rasmussen_1-56_19.png"/><br/>
+<img src="./Rasmussen_1-56_20.png"/><br/>
+<img src="./Rasmussen_1-56_21.png"/><br/>
+<img src="./Rasmussen_1-56_22.png"/><br/>
+<img src="./Rasmussen_1-56_23.png"/><br/>
+The&#160;Central&#160;Approximations<br/>
+In&#160;a&#160;unifying&#160;treatment,&#160;Candela&#160;and&#160;Rasmussen&#160;[2]&#160;assume&#160;that&#160;training&#160;and&#160;test<br/>sets&#160;are&#160;<i>conditionally&#160;independent&#160;</i>given&#160;<b>u</b>.<br/>
+Assume:&#160;<i>p</i>(<b>f</b>,&#160;<b>f</b>∗)&#160;'&#160;<i>q</i>(<b>f</b>,&#160;<b>f</b>∗),&#160;where<br/>
+Z<br/>
+<i>fu</i><br/>
+<i>f</i><br/>
+<i>f</i><br/>
+1<br/>
+<i>u</i>2<br/>
+<i>u</i>3<br/>
+<i>q</i>(<b>f</b>,&#160;<b>f</b>∗)&#160;=<br/>
+<i>q</i>(<b>f</b>∗|<b>u</b>)<i>q</i>(<b>f</b>|<b>u</b>)<i>p</i>(<b>u</b>)<i>d</i><b>u</b>.<br/>
+The&#160;inducing&#160;variables&#160;<i>induce&#160;</i>the&#160;depen-<br/>dencies&#160;between&#160;training&#160;and&#160;test&#160;cases.<br/>
+<i>fx</i><br/>
+<i>f</i><br/>
+...<br/>
+<i>f</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+1<br/>
+<i>x</i>2<br/>
+<i>xn</i><br/>
+<i>x</i>1<br/>
+<i>x</i>2<br/>
+<i>x</i>3<br/>
+Different&#160;sparse&#160;algorithms&#160;in&#160;the&#160;litera-<br/>ture&#160;correspond&#160;to&#160;different<br/>
+•&#160;choices&#160;of&#160;the&#160;inducing&#160;inputs<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+•&#160;further&#160;approximations<br/>
+1<br/>
+<i>y</i>2<br/>
+<i>n</i><br/>
+<i>y∗</i>1<br/>
+<i>y∗</i><br/>
+<i>y∗</i><br/>
+2<br/>
+3<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+56&#160;/&#160;62<br/>
+<hr/>
+<a name=57></a>Training&#160;and&#160;test&#160;conditionals<br/>
+The&#160;exact&#160;training&#160;and&#160;test&#160;conditionals&#160;are:<br/>
+<i>p</i>(<b>f</b>|<b>u</b>)&#160;=&#160;N(<i>K</i><b>f</b>,<b>u</b><i>K</i>−1<b>u</b>,&#160;<i>K</i><br/>
+<b>f</b>,<b>f</b><br/>
+<b>f</b>,<b>f&#160;</b>−&#160;<i>Q</i><b>f</b>,<b>f</b>)<br/>
+<i>p</i>(<b>f</b>∗|<b>u</b>)&#160;=&#160;N(<i>K</i><b>f</b><br/>
+<b>u</b>,&#160;<i>K</i><br/>
+−&#160;<i>Q</i><br/>
+),<br/>
+∗&#160;,<b>u</b><i>K</i>−1<br/>
+<b>f</b>,<b>f</b><br/>
+<b>f</b>∗,<b>f</b>∗<br/>
+<b>f</b>∗,<b>f</b>∗<br/>
+where&#160;<i>Q</i><b>a</b>,<b>b&#160;</b>=&#160;<i>K</i><b>a</b>,<b>u</b><i>K</i>−1<br/>
+<b>u</b>,<b>u</b><i>K</i><b>u</b>,<b>b</b>.<br/>
+These&#160;equations&#160;are&#160;easily&#160;recognized&#160;as&#160;the&#160;usual&#160;predictive&#160;equations&#160;for&#160;GPs.<br/>
+The&#160;<i>effective&#160;prior&#160;</i>is:<br/>
+i<br/>
+<i>q</i>(<b>f</b>,&#160;<b>f</b>∗)&#160;=&#160;N<b>0</b>,&#160;h&#160;<i>K</i><b>f</b>,<b>f</b><br/>
+<i>Q</i>∗,<b>f</b><br/>
+<i>Q</i><b>f</b>,∗&#160;<i>K</i>∗,∗<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+57&#160;/&#160;62<br/>
+<hr/>
+<a name=58></a>Example:&#160;Sparse&#160;parametric&#160;Gaussian&#160;processes<br/>
+Snelson&#160;and&#160;Ghahramani&#160;[6]&#160;introduced&#160;the&#160;idea&#160;of&#160;sparse&#160;GP&#160;inference&#160;based&#160;on<br/>a&#160;pseudo&#160;data&#160;set,&#160;integrating&#160;out&#160;the&#160;targets,&#160;and&#160;optimizing&#160;the&#160;inputs.<br/>
+Equivalently,&#160;in&#160;the&#160;unifying&#160;scheme:<br/>
+<i>q</i>(<b>f</b>|<b>u</b>)&#160;=&#160;N(<i>K</i><b>f</b>,<b>u</b><i>K</i>−1<b>u</b>,&#160;diag[<i>K</i><br/>
+<b>f</b>,<b>f</b><br/>
+<b>f</b>,<b>f&#160;</b>−&#160;<i>Q</i><b>f</b>,<b>f</b>])<br/>
+<i>q</i>(<b>f</b>∗|<b>u</b>)&#160;=&#160;<i>p</i>(<b>f</b>∗|<b>u</b>).<br/>
+The&#160;effective&#160;prior&#160;becomes<br/>
+i<br/>
+<i>q</i>FITC(<b>f</b>,&#160;<b>f</b>∗)&#160;=&#160;N<b>0</b>,&#160;h&#160;<i>Q</i><b>f</b>,<b>f&#160;</b>−&#160;diag[<i>Q</i><b>f</b>,<b>f&#160;</b>−&#160;<i>K</i><b>f</b>,<b>f</b>]&#160;<i>Q</i>∗,<b>f</b><br/>
+,<br/>
+<i>Q</i><b>f</b>,∗<br/>
+<i>K</i>∗,∗<br/>
+which&#160;can&#160;be&#160;computed&#160;efficiently.<br/>
+The&#160;Bayesian&#160;Committee&#160;Machine&#160;[7]&#160;uses&#160;block&#160;diag&#160;instead&#160;of&#160;diag,&#160;and&#160;the<br/>inducing&#160;variables&#160;to&#160;be&#160;the&#160;test&#160;cases.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+58&#160;/&#160;62<br/>
+<hr/>
+<a name=59></a><img src="./Rasmussen_1-59_1.png"/><br/>
+<img src="./Rasmussen_1-59_2.png"/><br/>
+<img src="./Rasmussen_1-59_3.png"/><br/>
+<img src="./Rasmussen_1-59_4.png"/><br/>
+<img src="./Rasmussen_1-59_5.png"/><br/>
+<img src="./Rasmussen_1-59_6.png"/><br/>
+<img src="./Rasmussen_1-59_7.png"/><br/>
+<img src="./Rasmussen_1-59_8.png"/><br/>
+<img src="./Rasmussen_1-59_9.png"/><br/>
+<img src="./Rasmussen_1-59_10.png"/><br/>
+<img src="./Rasmussen_1-59_11.png"/><br/>
+<img src="./Rasmussen_1-59_12.png"/><br/>
+<img src="./Rasmussen_1-59_13.png"/><br/>
+<img src="./Rasmussen_1-59_14.png"/><br/>
+<img src="./Rasmussen_1-59_15.png"/><br/>
+<img src="./Rasmussen_1-59_16.png"/><br/>
+<img src="./Rasmussen_1-59_17.png"/><br/>
+<img src="./Rasmussen_1-59_18.png"/><br/>
+<img src="./Rasmussen_1-59_19.png"/><br/>
+<img src="./Rasmussen_1-59_20.png"/><br/>
+<img src="./Rasmussen_1-59_21.png"/><br/>
+<img src="./Rasmussen_1-59_22.png"/><br/>
+<img src="./Rasmussen_1-59_23.png"/><br/>
+<img src="./Rasmussen_1-59_24.png"/><br/>
+<img src="./Rasmussen_1-59_25.png"/><br/>
+<img src="./Rasmussen_1-59_26.png"/><br/>
+<img src="./Rasmussen_1-59_27.png"/><br/>
+The&#160;FITC&#160;Factor&#160;Graph<br/>
+Sparse&#160;Parametric&#160;Gaussian&#160;Process&#160;≡&#160;Fully&#160;Independent&#160;Training&#160;Conditional<br/>
+<i>fu</i><br/>
+<i>f</i><br/>
+<i>f</i><br/>
+1<br/>
+<i>u</i>2<br/>
+<i>u</i>3<br/>
+<i>fx</i><br/>
+<i>f</i><br/>
+...<br/>
+<i>f</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+<i>f&#160;∗</i><br/>
+1<br/>
+<i>x</i>2<br/>
+<i>xn</i><br/>
+<i>x</i>1<br/>
+<i>x</i>2<br/>
+<i>x</i>3<br/>
+<i>y</i><br/>
+<i>y</i><br/>
+1<br/>
+<i>y</i>2<br/>
+<i>n</i><br/>
+<i>y∗</i>1<br/>
+<i>y∗</i><br/>
+<i>y∗</i><br/>
+2<br/>
+3<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+59&#160;/&#160;62<br/>
+<hr/>
+<a name=60></a>Conclusions<br/>
+Complex&#160;non-linear&#160;inference<br/>problems&#160;can&#160;be&#160;solved&#160;by<br/>manipulating&#160;plain&#160;old&#160;Gaussian<br/>distributions<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+60&#160;/&#160;62<br/>
+<hr/>
+<a name=61></a><img src="./Rasmussen_1-61_1.jpg"/><br/>
+More&#160;on&#160;Gaussian&#160;Processes<br/>
+Rasmussen&#160;and&#160;Williams<br/><i>Gaussian&#160;Processes&#160;for&#160;Machine&#160;Learning</i>,<br/>MIT&#160;Press,&#160;2006.<br/><a href="http://www.GaussianProcess.org/gpml">http://www.GaussianProcess.org/gpml</a><br/>
+Gaussian&#160;process&#160;web&#160;(code,&#160;papers,&#160;etc):&#160;<a href="http://www.GaussianProcess.org">http://www.GaussianProcess.org</a><br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+61&#160;/&#160;62<br/>
+<hr/>
+<a name=62></a>A&#160;few&#160;references<br/>
+[1]&#160;Gibbs,&#160;M.&#160;N.&#160;and&#160;MacKay,&#160;D.&#160;J.&#160;C.&#160;(2000).&#160;Variational&#160;Gaussian&#160;Process&#160;Classifiers.&#160;<i>IEEE</i><br/>
+<i>Transactions&#160;on&#160;Neural&#160;Networks</i>,&#160;11(6):1458–1464.<br/>
+[2]&#160;Joaquin&#160;Quiñonero-Candela&#160;and&#160;Carl&#160;Edward&#160;Rasmussen&#160;(2005).&#160;A&#160;unifying&#160;view&#160;of&#160;sparse<br/>
+approximate&#160;gaussian&#160;process&#160;regression.&#160;<i>Journal&#160;of&#160;Machine&#160;Learning&#160;Research</i>,&#160;6:1939–1959.<br/>
+[3]&#160;MacKay,&#160;D.&#160;J.&#160;C.&#160;(1999).&#160;Comparison&#160;of&#160;Approximate&#160;Methods&#160;for&#160;Handling&#160;Hyperparameters.<br/>
+<i>Neural&#160;Computation</i>,&#160;11(5):1035–1068.<br/>
+[4]&#160;Minka,&#160;T.&#160;P.&#160;(2001).&#160;<i>A&#160;Family&#160;of&#160;Algorithms&#160;for&#160;Approximate&#160;Bayesian&#160;Inference</i>.&#160;PhD&#160;thesis,<br/>
+Massachusetts&#160;Institute&#160;of&#160;Technology.<br/>
+[5]&#160;Seeger,&#160;M.&#160;(2003).&#160;<i>Bayesian&#160;Gaussian&#160;Process&#160;Models:&#160;PAC-Bayesian&#160;Generalisation&#160;Error</i><br/>
+<i>Bounds&#160;and&#160;Sparse&#160;Approximations</i>.&#160;PhD&#160;thesis,&#160;School&#160;of&#160;Informatics,&#160;University&#160;of&#160;Edinburgh.<br/>http://www.cs.berkeley.edu/∼mseeger.<br/>
+[6]&#160;Snelson,&#160;E.&#160;and&#160;Ghahramani,&#160;Z.&#160;(2006).&#160;Sparse&#160;gaussian&#160;processes&#160;using&#160;pseudo-inputs.&#160;In<br/>
+<i>Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems&#160;18</i>.&#160;MIT&#160;Press.<br/>
+[7]&#160;Tresp,&#160;V.&#160;(2000).&#160;A&#160;Bayesian&#160;Committee&#160;Machine.&#160;<i>Neural&#160;Computation</i>,&#160;12(11):2719–2741.<br/>
+[8]&#160;Williams,&#160;C.&#160;K.&#160;I.&#160;and&#160;Barber,&#160;D.&#160;(1998).&#160;Bayesian&#160;Classification&#160;with&#160;Gaussian&#160;Processes.&#160;<i>IEEE</i><br/>
+<i>Transactions&#160;on&#160;Pattern&#160;Analysis&#160;and&#160;Machine&#160;Intelligence</i>,&#160;20(12):1342–1351.<br/>
+Rasmussen&#160;(Engineering,&#160;Cambridge)<br/>
+<a href="Rasmussen_1s.html#1">Gaussian&#160;Process&#160;Regression</a><br/>
+August&#160;30th&#160;-&#160;September&#160;10th,&#160;2009<br/>
+62&#160;/&#160;62<br/>
+<hr/>
+<a name="outline"></a><h1>Document Outline</h1>
+<ul>
+<li><a href="Rasmussen_1s.html#62">References</a></li>
+</ul>
+<hr/>
+</body>
+</html>

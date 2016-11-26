@@ -1,0 +1,1751 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img class="yflip" src="./Schoelkopf_1-1_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-1_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-1_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-1_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-1_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-1_6.png"/><br/>
+Kernel&#160;Methods<br/>
+Bernhard&#160;Sch¨<br/>
+olkopf<br/>
+Max-Planck-Institut&#160;f¨<br/>
+ur&#160;biologische&#160;Kybernetik<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=2></a><img class="yflip" src="./Schoelkopf_1-2_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-2_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-2_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-2_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-2_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-2_6.png"/><br/>
+Roadmap<br/>
+•&#160;Similarity,&#160;kernels,&#160;feature&#160;spaces<br/>•&#160;Positive&#160;definite&#160;kernels&#160;and&#160;their&#160;RKHS<br/>•&#160;Kernel&#160;means,&#160;representer&#160;theorem<br/>•&#160;Support&#160;Vector&#160;Machines<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=3></a><img class="yflip" src="./Schoelkopf_1-3_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-3_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-3_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-3_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-3_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-3_6.png"/><br/>
+Learning&#160;and&#160;Similarity:&#160;some&#160;Informal&#160;Thoughts<br/>
+•&#160;input/output&#160;sets&#160;X,&#160;Y<br/>•&#160;training&#160;set&#160;(x1,&#160;y1),&#160;.&#160;.&#160;.&#160;,&#160;(xm,&#160;ym)&#160;∈&#160;X&#160;×&#160;Y<br/>•&#160;“generalization”:&#160;given&#160;a&#160;previously&#160;unseen&#160;x&#160;∈&#160;X,&#160;find&#160;a&#160;suit-<br/>
+able&#160;y&#160;∈&#160;Y<br/>
+•&#160;(x,&#160;y)&#160;should&#160;be&#160;“similar”&#160;to&#160;(x1,&#160;y1),&#160;.&#160;.&#160;.&#160;,&#160;(xm,&#160;ym)<br/>•&#160;how&#160;to&#160;measure&#160;similarity?<br/>
+–&#160;for&#160;outputs:&#160;loss&#160;function&#160;(e.g.,&#160;for&#160;Y&#160;=&#160;{±1},&#160;zero-one&#160;loss)<br/>–&#160;for&#160;inputs:&#160;kernel<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=4></a><img class="yflip" src="./Schoelkopf_1-4_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-4_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-4_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-4_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-4_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-4_6.png"/><br/>
+Similarity&#160;of&#160;Inputs<br/>
+•&#160;symmetric&#160;function<br/>
+k&#160;:&#160;X&#160;×&#160;X&#160;→&#160;R<br/>
+(x,&#160;x$)&#160;%→&#160;k(x,&#160;x$)<br/>
+•&#160;for&#160;example,&#160;if&#160;X&#160;=&#160;RN:&#160;canonical&#160;dot&#160;product<br/>
+!N<br/>
+k(x,&#160;x$)&#160;=<br/>
+[x]<br/>
+i=1<br/>
+i[x$]i<br/>
+•&#160;if&#160;X&#160;is&#160;not&#160;a&#160;dot&#160;product&#160;space:&#160;assume&#160;that&#160;k&#160;has&#160;a&#160;represen-<br/>
+tation&#160;as&#160;a&#160;dot&#160;product&#160;in&#160;a&#160;linear&#160;space&#160;H,&#160;i.e.,&#160;there&#160;exists&#160;a<br/>map&#160;Φ&#160;:&#160;X&#160;→&#160;H&#160;such&#160;that&#160;&#34;<br/>
+#<br/>
+k(x,&#160;x$)&#160;=&#160;Φ(x),&#160;Φ(x$)&#160;.<br/>
+•&#160;in&#160;that&#160;case,&#160;we&#160;can&#160;think&#160;of&#160;the&#160;patterns&#160;as&#160;Φ(x),&#160;Φ(x$),&#160;and<br/>
+carry&#160;out&#160;geometric&#160;algorithms&#160;in&#160;the&#160;dot&#160;product&#160;space&#160;(“fea-<br/>ture&#160;space”)&#160;H.<br/>
+<hr/>
+<a name=5></a><img class="yflip" src="./Schoelkopf_1-5_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-5_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-5_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-5_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-5_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-5_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-5_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-5_8.png"/><br/>
+An&#160;Example&#160;of&#160;a&#160;Kernel&#160;Algorithm<br/>
+Idea:&#160;classify&#160;points&#160;x&#160;:=&#160;Φ(x)&#160;in&#160;feature&#160;space&#160;according&#160;to&#160;which<br/>of&#160;the&#160;two&#160;class&#160;means&#160;is&#160;closer.<br/>
+1&#160;!<br/>
+1<br/>
+!<br/>
+c+&#160;:=<br/>
+Φ(x<br/>
+Φ(x<br/>
+m<br/>
+i),&#160;c−&#160;:=<br/>
+i)<br/>
++<br/>
+m<br/>
+y<br/>
+−<br/>
+i=1<br/>
+yi=−1<br/>
++<br/>
+o<br/>
+o<br/>
+<b>.</b><br/>
++<br/>
+<b>w</b><br/>
+<b>c</b><br/>
++<br/>
+2<br/>
+<b>c</b><br/>
+o<br/>
+<b>c</b>1<br/>
+<b>x-c</b><br/>
+o<br/>
+<b>x</b><br/>
+Compute&#160;the&#160;sign&#160;of&#160;the&#160;dot&#160;product&#160;between&#160;w&#160;:=&#160;c+&#160;−&#160;c−&#160;and<br/>
+x&#160;−&#160;c.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=6></a><img class="yflip" src="./Schoelkopf_1-6_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_8.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_9.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_10.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_11.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_12.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-6_13.png"/><br/>
+An&#160;Example&#160;of&#160;a&#160;Kernel&#160;Algorithm,&#160;ctd.&#160;[32]<br/>
+<br/>
+<br/>
+!<br/>
+1<br/>
+!<br/>
+f&#160;(x)&#160;=&#160;sgn&#160;&#160;1<br/>
+'Φ(x),&#160;Φ(x<br/>
+'Φ(x),&#160;Φ(x<br/>
+<br/>
+m<br/>
+i)(−<br/>
+i)(+b<br/>
++<br/>
+m−<br/>
+{i:yi=+1}<br/>
+{i:yi=−1}<br/>
+<br/>
+<br/>
+!<br/>
+1<br/>
+!<br/>
+=&#160;sgn&#160;&#160;1<br/>
+k(x,&#160;x<br/>
+k(x,&#160;x<br/>
+<br/>
+m<br/>
+i)&#160;−<br/>
+i)&#160;+&#160;b<br/>
++<br/>
+m−<br/>
+{i:yi=+1}<br/>
+{i:yi=−1}<br/>
+where<br/>
+<br/>
+<br/>
+1<br/>
+!<br/>
+1<br/>
+!<br/>
+b&#160;=<br/>
+&#160;1<br/>
+k(x<br/>
+k(x<br/>
+&#160;.<br/>
+2<br/>
+m2<br/>
+i,&#160;xj)&#160;−<br/>
+i,&#160;xj)<br/>
+−<br/>
+m2<br/>
+{(i,j):y<br/>
++<br/>
+i=yj=−1}<br/>
+{(i,j):yi=yj=+1}<br/>
+•&#160;provides&#160;a&#160;geometric&#160;interpretation&#160;of&#160;Parzen&#160;windows<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=7></a><img class="yflip" src="./Schoelkopf_1-7_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-7_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-7_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-7_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-7_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-7_6.png"/><br/>
+An&#160;Example&#160;of&#160;a&#160;Kernel&#160;Algorithm,&#160;ctd.<br/>
+•&#160;Demo<br/>•&#160;Exercise:&#160;derive&#160;the&#160;Parzen&#160;windows&#160;classifier&#160;by&#160;computing&#160;the<br/>
+distance&#160;criterion&#160;directly<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=8></a><img class="yflip" src="./Schoelkopf_1-8_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-8_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-8_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-8_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-8_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-8_6.png"/><br/>
+Statistical&#160;Learning&#160;Theory<br/>
+1.&#160;started&#160;by&#160;Vapnik&#160;and&#160;Chervonenkis&#160;in&#160;the&#160;Sixties<br/>
+2.&#160;model:&#160;we&#160;observe&#160;data&#160;generated&#160;by&#160;an&#160;unknown&#160;stochastic<br/>
+regularity<br/>
+3.&#160;learning&#160;=&#160;extraction&#160;of&#160;the&#160;regularity&#160;from&#160;the&#160;data<br/>
+4.&#160;the&#160;analysis&#160;of&#160;the&#160;learning&#160;problem&#160;leads&#160;to&#160;notions&#160;of&#160;capacity<br/>
+of&#160;the&#160;function&#160;classes&#160;that&#160;a&#160;learning&#160;machine&#160;can&#160;implement.<br/>
+5.&#160;support&#160;vector&#160;machines&#160;use&#160;a&#160;particular&#160;type&#160;of&#160;function&#160;class:<br/>
+classifiers&#160;with&#160;large&#160;“margins”&#160;in&#160;a&#160;feature&#160;space&#160;induced&#160;by&#160;a<br/>kernel.<br/>
+[39,&#160;40]<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=9></a><img class="yflip" src="./Schoelkopf_1-9_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-9_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-9_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-9_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-9_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-9_6.png"/><br/>
+Kernels&#160;and&#160;Feature&#160;Spaces<br/>
+Preprocess&#160;the&#160;data&#160;with<br/>
+Φ&#160;:&#160;X&#160;→&#160;H<br/>
+x&#160;%→&#160;Φ(x),<br/>
+where&#160;H&#160;is&#160;a&#160;dot&#160;product&#160;space,&#160;and&#160;learn&#160;the&#160;mapping&#160;from&#160;Φ(x)<br/>to&#160;y&#160;[6].<br/>
+•&#160;usually,&#160;dim(X)&#160;)&#160;dim(H)<br/>•&#160;“Curse&#160;of&#160;Dimensionality”?<br/>•&#160;crucial&#160;issue:&#160;capacity,&#160;not&#160;dimensionality<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=10></a><img class="yflip" src="./Schoelkopf_1-10_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-10_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-10_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-10_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-10_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-10_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-10_7.png"/><br/>
+Example:&#160;All&#160;Degree&#160;2&#160;Monomials<br/>
+Φ&#160;:&#160;R2&#160;→&#160;R3<br/>
+√<br/>
+(x1,&#160;x2)&#160;%→&#160;(z1,&#160;z2,&#160;z3)&#160;:=&#160;(x21,&#160;2&#160;x1x2,&#160;x22)<br/>
+<i>z</i><br/>
+<i>x</i><br/>
+<i>3</i><br/>
+&#34;<br/>
+<i>2</i><br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+!<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+!<br/>
+<i>x</i><br/>
+!<br/>
+&#34;<br/>
+!<br/>
+!<br/>
+<i>1</i><br/>
+!<br/>
+!<br/>
+&#34;<br/>
+!<br/>
+&#34;<br/>
+!<br/>
+!<br/>
+<i>z</i><br/>
+&#34;<br/>
+!<br/>
+!<br/>
+&#34;<br/>
+<i>1</i><br/>
+!<br/>
+!<br/>
+!<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+!<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+&#34;<br/>
+<i>z2</i><br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=11></a><img class="yflip" src="./Schoelkopf_1-11_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-11_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-11_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-11_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-11_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-11_6.png"/><br/>
+<img src="./Schoelkopf_1-11_7.png"/><br/>
+General&#160;Product&#160;Feature&#160;Space<br/>
+How&#160;about&#160;patterns&#160;x&#160;∈&#160;RN&#160;and&#160;product&#160;features&#160;of&#160;order&#160;d?<br/>Here,&#160;dim(H)&#160;grows&#160;like&#160;N&#160;d.<br/>
+E.g.&#160;N&#160;=&#160;16&#160;×&#160;16,&#160;and&#160;d&#160;=&#160;5&#160;−→&#160;dimension&#160;1010<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=12></a><img class="yflip" src="./Schoelkopf_1-12_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-12_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-12_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-12_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-12_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-12_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-12_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-12_8.png"/><br/>
+The&#160;Kernel&#160;Trick,&#160;N&#160;=&#160;d&#160;=&#160;2<br/>
+&#34;<br/>
+#<br/>
+√<br/>
+√<br/>
+Φ(x),&#160;Φ(x$)&#160;=&#160;(x21,&#160;2&#160;x1x2,&#160;x22)(x$21,&#160;2&#160;x$1x$2,&#160;x$22)+<br/>
+&#34;<br/>
+=&#160;x,&#160;x$#2<br/>=&#160;:&#160;k(x,&#160;x$)<br/>
+−→&#160;the&#160;dot&#160;product&#160;in&#160;H&#160;can&#160;be&#160;computed&#160;in&#160;R2<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=13></a><img class="yflip" src="./Schoelkopf_1-13_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-13_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-13_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-13_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-13_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-13_6.png"/><br/>
+The&#160;Kernel&#160;Trick,&#160;II<br/>
+More&#160;generally:&#160;x,&#160;x$&#160;∈&#160;RN,&#160;d&#160;∈&#160;N:<br/>
+<br/>
+d<br/>
+&#34;<br/>
+N<br/>
+!<br/>
+x,&#160;x$#d&#160;=&#160;<br/>
+xj&#160;·&#160;x$&#160;<br/>
+j<br/>
+j=1<br/>
+N<br/>
+!<br/>
+&#34;<br/>
+#<br/>
+=<br/>
+xj&#160;·&#160;·&#160;·&#160;·&#160;·&#160;x&#160;·&#160;x$&#160;·&#160;·&#160;·&#160;·&#160;·&#160;x$&#160;=&#160;Φ(x),&#160;Φ(x$)&#160;,<br/>
+1<br/>
+jd<br/>
+j1<br/>
+jd<br/>
+j1,...,jd=1<br/>
+where&#160;Φ&#160;maps&#160;into&#160;the&#160;space&#160;spanned&#160;by&#160;all&#160;ordered&#160;products&#160;of<br/>d&#160;input&#160;directions<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=14></a><img class="yflip" src="./Schoelkopf_1-14_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-14_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-14_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-14_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-14_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-14_6.png"/><br/>
+Mercer’s&#160;Theorem<br/>
+If&#160;k&#160;is&#160;a&#160;continuous&#160;kernel&#160;of&#160;a&#160;positive&#160;definite&#160;integral&#160;oper-<br/>ator&#160;on&#160;L2(X)&#160;(where&#160;X&#160;is&#160;some&#160;compact&#160;space),<br/>
+(<br/>
+k(x,&#160;x$)f&#160;(x)f&#160;(x$)&#160;dx&#160;dx$&#160;≥&#160;0,<br/>
+X<br/>
+it&#160;can&#160;be&#160;expanded&#160;as<br/>
+∞<br/>
+!<br/>
+k(x,&#160;x$)&#160;=<br/>
+λiψi(x)ψi(x$)<br/>
+i=1<br/>
+using&#160;eigenfunctions&#160;ψi&#160;and&#160;eigenvalues&#160;λi&#160;≥&#160;0&#160;[26].<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=15></a><img class="yflip" src="./Schoelkopf_1-15_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_8.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_9.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_10.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_11.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-15_12.png"/><br/>
+The&#160;Mercer&#160;Feature&#160;Map<br/>
+In&#160;that&#160;case<br/>
+&#160;√<br/>
+<br/>
+λ1ψ1(x)<br/>
+√<br/>
+Φ(x)&#160;:=&#160;<br/>
+λ2ψ2(x)&#160;<br/>
+..<br/>
+&#34;<br/>
+#<br/>
+satisfies&#160;Φ(x),&#160;Φ(x$)&#160;=&#160;k(x,&#160;x$).<br/>
+Proof:<br/>
+)&#160;√<br/>
+&#160;&#160;√<br/>
+*<br/>
+&#34;<br/>
+#<br/>
+λ1ψ1(x)<br/>
+√<br/>
+λ1ψ1(x$)<br/>
+√<br/>
+Φ(x),&#160;Φ(x$)&#160;=<br/>
+&#160;λ2ψ2(x)&#160;&#160;,&#160;&#160;λ2ψ2(x$)&#160;<br/>
+..<br/>
+..<br/>
+∞<br/>
+!<br/>
+=<br/>
+λiψi(x)ψi(x$)&#160;=&#160;k(x,&#160;x$)<br/>
+i=1<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=16></a><img class="yflip" src="./Schoelkopf_1-16_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-16_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-16_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-16_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-16_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-16_6.png"/><br/>
+The&#160;Kernel&#160;Trick&#160;—&#160;Summary<br/>
+•&#160;any&#160;algorithm&#160;that&#160;only&#160;depends&#160;on&#160;dot&#160;products&#160;can&#160;benefit<br/>
+from&#160;the&#160;kernel&#160;trick<br/>
+•&#160;this&#160;way,&#160;we&#160;can&#160;apply&#160;linear&#160;methods&#160;to&#160;vectorial&#160;as&#160;well&#160;as<br/>
+non-vectorial&#160;data<br/>
+•&#160;think&#160;of&#160;the&#160;kernel&#160;as&#160;a&#160;nonlinear&#160;similarity&#160;measure<br/>•&#160;examples&#160;of&#160;common&#160;kernels:<br/>
+&#34;<br/>
+Polynomial&#160;k(x,&#160;x$)&#160;=&#160;(&#160;x,&#160;x$#&#160;+&#160;c)d<br/>
+&#34;<br/>
+Sigmoid&#160;k(x,&#160;x$)&#160;=&#160;tanh(κ&#160;x,&#160;x$#&#160;+&#160;Θ)<br/>
+Gaussian&#160;k(x,&#160;x$)&#160;=&#160;exp(−.x&#160;−&#160;x$.2/(2&#160;σ2))<br/>
+•&#160;Kernels&#160;are&#160;also&#160;known&#160;as&#160;covariance&#160;functions&#160;[44,&#160;41,&#160;45,&#160;25]<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=17></a><img class="yflip" src="./Schoelkopf_1-17_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-17_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-17_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-17_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-17_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-17_6.png"/><br/>
+Positive&#160;Definite&#160;Kernels<br/>
+It&#160;can&#160;be&#160;shown&#160;that&#160;the&#160;admissible&#160;class&#160;of&#160;kernels&#160;coincides&#160;with<br/>the&#160;one&#160;of&#160;positive&#160;definite&#160;(pd)&#160;kernels:&#160;kernels&#160;which&#160;are&#160;sym-<br/>metric&#160;(i.e.,&#160;k(x,&#160;x$)&#160;=&#160;k(x$,&#160;x)),&#160;and&#160;for<br/>
+•&#160;any&#160;set&#160;of&#160;training&#160;points&#160;x1,&#160;.&#160;.&#160;.&#160;,&#160;xm&#160;∈&#160;X&#160;and<br/>•&#160;any&#160;a1,&#160;.&#160;.&#160;.&#160;,&#160;am&#160;∈&#160;R<br/>
+satisfy<br/>
+!&#160;aiajKij&#160;≥&#160;0,&#160;where&#160;Kij&#160;:=&#160;k(xi,xj).<br/>
+i,j<br/>
+K&#160;is&#160;called&#160;the&#160;Gram&#160;matrix&#160;or&#160;kernel&#160;matrix.<br/>
++<br/>
+If&#160;for&#160;pairwise&#160;distinct&#160;points,<br/>
+i,j&#160;aiajKij&#160;=&#160;0&#160;=⇒&#160;a&#160;=&#160;0,&#160;call<br/>
+it&#160;strictly&#160;positive&#160;definite.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=18></a><img class="yflip" src="./Schoelkopf_1-18_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-18_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-18_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-18_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-18_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-18_6.png"/><br/>
+Elementary&#160;Properties&#160;of&#160;PD&#160;Kernels<br/>
+Kernels&#160;from&#160;Feature&#160;Maps.<br/>
+&#34;<br/>
+#<br/>
+If&#160;Φ&#160;maps&#160;X&#160;into&#160;a&#160;dot&#160;product&#160;space&#160;H,&#160;then&#160;Φ(x),&#160;Φ(x$)&#160;is&#160;a<br/>pd&#160;kernel&#160;on&#160;X&#160;×&#160;X.<br/>
+Positivity&#160;on&#160;the&#160;Diagonal.<br/>k(x,&#160;x)&#160;≥&#160;0&#160;for&#160;all&#160;x&#160;∈&#160;X<br/>
+Cauchy-Schwarz&#160;Inequality.<br/>k(x,&#160;x$)2&#160;≤&#160;k(x,&#160;x)k(x$,&#160;x$)&#160;(Hint:&#160;compute&#160;the&#160;determinant&#160;of<br/>the&#160;Gram&#160;matrix)<br/>
+Vanishing&#160;Diagonals.<br/>k(x,&#160;x)&#160;=&#160;0&#160;for&#160;all&#160;x&#160;∈&#160;X&#160;=⇒&#160;k(x,&#160;x$)&#160;=&#160;0&#160;for&#160;all&#160;x,&#160;x$&#160;∈&#160;X<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=19></a><img class="yflip" src="./Schoelkopf_1-19_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-19_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-19_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-19_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-19_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-19_6.png"/><br/>
+The&#160;Feature&#160;Space&#160;for&#160;PD&#160;Kernels<br/>
+[5,&#160;2,&#160;29]<br/>
+•&#160;define&#160;a&#160;feature&#160;map<br/>
+Φ&#160;:&#160;X&#160;→&#160;RX<br/>
+x&#160;%→&#160;k(.,&#160;x).<br/>
+E.g.,&#160;for&#160;the&#160;Gaussian&#160;kernel:<br/>
+!<br/>
+.<br/>
+.<br/>
+<i>x</i><br/>
+<i>x'</i><br/>
+!<i>(x)</i><br/>
+!<i>(x')</i><br/>
+Next&#160;steps:<br/>
+•&#160;turn&#160;Φ(X)&#160;into&#160;a&#160;linear&#160;space<br/>•&#160;endow&#160;it&#160;with&#160;a&#160;dot&#160;product&#160;satisfying<br/>
+&#34;<br/>
+#<br/>
+&#34;<br/>
+#<br/>
+Φ(x),&#160;Φ(x$)&#160;=&#160;k(x,&#160;x$),&#160;i.e.,&#160;k(.,&#160;x),&#160;k(.,&#160;x$)&#160;=&#160;k(x,&#160;x$)<br/>
+•&#160;complete&#160;the&#160;space&#160;to&#160;get&#160;a&#160;reproducing&#160;kernel&#160;Hilbert&#160;space<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=20></a><img class="yflip" src="./Schoelkopf_1-20_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-20_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-20_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-20_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-20_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-20_6.png"/><br/>
+Turn&#160;it&#160;Into&#160;a&#160;Linear&#160;Space<br/>
+Form&#160;linear&#160;combinations<br/>
+m<br/>
+!<br/>
+f&#160;(.)&#160;=<br/>
+αik(.,&#160;xi),<br/>
+i=1<br/>
+m$<br/>
+!<br/>
+g(.)&#160;=<br/>
+βjk(.,&#160;x$j)<br/>
+j=1<br/>
+(m,&#160;m$&#160;∈&#160;N,&#160;αi,&#160;βj&#160;∈&#160;R,&#160;xi,&#160;x$j&#160;∈&#160;X).<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=21></a><img class="yflip" src="./Schoelkopf_1-21_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-21_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-21_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-21_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-21_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-21_6.png"/><br/>
+Endow&#160;it&#160;With&#160;a&#160;Dot&#160;Product<br/>
+m<br/>
+!&#160;m$<br/>
+!<br/>
+'f,&#160;g(&#160;:=<br/>
+αiβjk(xi,&#160;x$j)<br/>
+i=1&#160;j=1<br/>
+m<br/>
+!<br/>
+m$<br/>
+!<br/>
+=<br/>
+αig(xi)&#160;=<br/>
+βjf(x$j)<br/>
+i=1<br/>
+j=1<br/>
+•&#160;This&#160;is&#160;well-defined,&#160;symmetric,&#160;and&#160;bilinear&#160;(more&#160;later).<br/>
+•&#160;So&#160;far,&#160;it&#160;also&#160;works&#160;for&#160;non-pd&#160;kernels<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=22></a><img class="yflip" src="./Schoelkopf_1-22_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-22_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-22_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-22_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-22_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-22_6.png"/><br/>
+The&#160;Reproducing&#160;Kernel&#160;Property<br/>
+Two&#160;special&#160;cases:<br/>
+•&#160;Assume<br/>
+f&#160;(.)&#160;=&#160;k(.,&#160;x).<br/>
+In&#160;this&#160;case,&#160;we&#160;have<br/>
+'k(.,&#160;x),&#160;g(&#160;=&#160;g(x).<br/>
+•&#160;If&#160;moreover<br/>
+g(.)&#160;=&#160;k(.,&#160;x$),<br/>
+we&#160;have<br/>
+'k(.,&#160;x),&#160;k(.,&#160;x$)(&#160;=&#160;k(x,&#160;x$).<br/>
+k&#160;is&#160;called&#160;a&#160;reproducing&#160;kernel<br/>(up&#160;to&#160;here,&#160;have&#160;not&#160;used&#160;positive&#160;definiteness)<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=23></a><img class="yflip" src="./Schoelkopf_1-23_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-23_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-23_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-23_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-23_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-23_6.png"/><br/>
+Endow&#160;it&#160;With&#160;a&#160;Dot&#160;Product,&#160;II<br/>
+•&#160;It&#160;can&#160;be&#160;shown&#160;that&#160;'.,&#160;.(&#160;is&#160;a&#160;p.d.&#160;kernel&#160;on&#160;the&#160;set&#160;of&#160;functions<br/>
++<br/>
+{f(.)&#160;=<br/>
+m<br/>
+i=1&#160;αik(.,&#160;xi)|αi&#160;∈&#160;R,&#160;xi&#160;∈&#160;X}&#160;:<br/>
+)<br/>
+*<br/>
+!<br/>
+&#34;<br/>
+#<br/>
+!<br/>
+!<br/>
+γiγj&#160;fi,&#160;fj&#160;=<br/>
+γifi,<br/>
+γjfj&#160;=:&#160;'f,&#160;f(<br/>
+ij<br/>
+i<br/>
+j<br/>
+)<br/>
+*<br/>
+!<br/>
+!<br/>
+!<br/>
+=<br/>
+αik(.,&#160;xi),<br/>
+αik(.,&#160;xi)&#160;=<br/>
+αiαjk(xi,&#160;xj)&#160;≥&#160;0<br/>
+i<br/>
+i<br/>
+ij<br/>
+•&#160;furthermore,&#160;it&#160;is&#160;strictly&#160;positive&#160;definite:<br/>
+f&#160;(x)2&#160;=&#160;'f,&#160;k(.,&#160;x)(2&#160;≤&#160;'f,&#160;f(&#160;'k(.,&#160;x),&#160;k(.,&#160;x)(&#160;=&#160;'f,&#160;f(&#160;k(x,&#160;x)<br/>
+hence&#160;'f,&#160;f(&#160;=&#160;0&#160;implies&#160;f&#160;=&#160;0.<br/>
+•&#160;Complete&#160;the&#160;space&#160;in&#160;the&#160;corresponding&#160;norm&#160;to&#160;get&#160;a&#160;Hilbert<br/>
+space&#160;Hk.<br/>
+B&#160;Sch¨olkopf&#160;Cambridge&#160;2009<br/>
+<hr/>
+<a name=24></a><img class="yflip" src="./Schoelkopf_1-24_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-24_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-24_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-24_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-24_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-24_6.png"/><br/>
+Explicit&#160;Construction&#160;of&#160;the&#160;RKHS&#160;Map&#160;for&#160;Mercer<br/>Kernels<br/>
+Recall&#160;that&#160;the&#160;dot&#160;product&#160;has&#160;to&#160;satisfy<br/>
+'k(x,&#160;.),&#160;k(x$,&#160;.)(&#160;=&#160;k(x,&#160;x$).<br/>
+For&#160;a&#160;Mercer&#160;kernel<br/>
+NF<br/>
+!<br/>
+k(x,&#160;x$)&#160;=<br/>
+λjψj(x)ψj(x$)<br/>
+j=1<br/>
+&#34;<br/>
+#<br/>
+(with&#160;λi&#160;&gt;&#160;0&#160;for&#160;all&#160;i,&#160;NF&#160;∈&#160;N&#160;∪&#160;{∞},&#160;and&#160;ψi,&#160;ψj<br/>
+=&#160;δ<br/>
+L<br/>
+ij),<br/>
+2(X)<br/>
+this&#160;can&#160;be&#160;achieved&#160;by&#160;choosing&#160;'.,&#160;.(&#160;such&#160;that<br/>
+'ψi,&#160;ψj(&#160;=&#160;δij/λi.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=25></a><img class="yflip" src="./Schoelkopf_1-25_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-25_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-25_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-25_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-25_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-25_6.png"/><br/>
+ctd.<br/>
+To&#160;see&#160;this,&#160;compute<br/>
+)<br/>
+*<br/>
+!<br/>
+!<br/>
+'k(x,&#160;.),&#160;k(x$,&#160;.)(&#160;=<br/>
+λiψi(x)ψi,<br/>
+λjψj(x$)ψj<br/>
+i<br/>
+j<br/>
+!<br/>
+=<br/>
+λiλjψi(x)ψj(x$)'ψi,&#160;ψj(<br/>
+i,j<br/>
+!<br/>
+=<br/>
+λiλjψi(x)ψj(x$)δij/λi<br/>
+i,j<br/>
+!<br/>
+=<br/>
+λiψi(x)ψi(x$)<br/>
+i<br/>
+=&#160;k(x,&#160;x$).<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=26></a><img class="yflip" src="./Schoelkopf_1-26_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-26_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-26_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-26_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-26_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-26_6.png"/><br/>
+Deriving&#160;the&#160;Kernel&#160;from&#160;the&#160;RKHS<br/>
+An&#160;RKHS&#160;is&#160;a&#160;Hilbert&#160;space&#160;H&#160;of&#160;functions&#160;f&#160;where&#160;all&#160;point<br/>evaluation&#160;functionals<br/>
+px&#160;:&#160;H&#160;→&#160;R<br/>
+f&#160;%→&#160;px(f)&#160;=&#160;f(x)<br/>
+exist&#160;and&#160;are&#160;continuous.<br/>Continuity&#160;means&#160;that&#160;whenever&#160;f&#160;and&#160;f&#160;$&#160;are&#160;close&#160;in&#160;H,&#160;then<br/>f&#160;(x)&#160;and&#160;f&#160;$(x)&#160;are&#160;close&#160;in&#160;R.&#160;This&#160;can&#160;be&#160;thought&#160;of&#160;as&#160;a&#160;topo-<br/>logical&#160;prerequisite&#160;for&#160;generalization&#160;ability.<br/>By&#160;Riesz’&#160;representation&#160;theorem,&#160;there&#160;exists&#160;an&#160;element&#160;of&#160;H,<br/>call&#160;it&#160;rx,&#160;such&#160;that<br/>
+'rx,&#160;f(&#160;=&#160;f(x),<br/>
+in&#160;particular,<br/>
+'rx,&#160;rx$(&#160;=&#160;rx$(x).<br/>
+Define&#160;k(x,&#160;x$)&#160;:=&#160;rx(x$)&#160;=&#160;rx$(x).<br/>
+(cf.&#160;Canu&#160;&amp;&#160;Mary,&#160;2002)<br/>
+<hr/>
+<a name=27></a><img class="yflip" src="./Schoelkopf_1-27_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-27_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-27_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-27_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-27_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-27_6.png"/><br/>
+The&#160;Empirical&#160;Kernel&#160;Map<br/>
+Recall&#160;the&#160;feature&#160;map<br/>
+Φ&#160;:&#160;X&#160;→&#160;RX<br/>
+x&#160;%→&#160;k(.,&#160;x).<br/>
+•&#160;each&#160;point&#160;is&#160;represented&#160;by&#160;its&#160;similarity&#160;to&#160;all&#160;other&#160;points<br/>•&#160;how&#160;about&#160;representing&#160;it&#160;by&#160;its&#160;similarity&#160;to&#160;a&#160;sample&#160;of&#160;points?<br/>
+Consider<br/>
+Φm&#160;:&#160;X&#160;→&#160;Rm<br/>
+x&#160;%→&#160;k(.,&#160;x)|(x1,...,xm)&#160;=&#160;(k(x1,&#160;x),&#160;.&#160;.&#160;.&#160;,&#160;k(xm,&#160;x))+<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=28></a><img class="yflip" src="./Schoelkopf_1-28_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-28_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-28_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-28_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-28_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-28_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-28_7.png"/><br/>
+ctd.<br/>
+•&#160;Φm(x1),&#160;.&#160;.&#160;.&#160;,&#160;Φm(xm)&#160;contain&#160;all&#160;necessary&#160;information&#160;about<br/>
+Φ(x1),&#160;.&#160;.&#160;.&#160;,&#160;Φ(xm)<br/>
+&#34;<br/>
+#<br/>
+•&#160;the&#160;Gram&#160;matrix&#160;Gij&#160;:=&#160;Φm(xi),&#160;Φm(xj)&#160;satisfies&#160;G&#160;=&#160;K2<br/>
+where&#160;Kij&#160;=&#160;k(xi,&#160;xj)<br/>
+•&#160;modify&#160;Φm&#160;to<br/>
+Φw<br/>
+m&#160;:&#160;X&#160;→&#160;Rm<br/>
+x&#160;%→&#160;K−12(k(x1,&#160;x),&#160;.&#160;.&#160;.&#160;,&#160;k(xm,&#160;x))+<br/>
+•&#160;this&#160;“whitened”&#160;map&#160;(“kernel&#160;PCA&#160;map”)&#160;satifies<br/>
+&#34;<br/>
+#<br/>
+Φw<br/>
+m(xi),&#160;Φw<br/>
+m(xj)&#160;=&#160;k(xi,&#160;xj)<br/>
+for&#160;all&#160;i,&#160;j&#160;=&#160;1,&#160;.&#160;.&#160;.&#160;,&#160;m.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=29></a><img class="yflip" src="./Schoelkopf_1-29_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-29_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-29_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-29_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-29_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-29_6.png"/><br/>
+Some&#160;Properties&#160;of&#160;Kernels&#160;[32,&#160;34]<br/>
+If&#160;k1,&#160;k2,&#160;.&#160;.&#160;.&#160;are&#160;pd&#160;kernels,&#160;then&#160;so&#160;are<br/>
+•&#160;αk1,&#160;provided&#160;α&#160;≥&#160;0<br/>•&#160;k1&#160;+&#160;k2<br/>•&#160;k1&#160;·&#160;k2<br/>•&#160;k(x,&#160;x$)&#160;:=&#160;limn→∞&#160;kn(x,&#160;x$),&#160;provided&#160;it&#160;exists<br/>
++<br/>
+•&#160;k(A,&#160;B)&#160;:=<br/>
+x∈A,x$∈B&#160;k1(x,&#160;x$),&#160;where&#160;A,&#160;B&#160;are&#160;finite&#160;subsets<br/>
+of&#160;X<br/>
++<br/>
+(using&#160;the&#160;feature&#160;map&#160;˜<br/>
+Φ(A)&#160;:=<br/>
+x∈A&#160;Φ(x))<br/>
+Further&#160;operations&#160;to&#160;construct&#160;kernels&#160;from&#160;kernels:&#160;tensor&#160;prod-<br/>ucts,&#160;direct&#160;sums,&#160;convolutions&#160;[19].<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=30></a><img class="yflip" src="./Schoelkopf_1-30_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-30_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-30_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-30_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-30_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-30_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-30_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-30_8.png"/><br/>
+Properties&#160;of&#160;Kernel&#160;Matrices,&#160;I&#160;[30]<br/>
+Suppose&#160;we&#160;are&#160;given&#160;distinct&#160;training&#160;patterns&#160;x1,&#160;.&#160;.&#160;.&#160;,&#160;xm,&#160;and&#160;a<br/>positive&#160;definite&#160;m&#160;×&#160;m&#160;matrix&#160;K.<br/>
+K&#160;can&#160;be&#160;diagonalized&#160;as&#160;K&#160;=&#160;SDS+,&#160;with&#160;an&#160;orthogonal&#160;matrix<br/>S&#160;and&#160;a&#160;diagonal&#160;matrix&#160;D&#160;with&#160;nonnegative&#160;entries.&#160;Then<br/>
+&#34;<br/>
+#<br/>
+,√<br/>
+√<br/>
+-<br/>
+Kij&#160;=&#160;(SDS+)ij&#160;=&#160;Si,&#160;DSj&#160;=<br/>
+DSi,&#160;DSj&#160;,<br/>
+where&#160;the&#160;Si&#160;are&#160;the&#160;rows&#160;of&#160;S.<br/>
+We&#160;have&#160;thus&#160;constructed&#160;a&#160;map&#160;Φ&#160;into&#160;an&#160;m-dimensional&#160;feature<br/>space&#160;H&#160;such&#160;that<br/>
+&#34;<br/>
+#<br/>
+Kij&#160;=&#160;Φ(xi),&#160;Φ(xj)&#160;.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=31></a><img class="yflip" src="./Schoelkopf_1-31_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-31_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-31_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-31_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-31_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-31_6.png"/><br/>
+Properties,&#160;II:&#160;Functional&#160;Calculus&#160;[33]<br/>
+•&#160;K&#160;symmetric&#160;m&#160;×&#160;m&#160;matrix&#160;with&#160;spectrum&#160;σ(K)<br/>•&#160;f&#160;a&#160;continuous&#160;function&#160;on&#160;σ(K)<br/>•&#160;Then&#160;there&#160;is&#160;a&#160;symmetric&#160;matrix&#160;f(K)&#160;with&#160;eigenvalues&#160;in<br/>
+f&#160;(σ(K)).<br/>
+•&#160;compute&#160;f(K)&#160;via&#160;Taylor&#160;series,&#160;or&#160;eigenvalue&#160;decomposition&#160;of<br/>
+K:&#160;If&#160;K&#160;=&#160;S+DS&#160;(D&#160;diagonal&#160;and&#160;S&#160;unitary),&#160;then&#160;f&#160;(K)&#160;=<br/>S+f&#160;(D)S,&#160;where&#160;f&#160;(D)&#160;is&#160;defined&#160;elementwise&#160;on&#160;the&#160;diagonal<br/>
+•&#160;can&#160;treat&#160;functions&#160;of&#160;symmetric&#160;matrices&#160;like&#160;functions&#160;on&#160;R<br/>
+(αf&#160;+&#160;g)(K)&#160;=&#160;αf&#160;(K)&#160;+&#160;g(K)<br/>
+(f&#160;g)(K)&#160;=&#160;f&#160;(K)g(K)&#160;=&#160;g(K)f&#160;(K)<br/>
+.f.∞,σ(K)&#160;=&#160;.f(K).<br/>
+σ(f&#160;(K))&#160;=&#160;f&#160;(σ(K))<br/>
+(the&#160;C∗-algebra&#160;generated&#160;by&#160;K&#160;is&#160;isomorphic&#160;to&#160;the&#160;set&#160;of<br/>continuous&#160;functions&#160;on&#160;σ(K))<br/>
+<hr/>
+<a name=32></a><img class="yflip" src="./Schoelkopf_1-32_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-32_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-32_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-32_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-32_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-32_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-32_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-32_8.png"/><br/>
+An&#160;example&#160;of&#160;a&#160;kernel&#160;algorithm,&#160;revisited<br/>
+o<br/>
++<br/>
+µ(<i>Y&#160;</i>)<br/>
++<br/>
+<b>w</b><br/>
+<b>.</b><br/>
+o<br/>
+µ(<i>X</i><br/>
+o<br/>
+<i>&#160;</i>)<br/>
++<br/>
++<br/>
+X&#160;compact&#160;subset&#160;of&#160;a&#160;separable&#160;metric&#160;space,&#160;m,&#160;n&#160;∈&#160;N.<br/>Positive&#160;class&#160;X&#160;:=&#160;{x1,&#160;.&#160;.&#160;.&#160;,&#160;xm}&#160;⊂&#160;X<br/>Negative&#160;class&#160;Y&#160;:=&#160;{y1,&#160;.&#160;.&#160;.&#160;,&#160;yn}&#160;⊂&#160;X<br/>
++<br/>
++<br/>
+RKHS&#160;means&#160;µ(X)&#160;=&#160;1<br/>
+m<br/>
+n<br/>
+m<br/>
+i=1&#160;k(xi,&#160;·),&#160;µ(Y&#160;)&#160;=&#160;1<br/>
+n<br/>
+i=1&#160;k(yi,&#160;·).<br/>
+Get&#160;a&#160;problem&#160;if&#160;µ(X)&#160;=&#160;µ(Y&#160;)!<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=33></a><img class="yflip" src="./Schoelkopf_1-33_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-33_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-33_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-33_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-33_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-33_6.png"/><br/>
+When&#160;do&#160;the&#160;means&#160;coincide?<br/>
+&#34;<br/>
+k(x,&#160;x$)&#160;=&#160;x,&#160;x$#:<br/>
+the&#160;means&#160;coincide<br/>
+&#34;<br/>
+k(x,&#160;x$)&#160;=&#160;(&#160;x,&#160;x$#&#160;+&#160;1)d:&#160;all&#160;empirical&#160;moments&#160;up&#160;to&#160;order&#160;d&#160;coincide<br/>
+k&#160;strictly&#160;pd:<br/>
+X&#160;=&#160;Y&#160;.<br/>
+The&#160;mean&#160;“remembers”&#160;each&#160;point&#160;that&#160;contributed&#160;to&#160;it.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=34></a><img class="yflip" src="./Schoelkopf_1-34_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-34_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-34_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-34_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-34_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-34_6.png"/><br/>
+Proposition&#160;1&#160;Assume&#160;X,&#160;Y&#160;are&#160;defined&#160;as&#160;above,&#160;k&#160;is<br/>strictly&#160;pd,&#160;and&#160;for&#160;all&#160;i,&#160;j,&#160;xi&#160;4=&#160;xj,&#160;and&#160;yi&#160;4=&#160;yj.<br/>If&#160;for&#160;some&#160;αi,&#160;βj&#160;∈&#160;R&#160;−&#160;{0},&#160;we&#160;have<br/>
+m<br/>
+!<br/>
+n<br/>
+!<br/>
+αik(xi,&#160;.)&#160;=<br/>
+βjk(yj,&#160;.),<br/>
+(1)<br/>
+i=1<br/>
+j=1<br/>
+then&#160;X&#160;=&#160;Y&#160;.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=35></a><img class="yflip" src="./Schoelkopf_1-35_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-35_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-35_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-35_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-35_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-35_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-35_7.png"/><br/>
+Proof&#160;(by&#160;contradiction)<br/>
++<br/>
+W.l.o.g.,&#160;assume&#160;that&#160;x<br/>
+n<br/>
+1&#160;4∈&#160;Y&#160;.&#160;Subtract<br/>
+j=1&#160;βjk(yj,&#160;.)&#160;from&#160;(1),<br/>
+and&#160;make&#160;it&#160;a&#160;sum&#160;over&#160;pairwise&#160;distinct&#160;points,&#160;to&#160;get<br/>
+!<br/>
+0&#160;=<br/>
+γik(zi,&#160;.),<br/>
+i<br/>
+where&#160;z1&#160;=&#160;x1,&#160;γ1&#160;=&#160;α1&#160;4=&#160;0,&#160;and<br/>z2,&#160;·&#160;·&#160;·&#160;∈&#160;X&#160;∪&#160;Y&#160;−&#160;{x1},&#160;γ2,&#160;·&#160;·&#160;·&#160;∈&#160;R.<br/>
++<br/>
+Take&#160;the&#160;RKHS&#160;dot&#160;product&#160;with<br/>
+j&#160;γjk(zj,&#160;.)&#160;to&#160;get<br/>
+!<br/>
+0&#160;=<br/>
+γiγjk(zi,&#160;zj),<br/>
+ij<br/>
+with&#160;γ&#160;4=&#160;0,&#160;hence&#160;k&#160;cannot&#160;be&#160;strictly&#160;pd.<br/>
+Exercise:&#160;generalize&#160;to&#160;the&#160;case&#160;of&#160;nonsingular&#160;kernel&#160;(i.e.,&#160;leading<br/>to&#160;nonsingular&#160;Gram&#160;matrices&#160;for&#160;pairwise&#160;distinct&#160;points).<br/>
+<hr/>
+<a name=36></a><img class="yflip" src="./Schoelkopf_1-36_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-36_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-36_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-36_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-36_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-36_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-36_7.png"/><br/>
+Generalization<br/>
+We&#160;will&#160;prove&#160;a&#160;more&#160;general&#160;statement,&#160;without&#160;assuming&#160;positive&#160;definiteness.<br/>
+Definition&#160;2&#160;We&#160;call&#160;a&#160;kernel&#160;k&#160;:&#160;X2&#160;→&#160;R&#160;nonsingular&#160;if&#160;for&#160;any&#160;n&#160;∈&#160;N&#160;and&#160;pairwise&#160;distinct&#160;x1,&#160;.&#160;.&#160;.&#160;,&#160;xn&#160;∈&#160;X,&#160;the&#160;Gram&#160;matrix<br/>(k(xi,&#160;xj))ij&#160;is&#160;nonsingular.<br/>
+Note&#160;that&#160;strictly&#160;positive&#160;definite&#160;kernels&#160;are&#160;nonsingular:&#160;if&#160;the&#160;matrix&#160;K&#160;is&#160;singular,&#160;then&#160;there&#160;exists&#160;a&#160;β&#160;4=&#160;0&#160;such&#160;that<br/>Kβ&#160;=&#160;0,&#160;hence&#160;β!Kβ&#160;=&#160;0,&#160;hence&#160;k&#160;is&#160;not&#160;strictly&#160;positive&#160;definite.<br/>
+Proposition&#160;3&#160;Assume&#160;X,&#160;Y&#160;are&#160;defined&#160;as&#160;above,&#160;k&#160;is&#160;nonsingular,&#160;and&#160;for&#160;all&#160;i,&#160;j,&#160;xi&#160;4=&#160;xj,&#160;and&#160;yi&#160;4=&#160;yj.<br/>If&#160;for&#160;some&#160;αi,&#160;βj&#160;∈&#160;R&#160;−&#160;{0},&#160;we&#160;have<br/>
+m<br/>
+!<br/>
+n<br/>
+!<br/>
+αik(xi,&#160;.)&#160;=<br/>
+βjk(yj,&#160;.),<br/>
+(2)<br/>
+i=1<br/>
+j=1<br/>
+then&#160;X&#160;=&#160;Y&#160;.<br/>
++<br/>
+Proof&#160;(by&#160;contradiction)&#160;W.l.o.g.,&#160;assume&#160;that&#160;x<br/>
+n<br/>
+1&#160;4∈&#160;Y&#160;.&#160;Subtract<br/>
+β<br/>
+j=1<br/>
+j&#160;k(yj&#160;,&#160;.)&#160;from&#160;(2),&#160;and&#160;make&#160;it&#160;a&#160;sum&#160;over&#160;pairwise<br/>
+distinct&#160;points,&#160;to&#160;get<br/>
+!<br/>
+0&#160;=<br/>
+γik(zi,&#160;.),<br/>
+i<br/>
+where&#160;z1&#160;=&#160;x1,&#160;γ1&#160;=&#160;α1&#160;4=&#160;0,&#160;and&#160;z2,&#160;·&#160;·&#160;·&#160;∈&#160;X&#160;∪&#160;Y&#160;−&#160;{x1},&#160;γ2,&#160;·&#160;·&#160;·&#160;∈&#160;R.<br/>Similar&#160;to&#160;the&#160;pd&#160;case,&#160;k&#160;induces&#160;a&#160;linear&#160;space&#160;with&#160;a&#160;bilinear&#160;form&#160;satisfying&#160;the&#160;reproducing&#160;kernel&#160;property.<br/>
++<br/>
+Take&#160;the&#160;bilinear&#160;form&#160;between<br/>
+λ<br/>
+j<br/>
+j&#160;k(zj&#160;,&#160;.)&#160;and&#160;the&#160;above,&#160;to&#160;get<br/>
+!<br/>
+0&#160;=<br/>
+λjγik(zj,&#160;zi)&#160;=&#160;λ!Kγ,<br/>
+ij<br/>
+where&#160;λ&#160;∈&#160;R&#160;is&#160;arbitrary.&#160;Hence&#160;Kγ&#160;=&#160;0.&#160;However,&#160;γ&#160;4=&#160;0,&#160;hence&#160;K&#160;is&#160;singular.<br/>
+Since&#160;the&#160;zi&#160;are&#160;pairwise&#160;distinct,&#160;k&#160;cannot&#160;be&#160;nonsingular.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=37></a><img class="yflip" src="./Schoelkopf_1-37_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_8.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_9.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_10.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-37_11.png"/><br/>
+The&#160;mean&#160;map<br/>
+m<br/>
+1&#160;!<br/>
+µ&#160;:&#160;X&#160;=&#160;(x1,&#160;.&#160;.&#160;.&#160;,&#160;xm)&#160;%→<br/>
+k(x<br/>
+m<br/>
+i,&#160;·)<br/>
+i=1<br/>
+satisfies<br/>
+)<br/>
+*<br/>
+m<br/>
+m<br/>
+1&#160;!<br/>
+1&#160;!<br/>
+'µ(X),&#160;f(&#160;=<br/>
+k(x<br/>
+=<br/>
+f&#160;(x<br/>
+m<br/>
+i,&#160;·),&#160;f<br/>
+m<br/>
+i)<br/>
+i=1<br/>
+i=1<br/>
+and<br/>
+.<br/>
+.<br/>
+.&#160;1&#160;m<br/>
+!<br/>
+1&#160;n<br/>
+!<br/>
+.<br/>
+.µ(X)−µ(Y&#160;).&#160;=&#160;sup&#160;|'µ(X)&#160;−&#160;µ(Y&#160;),&#160;f(|&#160;=&#160;sup&#160;.<br/>
+.<br/>
+.<br/>
+f&#160;(xi)&#160;−<br/>
+f&#160;(yi).&#160;.<br/>
+.f.≤1<br/>
+.f.≤1&#160;.m<br/>
+n<br/>
+.<br/>
+i=1<br/>
+i=1<br/>
+Note:&#160;distance&#160;in&#160;the&#160;RKHS&#160;=&#160;solution&#160;of&#160;a&#160;high-dimensional<br/>optimization&#160;problem.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=38></a><img class="yflip" src="./Schoelkopf_1-38_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-38_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-38_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-38_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-38_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-38_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-38_7.png"/><br/>
+Witness&#160;function<br/>
+f&#160;=&#160;µ(X)−µ(Y&#160;)&#160;,&#160;thus&#160;f&#160;(x)<br/>
+.µ(X)−µ(Y&#160;).<br/>
+∝&#160;'µ(X)&#160;−&#160;µ(Y&#160;),&#160;k(x,&#160;.)():<br/>
+Witness f for Gauss and Laplace data<br/>
+1<br/>
+&#160;<br/>
+f<br/>
+0.8<br/>
+Gauss<br/>Laplace<br/>
+0.6<br/>
+0.4<br/>
+0.2<br/>
+0<br/>
+Prob. density and f&#160;−0.2<br/>
+−0.4&#160;&#160;<br/>
+−6<br/>
+−4<br/>
+−2<br/>
+0<br/>
+2<br/>
+4<br/>
+6<br/>
+X<br/>
+This&#160;function&#160;is&#160;in&#160;the&#160;RKHS&#160;of&#160;a&#160;Gaussian&#160;kernel,&#160;but&#160;not&#160;in&#160;the<br/>RKHS&#160;of&#160;the&#160;linear&#160;kernel.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=39></a><img class="yflip" src="./Schoelkopf_1-39_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-39_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-39_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-39_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-39_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-39_6.png"/><br/>
+The&#160;mean&#160;map&#160;for&#160;measures<br/>
+p,&#160;q&#160;Borel&#160;probability&#160;measures,<br/>Ex,x$∼p[k(x,&#160;x$)],&#160;Ex,x$∼q[k(x,&#160;x$)]&#160;&lt;&#160;∞&#160;(.k(x,&#160;.).&#160;≤&#160;M&#160;&lt;&#160;∞&#160;is&#160;sufficient)<br/>
+Define<br/>
+µ&#160;:&#160;p&#160;%→&#160;Ex∼p[k(x,&#160;·)].<br/>
+Note<br/>
+'µ(p),&#160;f(&#160;=&#160;Ex∼p[f(x)]<br/>
+and<br/>
+.<br/>
+.<br/>
+.µ(p)&#160;−&#160;µ(q).&#160;=&#160;sup&#160;.Ex∼p[f(x)]&#160;−&#160;Ex∼q[f(x)].&#160;.<br/>
+.f.≤1<br/>
+Recall&#160;that&#160;in&#160;the&#160;finite&#160;sample&#160;case,&#160;for&#160;strictly&#160;p.d.&#160;kernels,&#160;µ<br/>was&#160;injective&#160;—&#160;how&#160;about&#160;now?<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=40></a><img class="yflip" src="./Schoelkopf_1-40_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-40_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-40_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-40_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-40_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-40_6.png"/><br/>
+Theorem&#160;4&#160;[13,&#160;10]<br/>
+.<br/>
+.<br/>
+p&#160;=&#160;q&#160;⇐⇒&#160;sup&#160;.Ex∼p(f(x))&#160;−&#160;Ex∼q(f(x)).&#160;=&#160;0,<br/>
+f&#160;∈C(X)<br/>
+where&#160;C(X)&#160;is&#160;the&#160;space&#160;of&#160;continuous&#160;bounded&#160;functions&#160;on<br/>X.<br/>
+Replace&#160;C(X)&#160;by&#160;the&#160;unit&#160;ball&#160;in&#160;an&#160;RKHS&#160;that&#160;is&#160;dense&#160;in&#160;C(X)<br/>—&#160;universal&#160;kernel&#160;[38],&#160;e.g.,&#160;Gaussian.<br/>
+Theorem&#160;5&#160;[16]&#160;If&#160;k&#160;is&#160;universal,&#160;then<br/>
+p&#160;=&#160;q&#160;⇐⇒&#160;.µ(p)&#160;−&#160;µ(q).&#160;=&#160;0.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=41></a><img class="yflip" src="./Schoelkopf_1-41_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-41_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-41_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-41_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-41_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-41_6.png"/><br/>
+•&#160;µ&#160;is&#160;invertible&#160;on&#160;its&#160;image<br/>
+M&#160;=&#160;{µ(p)&#160;|&#160;p&#160;is&#160;a&#160;probability&#160;distribution}<br/>(the&#160;“marginal&#160;polytope”,&#160;[42])<br/>
+•&#160;generalization&#160;of&#160;the&#160;moment&#160;generating&#160;function&#160;of&#160;a&#160;RV&#160;x<br/>
+with&#160;distribution&#160;p:<br/>
+/<br/>
+0<br/>
+Mp(.)&#160;=&#160;Ex∼p&#160;e'x,&#160;·&#160;(&#160;.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=42></a><img class="yflip" src="./Schoelkopf_1-42_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-42_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-42_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-42_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-42_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-42_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-42_7.png"/><br/>
+Uniform&#160;convergence&#160;bounds<br/>
+Let&#160;X&#160;be&#160;an&#160;i.i.d.&#160;m-sample&#160;from&#160;p.&#160;The&#160;discrepancy<br/>
+.<br/>
+.<br/>
+.<br/>
+.<br/>
+.<br/>
+m<br/>
+1&#160;!<br/>
+.<br/>
+.µ(p)&#160;−&#160;µ(X).&#160;=&#160;sup&#160;.<br/>
+.<br/>
+.Ex∼p[f(x)]&#160;−<br/>
+f&#160;(xi).<br/>
+.f.≤1&#160;.<br/>
+m&#160;i=1<br/>
+.<br/>
+can&#160;be&#160;bounded&#160;using&#160;uniform&#160;convergence&#160;methods&#160;[37].<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=43></a><img class="yflip" src="./Schoelkopf_1-43_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-43_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-43_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-43_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-43_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-43_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-43_7.png"/><br/>
+Application&#160;1:&#160;Two-sample&#160;problem&#160;[16]<br/>
+X,&#160;Y&#160;i.i.d.&#160;m-samples&#160;from&#160;p,&#160;q,&#160;respectively.<br/>
+.µ(p)&#160;−&#160;µ(q).2&#160;=Ex,x$∼p&#160;[k(x,&#160;x$)]&#160;−&#160;2Ex∼p,y∼q&#160;[k(x,&#160;y)]&#160;+&#160;Ey,y$∼q&#160;[k(y,&#160;y$)]<br/>
+=Ex,x$∼p,y,y$∼q&#160;[h((x,&#160;y),&#160;(x$,&#160;y$))]<br/>
+with<br/>
+h((x,&#160;y),&#160;(x$,&#160;y$))&#160;:=&#160;k(x,&#160;x$)&#160;−&#160;k(x,&#160;y$)&#160;−&#160;k(y,&#160;x$)&#160;+&#160;k(y,&#160;y$).<br/>
+Define<br/>
+D(p,&#160;q)2&#160;:=&#160;Ex,x$∼p,y,y$∼qh((x,&#160;y),&#160;(x$,&#160;y$))<br/>
+!<br/>
+ˆ<br/>
+D(X,&#160;Y&#160;)2&#160;:=<br/>
+1<br/>
+h((x<br/>
+m(m−1)<br/>
+i,&#160;yi),&#160;(xj,&#160;yj)).<br/>
+i4=j<br/>
+ˆ<br/>
+D(X,&#160;Y&#160;)2&#160;is&#160;an&#160;unbiased&#160;estimator&#160;of&#160;D(p,&#160;q)2.<br/>It’s&#160;easy&#160;to&#160;compute,&#160;and&#160;works&#160;on&#160;structured&#160;data.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=44></a><img class="yflip" src="./Schoelkopf_1-44_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-44_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-44_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-44_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-44_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-44_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-44_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-44_8.png"/><br/>
+Theorem&#160;6&#160;Assume&#160;k&#160;is&#160;bounded.<br/>
+ˆ<br/>
+D(X,&#160;Y&#160;)2&#160;converges&#160;to&#160;D(p,&#160;q)2&#160;in&#160;probability&#160;with&#160;rate&#160;O(m−12).<br/>
+This&#160;could&#160;be&#160;used&#160;as&#160;a&#160;basis&#160;for&#160;a&#160;test,&#160;but&#160;uniform&#160;convergence&#160;bounds&#160;are&#160;often&#160;loose..<br/>
+1&#160;2<br/>
+√<br/>
+Theorem&#160;7&#160;We&#160;assume&#160;E&#160;h2&#160;&lt;&#160;∞.&#160;When&#160;p&#160;4=&#160;q,&#160;then<br/>
+m(&#160;ˆ<br/>
+D(X,&#160;Y&#160;)2&#160;−&#160;D(p,&#160;q)2)<br/>
+converges&#160;in&#160;distribution&#160;to&#160;a&#160;zero&#160;mean&#160;Gaussian&#160;with&#160;variance<br/>
+3<br/>
+4<br/>
+5<br/>
+4<br/>
+5&#160;6<br/>
+2<br/>
+σ2u&#160;=&#160;4&#160;Ez&#160;(Ez$h(z,&#160;z$))2&#160;−&#160;Ez,z$(h(z,&#160;z$))<br/>
+.<br/>
+When&#160;p&#160;=&#160;q,&#160;then&#160;m(&#160;ˆ<br/>
+D(X,&#160;Y&#160;)2&#160;−&#160;D(p,&#160;q)2)&#160;=&#160;m&#160;ˆ<br/>
+D(X,&#160;Y&#160;)2&#160;converges&#160;in&#160;distribution&#160;to<br/>
+∞<br/>
+!&#160;4<br/>
+5<br/>
+λl&#160;q2l&#160;−&#160;2&#160;,<br/>
+(3)<br/>
+l=1<br/>
+where&#160;ql&#160;∼&#160;N(0,&#160;2)&#160;i.i.d.,&#160;λi&#160;are&#160;the&#160;solutions&#160;to&#160;the&#160;eigenvalue&#160;equation<br/>
+(&#160;˜k(x,x$)ψi(x)dp(x)&#160;=&#160;λiψi(x$),<br/>
+X<br/>
+and&#160;˜<br/>
+k(xi,&#160;xj)&#160;:=&#160;k(xi,&#160;xj)&#160;−&#160;Exk(xi,&#160;x)&#160;−&#160;Exk(x,&#160;xj)&#160;+&#160;Ex,x$k(x,&#160;x$)&#160;is&#160;the&#160;centred&#160;RKHS<br/>
+kernel.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=45></a><img class="yflip" src="./Schoelkopf_1-45_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-45_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-45_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-45_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-45_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-45_6.png"/><br/>
+Application&#160;2:&#160;Dependence&#160;Measures<br/>
+Assume&#160;that&#160;(x,&#160;y)&#160;are&#160;drawn&#160;from&#160;pxy,&#160;with&#160;marginals&#160;px,&#160;py.<br/>
+Want&#160;to&#160;know&#160;whether&#160;pxy&#160;factorizes.<br/>[3,&#160;14]:&#160;kernel&#160;generalized&#160;variance<br/>
+[17,&#160;18]:&#160;kernel&#160;constrained&#160;covariance,&#160;HSIC<br/>
+Main&#160;idea&#160;[22,&#160;28]:<br/>x&#160;and&#160;y&#160;independent&#160;⇐⇒&#160;∀&#160;bounded&#160;continuous&#160;functions&#160;f,&#160;g,<br/>we&#160;have&#160;Cov(f&#160;(x),&#160;g(y))&#160;=&#160;0.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=46></a><img class="yflip" src="./Schoelkopf_1-46_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-46_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-46_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-46_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-46_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-46_6.png"/><br/>
+k&#160;kernel&#160;on&#160;X&#160;×&#160;Y.<br/>
+µ(pxy)&#160;:=&#160;E(x,y)∼p&#160;[k((x,&#160;y),&#160;·)]<br/>
+xy<br/>
+µ(px&#160;×&#160;py)&#160;:=&#160;Ex∼p<br/>
+[k((x,&#160;y),<br/>
+x,y∼py<br/>
+·)]&#160;.<br/>
+7<br/>
+7<br/>
+Use&#160;∆&#160;:=&#160;7µ(pxy)&#160;−&#160;µ(px&#160;×&#160;py)7&#160;as&#160;a&#160;measure&#160;of&#160;dependence.<br/>
+For&#160;k((x,&#160;y),&#160;(x$,&#160;y$))&#160;=&#160;kx(x,&#160;x$)ky(y,&#160;y$):<br/>∆2&#160;equals&#160;the&#160;Hilbert-Schmidt&#160;norm&#160;of&#160;the&#160;covariance&#160;opera-<br/>tor&#160;between&#160;the&#160;two&#160;RKHSs&#160;(HSIC),&#160;with&#160;empirical&#160;estimate<br/>m−2&#160;tr&#160;HKxHKy,&#160;where&#160;H&#160;=&#160;I&#160;−&#160;1/m&#160;[17,&#160;37].<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=47></a><img class="yflip" src="./Schoelkopf_1-47_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-47_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-47_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-47_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-47_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-47_6.png"/><br/>
+<img src="./Schoelkopf_1-47_7.png"/><br/>
+Witness&#160;function&#160;of&#160;the&#160;equivalent&#160;optimisation&#160;problem:<br/>
+Dependence witness and sample<br/>
+1.5<br/>
+0.05<br/>
+1<br/>
+0.04<br/>
+0.03<br/>
+0.5<br/>
+0.02<br/>
+0.01<br/>
+Y<br/>
+0<br/>
+0<br/>
+−0.5<br/>
+−0.01<br/>
+−0.02<br/>
+−1<br/>
+−0.03<br/>
+−0.04<br/>
+−1.5<br/>
+−1.5<br/>
+−1<br/>
+−0.5<br/>
+0<br/>
+0.5<br/>
+1<br/>
+1.5<br/>
+X<br/>
+Application:&#160;learning&#160;causal&#160;structures&#160;(Sun,&#160;Janzing,&#160;Sch¨olkopf,<br/>Fukumizu,&#160;ICML&#160;2007;&#160;Fukumizu,&#160;Gretton,&#160;Sun,&#160;Sch¨<br/>
+olkopf,&#160;NIPS&#160;2007))<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=48></a><img class="yflip" src="./Schoelkopf_1-48_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-48_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-48_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-48_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-48_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-48_6.png"/><br/>
+Application&#160;3:&#160;Covariate&#160;Shift&#160;Correction&#160;and&#160;Local<br/>Learning<br/>
+training&#160;set&#160;X&#160;=&#160;{(x1,&#160;y1),&#160;.&#160;.&#160;.&#160;,&#160;(xm,&#160;ym)}&#160;drawn&#160;from&#160;p,<br/>
+8<br/>
+9<br/>
+test&#160;set&#160;X$&#160;=&#160;(x$1,&#160;y$1),&#160;.&#160;.&#160;.&#160;,&#160;(x$n,&#160;y$n)&#160;from&#160;p$&#160;4=&#160;p.<br/>
+Assume&#160;py|x&#160;=&#160;p$&#160;.<br/>
+y|x<br/>
+[35]:&#160;reweight&#160;training&#160;set<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=49></a><img class="yflip" src="./Schoelkopf_1-49_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-49_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-49_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-49_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-49_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-49_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-49_7.png"/><br/>
+Minimize<br/>
+7<br/>
+7<br/>
+7<br/>
+72<br/>
+7&#160;m<br/>
+!<br/>
+7<br/>
+!<br/>
+7<br/>
+7<br/>
+7<br/>
+βik(xi,&#160;·)&#160;−&#160;µ(X$)7&#160;+λ&#160;.β.22&#160;subject&#160;to&#160;βi&#160;≥&#160;0,<br/>
+βi&#160;=&#160;1.<br/>
+7i=1<br/>
+7<br/>
+i<br/>
+Equivalent&#160;QP:<br/>
+1<br/>
+minimize<br/>
+β+&#160;(K&#160;+&#160;λ1)&#160;β&#160;−&#160;β+l<br/>
+β<br/>
+2<br/>
+!<br/>
+subject&#160;to&#160;βi&#160;≥&#160;0&#160;and<br/>
+βi&#160;=&#160;1,<br/>
+i<br/>
+&#34;<br/>
+#<br/>
+where&#160;Kij&#160;:=&#160;k(xi,&#160;xj),&#160;li&#160;=&#160;k(xi,&#160;·),&#160;µ(X$)&#160;.<br/>Experiments&#160;show&#160;that&#160;in&#160;underspecified&#160;situations&#160;(e.g.,&#160;large&#160;ker-<br/>nel&#160;widths),&#160;this&#160;helps&#160;[21].<br/>
+8<br/>
+X$&#160;=&#160;x$9&#160;leads&#160;to&#160;a&#160;local&#160;sample&#160;weighting&#160;scheme.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=50></a><img class="yflip" src="./Schoelkopf_1-50_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-50_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-50_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-50_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-50_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-50_6.png"/><br/>
+Application&#160;4:<br/>
+Measure&#160;estimation&#160;and&#160;dataset<br/>
+squashing&#160;[9,&#160;4,&#160;1,&#160;37]<br/>
+Given&#160;a&#160;sample&#160;X,&#160;minimize<br/>
+.µ(X)&#160;−&#160;µ(p).2<br/>
+over&#160;a&#160;convex&#160;combination&#160;of&#160;measures&#160;pi,<br/>
+!<br/>
+!<br/>
+p&#160;=<br/>
+α<br/>
+α<br/>
+i&#160;ipi,<br/>
+αi&#160;≥&#160;0,<br/>
+i&#160;i&#160;=&#160;1.<br/>
+This&#160;can&#160;be&#160;written&#160;as&#160;a&#160;convex&#160;QP&#160;with&#160;objective&#160;function<br/>
+.µ(X)&#160;−&#160;µ(p).2&#160;=&#160;α+Qα+1+<br/>
+mK1m&#160;−&#160;2α+L1m,<br/>
+where<br/>
+4<br/>
+5<br/>
+Lij&#160;:=Ex∼p&#160;k(x,&#160;x<br/>
+i<br/>
+j)<br/>
+4<br/>
+5<br/>
+Qij&#160;:=Ex∼p<br/>
+k(x,&#160;x$)<br/>
+i,x$∼pj<br/>
+Kij&#160;=k(xi,&#160;xj)<br/>
+1m&#160;:=(1/m,&#160;.&#160;.&#160;.&#160;,&#160;1/m)+&#160;∈&#160;Rm.<br/>
+<hr/>
+<a name=51></a><img class="yflip" src="./Schoelkopf_1-51_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-51_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-51_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-51_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-51_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-51_6.png"/><br/>
+In&#160;practice,&#160;use<br/>
+α+[Q&#160;+&#160;λI]α&#160;−&#160;2α+L1m<br/>
+Some&#160;cases&#160;where&#160;Q&#160;and&#160;L&#160;can&#160;be&#160;computed&#160;in&#160;closed&#160;form&#160;[37]:<br/>
+•&#160;Gaussian&#160;pi&#160;and&#160;k&#160;(cf.&#160;[4,&#160;43])<br/>•&#160;X&#160;training&#160;set,&#160;Dirac&#160;measures&#160;pi&#160;=&#160;δx&#160;:&#160;dataset&#160;squashing,&#160;[11]<br/>
+i<br/>
+•&#160;X&#160;test&#160;set,&#160;Dirac&#160;measures&#160;pi&#160;=&#160;δy&#160;centered&#160;on&#160;the&#160;training&#160;points&#160;Y&#160;:<br/>
+i<br/>
+covariate&#160;shift&#160;correction&#160;[20]<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=52></a><img class="yflip" src="./Schoelkopf_1-52_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-52_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-52_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-52_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-52_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-52_6.png"/><br/>
+The&#160;Representer&#160;Theorem<br/>
+Theorem&#160;8&#160;Given:&#160;a&#160;p.d.&#160;kernel&#160;k&#160;on&#160;X&#160;×&#160;X,&#160;a&#160;training&#160;set<br/>(x1,&#160;y1),&#160;.&#160;.&#160;.&#160;,&#160;(xm,&#160;ym)&#160;∈&#160;X×R,&#160;a&#160;strictly&#160;monotonic&#160;increasing<br/>real-valued&#160;function&#160;Ω&#160;on&#160;[0,&#160;∞[,&#160;and&#160;an&#160;arbitrary&#160;cost&#160;function<br/>c&#160;:&#160;(X&#160;×&#160;R2)m&#160;→&#160;R&#160;∪&#160;{∞}<br/>Any&#160;f&#160;∈&#160;H&#160;minimizing&#160;the&#160;regularized&#160;risk&#160;functional<br/>
+c&#160;((x1,&#160;y1,&#160;f(x1)),&#160;.&#160;.&#160;.&#160;,&#160;(xm,&#160;ym,&#160;f(xm)))&#160;+&#160;Ω&#160;(.f.)<br/>
+(4)<br/>
+admits&#160;a&#160;representation&#160;of&#160;the&#160;form<br/>
+!m<br/>
+f&#160;(.)&#160;=<br/>
+α<br/>
+i=1&#160;ik(xi,&#160;.).<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=53></a><img class="yflip" src="./Schoelkopf_1-53_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-53_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-53_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-53_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-53_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-53_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-53_7.png"/><br/>
+Remarks<br/>
+•&#160;significance:&#160;many&#160;learning&#160;algorithms&#160;have&#160;solutions&#160;that&#160;can<br/>
+be&#160;expressed&#160;as&#160;expansions&#160;in&#160;terms&#160;of&#160;the&#160;training&#160;examples<br/>
+•&#160;original&#160;form,&#160;with&#160;mean&#160;squared&#160;loss<br/>
+m<br/>
+1&#160;!<br/>
+c((x1,&#160;y1,&#160;f(x1)),&#160;.&#160;.&#160;.&#160;,&#160;(xm,&#160;ym,&#160;f(xm)))&#160;=<br/>
+(y<br/>
+m<br/>
+i&#160;−&#160;f&#160;(xi))2,<br/>
+i=1<br/>
+and&#160;Ω(.f.)&#160;=&#160;λ.f.2&#160;(λ&#160;&gt;&#160;0):&#160;[24]<br/>
+•&#160;generalization&#160;to&#160;non-quadratic&#160;cost&#160;functions:&#160;[8]<br/>•&#160;present&#160;form:&#160;[32]<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=54></a><img class="yflip" src="./Schoelkopf_1-54_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-54_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-54_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-54_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-54_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-54_6.png"/><br/>
+Proof<br/>
+Decompose&#160;f&#160;∈&#160;H&#160;into&#160;a&#160;part&#160;in&#160;the&#160;span&#160;of&#160;the&#160;k(xi,&#160;.)&#160;and&#160;an<br/>orthogonal&#160;one:<br/>
+!<br/>
+f&#160;=<br/>
+αik(xi,&#160;.)&#160;+&#160;f⊥,<br/>
+where&#160;for&#160;all&#160;j<br/>
+i<br/>
+'f⊥,&#160;k(xj,&#160;.)(&#160;=&#160;0.<br/>
+Application&#160;of&#160;f&#160;to&#160;an&#160;arbitrary&#160;training&#160;point&#160;xj&#160;yields<br/>
+&#34;<br/>
+#<br/>
+f&#160;(xj)&#160;=&#160;f,&#160;k(xj,&#160;.)<br/>
+)<br/>
+*<br/>
+!<br/>
+=<br/>
+αik(xi,&#160;.)&#160;+&#160;f⊥,&#160;k(xj,&#160;.)<br/>
+i<br/>
+!<br/>
+=<br/>
+αi'k(xi,&#160;.),&#160;k(xj,&#160;.)(,<br/>
+i<br/>
+independent&#160;of&#160;f⊥.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=55></a><img class="yflip" src="./Schoelkopf_1-55_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-55_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-55_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-55_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-55_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-55_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-55_7.png"/><br/>
+Proof:&#160;second&#160;part&#160;of&#160;(4)<br/>
++<br/>
+Since&#160;f⊥&#160;is&#160;orthogonal&#160;to<br/>
+i&#160;αik(xi,&#160;.),&#160;and&#160;Ω&#160;is&#160;strictly&#160;mono-<br/>
+tonic,&#160;we&#160;get<br/>
+3&#160;!<br/>
+6<br/>
+Ω(.f.)&#160;=&#160;Ω&#160;.<br/>
+α<br/>
+i&#160;ik(xi,&#160;.)&#160;+&#160;f⊥.<br/>
+:;<br/>
+&lt;<br/>
+!<br/>
+=&#160;Ω<br/>
+.<br/>
+α<br/>
+i&#160;ik(xi,&#160;.).2&#160;+&#160;.f⊥.2<br/>
+3&#160;!<br/>
+6<br/>
+≥&#160;Ω&#160;.<br/>
+α<br/>
+,<br/>
+(5)<br/>
+i&#160;ik(xi,&#160;.).<br/>
+with&#160;equality&#160;occuring&#160;if&#160;and&#160;only&#160;if&#160;f⊥&#160;=&#160;0.<br/>
+Hence,&#160;any&#160;minimizer&#160;must&#160;have&#160;f⊥&#160;=&#160;0.&#160;Consequently,&#160;any<br/>
+solution&#160;takes&#160;the&#160;form<br/>
+!<br/>
+f&#160;=<br/>
+α<br/>
+i&#160;ik(xi,&#160;.).<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=56></a><img class="yflip" src="./Schoelkopf_1-56_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-56_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-56_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-56_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-56_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-56_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-56_7.png"/><br/>
+Application:&#160;Support&#160;Vector&#160;Classification<br/>
+Here,&#160;yi&#160;∈&#160;{±1}.&#160;Use<br/>
+1&#160;!<br/>
+c&#160;((xi,&#160;yi,&#160;f&#160;(xi))i)&#160;=<br/>
+max&#160;(0,&#160;1&#160;−&#160;y<br/>
+λ<br/>
+if&#160;(xi))&#160;,<br/>
+i<br/>
+and&#160;the&#160;regularizer&#160;Ω&#160;(.f.)&#160;=&#160;.f.2.<br/>λ&#160;→&#160;0&#160;leads&#160;to&#160;the&#160;hard&#160;margin&#160;SVM<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=57></a><img class="yflip" src="./Schoelkopf_1-57_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-57_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-57_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-57_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-57_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-57_6.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-57_7.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-57_8.png"/><br/>
+Further&#160;Applications<br/>
+Bayesian&#160;MAP&#160;Estimates.&#160;Identify&#160;(4)&#160;with&#160;the&#160;negative&#160;log<br/>posterior&#160;(cf.&#160;Kimeldorf&#160;&amp;&#160;Wahba,&#160;1970,&#160;Poggio&#160;&amp;&#160;Girosi,&#160;1990),<br/>i.e.<br/>
+•&#160;exp(−c((xi,&#160;yi,&#160;f(xi))i))&#160;—&#160;likelihood&#160;of&#160;the&#160;data<br/>•&#160;exp(−Ω(.f.))&#160;—&#160;prior&#160;over&#160;the&#160;set&#160;of&#160;functions;&#160;e.g.,&#160;Ω(.f.)&#160;=<br/>
+λ.f.2&#160;—&#160;Gaussian&#160;process&#160;prior&#160;[45]&#160;with&#160;covariance&#160;function<br/>k<br/>
+•&#160;minimizer&#160;of&#160;(4)&#160;=&#160;MAP&#160;estimate<br/>
+Kernel&#160;PCA&#160;(see&#160;below)&#160;can&#160;be&#160;shown&#160;to&#160;correspond&#160;to&#160;the&#160;case<br/>of<br/>
+<br/>
+<br/>
++&#160;3<br/>
++<br/>
+62<br/>
+c((x<br/>
+0<br/>
+if&#160;1<br/>
+f&#160;(xi)&#160;−&#160;1<br/>
+=&#160;1<br/>
+i,&#160;yi,&#160;f&#160;(xi))i=1,...,m)&#160;=<br/>
+m<br/>
+i<br/>
+m<br/>
+j&#160;f&#160;(xj)<br/>
+&#160;∞&#160;otherwise<br/>
+with&#160;g&#160;an&#160;arbitrary&#160;strictly&#160;monotonically&#160;increasing&#160;function.<br/>
+<hr/>
+<a name=58></a><img class="yflip" src="./Schoelkopf_1-58_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-58_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-58_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-58_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-58_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-58_6.png"/><br/>
+The&#160;Pre-Image&#160;Problem<br/>
+•&#160;due&#160;to&#160;the&#160;representer&#160;theorem,&#160;the&#160;solution&#160;of&#160;kernel&#160;algorithms<br/>
+usually&#160;corresponds&#160;to&#160;a&#160;single&#160;vector&#160;in&#160;H<br/>
+m<br/>
+!<br/>
+w&#160;=<br/>
+αiΦ(xi).<br/>
+i=1<br/>
+However,&#160;there&#160;is&#160;usually&#160;no&#160;x&#160;∈&#160;X&#160;such&#160;that<br/>
+Φ(x)&#160;=&#160;w,<br/>
+i.e.,&#160;Φ(X)&#160;is&#160;not&#160;closed&#160;under&#160;linear&#160;combinations&#160;—&#160;it&#160;is&#160;a<br/>nonlinear&#160;manifold&#160;(cf.&#160;[7,&#160;31]).<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=59></a><img class="yflip" src="./Schoelkopf_1-59_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-59_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-59_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-59_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-59_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-59_6.png"/><br/>
+Conclusion&#160;so&#160;far<br/>
+•&#160;the&#160;kernel&#160;corresponds&#160;to<br/>
+–&#160;a&#160;similarity&#160;measure&#160;for&#160;the&#160;data,&#160;or<br/>–&#160;a&#160;(linear)&#160;representation&#160;of&#160;the&#160;data,&#160;or<br/>–&#160;a&#160;hypothesis&#160;space&#160;for&#160;learning,<br/>
+•&#160;kernels&#160;allow&#160;the&#160;formulation&#160;of&#160;a&#160;multitude&#160;of&#160;geometrical&#160;algo-<br/>
+rithms&#160;(Parzen&#160;windows,&#160;2-sample&#160;tests,&#160;SVMs,&#160;kernel&#160;PCA,...)<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=60></a><img class="yflip" src="./Schoelkopf_1-60_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-60_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-60_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-60_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-60_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-60_6.png"/><br/>
+References<br/>
+[1]&#160;Y.&#160;Altun&#160;and&#160;A.J.&#160;Smola.&#160;Unifying&#160;divergence&#160;minimization&#160;and&#160;statistical&#160;inference&#160;via&#160;convex&#160;duality.&#160;In&#160;H.U.&#160;Simon<br/>
+and&#160;G.&#160;Lugosi,&#160;editors,&#160;Proc.&#160;Annual&#160;Conf.&#160;Computational&#160;Learning&#160;Theory,&#160;LNCS,&#160;pages&#160;139–153.&#160;Springer,&#160;2006.<br/>
+[2]&#160;N.&#160;Aronszajn.&#160;Theory&#160;of&#160;reproducing&#160;kernels.&#160;Transactions&#160;of&#160;the&#160;American&#160;Mathematical&#160;Society,&#160;68:337–404,&#160;1950.<br/>
+[3]&#160;F.&#160;R.&#160;Bach&#160;and&#160;M.&#160;I.&#160;Jordan.&#160;Kernel&#160;independent&#160;component&#160;analysis.&#160;J.&#160;Mach.&#160;Learn.&#160;Res.,&#160;3:1–48,&#160;2002.<br/>
+[4]&#160;N.&#160;Balakrishnan&#160;and&#160;D.&#160;Schonfeld.&#160;A&#160;maximum&#160;entropy&#160;kernel&#160;density&#160;estimator&#160;with&#160;applications&#160;to&#160;function&#160;inter-<br/>
+polation&#160;and&#160;texture&#160;segmentation.&#160;In&#160;SPIE&#160;Proceedings&#160;of&#160;Electronic&#160;Imaging:&#160;Science&#160;and&#160;Technology.&#160;Conference&#160;on<br/>Computational&#160;Imaging&#160;IV,&#160;San&#160;Jose,&#160;CA,&#160;2006.<br/>
+[5]&#160;C.&#160;Berg,&#160;J.&#160;P.&#160;R.&#160;Christensen,&#160;and&#160;P.&#160;Ressel.&#160;Harmonic&#160;Analysis&#160;on&#160;Semigroups.&#160;Springer-Verlag,&#160;New&#160;York,&#160;1984.<br/>
+[6]&#160;B.&#160;E.&#160;Boser,&#160;I.&#160;M.&#160;Guyon,&#160;and&#160;V.&#160;N.&#160;Vapnik.&#160;A&#160;training&#160;algorithm&#160;for&#160;optimal&#160;margin&#160;classifiers.&#160;In&#160;D.&#160;Haussler,&#160;editor,<br/>
+Proceedings&#160;of&#160;the&#160;5th&#160;Annual&#160;ACM&#160;Workshop&#160;on&#160;Computational&#160;Learning&#160;Theory,&#160;pages&#160;144–152,&#160;Pittsburgh,&#160;PA,&#160;July<br/>1992.&#160;ACM&#160;Press.<br/>
+[7]&#160;C.&#160;J.&#160;C.&#160;Burges.&#160;Geometry&#160;and&#160;invariance&#160;in&#160;kernel&#160;based&#160;methods.&#160;In&#160;B.&#160;Sch¨<br/>
+olkopf,&#160;C.&#160;J.&#160;C.&#160;Burges,&#160;and&#160;A.&#160;J.&#160;Smola,<br/>
+editors,&#160;Advances&#160;in&#160;Kernel&#160;Methods&#160;—&#160;Support&#160;Vector&#160;Learning,&#160;pages&#160;89–116,&#160;Cambridge,&#160;MA,&#160;1999.&#160;MIT&#160;Press.<br/>
+[8]&#160;D.&#160;Cox&#160;and&#160;F.&#160;O’Sullivan.&#160;Asymptotic&#160;analysis&#160;of&#160;penalized&#160;likelihood&#160;and&#160;related&#160;estimators.&#160;Annals&#160;of&#160;Statistics,<br/>
+18:1676–1695,&#160;1990.<br/>
+[9]&#160;M.&#160;Dud´ık,&#160;S.&#160;Phillips,&#160;and&#160;R.E.&#160;Schapire.&#160;Performance&#160;guarantees&#160;for&#160;regularized&#160;maximum&#160;entropy&#160;density&#160;estimation.&#160;In<br/>
+Proc.&#160;Annual&#160;Conf.&#160;Computational&#160;Learning&#160;Theory.&#160;Springer&#160;Verlag,&#160;2004.<br/>
+[10]&#160;R.&#160;M.&#160;Dudley.&#160;Real&#160;analysis&#160;and&#160;probability.&#160;Cambridge&#160;University&#160;Press,&#160;Cambridge,&#160;UK,&#160;2002.<br/>
+[11]&#160;W.&#160;DuMouchel,&#160;C.&#160;Volinsky,&#160;C.&#160;Cortes,&#160;D.&#160;Pregibon,&#160;and&#160;T.&#160;Johnson.&#160;Squashing&#160;flat&#160;files&#160;flatter.&#160;In&#160;International&#160;Conference<br/>
+on&#160;Knowledge&#160;Discovery&#160;and&#160;Data&#160;Mining&#160;(KDD),&#160;1999.<br/>
+<hr/>
+<a name=61></a>[12]&#160;T.&#160;Evgeniou,&#160;M.&#160;Pontil,&#160;and&#160;T.&#160;Poggio.&#160;Regularization&#160;networks&#160;and&#160;support&#160;vector&#160;machines.&#160;In&#160;A.&#160;J.&#160;Smola,&#160;P.&#160;L.<br/>
+Bartlett,&#160;B.&#160;Sch¨olkopf,&#160;and&#160;D.&#160;Schuurmans,&#160;editors,&#160;Advances&#160;in&#160;Large&#160;Margin&#160;Classifiers,&#160;pages&#160;171–203,&#160;Cambridge,&#160;MA,<br/>2000.&#160;MIT&#160;Press.<br/>
+[13]&#160;R.&#160;Fortet&#160;and&#160;E.&#160;Mourier.&#160;Convergence&#160;de&#160;la&#160;r´eparation&#160;empirique&#160;vers&#160;la&#160;r´eparation&#160;th´eorique.&#160;Ann.&#160;Scient.&#160;´<br/>
+Ecole&#160;Norm.<br/>
+Sup.,&#160;70:266–285,&#160;1953.<br/>
+[14]&#160;K.&#160;Fukumizu,&#160;F.&#160;R.&#160;Bach,&#160;and&#160;M.&#160;I.&#160;Jordan.&#160;Dimensionality&#160;reduction&#160;for&#160;supervised&#160;learning&#160;with&#160;reproducing&#160;kernel<br/>
+hilbert&#160;spaces.&#160;J.&#160;Mach.&#160;Learn.&#160;Res.,&#160;5:73–99,&#160;2004.<br/>
+[15]&#160;F.&#160;Girosi.&#160;An&#160;equivalence&#160;between&#160;sparse&#160;approximation&#160;and&#160;support&#160;vector&#160;machines.&#160;Neural&#160;Computation,&#160;10(6):1455–<br/>
+1480,&#160;1998.<br/>
+[16]&#160;A.&#160;Gretton,&#160;K.&#160;Borgwardt,&#160;M.&#160;Rasch,&#160;B.&#160;Sch¨olkopf,&#160;and&#160;A.&#160;J.&#160;Smola.&#160;A&#160;kernel&#160;method&#160;for&#160;the&#160;two-sample-problem.&#160;In<br/>
+B.&#160;Sch¨olkopf,&#160;J.&#160;Platt,&#160;and&#160;T.&#160;Hofmann,&#160;editors,&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems&#160;19,&#160;volume&#160;19.&#160;The<br/>MIT&#160;Press,&#160;Cambridge,&#160;MA,&#160;2007.<br/>
+[17]&#160;A.&#160;Gretton,&#160;O.&#160;Bousquet,&#160;A.J.&#160;Smola,&#160;and&#160;B.&#160;Sch¨<br/>
+olkopf.&#160;Measuring&#160;statistical&#160;dependence&#160;with&#160;Hilbert-Schmidt&#160;norms.<br/>
+In&#160;S.&#160;Jain,&#160;H.&#160;U.&#160;Simon,&#160;and&#160;E.&#160;Tomita,&#160;editors,&#160;Proceedings&#160;Algorithmic&#160;Learning&#160;Theory,&#160;pages&#160;63–77,&#160;Berlin,&#160;Germany,<br/>2005.&#160;Springer-Verlag.<br/>
+[18]&#160;A.&#160;Gretton,&#160;R.&#160;Herbrich,&#160;A.&#160;Smola,&#160;O.&#160;Bousquet,&#160;and&#160;B.&#160;Sch¨<br/>
+olkopf.&#160;Kernel&#160;methods&#160;for&#160;measuring&#160;independence.&#160;J.&#160;Mach.<br/>
+Learn.&#160;Res.,&#160;6:2075–2129,&#160;2005.<br/>
+[19]&#160;D.&#160;Haussler.&#160;Convolutional&#160;kernels&#160;on&#160;discrete&#160;structures.&#160;Technical&#160;Report&#160;UCSC-CRL-99-10,&#160;Computer&#160;Science&#160;Depart-<br/>
+ment,&#160;University&#160;of&#160;California&#160;at&#160;Santa&#160;Cruz,&#160;1999.<br/>
+[20]&#160;J.&#160;Huang,&#160;A.&#160;Smola,&#160;A.&#160;Gretton,&#160;K.&#160;Borgwardt,&#160;and&#160;B.&#160;Sch¨olkopf.&#160;Correcting&#160;sample&#160;selection&#160;bias&#160;by&#160;unlabeled&#160;data.&#160;In<br/>
+Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems&#160;19,&#160;Cambridge,&#160;MA,&#160;2007.&#160;MIT&#160;Press.<br/>
+[21]&#160;J.&#160;Huang,&#160;A.J.&#160;Smola,&#160;A.&#160;Gretton,&#160;K.&#160;Borgwardt,&#160;and&#160;B.&#160;Sch¨olkopf.&#160;Correcting&#160;sample&#160;selection&#160;bias&#160;by&#160;unlabeled&#160;data.&#160;In<br/>
+B.&#160;Sch¨olkopf,&#160;J.&#160;Platt,&#160;and&#160;T.&#160;Hofmann,&#160;editors,&#160;Advances&#160;in&#160;Neural&#160;Information&#160;Processing&#160;Systems&#160;19,&#160;volume&#160;19.&#160;The<br/>MIT&#160;Press,&#160;Cambridge,&#160;MA,&#160;2007.<br/>
+[22]&#160;J.&#160;Jacod&#160;and&#160;P.&#160;Protter.&#160;Probability&#160;Essentials.&#160;Springer,&#160;New&#160;York,&#160;2000.<br/>
+[23]&#160;G.&#160;S.&#160;Kimeldorf&#160;and&#160;G.&#160;Wahba.&#160;A&#160;correspondence&#160;between&#160;Bayesian&#160;estimation&#160;on&#160;stochastic&#160;processes&#160;and&#160;smoothing&#160;by<br/>
+splines.&#160;Annals&#160;of&#160;Mathematical&#160;Statistics,&#160;41:495–502,&#160;1970.<br/>
+<hr/>
+<a name=62></a>[24]&#160;G.&#160;S.&#160;Kimeldorf&#160;and&#160;G.&#160;Wahba.&#160;Some&#160;results&#160;on&#160;Tchebycheffian&#160;spline&#160;functions.&#160;J.&#160;Math.&#160;Anal.&#160;Applic.,&#160;33:82–95,&#160;1971.<br/>
+[25]&#160;D.&#160;J.&#160;C.&#160;MacKay.&#160;Introduction&#160;to&#160;gaussian&#160;processes.&#160;In&#160;C.&#160;M.&#160;Bishop,&#160;editor,&#160;Neural&#160;Networks&#160;and&#160;Machine&#160;Learning,<br/>
+pages&#160;133–165.&#160;Springer-Verlag,&#160;Berlin,&#160;1998.<br/>
+[26]&#160;J.&#160;Mercer.&#160;Functions&#160;of&#160;positive&#160;and&#160;negative&#160;type&#160;and&#160;their&#160;connection&#160;with&#160;the&#160;theory&#160;of&#160;integral&#160;equations.&#160;Phi-<br/>
+los.&#160;Trans.&#160;Roy.&#160;Soc.&#160;London,&#160;A&#160;209:415–446,&#160;1909.<br/>
+[27]&#160;T.&#160;Poggio&#160;and&#160;F.&#160;Girosi.&#160;Networks&#160;for&#160;approximation&#160;and&#160;learning.&#160;Proceedings&#160;of&#160;the&#160;IEEE,&#160;78(9),&#160;September&#160;1990.<br/>
+[28]&#160;A.&#160;R´enyi.&#160;On&#160;measures&#160;of&#160;dependence.&#160;Acta&#160;Math.&#160;Acad.&#160;Sci.&#160;Hungar.,&#160;10:441–451,&#160;1959.<br/>
+[29]&#160;S.&#160;Saitoh.&#160;Theory&#160;of&#160;Reproducing&#160;Kernels&#160;and&#160;its&#160;Applications.&#160;Longman&#160;Scientific&#160;&amp;&#160;Technical,&#160;Harlow,&#160;England,&#160;1988.<br/>
+[30]&#160;B.&#160;Sch¨olkopf.&#160;Support&#160;Vector&#160;Learning.&#160;R.&#160;Oldenbourg&#160;Verlag,&#160;M¨<br/>
+unchen,&#160;1997.&#160;Doktorarbeit,&#160;TU&#160;Berlin.&#160;Download:<br/>
+http://www.kernel-machines.org.<br/>
+[31]&#160;B.&#160;Sch¨olkopf,&#160;S.&#160;Mika,&#160;C.&#160;Burges,&#160;P.&#160;Knirsch,&#160;K.-R.&#160;M¨<br/>
+uller,&#160;G.&#160;R¨atsch,&#160;and&#160;A.&#160;Smola.&#160;Input&#160;space&#160;vs.&#160;feature&#160;space&#160;in<br/>
+kernel-based&#160;methods.&#160;IEEE&#160;Transactions&#160;on&#160;Neural&#160;Networks,&#160;10(5):1000–1017,&#160;1999.<br/>
+[32]&#160;B.&#160;Sch¨olkopf&#160;and&#160;A.&#160;Smola.&#160;Learning&#160;with&#160;Kernels.&#160;MIT&#160;Press,&#160;Cambridge,&#160;MA,&#160;2002.<br/>
+[33]&#160;B.&#160;Sch¨olkopf,&#160;J.&#160;Weston,&#160;E.&#160;Eskin,&#160;C.&#160;Leslie,&#160;and&#160;W.&#160;S.&#160;Noble.&#160;A&#160;kernel&#160;approach&#160;for&#160;learning&#160;from&#160;almost&#160;orthogonal&#160;pat-<br/>
+terns.&#160;In&#160;T.&#160;Elomaa,&#160;H.&#160;Mannila,&#160;and&#160;H.&#160;Toivonen,&#160;editors,&#160;13th&#160;European&#160;Conference&#160;on&#160;Machine&#160;Learning&#160;(ECML&#160;2002)<br/>and&#160;6th&#160;European&#160;Conference&#160;on&#160;Principles&#160;and&#160;Practice&#160;of&#160;Knowledge&#160;Discovery&#160;in&#160;Databases&#160;(PKDD’2002),&#160;Helsinki,<br/>volume&#160;2430/2431&#160;of&#160;Lecture&#160;Notes&#160;in&#160;Computer&#160;Science,&#160;pages&#160;511–528,&#160;Berlin,&#160;2002.&#160;Springer.<br/>
+[34]&#160;J.&#160;Shawe-Taylor&#160;and&#160;N.&#160;Cristianini.&#160;Kernel&#160;Methods&#160;for&#160;Pattern&#160;Analysis.&#160;Cambridge&#160;University&#160;Press,&#160;Cambridge,&#160;UK,<br/>
+2004.<br/>
+[35]&#160;H.&#160;Shimodaira.&#160;Improving&#160;predictive&#160;inference&#160;under&#160;convariance&#160;shift&#160;by&#160;weighting&#160;the&#160;log-likelihood&#160;function.&#160;Journal&#160;of<br/>
+Statistical&#160;Planning&#160;and&#160;Inference,&#160;90,&#160;2000.<br/>
+[36]&#160;A.&#160;Smola,&#160;B.&#160;Sch¨olkopf,&#160;and&#160;K.-R.&#160;M¨<br/>
+uller.&#160;The&#160;connection&#160;between&#160;regularization&#160;operators&#160;and&#160;support&#160;vector&#160;kernels.<br/>
+Neural&#160;Networks,&#160;11:637–649,&#160;1998.<br/>
+[37]&#160;A.&#160;J.&#160;Smola,&#160;A.&#160;Gretton,&#160;L.&#160;Song,&#160;and&#160;B.&#160;Sch¨<br/>
+olkopf.&#160;A&#160;Hilbert&#160;space&#160;embedding&#160;for&#160;distributions.&#160;In&#160;Proc.&#160;Intl.&#160;Conf.<br/>
+Algorithmic&#160;Learning&#160;Theory,&#160;volume&#160;4754&#160;of&#160;LNAI.&#160;Springer,&#160;2007.<br/>
+<hr/>
+<a name=63></a>[38]&#160;I.&#160;Steinwart.&#160;On&#160;the&#160;influence&#160;of&#160;the&#160;kernel&#160;on&#160;the&#160;consistency&#160;of&#160;support&#160;vector&#160;machines.&#160;J.&#160;Mach.&#160;Learn.&#160;Res.,&#160;2:67–93,<br/>
+2001.<br/>
+[39]&#160;V.&#160;Vapnik.&#160;The&#160;Nature&#160;of&#160;Statistical&#160;Learning&#160;Theory.&#160;Springer,&#160;NY,&#160;1995.<br/>
+[40]&#160;V.&#160;Vapnik.&#160;Statistical&#160;Learning&#160;Theory.&#160;Wiley,&#160;NY,&#160;1998.<br/>
+[41]&#160;G.&#160;Wahba.&#160;Spline&#160;Models&#160;for&#160;Observational&#160;Data,&#160;volume&#160;59&#160;of&#160;CBMS-NSF&#160;Regional&#160;Conference&#160;Series&#160;in&#160;Applied&#160;Math-<br/>
+ematics.&#160;SIAM,&#160;Philadelphia,&#160;1990.<br/>
+[42]&#160;M.&#160;J.&#160;Wainwright&#160;and&#160;M.&#160;I.&#160;Jordan.&#160;Graphical&#160;models,&#160;exponential&#160;families,&#160;and&#160;variational&#160;inference.&#160;Technical&#160;Report<br/>
+649,&#160;UC&#160;Berkeley,&#160;Department&#160;of&#160;Statistics,&#160;September&#160;2003.<br/>
+[43]&#160;C.&#160;Walder,&#160;K.&#160;Kim,&#160;and&#160;B.&#160;Sch¨<br/>
+olkopf.&#160;Sparse&#160;multiscale&#160;gaussian&#160;process&#160;regression.&#160;Technical&#160;Report&#160;162,&#160;Max-Planck-<br/>
+Institut&#160;f¨<br/>
+ur&#160;biologische&#160;Kybernetik,&#160;2007.<br/>
+[44]&#160;H.&#160;L.&#160;Weinert.&#160;Reproducing&#160;Kernel&#160;Hilbert&#160;Spaces.&#160;Hutchinson&#160;Ross,&#160;Stroudsburg,&#160;PA,&#160;1982.<br/>
+[45]&#160;C.&#160;K.&#160;I.&#160;Williams.&#160;Prediction&#160;with&#160;Gaussian&#160;processes:&#160;From&#160;linear&#160;regression&#160;to&#160;linear&#160;prediction&#160;and&#160;beyond.&#160;In&#160;M.&#160;I.<br/>
+Jordan,&#160;editor,&#160;Learning&#160;and&#160;Inference&#160;in&#160;Graphical&#160;Models.&#160;Kluwer,&#160;1998.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=64></a><img class="yflip" src="./Schoelkopf_1-64_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-64_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-64_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-64_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-64_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-64_6.png"/><br/>
+Regularization&#160;Interpretation&#160;of&#160;Kernel&#160;Machines<br/>
+The&#160;norm&#160;in&#160;H&#160;can&#160;be&#160;interpreted&#160;as&#160;a&#160;regularization&#160;term&#160;(Girosi<br/>1998,&#160;Smola&#160;et&#160;al.,&#160;1998,&#160;Evgeniou&#160;et&#160;al.,&#160;2000):&#160;if&#160;P&#160;is&#160;a&#160;regular-<br/>ization&#160;operator&#160;(mapping&#160;into&#160;a&#160;dot&#160;product&#160;space&#160;D)&#160;such&#160;that<br/>k&#160;is&#160;Green’s&#160;function&#160;of&#160;P&#160;∗P&#160;,&#160;then<br/>
+.w.&#160;=&#160;.P&#160;f.,<br/>
+where<br/>
+!m<br/>
+w&#160;=<br/>
+α<br/>
+i=1&#160;iΦ(xi)<br/>
+and<br/>
+!<br/>
+f&#160;(x)&#160;=<br/>
+α<br/>
+i&#160;ik(xi,&#160;x).<br/>
+Example:&#160;for&#160;the&#160;Gaussian&#160;kernel,&#160;P&#160;is&#160;a&#160;linear&#160;combination&#160;of<br/>differential&#160;operators.<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+<a name=65></a><img class="yflip" src="./Schoelkopf_1-65_1.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-65_2.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-65_3.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-65_4.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-65_5.png"/><br/>
+<img class="yflip" src="./Schoelkopf_1-65_6.png"/><br/>
+!<br/>
+.w.2&#160;=<br/>
+αiαjk(xi,&#160;xj)<br/>
+i,j<br/>
+!<br/>
+,<br/>
+-<br/>
+=<br/>
+αiαj&#160;k(xi,&#160;.),&#160;δx&#160;(.)<br/>
+j<br/>
+i,j<br/>
+!<br/>
+&#34;<br/>
+#<br/>
+=<br/>
+αiαj&#160;k(xi,&#160;.),&#160;(P&#160;∗P&#160;k)(xj,&#160;.)<br/>
+i,j<br/>
+!<br/>
+&#34;<br/>
+#<br/>
+=<br/>
+αiαj&#160;(P&#160;k)(xi,&#160;.),&#160;(P&#160;k)(xj,&#160;.)&#160;D<br/>
+i,j<br/>
+)<br/>
+*<br/>
+!<br/>
+!<br/>
+=<br/>
+(P<br/>
+αik)(xi,&#160;.),&#160;(P<br/>
+αjk)(xj,&#160;.)<br/>
+i<br/>
+j<br/>
+D<br/>
+=&#160;.P&#160;f.2,<br/>
++<br/>
+using&#160;f&#160;(x)&#160;=<br/>
+i&#160;αik(xi,&#160;x).<br/>
+B.&#160;Sch¨olkopf,&#160;Cambridge,&#160;2009<br/>
+<hr/>
+</body>
+</html>

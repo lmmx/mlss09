@@ -1,0 +1,615 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><img src="./Bishop-MLSS-09-1-1_1.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-1_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-1_3.png"/><br/>
+<b>INTRODUCTION TO<br/>BAYESIAN&#160;INFERENCE&#160;–&#160;PART 1</b><br/>
+<b>CHRIS BISHOP</b><br/>
+<hr/>
+<a name=2></a><hr/>
+<a name=3></a><img src="./Bishop-MLSS-09-1-3_1.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-3_2.jpg"/><br/>
+<a href="http://research.microsoft.com/~cmbishop">http://research.microsoft.com/~cmbishop</a><br/>
+<hr/>
+<a name=4></a><img src="./Bishop-MLSS-09-1-4_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-4_2.jpg"/><br/>
+First Generation<br/>
+“Artificial&#160;Intelligence” (GOFAI)<br/><i>Within&#160;a generation&#160;...&#160;the&#160;problem&#160;of&#160;creating&#160;</i><br/>
+<i>‘artificial&#160;intelligence’&#160;will&#160;largely&#160;be solved</i><br/>
+Marvin&#160;Minsky&#160;(1967)<br/>
+Expert Systems&#160;(1980s)<br/>
+knowledge-based&#160;AI<br/>rules&#160;elicited from&#160;humans<br/>
+Combinatorial explosion<br/>
+General&#160;theme:&#160;hand-crafted&#160;rules<br/>
+<hr/>
+<a name=5></a><img src="./Bishop-MLSS-09-1-5_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-5_2.png"/><br/>
+Second Generation<br/>
+Neural&#160;networks,&#160;support&#160;vector machines<br/>
+Difficult&#160;to incorporate&#160;complex&#160;domain&#160;knowledge<br/>
+General&#160;theme:&#160;black-box&#160;statistical&#160;models<br/>
+<hr/>
+<a name=6></a><img src="./Bishop-MLSS-09-1-6_1.png"/><br/>
+Third Generation<br/>
+General&#160;theme:&#160;deep&#160;integration&#160;of&#160;domain<br/>
+knowledge and&#160;statistical&#160;learning<br/>
+Bayesian framework<br/>Probabilistic&#160;graphical&#160;models<br/>Fast inference&#160;using&#160;local&#160;message-passing<br/>
+Origins:&#160;Bayesian&#160;networks,&#160;decision&#160;theory,&#160;HMMs,&#160;<br/>
+Kalman&#160;filters,&#160;MRFs,&#160;mean&#160;field theory,&#160;...&#160;<br/>
+<hr/>
+<a name=7></a><img src="./Bishop-MLSS-09-1-7_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-7_2.jpg"/><br/>
+Probability&#160;Theory<br/>
+Apples&#160;and&#160;Oranges<br/>
+Fruit&#160;is&#160;orange, what is&#160;probability&#160;that box&#160;was&#160;blue?<br/>
+<hr/>
+<a name=8></a><img src="./Bishop-MLSS-09-1-8_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-8_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-8_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-8_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-8_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-8_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-8_7.png"/><br/>
+The&#160;Rules&#160;of Probability<br/>
+Sum rule<br/>
+Product&#160;rule<br/>
+<hr/>
+<a name=9></a><img src="./Bishop-MLSS-09-1-9_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-9_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-9_3.png"/><br/>
+Bayes’&#160;Theorem<br/>
+<hr/>
+<a name=10></a><img src="./Bishop-MLSS-09-1-10_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-10_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-10_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-10_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-10_5.png"/><br/>
+Oranges and Apples<br/>
+Suppose<br/>Suppose&#160;we select an&#160;orange<br/>
+Then&#160;<br/>
+and hence&#160;<br/>
+<hr/>
+<a name=11></a><img src="./Bishop-MLSS-09-1-11_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-11_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-11_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-11_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-11_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-11_6.png"/><br/>
+Probability&#160;Densities<br/>
+<hr/>
+<a name=12></a><img src="./Bishop-MLSS-09-1-12_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-12_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-12_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-12_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-12_5.png"/><br/>
+Bayesian&#160;Inference<br/>
+Consistent&#160;use&#160;of probability&#160;to quantify&#160;uncertainty<br/>
+posterior<br/>
+likelihood&#160;function&#160;<br/>
+prior<br/>
+Predictions&#160;involve marginalisation,&#160;e.g.<br/>
+<hr/>
+<a name=13></a><img src="./Bishop-MLSS-09-1-13_1.png"/><br/>
+Why is&#160;prior knowledge important?<br/>
+?<br/>
+<i>y</i><br/>
+<i>x</i><br/>
+<hr/>
+<a name=14></a><img src="./Bishop-MLSS-09-1-14_1.png"/><br/>
+Probabilistic&#160;Graphical Models<br/>
+Combine&#160;probability&#160;theory&#160;with&#160;graphs<br/>
+new insights&#160;into&#160;existing&#160;models<br/>framework&#160;for designing&#160;new&#160;models<br/>Graph-based&#160;algorithms&#160;for calculation&#160;and&#160;<br/>
+computation&#160;(c.f.&#160;Feynman&#160;diagrams&#160;in&#160;physics)<br/>
+efficient&#160;software implementation<br/>
+<i>Directed graphs&#160;</i>to specify&#160;the model<br/><i>Factor graphs&#160;</i>for&#160;inference and&#160;learning<br/>
+<hr/>
+<a name=15></a><img src="./Bishop-MLSS-09-1-15_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-15_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-15_3.png"/><br/>
+Decomposition<br/>
+Consider an&#160;arbitrary&#160;joint&#160;distribution<br/>
+By&#160;successive&#160;application&#160;of the&#160;product&#160;rule:<br/>
+<hr/>
+<a name=16></a><img src="./Bishop-MLSS-09-1-16_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-16_2.png"/><br/>
+Directed&#160;Graphs<br/>
+Arrows&#160;indicate&#160;causal&#160;relationships<br/>
+<hr/>
+<a name=17></a><img src="./Bishop-MLSS-09-1-17_1.png"/><br/>
+MAAS<br/>
+<i>Manchester Asthma&#160;and&#160;Allergies&#160;Study<br/></i>Goal:&#160;discover&#160;environmental&#160;and&#160;genetic causes of&#160;<br/>
+asthma<br/>
+1,186&#160;children&#160;monitored&#160;since&#160;birth<br/>640k&#160;SNPs&#160;per&#160;child<br/>Many environment&#160;and&#160;physiological&#160;measurements:<br/>
+skin&#160;and&#160;IgE&#160;blood&#160;tests&#160;at age&#160;1,&#160;3,&#160;5,&#160;and&#160;8<br/>wheezing,&#160;methacholine&#160;response,<br/>pets,&#160;parental smoking,&#160;day-care,&#160;breast&#160;feeding, ...<br/>
+<hr/>
+<a name=18></a><img src="./Bishop-MLSS-09-1-18_1.jpg"/><br/>
+<hr/>
+<a name=19></a><img src="./Bishop-MLSS-09-1-19_1.jpg"/><br/>
+{0,1}<br/>
+{0,1}<br/>
+{0,1}<br/>
+{0,1}<br/>
+<hr/>
+<a name=20></a><img src="./Bishop-MLSS-09-1-20_1.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-20_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-20_3.jpg"/><br/>
+<hr/>
+<a name=21></a><img src="./Bishop-MLSS-09-1-21_1.jpg"/><br/>
+21<br/>
+<hr/>
+<a name=22></a><img src="./Bishop-MLSS-09-1-22_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-22_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-22_3.png"/><br/>
+Factor&#160;Graphs<br/>
+<hr/>
+<a name=23></a><img src="./Bishop-MLSS-09-1-23_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-23_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-23_3.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-23_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-23_5.png"/><br/>
+From Directed&#160;Graph&#160;to Factor&#160;Graph<br/>
+<hr/>
+<a name=24></a><img src="./Bishop-MLSS-09-1-24_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-24_2.png"/><br/>
+Inference&#160;on Graphs<br/>
+<hr/>
+<a name=25></a><img src="./Bishop-MLSS-09-1-25_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-25_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-25_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-25_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-25_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-25_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-25_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-25_8.png"/><br/>
+Factor&#160;Trees: Separation<br/>
+y<br/>
+f&#160;(x,y)<br/>
+v<br/>
+w<br/>
+x<br/>
+3<br/>
+f&#160;(v,w)<br/>
+f&#160;(w,x)<br/>
+1<br/>
+2<br/>
+z<br/>
+f&#160;(x,z)<br/>
+4<br/>
+<hr/>
+<a name=26></a><img src="./Bishop-MLSS-09-1-26_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-26_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-26_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-26_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-26_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-26_6.png"/><br/>
+Messages: From&#160;Factors To Variables<br/>
+y<br/>
+f&#160;(x,y)<br/>
+w<br/>
+x<br/>
+3<br/>
+f&#160;(w,x)<br/>
+2<br/>
+z<br/>
+f&#160;(x,z)<br/>
+4<br/>
+<hr/>
+<a name=27></a><img src="./Bishop-MLSS-09-1-27_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-27_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-27_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-27_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-27_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-27_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-27_7.png"/><br/>
+<img class="yflip" src="./Bishop-MLSS-09-1-27_8.png"/><br/>
+Messages: From&#160;Variables&#160;To&#160;Factors<br/>
+y<br/>
+f&#160;(x,y)<br/>
+x<br/>
+3<br/>
+f&#160;(w,x)<br/>
+2<br/>
+z<br/>
+f&#160;(x,z)<br/>
+4<br/>
+<hr/>
+<a name=28></a><img src="./Bishop-MLSS-09-1-28_1.png"/><br/>
+What if the graph is not a&#160;tree?<br/>
+Keep&#160;iterating&#160;the messages:<br/>
+<i>loopy&#160;belief propagation</i><br/>
+<hr/>
+<a name=29></a><img src="./Bishop-MLSS-09-1-29_1.png"/><br/>
+What&#160;if marginalisations&#160;are&#160;not tractable?<br/>
+True&#160;distribution<br/>
+Monte&#160;Carlo<br/>
+VMP&#160;/ Loopy&#160;BP&#160;/&#160;EP<br/>
+<hr/>
+<a name=30></a><img src="./Bishop-MLSS-09-1-30_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-30_2.jpg"/><br/>
+Illustration: Bayesian&#160;Ranking<br/>
+Ralf&#160;Herbrich<br/>Tom&#160;Minka<br/>Thore&#160;Graepel<br/>
+Goal:&#160;global ranking&#160;from&#160;noisy&#160;partial&#160;rankings<br/>Conventional&#160;approach:&#160;Elo&#160;(used&#160;in&#160;chess)<br/>
+maintains&#160;a&#160;single&#160;strength&#160;value for each player<br/>cannot handle&#160;team games, or &gt;&#160;2&#160;players<br/>
+<hr/>
+<a name=31></a><img src="./Bishop-MLSS-09-1-31_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_8.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_9.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_10.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_11.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_12.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-31_13.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-31_14.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_15.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_16.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_17.png"/><br/>
+<img src="./Bishop-MLSS-09-1-31_18.png"/><br/>
+Two Player&#160;Match&#160;Outcome&#160;Model<br/>
+s<br/>
+s<br/>
+1<br/>
+2<br/>
+<br/>
+<br/>
+1<br/>
+2<br/>
+y12<br/>
+<hr/>
+<a name=32></a><img src="./Bishop-MLSS-09-1-32_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_8.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_9.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_10.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_11.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_12.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_13.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_14.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_15.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_16.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_17.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_18.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_19.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_20.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_21.png"/><br/>
+<img src="./Bishop-MLSS-09-1-32_22.png"/><br/>
+Two Team&#160;Match&#160;Outcome&#160;Model<br/>
+s<br/>
+s<br/>
+s<br/>
+s<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+t<br/>
+t<br/>
+1<br/>
+2<br/>
+y12<br/>
+<hr/>
+<a name=33></a><img src="./Bishop-MLSS-09-1-33_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_8.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_9.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_10.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_11.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_12.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_13.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_14.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_15.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_16.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_17.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_18.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_19.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_20.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_21.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_22.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_23.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_24.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_25.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_26.png"/><br/>
+<img src="./Bishop-MLSS-09-1-33_27.png"/><br/>
+Multiple&#160;Team Match&#160;Outcome Model<br/>
+s<br/>
+s<br/>
+s<br/>
+s<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+t<br/>
+t<br/>
+t<br/>
+1<br/>
+2<br/>
+3<br/>
+y<br/>
+y<br/>
+12<br/>
+23<br/>
+<hr/>
+<a name=34></a><img src="./Bishop-MLSS-09-1-34_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_8.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_9.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_10.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_11.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_12.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_13.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_14.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_15.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_16.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_17.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_18.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_19.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_20.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_21.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_22.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_23.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_24.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_25.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_26.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_27.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_28.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_29.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_30.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_31.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_32.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_33.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_34.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_35.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_36.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_37.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_38.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_39.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_40.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_41.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_42.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_43.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_44.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_45.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_46.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_47.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_48.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_49.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_50.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_51.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_52.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_53.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_54.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_55.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_56.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_57.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_58.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_59.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_60.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-34_61.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_62.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_63.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_64.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_65.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_66.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_67.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_68.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_69.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_70.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_71.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_72.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_73.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_74.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_75.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_76.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_77.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_78.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_79.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_80.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_81.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_82.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_83.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_84.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_85.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_86.png"/><br/>
+<img src="./Bishop-MLSS-09-1-34_87.png"/><br/>
+Gaussian Prior&#160;Factors<br/>
+s<br/>
+s<br/>
+s<br/>
+s<br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+t<br/>
+t<br/>
+t<br/>
+1<br/>
+2<br/>
+3<br/>
+y<br/>
+y<br/>
+12<br/>
+23<br/>
+Ranking&#160;Likelihood Factors<br/>
+<hr/>
+<a name=35></a><img src="./Bishop-MLSS-09-1-35_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_8.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_9.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_10.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_11.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_12.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_13.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_14.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_15.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_16.png"/><br/>
+<img src="./Bishop-MLSS-09-1-35_17.png"/><br/>
+40<br/>
+35<br/>
+30<br/>
+25<br/>
+el&#160;20<br/>Lev<br/>
+15<br/>
+char&#160;(TrueSkill™)<br/>
+10<br/>
+SQLWildman&#160;(TrueSkill™)<br/>
+5<br/>
+char&#160;(Elo)<br/>
+SQLWildman&#160;(Elo)<br/>
+0<br/>
+0<br/>
+100<br/>
+200<br/>
+300<br/>
+400<br/>
+Number&#160;of&#160;Games<br/>
+<hr/>
+<a name=36></a><img src="./Bishop-MLSS-09-1-36_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_8.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_9.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_10.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_11.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_12.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_13.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_14.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_15.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_16.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_17.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_18.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_19.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_20.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_21.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_22.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_23.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_24.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_25.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_26.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_27.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_28.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_29.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_30.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_31.png"/><br/>
+<img src="./Bishop-MLSS-09-1-36_32.png"/><br/>
+Skill&#160;Dynamics<br/>
+s<br/>
+s<br/>
+s<br/>
+1<br/>
+2<br/>
+1’<br/>
+s2’<br/>
+¼<br/>
+¼<br/>
+¼<br/>
+1<br/>
+2<br/>
+1’<br/>
+¼2’<br/>
+y<br/>
+y&#160;’<br/>
+12<br/>
+12<br/>
+<hr/>
+<a name=37></a><img src="./Bishop-MLSS-09-1-37_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-37_2.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-37_3.jpg"/><br/>
+<img src="./Bishop-MLSS-09-1-37_4.jpg"/><br/>
+<i>TrueSkill</i>TM<br/>
+Xbox 360&#160;Live: launched&#160;September 2005<br/>
+<i>TrueSkill</i>TM&#160;for&#160;ranking&#160;and&#160;to match&#160;players<br/>10M&#160;active users,&#160;2.5M&#160;matches&#160;per day<br/>
+“Planet-scale”&#160;application&#160;of Bayesian methods<br/>
+<hr/>
+<a name=38></a><img src="./Bishop-MLSS-09-1-38_1.png"/><br/>
+John Winn<br/>
+<hr/>
+<a name=39></a><img src="./Bishop-MLSS-09-1-39_1.jpg"/><br/>
+research.microsoft.com/infernet<br/>
+Tom&#160;Minka<br/>John Winn<br/>John Guiver<br/>Anitha&#160;Kannan<br/>
+<hr/>
+<a name=40></a>Infer.Net&#160;demonstration<br/>
+<hr/>
+<a name=41></a><img src="./Bishop-MLSS-09-1-41_1.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_2.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_3.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_4.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_5.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_6.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_7.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_8.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_9.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_10.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_11.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_12.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_13.png"/><br/>
+<img src="./Bishop-MLSS-09-1-41_14.png"/><br/>
+Different?<br/>
+True<br/>
+False<br/>
+Prob.&#160;Cure<br/>
+Prob.&#160;Cure<br/>
+Prob.&#160;Cure<br/>
+(Treated)<br/>
+(Placebo)<br/>
+(All)<br/>
+<hr/>
+</body>
+</html>

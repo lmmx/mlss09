@@ -1,0 +1,1990 @@
+<!DOCTYPE html><html>
+<head>
+<title></title>
+<style type="text/css">
+<!--
+.xflip {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph;
+}
+.yflip {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv;
+}
+.xyflip {
+    -moz-transform: scaleX(-1) scaleY(-1);
+    -webkit-transform: scaleX(-1) scaleY(-1);
+    -o-transform: scaleX(-1) scaleY(-1);
+    transform: scaleX(-1) scaleY(-1);
+    filter: fliph + flipv;
+}
+-->
+</style>
+</head>
+<body>
+<a name=1></a><b>Structured Prediction</b><br/>
+<b>(with&#160;Application&#160;in Information Retrieval)</b><br/>
+<b>Thomas&#160;Hofmann</b><br/>
+Google, Switzerland<br/>
+thofmann@google.com<br/>
+<b>1</b><br/>
+<hr/>
+<a name=2></a><img src="./Hoffman_1_2-2_1.png"/><br/>
+<img src="./Hoffman_1_2-2_2.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>1</b><br/>
+<b>Structured Classification</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>2</b><br/>
+<hr/>
+<a name=3></a><img src="./Hoffman_1_2-3_1.png"/><br/>
+<img src="./Hoffman_1_2-3_2.png"/><br/>
+<img src="./Hoffman_1_2-3_3.png"/><br/>
+<img src="./Hoffman_1_2-3_4.png"/><br/>
+<img src="./Hoffman_1_2-3_5.png"/><br/>
+<b>Supervised&#160;Machine&#160;Learning</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Learn&#160;functional&#160;dependencies&#160;between&#160;inputs&#160;and&#160;outputs&#160;from<br/>
+<b>,&#160;M</b><br/>
+<b>training&#160;data</b>&#160;(inductive&#160;inference)<br/>Most&#160;basic&#160;form:&#160;<b>classification</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<i><b>u</b></i><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<i><b>optical character</b></i><br/>
+<i><b>recognition</b></i><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+UK&#160;=&#160;United&#160;Kingdom<br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+M13&#160;=&#160;MONEY&#160;MARKETS<br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<i><b>document&#160;</b></i><br/>
+<b>ofm</b><br/>
+M132&#160;=&#160;FOREX&#160;MARKETS<br/>
+<b>as&#160;H</b><br/>
+<i><b>categorization</b></i><br/>
+<b>om</b><br/>
+MCAT&#160;=&#160;MARKETS<br/>
+<b>h<br/>T</b><br/>
+<b>3</b><br/>
+<hr/>
+<a name=4></a><img src="./Hoffman_1_2-4_1.png"/><br/>
+<img src="./Hoffman_1_2-4_2.png"/><br/>
+<img src="./Hoffman_1_2-4_3.png"/><br/>
+<img src="./Hoffman_1_2-4_4.png"/><br/>
+<img src="./Hoffman_1_2-4_5.png"/><br/>
+<img src="./Hoffman_1_2-4_6.png"/><br/>
+<img src="./Hoffman_1_2-4_7.png"/><br/>
+<img src="./Hoffman_1_2-4_8.png"/><br/>
+<img src="./Hoffman_1_2-4_9.png"/><br/>
+<img src="./Hoffman_1_2-4_10.png"/><br/>
+<img src="./Hoffman_1_2-4_11.png"/><br/>
+<img src="./Hoffman_1_2-4_12.png"/><br/>
+<img src="./Hoffman_1_2-4_13.png"/><br/>
+<img src="./Hoffman_1_2-4_14.png"/><br/>
+<img src="./Hoffman_1_2-4_15.png"/><br/>
+<img src="./Hoffman_1_2-4_16.png"/><br/>
+<img src="./Hoffman_1_2-4_17.png"/><br/>
+<img src="./Hoffman_1_2-4_18.png"/><br/>
+<img src="./Hoffman_1_2-4_19.png"/><br/>
+<img src="./Hoffman_1_2-4_20.png"/><br/>
+<img src="./Hoffman_1_2-4_21.png"/><br/>
+<img src="./Hoffman_1_2-4_22.png"/><br/>
+<img src="./Hoffman_1_2-4_23.png"/><br/>
+<img src="./Hoffman_1_2-4_24.png"/><br/>
+<img src="./Hoffman_1_2-4_25.png"/><br/>
+<img src="./Hoffman_1_2-4_26.png"/><br/>
+<img src="./Hoffman_1_2-4_27.png"/><br/>
+<img src="./Hoffman_1_2-4_28.png"/><br/>
+<img src="./Hoffman_1_2-4_29.png"/><br/>
+<img src="./Hoffman_1_2-4_30.png"/><br/>
+<img src="./Hoffman_1_2-4_31.png"/><br/>
+<img src="./Hoffman_1_2-4_32.png"/><br/>
+<img src="./Hoffman_1_2-4_33.png"/><br/>
+<img src="./Hoffman_1_2-4_34.png"/><br/>
+<img src="./Hoffman_1_2-4_35.png"/><br/>
+<img src="./Hoffman_1_2-4_36.png"/><br/>
+<img src="./Hoffman_1_2-4_37.png"/><br/>
+<img src="./Hoffman_1_2-4_38.png"/><br/>
+<img src="./Hoffman_1_2-4_39.png"/><br/>
+<img src="./Hoffman_1_2-4_40.png"/><br/>
+<img src="./Hoffman_1_2-4_41.png"/><br/>
+<img src="./Hoffman_1_2-4_42.png"/><br/>
+<img src="./Hoffman_1_2-4_43.png"/><br/>
+<b>Automatic&#160;Document Categorization</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+UK = United Kingdom<br/>
+<b>,&#160;M</b><br/>
+<i><b>document&#160;</b></i><br/>
+<i><b>categorization</b></i><br/>
+M13 = MONEY MARKETS<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;</b><br/>
+M132 = FOREX MARKETS<br/>
+<b>ctu</b><br/>
+MCAT = MARKETS<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+&#160; training examples<br/>
+<b>inductive</b><br/>
+<b>e&#160;Learn</b><br/>
+<b>M132&#160;=&#160;FOREX&#160;MARKETS</b><br/>
+<b>in</b><br/>
+<b>inference</b><br/>
+<b>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>learning&#160;machine</b><br/>
+<b>pport&#160;V</b><br/>
+<b>expert</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+advantages:&#160;<br/>
+<b>ofm</b><br/>
+/* some&#160;‘complicated’<br/>
+&#160;implicit&#160;knowledge&#160;(in&#160;action)<br/>
+<b>as&#160;H</b><br/>
+&#160; algorithm */<br/>
+&#160;no&#160;knowledge&#160;engineering<br/>
+<b>om<br/>h<br/>T</b><br/>
+&#160;fully&#160;automatic&#160;&amp;&#160;adaptive<br/>&#160;human-level&#160;accuracy<br/>
+<b>M132&#160;=&#160;FOREX&#160;MARKETS</b><br/>
+<b>4</b><br/>
+<hr/>
+<a name=5></a><img src="./Hoffman_1_2-5_1.png"/><br/>
+<img src="./Hoffman_1_2-5_2.png"/><br/>
+<img src="./Hoffman_1_2-5_3.png"/><br/>
+<b>Structured&#160;Classification</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Generalize&#160;classification&#160;methods&#160;to&#160;deal&#160;with&#160;structured&#160;outputs<br/>
+<b>,&#160;M</b><br/>
+and/or&#160;with&#160;multiple,&#160;interdependent&#160;outputs<br/>
+<b>redicition<br/>P</b><br/>
+Outputs&#160;are&#160;either<br/>
+<b>red&#160;<br/>ctu</b><br/>
+•&#160;<b>Structured&#160;objects&#160;</b>such&#160;as&#160;sequences,<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+strings,&#160;trees,&#160;etc.<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+•&#160;<b>Multiple&#160;response&#160;variables&#160;</b>that&#160;are<br/>
+<b>ector&#160;M</b><br/>
+interdependent&#160;<i>(e.g.&#160;dependencies</i><br/>
+<b>pport&#160;V</b><br/>
+<i>modeled&#160;by&#160;probabilistic&#160;graphical</i><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<i>models)&#160;=&#160;</i><b>collective&#160;classification</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>5</b><br/>
+<hr/>
+<a name=6></a><img src="./Hoffman_1_2-6_1.png"/><br/>
+<img src="./Hoffman_1_2-6_2.png"/><br/>
+<img src="./Hoffman_1_2-6_3.png"/><br/>
+<img src="./Hoffman_1_2-6_4.png"/><br/>
+<b>Part-Of-Speech&#160;Tagging</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<i>[Example&#160;taken</i><br/>
+<b>LSS&#160;2</b><br/>
+<i>&#160;from&#160;Michael&#160;Collins]</i><br/>
+<b>,&#160;M</b><br/>
+<b>INPUT<br/></b>Profits soared at Boeing Co., easily topping<br/>
+<b>redicition</b><br/>
+forecasts on Wall Street, as their CEO Alan<br/>
+<b>P</b><br/>
+<b>red&#160;</b><br/>
+Mulally&#160;announced first quarter results.<br/>
+<b>ctu</b><br/>
+<b>OUTPUT</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+Profits/N&#160;soared/V&#160;at/P&#160;Boeing/N&#160;Co./N&#160;,/,<br/>
+<b>e&#160;Learn</b><br/>
+easily/ADV&#160;topping/V&#160;forecasts/N&#160;on/P<br/>
+<b>in</b><br/>
+r<br/>
+Wall/N&#160;Street/N&#160;,/,&#160;as/P&#160;their/POSS&#160;CEO/N<br/>
+<b>ach</b><br/>
+Alan/N&#160;Mulally/N&#160;announced/V&#160;first/ADJ<br/>
+<b>ector&#160;M</b><br/>
+quarter/N&#160;results/N&#160;./.<br/>
+<b>pport&#160;V</b><br/>
+N&#160;&#160;=&#160; noun<br/>
+<b>,&#160;Su<br/>n</b><br/>
+V&#160;<br/>
+=&#160; verb<br/>
+<b>an</b><br/>
+<b>Challenge</b>:<br/>
+<b>ofm</b><br/>
+P&#160;<br/>
+=&#160; preposition<br/>
+Predict&#160;a&#160;tag&#160;sequence<br/>
+<b>as&#160;H</b><br/>
+ADV&#160;=&#160; adverb<br/>
+<b>om<br/>h</b><br/>
+...<br/>
+<b>T</b><br/>
+•&#160;<b>R. Garside,&#160;<i>The CLAWS Word-tagging System</i></b><b>.&#160;In: R. Garside, G. Leech and G. Sampson (eds), &#160;The Computational</b><br/>
+<b>Analysis of English: A Corpus-based Approach. London: Longman, 1987.</b><br/>
+<b>6</b><br/>
+•&#160;<b>Y.Altun,&#160;I. Tsochantaridis, T. Hofmann,&#160;<i>Hidden Markov Support Vector Machines,&#160;</i></b><b>ICML,&#160;2003</b><br/>
+<hr/>
+<a name=7></a><img src="./Hoffman_1_2-7_1.png"/><br/>
+<img src="./Hoffman_1_2-7_2.png"/><br/>
+<img src="./Hoffman_1_2-7_3.png"/><br/>
+<img src="./Hoffman_1_2-7_4.png"/><br/>
+<b>Information Extraction</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+The&#160;outcome&#160;of&#160;a&#160;possible&#160;&lt;organization&gt;&#160;WTO<br/>
+<b>red&#160;</b><br/>
+&lt;/organization&gt;&#160;cat&#160;fight&#160;is&#160;far&#160;from&#160;clear.&#160;Even&#160;if&#160;the<br/>
+<b>ctu</b><br/>
+&lt;country&gt;&#160;United&#160;States&#160;&lt;/country&gt;&#160;won,&#160;nothing<br/>might&#160;change,&#160;said&#160;&lt;person&gt;&#160;Richard&#160;Aboulafia<br/>
+<b>g&#160;for&#160;Stru</b><br/>
+&lt;/person&gt;&#160;,&#160;aviation&#160;analyst&#160;with&#160;the&#160;&lt;organization&gt;<br/>
+<b>in</b><br/>
+Teal&#160;Group&#160;&lt;/organization&gt;,&#160;an&#160;industry&#160;consulting<br/>firm&#160;in&#160;&lt;location&gt;&#160;Fairfax,&#160;Va.&#160;&lt;/location&gt;<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>Challenge</b>:<br/>
+<b>,&#160;Su<br/>n</b><br/>
+Predict&#160;a&#160;labeled&#160;<br/>
+<b>an</b><br/>
+<b>ofm</b><br/>
+segmentation<br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>J. Lafferty, F. Pereira, and A. McCallum.&#160;<i>Conditional random fields: Probabilistic models for segmenting and</i></b><br/>
+<i><b>labeling sequence data</b></i><b>.&#160;ICML,&#160;2001</b><br/>
+<b>7</b><br/>
+•&#160;<b>Y.Altun,&#160;I. Tsochantaridis, T. Hofmann,&#160;<i>Hidden Markov Support Vector Machines,&#160;</i></b><b>ICML,&#160;2003</b><br/>
+<hr/>
+<a name=8></a><img src="./Hoffman_1_2-8_1.png"/><br/>
+<img src="./Hoffman_1_2-8_2.png"/><br/>
+<img src="./Hoffman_1_2-8_3.png"/><br/>
+<img src="./Hoffman_1_2-8_4.png"/><br/>
+<b>Natural Language&#160;Parsing</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Syntactical&#160;analysis&#160;of&#160;natural&#160;language,<br/>
+<b>,&#160;M</b><br/>
+e.g.&#160;based&#160;on&#160;a&#160;context-free&#160;grammar<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>Challenge</b>:<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+Predict&#160;a&#160;labeled&#160;parse&#160;tree&#160;<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>M Collins,&#160;<i>Discriminative&#160;Reranking&#160;for Natural Language Parsing</i></b><b>,&#160;ICML 2000.<br/></b>•&#160;<b>B. Taskar, D. Klein, M. Collins, D.&#160;Koller,&#160;and C. Manning, Max-Margin Parsing, EMNLP, 2004.<br/></b>•&#160;<b>I. Tsochantaridis, T. Hofmann, T. Joachims, and Y. Altun,&#160;<i>Support Vector Machine Learning for Interdependent and</i></b><br/>
+<b>8</b><br/>
+<i><b>Structured Output Spaces</b></i><b>,&#160;ICML 2004.</b><br/>
+<hr/>
+<a name=9></a><img src="./Hoffman_1_2-9_1.png"/><br/>
+<img src="./Hoffman_1_2-9_2.png"/><br/>
+<img src="./Hoffman_1_2-9_3.png"/><br/>
+<img src="./Hoffman_1_2-9_4.png"/><br/>
+<img src="./Hoffman_1_2-9_5.png"/><br/>
+<b>Optical Character Recognition</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Recognize&#160;handwritten&#160;words<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>g&#160;set</b><br/>
+<b>Challenge</b>:<br/>Predict&#160;a&#160;character&#160;sequence<br/>
+<b>,&#160;Su<br/>n</b><br/>
+<b>in</b><br/>
+<b>an</b><br/>
+<b>ofm</b><br/>
+<b>rain</b><br/>
+<b>as&#160;H</b><br/>
+<b>T</b><br/>
+<b>om<br/>h<br/>T</b><br/>
+<b>9</b><br/>
+•&#160;<b>B. Taskar, C.&#160;Guestrin,&#160;and D.&#160;Koller.&#160;<i>Max margin Markov networks</i></b><b>.&#160;NIPS, 2003.</b><br/>
+<hr/>
+<a name=10></a><img src="./Hoffman_1_2-10_1.png"/><br/>
+<img src="./Hoffman_1_2-10_2.png"/><br/>
+<img src="./Hoffman_1_2-10_3.png"/><br/>
+<img src="./Hoffman_1_2-10_4.png"/><br/>
+<img src="./Hoffman_1_2-10_5.png"/><br/>
+<b>Visual Scene&#160;Analysis</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<i>[Example&#160;taken&#160;from&#160;Torralba&#160;et&#160;al.]</i><br/>
+<b>LSS&#160;2</b><br/>
+Recognize&#160;objects&#160;in&#160;a&#160;camera<br/>
+<b>,&#160;M</b><br/>
+image&#160;or&#160;video<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>Challenge</b>:<br/>Recognize&#160;objects&#160;in&#160;context<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>Challenge</b>:<br/>
+<b>pport&#160;V</b><br/>
+Predict&#160;a&#160;scene&#160;graph<br/>
+<b>,&#160;Su<br/>n</b><br/>
+r<br/>
+<b>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>A.&#160;Torralba,&#160;K. Murphy and W. Freeman,&#160;<i>Contextual Models for Object Detection using Boosted Random Fields</i></b><b>,</b><br/>
+<b>10</b><br/>
+<b>NIPS 2004.</b><br/>
+<hr/>
+<a name=11></a><img src="./Hoffman_1_2-11_1.png"/><br/>
+<img src="./Hoffman_1_2-11_2.png"/><br/>
+<img src="./Hoffman_1_2-11_3.png"/><br/>
+<img src="./Hoffman_1_2-11_4.png"/><br/>
+<img src="./Hoffman_1_2-11_5.png"/><br/>
+<b>Protein Structure&#160;Prediction</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Predict&#160;protein&#160;secondary&#160;and&#160;tertiary&#160;structure&#160;from&#160;its&#160;primary<br/>
+<b>,&#160;M</b><br/>
+structure<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>Challenge</b>:<br/>Binary&#160;contact&#160;matrix<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>Challenge</b>:<br/>
+<b>ector&#160;M</b><br/>
+Predict&#160;labeled&#160;<br/>
+<b>pport&#160;V</b><br/>
+segmentation<br/>
+<b>,&#160;Su</b><br/>
+…&#160;BB<br/>
+B&#160;B<br/>
+B&#160;B<br/>
+B&#160;B<br/>
+B&#160;B<br/>
+B&#160;B<br/>
+B&#160;--<br/>
+-&#160;-<br/>
+-&#160;-<br/>
+-&#160;AA<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;A<br/>
+A&#160;--<br/>
+-&#160;-<br/>
+-&#160;-<br/>
+-&#160;-<br/>
+-<br/>
+…<br/>
+<b>n<br/>an</b><br/>
+…&#160;AI<br/>
+A&#160;V<br/>
+I&#160;V<br/>
+V&#160;T<br/>
+V&#160;Q<br/>
+T&#160;H<br/>
+Q&#160;G<br/>
+H&#160;R<br/>
+G&#160;V<br/>
+R&#160;T<br/>
+V&#160;S<br/>
+T&#160;V<br/>
+S&#160;A<br/>
+V&#160;A<br/>
+A&#160;Q<br/>
+A&#160;H<br/>
+Q&#160;H<br/>
+H&#160;W<br/>
+H&#160;A<br/>
+W&#160;T<br/>
+A&#160;A<br/>
+T&#160;I<br/>
+A&#160;A<br/>
+I&#160;V<br/>
+A&#160;L<br/>
+V&#160;G<br/>
+L&#160;R<br/>
+G&#160;P<br/>
+R&#160;K<br/>
+P&#160;&#160;<br/>
+K<br/>
+…<br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>Y.&#160;liu,&#160;E. P. Xing, and J.&#160;Carbonell,&#160;<i>Predicting protein folds with structural repeats using a chain graph model,</i></b><br/>
+<b>11</b><br/>
+<b>ICML 2005</b><br/>
+<hr/>
+<a name=12></a><img src="./Hoffman_1_2-12_1.png"/><br/>
+<img src="./Hoffman_1_2-12_2.png"/><br/>
+<img src="./Hoffman_1_2-12_3.png"/><br/>
+<b>2</b><br/>
+<b>Multiclass&#160;Classification</b><br/>
+<hr/>
+<a name=13></a><img src="./Hoffman_1_2-13_1.png"/><br/>
+<b>Linear&#160;Multiclass&#160;Classification</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>13</b><br/>
+<hr/>
+<a name=14></a><img src="./Hoffman_1_2-14_1.png"/><br/>
+<b>Linear&#160;Multiclass&#160;Classification - Geometry</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>14</b><br/>
+<hr/>
+<a name=15></a><img src="./Hoffman_1_2-15_1.png"/><br/>
+<b>Multiclass&#160;Perceptron</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>Michael Collins,&#160;Discriminative training methods for hidden Markov models: theory and experiments with</b><br/>
+<b>15</b><br/>
+<b>perceptron&#160;algorithms, EMNLP 2002</b><br/>
+<hr/>
+<a name=16></a><img src="./Hoffman_1_2-16_1.png"/><br/>
+<b>Multiclass&#160;SVMs:&#160;Separation Margin</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>16</b><br/>
+<hr/>
+<a name=17></a><img src="./Hoffman_1_2-17_1.png"/><br/>
+<b>Multiclass&#160;SVM: Separation Margin, Illustrated</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>17</b><br/>
+<hr/>
+<a name=18></a><img src="./Hoffman_1_2-18_1.png"/><br/>
+<b>Multiclass&#160;SVMs:&#160;Formulation</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>Koby&#160;Crammer,&#160;Yoram&#160;Singer, On the Algorithmic Implementation of&#160;Multiclass&#160;Kernel-based Vector Machines,</b><br/>
+<b>18</b><br/>
+<b>Journal of Machine Learning Research, 2001.</b><br/>
+<hr/>
+<a name=19></a><img src="./Hoffman_1_2-19_1.png"/><br/>
+<b>From&#160;Multiclass&#160;to&#160;Structured&#160;Prediction</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>Thorsten Joachims,&#160;Thomas Hofmann,&#160;Yisong Yue,&#160;Chun-Nam Yu, Predicting Structured Objects with Support Vector</b><br/>
+<b>19</b><br/>
+<b>Machines, Communications of the ACM,&#160;2009 (to appear).</b><br/>
+<hr/>
+<a name=20></a><b>From&#160;Multiclass&#160;to&#160;Structured&#160;Prediction</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+1.&#160;Compact&#160;Representation:&#160;Define&#160;joint&#160;<b>input-output&#160;feature</b><br/>
+<b>functions</b>&#160;and/or&#160;kernels&#160;that&#160;ensure&#160;generalization&#160;capabilities<br/>
+<b>redicition<br/>P</b><br/>
+across&#160;inputs&#160;and&#160;outputs.<br/>
+<b>red&#160;<br/>ctu</b><br/>
+2.&#160;Efficient&#160;search:&#160;Develop&#160;problem&#160;or&#160;representation&#160;specific<br/>
+<b>g&#160;for&#160;Stru</b><br/>
+<b>search&#160;algorithms</b>,&#160;e.g.&#160;based&#160;on&#160;dynamic&#160;programming,&#160;min<br/>
+<b>in</b><br/>
+flow,&#160;etc.,&#160;to&#160;find&#160;optimal&#160;output&#160;for&#160;given&#160;input<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+3.&#160;Refined&#160;error&#160;metric:&#160;Integrate&#160;application-specific&#160;<b>loss</b><br/>
+<b>ector&#160;M</b><br/>
+<b>function</b>&#160;into&#160;problem&#160;formulation<br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n</b><br/>
+4.&#160;Training&#160;algorithm:&#160;Use&#160;efficient&#160;output&#160;search&#160;in&#160;conjunction<br/>
+<b>an</b><br/>
+<b>ofm</b><br/>
+with&#160;(sparse)&#160;cutting&#160;plane&#160;<b>optimization&#160;method</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>20</b><br/>
+<hr/>
+<a name=21></a><img src="./Hoffman_1_2-21_1.png"/><br/>
+<img src="./Hoffman_1_2-21_2.png"/><br/>
+<img src="./Hoffman_1_2-21_3.png"/><br/>
+<b>3</b><br/>
+<b>Function Classes for</b><br/>
+<b>Structured Classification</b><br/>
+<hr/>
+<a name=22></a><img src="./Hoffman_1_2-22_1.png"/><br/>
+<img src="./Hoffman_1_2-22_2.png"/><br/>
+<img src="./Hoffman_1_2-22_3.png"/><br/>
+<img src="./Hoffman_1_2-22_4.png"/><br/>
+<b>Compatibility&#160;Functions</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+<b>Linear&#160;compatibilty&#160;functions&#160;</b>in&#160;<b>joint&#160;feature&#160;representation</b><br/>
+<b>,&#160;M</b><br/>
+of&#160;input/output&#160;pairs<br/>
+<b>redicition</b><br/>
+encodes&#160;combined&#160;properties&#160;of<br/>
+<b>P</b><br/>
+inputs&#160;and&#160;outputs:<br/>
+<b>red&#160;<br/>ctu</b><br/>
+<i>which&#160;aspect&#160;of&#160;the&#160;input&#160;is&#160;relevant<br/>for&#160;which&#160;part&#160;of&#160;the&#160;output?</i><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in</b><br/>
+Prediction<br/>
+<b>ach</b><br/>
+for&#160;given&#160;input predict most<br/>compatible&#160;output (may&#160;involve<br/>
+<b>ector&#160;M</b><br/>
+search)<br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n</b><br/>
+Binary&#160;classification<br/>
+<b>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>22</b><br/>
+<hr/>
+<a name=23></a><img src="./Hoffman_1_2-23_1.png"/><br/>
+<b>Kernels&#160;for Discrete&#160;Inputs</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>Structured&#160;inputs</b>&#160;are&#160;usually&#160;handled&#160;with&#160;appropriate&#160;feature<br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+extraction&#160;methods,&#160;i.e.&#160;for&#160;input&#160;space&#160;X,&#160;find&#160;a&#160;<b>feature&#160;map</b>:<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+With&#160;the&#160;use&#160;of&#160;<b>kernels</b>,&#160;the&#160;feature&#160;map&#160;can&#160;be&#160;implicit&#160;and&#160;is<br/>
+<b>g&#160;for&#160;Stru</b><br/>
+not&#160;restricted&#160;to&#160;finite&#160;d.<br/>
+<b>in</b><br/>
+<b>e&#160;Learn<br/>in</b><br/>
+Examples:<br/>
+<b>ach</b><br/>
+&#160;String&#160;kernels&#160;[LSST+02],&#160;[LK04],&#160;[VS03]:&#160;number&#160;of&#160;common<br/>
+<b>ector&#160;M</b><br/>
+subsequences&#160;(with&#160;gaps)<br/>&#160;Tree&#160;kernels&#160;and&#160;convolutional&#160;kernels&#160;[CD01]<br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su</b><br/>
+&#160;Graph&#160;kernels&#160;[GLF02],&#160;[Gär03]<br/>
+<b>n<br/>an</b><br/>
+&#160;Set&#160;kernels&#160;[KJ03]<br/>
+<b>ofm</b><br/>
+<b>as&#160;H</b><br/>
+&#160;Research&#160;topics:&#160;modeling&#160;power,&#160;applications&#160;&amp;<br/>
+<b>om<br/>h</b><br/>
+experimental&#160;investigations,&#160;computational&#160;improvements<br/>
+<b>T</b><br/>
+<b>23</b><br/>
+<hr/>
+<a name=24></a><img src="./Hoffman_1_2-24_1.png"/><br/>
+<img src="./Hoffman_1_2-24_2.png"/><br/>
+<img src="./Hoffman_1_2-24_3.png"/><br/>
+<img src="./Hoffman_1_2-24_4.png"/><br/>
+<img src="./Hoffman_1_2-24_5.png"/><br/>
+<img src="./Hoffman_1_2-24_6.png"/><br/>
+<img src="./Hoffman_1_2-24_7.png"/><br/>
+<img src="./Hoffman_1_2-24_8.png"/><br/>
+<img src="./Hoffman_1_2-24_9.png"/><br/>
+<img src="./Hoffman_1_2-24_10.png"/><br/>
+<img src="./Hoffman_1_2-24_11.png"/><br/>
+<img src="./Hoffman_1_2-24_12.png"/><br/>
+<b>Joint Feature&#160;Map:&#160;Information&#160;Extraction</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+... IN &#160;REALITY &#160;TOUCH &#160;PANEL &#160;SYSTEMS &#160;CAPITALIZED &#160;AT ...<br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+6<br/>
+COMPANY<br/>
+2&#160;3<br/>
+4<br/>
+COMPANY<br/>
+<b>redicition<br/>P</b><br/>
+1<br/>
+LOC<br/>
+5<br/>
+COMPANY &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;<br/>
+2<br/>
+<b>red&#160;<br/>ctu</b><br/>
+1<br/>
+LOC<br/>
+...<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+Joint input/output features<br/>
+<b>e&#160;Learn<br/>in</b><br/>
+a location segment following the word&#160;“in”<br/>
+(how often?)<br/>
+1<br/>
+<b>ach</b><br/>
+the word&#160;“systems”&#160;occurring in a company name segment<br/>
+2<br/>
+<b>ector&#160;M</b><br/>
+the word&#160;“systems”&#160;occurring at the end of a company name<br/>
+3<br/>
+<b>pport&#160;V</b><br/>
+the word&#160;“capitalized”&#160;following a company name segment<br/>
+<b>,&#160;Su<br/>n</b><br/>
+4<br/>
+<b>an</b><br/>
+<b>ofm</b><br/>
+a location segment being followed by a company segment<br/>
+5<br/>
+<b>as&#160;H<br/>om<br/>h</b><br/>
+a company name segment consisting of 3 words<br/>
+<b>T</b><br/>
+6<br/>
+<b>24&#160;</b>•&#160;<b>Y.Altun,&#160;I. Tsochantaridis, T. Hofmann,&#160;<i>Hidden Markov Support Vector Machines</i></b><b>,&#160;ICML,&#160;2003</b><br/>
+•&#160;<b>S.&#160;Sarawagi&#160;&amp; W. W. Cohen,&#160;<i>Semi-Markov Conditional Random Fields for Information Extraction,&#160;</i></b><b>NIPS 2004</b><br/>
+<hr/>
+<a name=25></a><img src="./Hoffman_1_2-25_1.png"/><br/>
+<img src="./Hoffman_1_2-25_2.png"/><br/>
+<img src="./Hoffman_1_2-25_3.png"/><br/>
+<b>Joint Feature&#160;Maps: Parsing</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>I. Tsochantaridis, T. Hofmann, T. Joachims, and Y. Altun,&#160;<i>Support Vector Machine Learning for Interdependent and</i></b><br/>
+<b>25</b><br/>
+<i><b>Structured Output Spaces</b></i><b>,&#160;ICML 2004.</b><br/>
+•&#160;<b>B. Taskar, D. Klein, M. Collins, D.&#160;Koller,&#160;and C. Manning,&#160;<i>Max-Margin Parsing</i></b><b>,&#160;EMNLP, 2004.</b><br/>
+<hr/>
+<a name=26></a><img src="./Hoffman_1_2-26_1.png"/><br/>
+<b>Tensor Product Feature&#160;Maps</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>26&#160;</b>•&#160;<b>I. Tsochantaridis, T. Hofmann, T. Joachims, and Y. Altun,&#160;<i>Support Vector Machine Learning for Interdependent and</i></b><br/>
+<i><b>Structured Output Spaces</b></i><b>,&#160;ICML 2004.</b><br/>
+<hr/>
+<a name=27></a><img src="./Hoffman_1_2-27_1.png"/><br/>
+<b>Sequence&#160;Feature&#160;Maps</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>27</b><br/>
+<hr/>
+<a name=28></a><img src="./Hoffman_1_2-28_1.png"/><br/>
+<img src="./Hoffman_1_2-28_2.png"/><br/>
+<img src="./Hoffman_1_2-28_3.png"/><br/>
+<b>Reproducing Kernel Hilbert Spaces</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+<b>RKHS</b><br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+compatibility&#160;functions<br/>
+expansion<br/>
+generating&#160;<b>kernel</b><br/>
+<b>in</b><br/>
+over&#160;inputs&#160;and&#160;outputs&#160;<br/>
+coefficients<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+inner&#160;product/norm&#160;<br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>28</b><br/>
+<hr/>
+<a name=29></a><img src="./Hoffman_1_2-29_1.png"/><br/>
+<img src="./Hoffman_1_2-29_2.png"/><br/>
+<img src="./Hoffman_1_2-29_3.png"/><br/>
+<b>RKHS and&#160;Finite-dimensional Vector Spaces</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Special&#160;case:&#160;kernels&#160;defined&#160;via&#160;inner&#160;products<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+linear&#160;functions&#160;in&#160;some&#160;finite<br/>dimensional&#160;feature<br/>representation&#160;as&#160;special&#160;case<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in</b><br/>
+Tensor&#160;product&#160;feature&#160;maps<br/>
+<b>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n</b><br/>
+<i>finite-dim</i><br/>
+<b>an</b><br/>
+<i>case</i><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om</b><br/>
+Kernels&#160;serve&#160;two&#160;purposes:&#160;flexible&#160;and&#160;efficient&#160;feature<br/>
+<b>h<br/>T</b><br/>
+extraction,&#160;efficient&#160;combination&#160;of&#160;input/output&#160;features<br/>
+<b>29</b><br/>
+<hr/>
+<a name=30></a><img src="./Hoffman_1_2-30_1.png"/><br/>
+<img src="./Hoffman_1_2-30_2.png"/><br/>
+<img src="./Hoffman_1_2-30_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>4</b><br/>
+<b>Statistical Inference for</b><br/>
+<b>Structured Prediction</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>30</b><br/>
+<hr/>
+<a name=31></a><img src="./Hoffman_1_2-31_1.png"/><br/>
+<img src="./Hoffman_1_2-31_2.png"/><br/>
+<img src="./Hoffman_1_2-31_3.png"/><br/>
+<b>Regularization &amp;&#160;Representer Theorem</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Combine&#160;risk&#160;function&#160;with&#160;appropriate&#160;<b>regularization&#160;functional</b><br/>
+<b>,&#160;M</b><br/>
+(Hilbert&#160;space&#160;norm)<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+training<br/>
+stabilizer<br/>
+<b>g&#160;for&#160;Stru</b><br/>
+<b>Representer&#160;Theorem</b><br/>
+sample<br/>
+(penalize&#160;norm)<br/>
+<b>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>B. Schölkopf, R. Herbrich, A. Smola, and R. C.&#160;Wiliamson,&#160;<i>A&#160;Generalized Representer Theorem</i></b><b>,&#160;In Proceedings of</b><br/>
+<b>the Annual Conference on Computational Learning Theory, pages 416-426, 2001.</b><br/>
+•&#160;<b>T. Hofmann, B. Schölkopf, and A. Smola,&#160;<i>A&#160;Tutorial Review of RKHS Methods in Machine Learning, Annals of</i></b><br/>
+<b>31</b><br/>
+<i><b>Statistics, 2008</b></i><br/>
+<hr/>
+<a name=32></a><img src="./Hoffman_1_2-32_1.png"/><br/>
+<img src="./Hoffman_1_2-32_2.png"/><br/>
+<img src="./Hoffman_1_2-32_3.png"/><br/>
+<b>Exponential Family&#160;Conditional Models</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+In&#160;order&#160;to&#160;derive&#160;learning/inference&#160;algorithms,&#160;a&#160;<b>probabilistic</b><br/>
+<b>,&#160;M</b><br/>
+<b>interpretation&#160;of&#160;compatibility&#160;functions</b>&#160;is&#160;fruitful.<br/>
+<b>redicition<br/>P</b><br/>
+Define&#160;family&#160;of&#160;<b>conditional&#160;distributions</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+&#160;<br/>
+<b>e&#160;Learn<br/>in</b><br/>
+<i>higher&#160;compatibility,&#160;higher&#160;</i><br/>
+<i>log</i><br/>
+<b>ach</b><br/>
+<i>conditional&#160;probability</i><br/>
+<i>partition<br/>function</i><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<i><b>canonical&#160;parameters</b></i><br/>
+<i><b>sufficient&#160;statistics&#160;(given&#160;x)</b></i><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>B. O.&#160;Koopman.&#160;On distributions admitting a sufficient statistic. Trans. of the American Math. Society, 39, 1936.</b><br/>
+<b>32&#160;</b>•&#160;<b>M. K. Murray and J.W. Rice. Differential geometry and statistics. Chapman and Hall, 1993.</b><br/>
+<hr/>
+<a name=33></a><img src="./Hoffman_1_2-33_1.png"/><br/>
+<img src="./Hoffman_1_2-33_2.png"/><br/>
+<img src="./Hoffman_1_2-33_3.png"/><br/>
+<b>Risk&#160;Functions: Log-Loss</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+(Negative)&#160;<b>Conditional&#160;log-likelihood</b><br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<i>maximize&#160;compatibility&#160;&#160;minimize&#160;log-<br/>on&#160;training&#160;pairs</i><br/>
+<i>partition&#160;function</i><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>Conditional Random Field</b><br/>
+<b>pport&#160;V</b><br/>
+(CRF)<br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+|<br/>
+|<br/>
+|<br/>
+|<br/>
+<b>ofm</b><br/>
+f(x&#160;y’’&#160;)<br/>
+f(x&#160;y’’)<br/>
+f(x&#160;y’)&#160;f(x&#160;y&#160;)<br/>
+i,<br/>
+i,<br/>
+i,<br/>
+i,&#160;i<br/>
+<b>as&#160;H<br/>om</b><br/>
+•&#160;<b>J. Lafferty, F. Pereira, and A. McCallum.&#160;<i>Conditional random fields: Probabilistic models for segmenting and</i></b><br/>
+<b>h<br/>T</b><br/>
+<i><b>labeling sequence data</b></i><b>.&#160;ICML,&#160;2001</b><br/>
+•&#160;<b>S.&#160;Kakade,&#160;Y.W.&#160;Teh,&#160;and S. Roweis.&#160;<i>An alternative objective function for&#160;Markovian&#160;fields</i></b><b>.&#160;ICML,&#160;2002.<br/></b>•&#160;<b>Y. Altun. M. Johnson, and T. Hofmann,&#160;<i>Investigating&#160;Loss&#160;Functions&#160;and&#160;Optimization&#160;Methods&#160;for&#160;Discriminative</i></b><br/>
+<b>33</b><br/>
+<i><b>Learning&#160;of Label&#160;Sequences</b></i><b>,&#160;EMNLP,&#160;2003.</b><br/>
+<hr/>
+<a name=34></a><img src="./Hoffman_1_2-34_1.png"/><br/>
+<img src="./Hoffman_1_2-34_2.png"/><br/>
+<b>Learning&#160;CRFs</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+Parametric&#160;case<br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+Gradient-based&#160;Methods<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<i>expectation&#160;over&#160;outputs</i><br/>
+<b>ector&#160;M</b><br/>
+Numerical optimization<br/>
+<i>under&#160;current&#160;conditional&#160;model&#160;</i><br/>
+<b>pport&#160;V</b><br/>
+•&#160;Iterative&#160;scaling&#160;(not recommended)<br/>
+<i>exact&#160;inference&#160;(e.g.&#160;forward-backward,</i><br/>
+<b>,&#160;Su<br/>n</b><br/>
+•&#160;Preconditioned&#160;conjugate&#160;gradient<br/>
+<i>junction&#160;tree)&#160;or&#160;approximate&#160;inference</i><br/>
+<b>an</b><br/>
+•&#160;Limited&#160;Memory&#160;Quasi-Newton&#160;(BFGS)<br/>
+<b>ofm</b><br/>
+•&#160;Bayesian&#160;CRFs&#160;(avoid&#160;overfitting)<br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>J. Lafferty, F. Pereira, and A. McCallum.&#160;<i>Conditional random fields: Probabilistic models for segmenting and</i></b><br/>
+<i><b>labeling sequence data</b></i><b>.&#160;ICML,&#160;2001</b><br/>
+•&#160;<b>H. M.&#160;Wallach.&#160;Efficient training of conditional random fields. Master’s&#160;thesis, University of Edinburgh, 2002.</b><br/>
+<b>34&#160;</b>•&#160;<b>Y.&#160;Qi,&#160;M.&#160;Szummer,&#160;T.&#160;Minka,&#160;<i>Bayesian Conditional Random Fields,&#160;</i></b><b>AISTATS,&#160;2005.</b><br/>
+<hr/>
+<a name=35></a><img src="./Hoffman_1_2-35_1.png"/><br/>
+<b>Regularization &amp;&#160;Representer Theorem</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>Representer&#160;Theorem</b>&#160;(again)<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+sum can be huge, if output&#160;<br/>
+<b>e&#160;Learn<br/>in</b><br/>
+space is combinatorial&#160;<br/>
+<b>ach</b><br/>
+–&#160;<b>sparseness is crucial</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>35</b><br/>
+<hr/>
+<a name=36></a><img src="./Hoffman_1_2-36_1.png"/><br/>
+<img src="./Hoffman_1_2-36_2.png"/><br/>
+<img src="./Hoffman_1_2-36_3.png"/><br/>
+<img src="./Hoffman_1_2-36_4.png"/><br/>
+<img src="./Hoffman_1_2-36_5.png"/><br/>
+<img src="./Hoffman_1_2-36_6.png"/><br/>
+<b>Risk&#160;Functions: Hinge&#160;Risk</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Minimum&#160;Log-Odds<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<i>difference between compatibility&#160;</i><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+<i>of correct vs. best incorrect output</i><br/>
+<b>in</b><br/>
+Hinge&#160;Loss<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<i>differences of 1 and greater</i><br/>
+<b>ofm</b><br/>
+<i>are ok, otherwise linear penalty</i><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>36</b><br/>
+1<br/>
+<hr/>
+<a name=37></a><img src="./Hoffman_1_2-37_1.png"/><br/>
+<img src="./Hoffman_1_2-37_2.png"/><br/>
+<b>SVMstruct: Problem&#160;Formulation</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Minimize&#160;Hinge&#160;loss&#160;=&#160;structured&#160;Support&#160;Vector&#160;Machines<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>Primal</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+<b>QP</b><br/>
+<b>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<i>number&#160;of&#160;constraints&#160;=</i><br/>
+<b>pport&#160;V</b><br/>
+<i>cardinality&#160;of&#160;output&#160;space</i><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>I. Tsochantaridis, T. Hofmann, T. Joachims, and Y. Altun,&#160;<i>Support Vector Machine Learning for Interdependent and</i></b><br/>
+<b>37</b><br/>
+<i><b>Structured Output Spaces</b></i><b>,&#160;ICML 2004.</b><br/>
+<hr/>
+<a name=38></a><img src="./Hoffman_1_2-38_1.png"/><br/>
+<img src="./Hoffman_1_2-38_2.png"/><br/>
+<img src="./Hoffman_1_2-38_3.png"/><br/>
+<img src="./Hoffman_1_2-38_4.png"/><br/>
+<img src="./Hoffman_1_2-38_5.png"/><br/>
+<img src="./Hoffman_1_2-38_6.png"/><br/>
+<img src="./Hoffman_1_2-38_7.png"/><br/>
+<img src="./Hoffman_1_2-38_8.png"/><br/>
+<img src="./Hoffman_1_2-38_9.png"/><br/>
+<img src="./Hoffman_1_2-38_10.png"/><br/>
+<img src="./Hoffman_1_2-38_11.png"/><br/>
+<img src="./Hoffman_1_2-38_12.png"/><br/>
+<img src="./Hoffman_1_2-38_13.png"/><br/>
+<img src="./Hoffman_1_2-38_14.png"/><br/>
+<img src="./Hoffman_1_2-38_15.png"/><br/>
+<img src="./Hoffman_1_2-38_16.png"/><br/>
+<img src="./Hoffman_1_2-38_17.png"/><br/>
+<img src="./Hoffman_1_2-38_18.png"/><br/>
+<img src="./Hoffman_1_2-38_19.png"/><br/>
+<img src="./Hoffman_1_2-38_20.png"/><br/>
+<img src="./Hoffman_1_2-38_21.png"/><br/>
+<b>Soft Margin: Illustration</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>38</b><br/>
+<hr/>
+<a name=39></a><img src="./Hoffman_1_2-39_1.png"/><br/>
+<img src="./Hoffman_1_2-39_2.png"/><br/>
+<img src="./Hoffman_1_2-39_3.png"/><br/>
+<b>SVMstruct: Dual Formulation</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Dual&#160;problem&#160;formulation<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>Dual</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+<b>QP</b><br/>
+<b>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>Block&#160;structure:<br/>Independent constraints</b><br/>
+<b>pport&#160;V</b><br/>
+<b>for&#160;every&#160;training&#160;example</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>39</b><br/>
+<hr/>
+<a name=40></a><img src="./Hoffman_1_2-40_1.png"/><br/>
+<img src="./Hoffman_1_2-40_2.png"/><br/>
+<b>SVMstruct: Algorithm</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+Constraint&#160;generation<br/>
+<b>red&#160;<br/>ctu</b><br/>
+Adding&#160;constraint<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+Re-optimization<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>40</b><br/>
+<hr/>
+<a name=41></a><img src="./Hoffman_1_2-41_1.png"/><br/>
+<b>SVMstruct: Variable&#160;Selection</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;<b>Incrementally&#160;add&#160;constraints</b>&#160;(sequential&#160;strengthening&#160;of&#160;QP)<br/>
+<b>,&#160;M</b><br/>
+•&#160;Corresponds&#160;to&#160;variable&#160;selection&#160;in&#160;the&#160;dual&#160;QP<br/>•&#160;Sequentially&#160;<b>optimize&#160;dual&#160;over&#160;selected&#160;variables</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+•&#160;Select&#160;maximally&#160;violating&#160;constraints&#160;(or&#160;at&#160;least&#160;є-violating<br/>
+constraints)&#160;–&#160;requires&#160;black&#160;box&#160;search&#160;to&#160;find&#160;best&#160;or&#160;second<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+best&#160;outputs<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>Theorem</b>:<br/>
+<b>pport&#160;V</b><br/>
+After&#160;selecting&#160;at&#160;most&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;є-violating&#160;constraints&#160;no<br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+remaining&#160;constraint&#160;is&#160;violated&#160;by&#160;more&#160;than&#160;є.<br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>I. Tsochantaridis, T. Joachims, T. Hofmann, and Y. Altun,&#160;<i>Large Margin Methods for Structured and Interdependent</i></b><br/>
+<b>41</b><br/>
+<i><b>Output Variables</b></i><b>,&#160;JMLR 2005.</b><br/>
+•&#160;<b>http://www.cs.cornell.edu/People/tj/svm_light/svm_struct.html</b><br/>
+<hr/>
+<a name=42></a><img src="./Hoffman_1_2-42_1.png"/><br/>
+<img src="./Hoffman_1_2-42_2.png"/><br/>
+<b>SVMstruct:&#160;Proof of theorem&#160;(sketch)</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Dual&#160;objective&#160;is&#160;upper&#160;bounded&#160;by&#160;primal,&#160;which&#160;is&#160;upper<br/>
+<b>,&#160;M</b><br/>
+bounded&#160;by&#160;nC&#160;(zero&#160;weight&#160;vector).<br/>
+•&#160;We&#160;show&#160;that&#160;each&#160;variable&#160;selections&#160;for&#160;an&#160;ε-violated&#160;constraint<br/>
+<b>redicition<br/>P</b><br/>
+will&#160;increase&#160;the&#160;dual&#160;objective&#160;by&#160;some&#160;minimum&#160;(bounded&#160;away<br/>
+<b>red&#160;<br/>ctu</b><br/>
+from&#160;zero).<br/>
+•&#160;This&#160;limits&#160;the&#160;number&#160;of&#160;sequentially&#160;ε-violated&#160;constraints.<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>42</b><br/>
+<hr/>
+<a name=43></a><b>SVMstruct: Support Outputs</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;SVM:&#160;sparseness&#160;=&#160;select&#160;some&#160;examples<br/>
+<b>,&#160;M</b><br/>
+•&#160;SVMstruct:&#160;sparseness&#160;=&#160;select&#160;some&#160;outputs&#160;for&#160;some&#160;examples<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;</b><br/>
+•&#160;Example:&#160;named&#160;entity&#160;tagging&#160;(Spanish&#160;corpus)<br/>
+<b>ctu</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+<b>PP ESTUDIA YA PROYECTO LEY TV REGIONAL REMITIDO POR LA JUNTA MERIDA ( EFE ) .</b><br/>
+<b>in</b><br/>
+<b>O &#160;N &#160; &#160; &#160; N &#160;N &#160; &#160; &#160; &#160;M &#160; m &#160;m &#160; &#160; &#160; &#160;N &#160; &#160; &#160; &#160;N &#160; N &#160;O &#160; &#160; L &#160; &#160; &#160;N O &#160; N N</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ONNNMmmNNNOLNONN<br/>--------M-------</b><br/>
+<i>Support&#160;Vector&#160;Sequences</i><br/>
+<b>ector&#160;M</b><br/>
+<b>------N---------&#160;&#160;&#160;&#160;</b><i>(only&#160;difference&#160;to&#160;correct&#160;sequence&#160;shown)<br/></i><b>----------P-----</b><br/>
+<b>pport&#160;V</b><br/>
+<b>----N-----------</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>N---P-----------</b><br/>
+<b>ofm</b><br/>
+<b>-----------o----</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>43&#160;</b>•&#160;<b>Y.Altun,&#160;I. Tsochantaridis, T. Hofmann,&#160;<i>Hidden Markov Support Vector Machines,&#160;</i></b><b>ICML, 2003</b><br/>
+<hr/>
+<a name=44></a><img src="./Hoffman_1_2-44_1.png"/><br/>
+<img src="./Hoffman_1_2-44_2.png"/><br/>
+<img src="./Hoffman_1_2-44_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>5</b><br/>
+<b>Loss Functions</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>44</b><br/>
+<hr/>
+<a name=45></a><img src="./Hoffman_1_2-45_1.png"/><br/>
+<img src="./Hoffman_1_2-45_2.png"/><br/>
+<b>Problem-Specific&#160;Loss&#160;Functions</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Problem-specific&#160;prediction&#160;loss&#160;functions<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+This&#160;is&#160;important&#160;to&#160;model&#160;quality&#160;of&#160;predictions&#160;in<br/>
+<b>in</b><br/>
+domain/application-dependent&#160;way.<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+Example:&#160;Hamming&#160;loss<br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>45</b><br/>
+<hr/>
+<a name=46></a><img src="./Hoffman_1_2-46_1.png"/><br/>
+<img src="./Hoffman_1_2-46_2.png"/><br/>
+<b>Margin Re-scaling</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+We&#160;are&#160;requiring&#160;different&#160;margins&#160;for&#160;different&#160;outputs<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+This&#160;results&#160;in&#160;a&#160;modified&#160;Hinge&#160;loss<br/>
+<b>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>46&#160;</b>•&#160;<b>B.&#160;Taskar,&#160;C.&#160;Guestrin&#160;and D. Koller, Maximum&#160;Margin Markov Networks,&#160;NIPS 2003.</b><br/>
+<hr/>
+<a name=47></a><img src="./Hoffman_1_2-47_1.png"/><br/>
+<b>SVMstruct: Dual for Margin Re-scaling</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Dual&#160;problem&#160;formulation<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>Dual</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+<b>QP</b><br/>
+<b>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>Minor&#160;modification&#160;in&#160;bound<br/>constraints</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>47</b><br/>
+<hr/>
+<a name=48></a><img src="./Hoffman_1_2-48_1.png"/><br/>
+<img src="./Hoffman_1_2-48_2.png"/><br/>
+<b>Black&#160;Box: Constraint Selection</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Without&#160;margin&#160;re-scaling,&#160;we&#160;need&#160;a&#160;blackbox&#160;to&#160;solve:<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru</b><br/>
+With&#160;margin&#160;re-scaling,&#160;this&#160;becomes:<br/>
+<b>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+Requirements:<br/>
+<b>pport&#160;V</b><br/>
+•&#160;Search&#160;(argmax)&#160;needs&#160;to&#160;be&#160;feasible<br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+•&#160;Second&#160;best&#160;output&#160;may&#160;be&#160;required<br/>
+<b>ofm</b><br/>
+•&#160;Loss&#160;function&#160;needs&#160;to&#160;decompose&#160;in&#160;similar&#160;manner<br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+Many&#160;tractable&#160;use&#160;cases:&#160;dynamic&#160;programming,&#160;min-cut,&#160;etc.<br/>
+<b>48</b><br/>
+<hr/>
+<a name=49></a><img src="./Hoffman_1_2-49_1.png"/><br/>
+<img src="./Hoffman_1_2-49_2.png"/><br/>
+<img src="./Hoffman_1_2-49_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>6</b><br/>
+<b>Compositionality and</b><br/>
+<b>Graphical Models</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>49</b><br/>
+<hr/>
+<a name=50></a><img src="./Hoffman_1_2-50_1.png"/><br/>
+<img src="./Hoffman_1_2-50_2.png"/><br/>
+<b>Compositionality</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Additive&#160;decomposition&#160;of&#160;compatibility&#160;function&#160;over&#160;“parts“<br/>
+<b>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+dependency&#160;on&#160;<br/>
+additivity<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+subset of&#160;variables&#160;<br/>
+over&#160;parts<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+Induces&#160;decompositionality&#160;of&#160;kernel&#160;functions&#160;(<i>proof&#160;elementary</i>)<br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>T. Hofmann, B. Schölkopf, and A. Smola,&#160;<i>A&#160;Tutorial Review of RKHS Methods in Machine Learning, Annals of</i></b><br/>
+<b>50</b><br/>
+<i><b>Statistics, 2008</b></i><br/>
+<hr/>
+<a name=51></a><img src="./Hoffman_1_2-51_1.png"/><br/>
+<img src="./Hoffman_1_2-51_2.png"/><br/>
+<b>Markov Networks</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+<b>Markov&#160;Networks</b><br/>
+<b>,&#160;M</b><br/>
+conditional independence<br/>between variables corresponds to<br/>
+<b>redicition</b><br/>
+<b>graph separation</b><br/>
+<b>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+product&#160;over&#160;<b>clique</b>&#160;<br/>potential&#160;functions<br/>(Hamersley-Clifford)<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>Conditional&#160;independence&#160;graph</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H</b><br/>
+•&#160;distributions with full support&#160;pairwise&#160;=&#160;local = global Markov property<br/>
+<b>om<br/>h<br/>T</b><br/>
+<b>51</b><br/>
+<hr/>
+<a name=52></a><img src="./Hoffman_1_2-52_1.png"/><br/>
+<img src="./Hoffman_1_2-52_2.png"/><br/>
+<img src="./Hoffman_1_2-52_3.png"/><br/>
+<b>Markov Network&#160;Kernels: Example</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Label&#160;sequence&#160;learning&#160;with&#160;HMM&#160;structure<br/>
+<b>,&#160;M</b><br/>
+y<br/>
+u<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+y’<br/>
+u’<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+y<br/>
+u<br/>
+<b>e&#160;Learn<br/>in</b><br/>
+Overlapping&#160;input&#160;features<br/>
+<b>ach</b><br/>
+x<br/>
+x’<br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H</b><br/>
+y<br/>
+y’<br/>
+u<br/>
+u’<br/>
+<b>om<br/>h<br/>T</b><br/>
+x<br/>
+x’<br/>
+<b>52</b><br/>
+<hr/>
+<a name=53></a><img src="./Hoffman_1_2-53_1.png"/><br/>
+<img src="./Hoffman_1_2-53_2.png"/><br/>
+<b>Representer&#160;Theorem&#160;over Cliques</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Standard&#160;representer&#160;theorem&#160;yields&#160;expansion&#160;with<br/>
+<b>,&#160;M</b><br/>
+&#160;&#160;&#160;terms<br/>
+<b>problematic</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;</b><br/>
+•&#160;SVMstruct:&#160;sparseness&#160;due&#160;to&#160;Hinge&#160;loss&#160;properties<br/>
+<b>ctu</b><br/>
+•&#160;Logistic&#160;loss:&#160;no&#160;sparseness,&#160;too&#160;many&#160;parameters<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>Clique-based&#160;Sparse&#160;Approximation</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+For&#160;decomposable&#160;RKHS:<br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+much&#160;fewer&#160;variables&#160;(further:&#160;parameter&#160;tying)&#160;<br/>
+<b>as&#160;H<br/>om</b><br/>
+•&#160;<b>B.&#160;Taskar,&#160;C.&#160;Guestrin&#160;and D. Koller, Maximum&#160;Margin Markov Networks,&#160;NIPS 2003.</b><br/>
+<b>h<br/>T</b><br/>
+•&#160;<b>J. Lafferty, X. Zhu, and Y. Liu,&#160;<i>Kernel conditional random fields: Representation and clique selection,&#160;</i></b><b>ICML, 2004.<br/></b>•&#160;<b>Y.&#160;Altun,&#160;A.&#160;Smola,&#160;and T. Hofmann,&#160;<i>Exponential&#160;Families for Conditional Random&#160;Fields, UAI 2004.<br/></i></b>•&#160;<b>T. Hofmann, B. Schölkopf, and A. Smola,&#160;<i>A&#160;Tutorial Review of RKHS Methods in Machine Learning, Annals of</i></b><br/>
+<b>53</b><br/>
+<i><b>Statistics, 2008</b></i><br/>
+<hr/>
+<a name=54></a><img src="./Hoffman_1_2-54_1.png"/><br/>
+<img src="./Hoffman_1_2-54_2.png"/><br/>
+<img src="./Hoffman_1_2-54_3.png"/><br/>
+<b>SVMstruct&#160;with&#160;Approximate&#160;Inference</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;<b>Undergenerating</b>&#160;methods<br/>
+<b>,&#160;M</b><br/>
+•&#160;Examples: Greedy,&#160;loopy belief propagation<br/>
+<b>redicition<br/>P</b><br/>
+•&#160;Theoretical analysis: convergence, bounded (but not arbitrary small)<br/>
+<b>red&#160;<br/>ctu</b><br/>
+overall approximation quality, if quality of approximation can be<br/>bounded<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in</b><br/>
+•&#160;<b>Overgenerating&#160;</b>methods<br/>
+<b>ach</b><br/>
+<b>ector&#160;M</b><br/>
+•&#160;Examples: LP relaxation (leading to solutions over {0,1/2,1})&#160;[Boros&#160;&amp;<br/>
+<b>pport&#160;V</b><br/>
+Hammer&#160;2002]&#160;&amp;&#160;Quadratic pseudo-Boolean optimization using graph cuts<br/>
+<b>,&#160;Su</b><br/>
+[Kolmogorov&#160;&amp;&#160;Rother&#160;2004]<br/>
+<b>n<br/>an</b><br/>
+•&#160;Use fractional numbers (1/2) in constraints -&gt; overly constrained<br/>
+<b>ofm</b><br/>
+problem, but feasible solution will be found<br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>54&#160;</b>•&#160;<b>T. Finley and T.&#160;Joachims.&#160;Training structural&#160;SVMs&#160;when exact inference is intractable. ICML 2008.</b><br/>
+<hr/>
+<a name=55></a><img src="./Hoffman_1_2-55_1.png"/><br/>
+<b>SVMstruct&#160;with&#160;Approximate&#160;Inference</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Evaluation&#160;on&#160;multi-labeled&#160;classification&#160;=&#160;&#160;Multiple<br/>
+<b>,&#160;M</b><br/>
+coupled/overlapping&#160;binary&#160;classification&#160;problems<br/>•&#160;Dependencies&#160;modeled&#160;as&#160;a&#160;binary&#160;MRF<br/>
+<b>redicition<br/>P</b><br/>
+•&#160;Relaxation&#160;methods&#160;(overgenerating)&#160;work&#160;best&#160;for&#160;training.<br/>
+<b>red&#160;<br/>ctu</b><br/>
+•&#160;Adding&#160;fractional&#160;constraints&#160;during&#160;training&#160;helps&#160;avoid&#160;fractional<br/>solutions&#160;in&#160;inference.<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>55&#160;</b>•&#160;<b>T. Finley and T.&#160;Joachims.&#160;Training structural&#160;SVMs&#160;when exact inference is intractable. ICML 2008.</b><br/>
+<hr/>
+<a name=56></a><img src="./Hoffman_1_2-56_1.png"/><br/>
+<img src="./Hoffman_1_2-56_2.png"/><br/>
+<img src="./Hoffman_1_2-56_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>7</b><br/>
+<b>Applications</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>56</b><br/>
+<hr/>
+<a name=57></a><img src="./Hoffman_1_2-57_1.png"/><br/>
+<img src="./Hoffman_1_2-57_2.png"/><br/>
+<img src="./Hoffman_1_2-57_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>7.1</b><br/>
+<b>Named Entity</b><br/>
+<b>Classification</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>57</b><br/>
+<hr/>
+<a name=58></a><img src="./Hoffman_1_2-58_1.png"/><br/>
+<b>Application: Named&#160;Entity&#160;Classification</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Goal:&#160;finding&#160;names&#160;in&#160;sentences<br/>
+<b>,&#160;M</b><br/>
+•&#160;Label&#160;set:&#160;beginning&#160;and&#160;continuation<br/>
+of&#160;<b>person</b>,&#160;<b>location</b>,&#160;<b>organization</b>&#160;and<br/>
+The outcome of a possible<br/>
+&#160;WTO&#160;&lt;/organization&gt;<br/>
+<b>redicition</b><br/>
+&lt;organization&gt;&#160;WTO&#160;&lt;<br/>
+<b>P</b><br/>
+<b>miscellaneous</b>&#160;names&#160;and&#160;non-name<br/>
+cat fight is far from clear. Even if the<br/>
+<b>red&#160;</b><br/>
+&lt;country&gt;&#160;United States&#160;&lt;/country&gt;<br/>
+<b>ctu</b><br/>
+•&#160;Data&#160;set:&#160;Spanish&#160;newswire&#160;corpus,<br/>
+won, nothing might change, said<br/>&lt;person&gt;&#160;Richard&#160;Aboulafia&#160;&lt;/person&gt;<br/>
+CoNLL&#160;2002<br/>
+, aviation analyst with the<br/>
+<b>g&#160;for&#160;Stru</b><br/>
+&lt;organization&gt;&#160;Teal Group<br/>
+<b>in</b><br/>
+•&#160;Input&#160;features:&#160;word&#160;identity&#160;and<br/>
+&lt;/organization&gt;,&#160;an industry consulting<br/>
+spelling&#160;properties&#160;of&#160;current,<br/>
+firm in&#160;&lt;location&gt;&#160;Fairfax, Va.<br/>
+<b>e&#160;Learn</b><br/>
+&lt;/location&gt;<br/>
+<b>in</b><br/>
+previous,&#160;and&#160;next&#160;observation<br/>
+<b>ach</b><br/>
+<b>Named&#160;Entity&#160;Classification</b><br/>
+<b>ector&#160;M</b><br/>
+10<br/>
+<b>pport&#160;V</b><br/>
+8<br/>
+<b>,&#160;Su<br/>n</b><br/>
+6<br/>
+<b>an</b><br/>
+<b>r&#160;%</b><br/>
+<b>ofm</b><br/>
+<b>rro</b><br/>
+4<br/>
+<b>E</b><br/>
+<b>as&#160;H</b><br/>
+2<br/>
+<b>om</b><br/>
+0<br/>
+<b>h<br/>T</b><br/>
+HMM<br/>
+CRF<br/>
+CRF-B<br/>
+HM-PC<br/>
+HM-SVM<br/>
+Error<br/>
+9,36<br/>
+5,62<br/>
+5,17<br/>
+5,94<br/>
+5,08<br/>
+<b>58</b><br/>
+<hr/>
+<a name=59></a><img src="./Hoffman_1_2-59_1.png"/><br/>
+<img src="./Hoffman_1_2-59_2.png"/><br/>
+<img src="./Hoffman_1_2-59_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>7.2</b><br/>
+<b>Hierarchical</b><br/>
+<b>Classification</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>59</b><br/>
+<hr/>
+<a name=60></a><b>Taxonomies: IPC</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>A: Human Necessities</b><br/>
+<b>H: Electricity</b><br/>
+<b>LSS&#160;2</b><br/>
+<b>B: Performing Operations;&#160;</b><br/>
+<b>,&#160;M</b><br/>
+<b>G: Physics</b><br/>
+<b>Transporting</b><br/>
+<b>F: Mechanical Engineering</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>C: Chemistry; Metallurgy</b><br/>
+<b>red&#160;</b><br/>
+<b>E: Fixed Construction</b><br/>
+<b>ctu</b><br/>
+<b>D: Textiles; Paper</b><br/>
+<b>g&#160;for&#160;Stru<br/>in&#160;D01:&#160;Natural&#160;or</b><br/>
+<b>D21:&#160;Paper;&#160;...</b><br/>
+<b>artificial&#160;threads&#160;or</b><br/>
+<b>e&#160;Learn<br/>in&#160;fibres;&#160;Spinning</b><br/>
+<b>D07:&#160;Ropes;&#160;...</b><br/>
+<b>ach</b><br/>
+<b>D02:&#160;Yarns;&#160;Warping</b><br/>
+<b>D03:&#160;Weaving</b><br/>
+<b>D06:&#160;Treatment&#160;of</b><br/>
+<b>ector&#160;M</b><br/>
+<b>or&#160;Beaming;&#160;...</b><br/>
+<b>Textiles;&#160;...</b><br/>
+<b>pport&#160;V</b><br/>
+<b>D04:&#160;Braiding;&#160;Lace</b><br/>
+<b>D05:&#160;Sewing;</b><br/>
+<b>,&#160;Su<br/>n</b><br/>
+<b>Making;&#160;Knitting;&#160;...</b><br/>
+<b>Embroidering;&#160;Tufting</b><br/>
+<b>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H</b>D03C:&#160;Shedding&#160;mechanisms;<br/>
+D03D:&#160;Woven&#160;fabrics;<br/>
+D03J:Auxiliary&#160;weaving<br/>
+<b>om</b>Pattern&#160;cards&#160;or&#160;chains;&#160;Punching<br/>
+Methods&#160;of&#160;weaving;<br/>
+apparatus;&#160;Weavers’&#160;tools;<br/>
+<b>h<br/>T</b>of&#160;cards;&#160;Designing&#160;patterns<br/>
+Looms<br/>
+Shuttles<br/>
+<b>60&#160;</b>•&#160;<b>World Intellectual Property Organization. International patent classification. URL, 2001.</b><br/>
+<b>http://www.wipo.int/classifications/en/</b><br/>
+<hr/>
+<a name=61></a><img src="./Hoffman_1_2-61_1.png"/><br/>
+<img src="./Hoffman_1_2-61_2.png"/><br/>
+<img src="./Hoffman_1_2-61_3.png"/><br/>
+<b>Class&#160;Attributes&#160;from&#160;Taxonomies</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+Hierarchical&#160;Classification&#160;with&#160;Taxonomies<br/>
+<b>,&#160;M</b><br/>
+<b>redicition</b><br/>
+9<br/>
+10<br/>
+<b>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+6<br/>
+7<br/>
+8<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+1<br/>
+2<br/>
+3<br/>
+4<br/>
+5<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+similarity&#160;function&#160;over&#160;categories<br/>
+<b>ofm</b><br/>
+(generalization&#160;across&#160;categories,&#160;not<br/>just&#160;across&#160;inputs)<br/>
+<b>as&#160;H</b><br/>
+<i>special&#160;case,&#160;multiclass&#160;=&#160;orthogonal</i><br/>
+<b>om<br/>h<br/>T</b><br/>
+<i>class&#160;representation</i><br/>
+<b>61&#160;</b>•&#160;<b>T. Hofmann, L. Cai, and M.&#160;Ciaramita,&#160;<i>Learning with Taxonomies: Classifying Documents and Words,&#160;</i></b><b>Workshop on</b><br/>
+<b>Syntax, Semantics, and Statistics, NIPS, 2003</b><br/>
+<hr/>
+<a name=62></a><b>Hierarchical Classification</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+<b>Model</b><br/>
+<b>,&#160;M</b><br/>
+•&#160;Input&#160;feature&#160;map:&#160;vector&#160;space<br/>
+representation&#160;of&#160;documents<br/>
+<b>redicition<br/>P</b><br/>
+•&#160;Class&#160;attributes&#160;from&#160;IPC&#160;taxonomy<br/>
+<b>red&#160;<br/>ctu</b><br/>
+•&#160;(Tree-specific&#160;loss&#160;function)<br/>•&#160;<i>Soft-margin&#160;objective&#160;and&#160;SVMstruct&#160;–</i><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<i>explained&#160;later!</i><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>2</b><br/>
+<b>Experiments</b><br/>
+<b>1,5</b><br/>
+<b>ector&#160;M</b><br/>
+•&#160;WIPO-alpha:&#160;patent&#160;database<br/>
+(2002)<br/>
+<b>%</b><br/>
+<b>1</b><br/>
+<b>pport&#160;V</b><br/>
+<b>SVMflat</b><br/>
+<b>,&#160;Su</b><br/>
+•&#160;Based&#160;on&#160;IPC&#160;taxonomy<br/>
+<b>n</b><br/>
+<b>0,5</b><br/>
+<b>SVMstruct</b><br/>
+<b>an</b><br/>
+•&#160;Trained&#160;on&#160;different&#160;sections,&#160;full<br/>
+<b>ofm</b><br/>
+<b>0</b><br/>
+<b>as&#160;H</b><br/>
+<b>3samp</b><br/>
+<b>full</b><br/>
+and&#160;subsampled&#160;(3&#160;training<br/>
+<b>om<br/>h</b><br/>
+<b>SVMflat</b><br/>
+<b>1,941</b><br/>
+<b>1,323</b><br/>
+examples&#160;per&#160;leaf&#160;category)<br/>
+<b>T</b><br/>
+<b>SVMstruct</b><br/>
+<b>1,822</b><br/>
+<b>1,228</b><br/>
+<b>62&#160;</b>•&#160;<b>L. Cai and T. Hofmann,&#160;<i>Hierarchical Document Categorization with Support Vector Machines, ACM CIKM, 2004.</i></b><br/>
+<hr/>
+<a name=63></a><img src="./Hoffman_1_2-63_1.png"/><br/>
+<img src="./Hoffman_1_2-63_2.png"/><br/>
+<img src="./Hoffman_1_2-63_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>7.3</b><br/>
+<b>Binary Classification</b><br/>
+<b>with Unbalanced Classes</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>63</b><br/>
+<hr/>
+<a name=64></a><img src="./Hoffman_1_2-64_1.png"/><br/>
+<img src="./Hoffman_1_2-64_2.png"/><br/>
+<b>Unbalanced&#160;Classes&#160;in Text Categorization</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Binary&#160;text&#160;categorization:&#160;only&#160;very&#160;few&#160;positive&#160;examples&#160;(&lt;1%)<br/>
+<b>,&#160;M</b><br/>
+•&#160;Classification&#160;error&#160;=&#160;poor&#160;loss&#160;function&#160;(99%+&#160;by&#160;trivial&#160;classification)<br/>•&#160;More&#160;suitable&#160;error&#160;metrics:<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;</b><br/>
+•&#160;<b>F1&#160;score&#160;</b>=&#160;harmonic&#160;mean&#160;of&#160;precison&#160;and&#160;recall)<br/>
+<b>ctu</b><br/>
+•&#160;Precision-recall&#160;breakeven&#160;point<br/>
+<b>g&#160;for&#160;Stru</b><br/>
+•&#160;Problem:&#160;<b>functions&#160;of&#160;sets&#160;of&#160;</b>(not&#160;individual)&#160;<b>predictions</b>&#160;-&gt;<br/>
+<b>in</b><br/>
+structured&#160;classification<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+•&#160;Representation&#160;(reduces&#160;to&#160;standard&#160;classification&#160;for&#160;0/1&#160;loss)<br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om</b><br/>
+•&#160;Constraint&#160;generation/prediction&#160;is&#160;efficient&#160;for&#160;metrics&#160;that<br/>
+<b>h<br/>T</b><br/>
+depend&#160;on&#160;contingency&#160;table&#160;of&#160;prediction&#160;errors<br/>
+<b>64&#160;</b>•&#160;<b>T.&#160;Joachims.&#160;A support vector method for multivariate&#160;performance measures. ICML 2005.</b><br/>
+<hr/>
+<a name=65></a><img src="./Hoffman_1_2-65_1.png"/><br/>
+<b>Experiments</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Comparison&#160;on&#160;4&#160;data&#160;sets<br/>
+<b>,&#160;M</b><br/>
+•&#160;Plain&#160;binary&#160;SVM&#160;classification&#160;vs.&#160;SVMs&#160;trained&#160;on&#160;specific&#160;loss<br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>65&#160;</b>•&#160;<b>T.&#160;Joachims.&#160;A support vector method for multivariate&#160;performance measures. ICML 2005.</b><br/>
+<hr/>
+<a name=66></a><img src="./Hoffman_1_2-66_1.png"/><br/>
+<img src="./Hoffman_1_2-66_2.png"/><br/>
+<img src="./Hoffman_1_2-66_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>7.4</b><br/>
+<b>Learning to Rank</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>66</b><br/>
+<hr/>
+<a name=67></a><img src="./Hoffman_1_2-67_1.png"/><br/>
+<img src="./Hoffman_1_2-67_2.png"/><br/>
+<b>Optimizing MAP&#160;with&#160;SVMstruct</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Loss&#160;function&#160;=&#160;1&#160;-&#160;MAP&#160;(mean&#160;average&#160;precision)<br/>
+<b>,&#160;M</b><br/>
+•&#160;<b>Inputs</b>&#160;&#160;q&#160;=&#160;search&#160;query<br/>•&#160;<b>Outputs</b>&#160;&#160;y&#160;=&#160;rankings&#160;of&#160;documents/URLs&#160;(matrix&#160;of&#160;pairwise<br/>
+<b>redicition<br/>P</b><br/>
+orderings)<br/>
+<b>red&#160;<br/>ctu</b><br/>
+•&#160;Training&#160;data:&#160;set&#160;of&#160;relevant&#160;and&#160;irrelevant&#160;documents&#160;per&#160;query<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+•&#160;Efficient&#160;constraint&#160;generation:&#160;exploit&#160;fact&#160;that&#160;MAP&#160;only<br/>
+<b>ector&#160;M</b><br/>
+depends&#160;on&#160;label&#160;sequence<br/>
+<b>pport&#160;V</b><br/>
+<i>Comparison&#160;w/</i><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<i>Indri&#160;functions</i><br/>
+<b>ofm</b><br/>
+<i>(Lemur&#160;project)</i><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>Yisong Yue,&#160;T. Finley, F.&#160;Radlinski,&#160; T.&#160;Joachims,&#160;A Support Vector Method for Optimizing Average Precision. SIGIR</b><br/>
+<b>67</b><br/>
+<b>2007.</b><br/>
+<hr/>
+<a name=68></a><img src="./Hoffman_1_2-68_1.png"/><br/>
+<img src="./Hoffman_1_2-68_2.png"/><br/>
+<img src="./Hoffman_1_2-68_3.png"/><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>7.5</b><br/>
+<b>Optimizing</b><br/>
+<b>Search Diversity</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>68</b><br/>
+<hr/>
+<a name=69></a><img src="./Hoffman_1_2-69_1.png"/><br/>
+<b>Search&#160;Result Diversity</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+•&#160;Traditionally:<br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+•&#160;Assess relevance of a document on ordinal scale (e.g. binary)<br/>•&#160;Quality of ranking =&#160;only depends on sequence of relevance scores (e.g.<br/>
+<b>redicition<br/>P</b><br/>
+MAP,&#160;discounted cumulative&#160;gain)<br/>
+<b>red&#160;<br/>ctu</b><br/>
+•&#160;Challenge:<br/>
+•&#160;Relevance of document (at rank r) depends on&#160;other documents (at<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+rank&#160;r’&lt;r) =&#160;<b>relative relevance</b><br/>
+•&#160;Novelty relative to other search result matters (diversity is good!)<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h</b><br/>
+•&#160;Effectively&#160;one&#160;needs&#160;to&#160;look&#160;at&#160;ranking&#160;and&#160;model&#160;inter-<br/>
+<b>T</b><br/>
+document&#160;dependencies&#160;=&#160;collective&#160;classification&#160;problem<br/>
+<b>69</b><br/>
+<hr/>
+<a name=70></a><img src="./Hoffman_1_2-70_1.png"/><br/>
+<img src="./Hoffman_1_2-70_2.png"/><br/>
+<img src="./Hoffman_1_2-70_3.png"/><br/>
+<b>Diversity&#160;via&#160;Topic&#160;Coverage</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Manually&#160;annotate&#160;results&#160;with&#160;<b>sub-topics</b>&#160;(for&#160;selected&#160;set&#160;of<br/>
+<b>,&#160;M</b><br/>
+training&#160;queries)<br/>
+•&#160;Prediction&#160;goal:&#160;find&#160;top&#160;n&#160;(=10)&#160;documents&#160;(=y)&#160;that&#160;maximize<br/>
+<b>redicition<br/>P</b><br/>
+topic&#160;coverage,&#160;minimize&#160;weighted&#160;fraction&#160;of&#160;uncovered&#160;topics<br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn</b><br/>
+•&#160;<b>Budgeted&#160;maximum&#160;coverage</b>&#160;problem&#160;-&gt;&#160;(1-1/e)&#160;greedy&#160;approx.<br/>
+<b>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+•&#160;How&#160;to&#160;generalize&#160;to&#160;new&#160;queries?&#160;Learn&#160;a&#160;<b>term&#160;weighting</b><br/>
+<b>function</b>.<br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+•&#160;<b>T. Finley and T.&#160;Joachims.&#160;Training structural&#160;SVMs&#160;when exact inference is intractable. ICML 2008.</b><br/>
+<b>70&#160;</b>•&#160;<b>Y.&#160;Yue&#160;and T.&#160;Joachims.&#160;Predicting diverse subsets using structural&#160;SVMs.&#160;ICML 2008</b><br/>
+<hr/>
+<a name=71></a><img src="./Hoffman_1_2-71_1.png"/><br/>
+<b>Experiments</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;TREC&#160;6-8&#160;interactive&#160;track&#160;queries<br/>
+<b>,&#160;M</b><br/>
+•&#160;Fine-grained&#160;topic&#160;annotations<br/>•&#160;Comparison&#160;with&#160;Okapi,&#160;unweighted&#160;word&#160;model,&#160;Essential&#160;Pages<br/>
+<b>redicition<br/>P</b><br/>
+algorithm<br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>71&#160;</b>•&#160;<b>Y.&#160;Yue&#160;and T.&#160;Joachims.&#160;Predicting diverse subsets using structural&#160;SVMs.&#160;ICML 2008</b><br/>
+<hr/>
+<a name=72></a><b>Conclusions</b><br/>
+<b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2</b><br/>
+•&#160;Generalization&#160;of&#160;SVMs&#160;to&#160;structured&#160;classification&#160;via<br/>
+<b>,&#160;M</b><br/>
+<b>compatibility&#160;functions</b><br/>
+<b>redicition<br/>P</b><br/>
+•&#160;<b>SVMstruct</b>:&#160;Hinge-loss&#160;induced&#160;sparseness,&#160;column&#160;generation<br/>
+<b>red&#160;<br/>ctu</b><br/>
+approach&#160;to&#160;produce&#160;sequence&#160;of&#160;relaxations<br/>
+•&#160;efficient and highly generic approach<br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+•&#160;simple and theoretically well understood<br/>•&#160;alternative: clique-based representer theorem<br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+•&#160;Wide&#160;range&#160;of&#160;<b>applications</b><br/>
+<b>ector&#160;M</b><br/>
+•&#160;structured prediction problems<br/>
+<b>pport&#160;V</b><br/>
+•&#160;collective classification<br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+•&#160;many use cases in information&#160;retrieval<br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>72</b><br/>
+<hr/>
+<a name=73></a><b>9<br/>0<br/>0</b><br/>
+<b>LSS&#160;2<br/>,&#160;M</b><br/>
+<b>redicition<br/>P</b><br/>
+<b>red&#160;<br/>ctu</b><br/>
+<b>g&#160;for&#160;Stru<br/>in</b><br/>
+<b>e&#160;Learn<br/>in<br/>ach</b><br/>
+<b>ector&#160;M</b><br/>
+<b>pport&#160;V</b><br/>
+<b>,&#160;Su<br/>n<br/>an</b><br/>
+<b>ofm</b><br/>
+<b>as&#160;H<br/>om<br/>h<br/>T</b><br/>
+<b>73</b><br/>
+<hr/>
+</body>
+</html>
