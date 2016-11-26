@@ -1,0 +1,142 @@
+[
+  {
+    "title": "Introduction To Bayesian Inference",
+    "auth": "Christopher Bishop",
+    "url": "http://videolectures.net/mlss09uk_bishop_ibi/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/ea/5kt6x7lpzjdv4bjk5rgl4pdkfwdf3lb4.jpg"
+  },
+  {
+    "title": "Graphical Models",
+    "auth": "Zoubin Ghahramani",
+    "url": "http://videolectures.net/mlss09uk_ghahramani_gm/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/db/3olwynytvghroqi5lcok5kclr3fc5qbk.jpg"
+  },
+  {
+    "title": "Markov Chain Monte Carlo",
+    "auth": "Iain Murray",
+    "url": "http://videolectures.net/mlss09uk_murray_mcmc/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/06/a2w4icnkoycfsniikl4vqpc5dybgpyuk.jpg"
+  },
+  {
+    "title": "Information Theory",
+    "auth": "David MacKay",
+    "url": "http://videolectures.net/mlss09uk_mackay_it/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/b7/w5c7esaikg4jqlimapudtczylqn5qcga.jpg"
+  },
+  {
+    "title": "Kernel Methods",
+    "auth": "Bernhard Schölkopf",
+    "url": "http://videolectures.net/mlss09uk_schoelkopf_km/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/4a/jkce6dp72uo3vpfadeyxpn6ftq2uenmp.jpg"
+  },
+  {
+    "title": "Approximate Inference",
+    "auth": "Tom Minka",
+    "url": "http://videolectures.net/mlss09uk_minka_ai/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/41/ihrvw6kwysfhqztmaqabnqxdqhhvcdqn.jpg"
+  },
+  {
+    "title": "Topic Models",
+    "auth": "David Blei",
+    "url": "http://videolectures.net/mlss09uk_blei_tm/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v011/3a/hlwjtsovy32fmxjbdnbq2g6mzyfima25.jpg"
+  },
+  {
+    "title": "Gaussian Processes",
+    "auth": "Carl Edward Rasmussen",
+    "url": "http://videolectures.net/mlss09uk_rasmussen_gp/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/90/sbm77ktghh2nigotryvbae4ribkasdle.jpg"
+  },
+  {
+    "title": "Convex Optimization",
+    "auth": "Lieven Vandenberghe",
+    "url": "http://videolectures.net/mlss09uk_vandenberghe_co/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/9c/tsoqdl4wqzgttx7xvyalmxjn5sbtdiyz.jpg"
+  },
+  {
+    "title": "Learning Theory",
+    "auth": "John Shawe-Taylor",
+    "url": "http://videolectures.net/mlss09uk_shawe_taylor_lt/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/6d/nu5k4rfh7s5yw5vwgiio2mcmdguu4avj.jpg"
+  },
+  {
+    "title": "Computer Vision",
+    "auth": "Andrew Blake",
+    "url": "http://videolectures.net/mlss09uk_blake_cv/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/9e/t2ztqshzjfwswweafzxx4guiwxoyk4gk.jpg"
+  },
+  {
+    "title": "Nonparametric Bayesian Models",
+    "auth": "Yee Whye Teh",
+    "url": "http://videolectures.net/mlss09uk_teh_nbm/",
+    "slide_url": """",
+    "pic": "http://hydro.ijs.si/v005/98/tdeocxld46chf77qrelhtn2cjnmvjiz2.jpg"
+  },
+  {
+    "title": "Machine Learning and Cognitive Science",
+    "auth": "Joshua B. Tenenbaum",
+    "url": "http://videolectures.net/mlss09uk_tenenbaum_mlcs/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/37/g46ohklgxq6c56mv3sq4a5wnivgncjrz.jpg"
+  },
+  {
+    "title": "Reinforcement Learning",
+    "auth": "Michael Littman",
+    "url": "http://videolectures.net/mlss09uk_littman_rl/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/ab/vn7b5iojjwssm2rkbhpkelhkubllnp3k.jpg"
+  },
+  {
+    "title": "Foundations of Nonparametric Bayesian Methods",
+    "auth": "Peter Orbanz",
+    "url": "http://videolectures.net/mlss09uk_orbanz_fnbm/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/4d/jutthaluxnpi4umwd4lfeseu734ungzo.jpg"
+  },
+  {
+    "title": "Deep Belief Networks",
+    "auth": "Geoffrey E. Hinton",
+    "url": "http://videolectures.net/mlss09uk_hinton_dbn/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/a6/uzgz367fy635irbpzbk77i7a2a7c46so.jpg"
+  },
+  {
+    "title": "Particle Filters",
+    "auth": "Simon Godsill",
+    "url": "http://videolectures.net/mlss09uk_godsill_pf/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/b1/wem76pexclgm2aumksb6cwuz3zybbnro.jpg"
+  },
+  {
+    "title": "Causality",
+    "auth": "Phil Dawid",
+    "url": "http://videolectures.net/mlss09uk_dawid_caus/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/14/cr4hcztbnr6b5ohlfk5xsqmv557rxc7m.jpg"
+  },
+  {
+    "title": "Information Retrieval",
+    "auth": "Thomas Hofmann",
+    "url": "http://videolectures.net/mlss09uk_hofmann_ir/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/94/sqgt47vdy5w2lnyqlqlgc6exrwxcaatm.jpg"
+  },
+  {
+    "title": "Bayesian or Frequentist, Which Are You?",
+    "auth": "Michael I. Jordan",
+    "url": "http://videolectures.net/mlss09uk_jordan_bfway/",
+    "slide_url": "",
+    "pic": "http://hydro.ijs.si/v005/5a/ll54d5ruec6qwh7v2tmv6vjkom3y52e2.jpg"
+  }
+]

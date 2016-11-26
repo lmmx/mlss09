@@ -1,0 +1,106 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-image: url(assets/bg-gradient.jpg);
+	background-repeat: repeat-x;
+	background-color: #1B1B1B;
+}
+body,td,th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #999999;
+	line-height: 16px;
+}
+.mainheading {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #FFFFFF;
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #666666;
+	height: 20px;
+}
+
+.subheading {
+	text-transform: uppercase;
+	color: #66CC33;
+	font-weight: bold;
+}
+.imagePadding {
+	margin-right: 15px;
+}
+.tableHeading {
+	font-weight: bold;
+	color: #66CC33;
+}
+.pageMarker {
+	text-decoration: underline;
+	color: #66CC33;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+
+
+
+
+a:link {
+	color: #66CC33;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #66CC33;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:active {
+	text-decoration: none;
+}#tdContent {
+	background-color: #232323;
+	border: 1px solid #252525;
+	padding: 10px;
+}
+#tdContent img {
+	margin-bottom: -5px;
+	margin-top: -5px;
+}
+
+
+#tdVertSpace {
+	height: 10px;
+}
+#tdAddNav {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #666666;
+}
+#tdAddNav a {
+	color: #666666;
+	margin-right: 15px;
+	margin-left: 15px;
+}
+#tdMainNav {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+	padding: 10px;
+}
+#tdMainNav a {
+	margin-right: 10px;
+	margin-left: 10px;
+	color: #66CC33;
+}
+#tableLines {
+}
+#tableLines  td {
+	border-bottom-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #666666;
+}
